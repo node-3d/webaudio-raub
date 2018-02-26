@@ -1,0 +1,26 @@
+{
+  "name": "waa-raub",
+  "version": "0.0.1",
+  "description": "Web Audio Api implementation for Node.js",
+  "main": "index.js",
+  "author": "Luis Blanco <raubtierxxx@gmail.com>",
+  "keywords": [
+    "waa",
+    "audio",
+    "3d"
+  ],
+  "maintainers": [
+    {
+      "name": "Luis Blanco",
+      "email": "raubtierxxx@gmail.com",
+      "skype": "rauber666"
+    }
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/raub/node-waa.git"
+  },
+  "dependencies": {
+  }
+}
