@@ -1,55 +1,40 @@
 #include <cstdlib>
 
-#include "classes/ADSRNode.hpp"
-#include "classes/AnalyserNode.hpp"
-#include "classes/AudioBasicInspectorNode.hpp"
-#include "classes/AudioBasicProcessorNode.hpp"
-#include "classes/AudioBus.hpp"
-#include "classes/AudioChannel.hpp"
-#include "classes/AudioContext.hpp"
-#include "classes/AudioDestinationNode.hpp"
-#include "classes/AudioFileReader.hpp"
-#include "classes/AudioHardwareSourceNode.hpp"
-#include "classes/AudioNode.hpp"
-#include "classes/AudioNodeInput.hpp"
-#include "classes/AudioNodeOutput.hpp"
-#include "classes/AudioParam.hpp"
-#include "classes/AudioParamTimeline.hpp"
-#include "classes/AudioScheduledSourceNode.hpp"
-#include "classes/AudioSummingJunction.hpp"
-#include "classes/BiquadFilterNode.hpp"
-#include "classes/BPMDelay.hpp"
-#include "classes/ChannelMergerNode.hpp"
-#include "classes/ChannelSplitterNode.hpp"
-#include "classes/ClipNode.hpp"
-#include "classes/ConvolverNode.hpp"
-#include "classes/DefaultAudioDestinationNode.hpp"
-#include "classes/DelayNode.hpp"
-#include "classes/DiodeNode.hpp"
-#include "classes/DynamicsCompressorNode.hpp"
-#include "classes/FunctionNode.hpp"
-#include "classes/GainNode.hpp"
-#include "classes/LabSound.hpp"
-#include "classes/NoiseNode.hpp"
-#include "classes/OfflineAudioDestinationNode.hpp"
-#include "classes/OscillatorNode.hpp"
-#include "classes/PannerNode.hpp"
-#include "classes/PdNode.hpp"
-#include "classes/PeakCompNode.hpp"
-#include "classes/PingPongDelayNode.hpp"
-#include "classes/PowerMonitorNode.hpp"
-#include "classes/PWMNode.hpp"
-#include "classes/RealtimeAnalyser.hpp"
-#include "classes/RecorderNode.hpp"
-#include "classes/SampledAudioNode.hpp"
-#include "classes/SampledInstrumentNode.hpp"
-#include "classes/SfxrNode.hpp"
-#include "classes/SpatializationNode.hpp"
-#include "classes/SpectralMonitorNode.hpp"
-#include "classes/StereoPannerNode.hpp"
-#include "classes/SupersawNode.hpp"
-#include "classes/WaveShaperNode.hpp"
-#include "classes/WaveTable.hpp"
+#include "analyser-node.hpp"
+#include "audio-buffer.hpp"
+#include "audio-buffer-source-node.hpp"
+#include "audio-context.hpp"
+#include "audio-destination-node.hpp"
+#include "audio-listener.hpp"
+#include "audio-node.hpp"
+#include "audio-param.hpp"
+#include "audio-processing-event.hpp"
+#include "audio-scheduled-source-node.hpp"
+#include "audio-timestamp.hpp"
+#include "audio-worklet-global-scope.hpp"
+#include "audio-worklet-node.hpp"
+#include "audio-worklet-processor.hpp"
+#include "base-audio-context.hpp"
+#include "biquad-filter-node.hpp"
+#include "channel-merger-node.hpp"
+#include "channel-splitter-node.hpp"
+#include "constant-source-node.hpp"
+#include "convolver-node.hpp"
+#include "delay-node.hpp"
+#include "dynamics-compressor-node.hpp"
+#include "gain-node.hpp"
+#include "iir-filter-node.hpp"
+#include "media-element-audio-source-node.hpp"
+#include "media-stream-audio-destination-node.hpp"
+#include "media-stream-audio-source-node.hpp"
+#include "offline-audio-completion-event.hpp"
+#include "offline-audio-context.hpp"
+#include "oscillator-node.hpp"
+#include "panner-node.hpp"
+#include "periodic-wave.hpp"
+#include "script-processor-node.hpp"
+#include "stereo-panner-node.hpp"
+#include "wave-shaper-node.hpp"
 
 
 using namespace v8;
@@ -60,63 +45,48 @@ using namespace std;
 extern "C" {
 
 
-void init(Handle<Object> target) {
+void init(Local<Object> target) {
 	
-	ADSRNode::init(target);
 	AnalyserNode::init(target);
-	AudioBasicInspectorNode::init(target);
-	AudioBasicProcessorNode::init(target);
-	AudioBus::init(target);
-	AudioChannel::init(target);
+	AudioBuffer::init(target);
+	AudioBufferSourceNode::init(target);
 	AudioContext::init(target);
 	AudioDestinationNode::init(target);
-	AudioFileReader::init(target);
-	AudioHardwareSourceNode::init(target);
+	AudioListener::init(target);
 	AudioNode::init(target);
-	AudioNodeInput::init(target);
-	AudioNodeOutput::init(target);
 	AudioParam::init(target);
-	AudioParamTimeline::init(target);
+	AudioProcessingEvent::init(target);
 	AudioScheduledSourceNode::init(target);
-	AudioSummingJunction::init(target);
+	AudioTimestamp::init(target);
+	AudioWorkletGlobalScope::init(target);
+	AudioWorkletNode::init(target);
+	AudioWorkletProcessor::init(target);
+	BaseAudioContext::init(target);
 	BiquadFilterNode::init(target);
-	BPMDelay::init(target);
 	ChannelMergerNode::init(target);
 	ChannelSplitterNode::init(target);
-	ClipNode::init(target);
+	ConstantSourceNode::init(target);
 	ConvolverNode::init(target);
-	DefaultAudioDestinationNode::init(target);
 	DelayNode::init(target);
-	DiodeNode::init(target);
 	DynamicsCompressorNode::init(target);
-	FunctionNode::init(target);
 	GainNode::init(target);
-	LabSound::init(target);
-	NoiseNode::init(target);
-	OfflineAudioDestinationNode::init(target);
+	IIRFilterNode::init(target);
+	MediaElementAudioSourceNode::init(target);
+	MediaStreamAudioDestinationNode::init(target);
+	MediaStreamAudioSourceNode::init(target);
+	OfflineAudioCompletionEvent::init(target);
+	OfflineAudioContext::init(target);
 	OscillatorNode::init(target);
 	PannerNode::init(target);
-	PdNode::init(target);
-	PeakCompNode::init(target);
-	PingPongDelayNode::init(target);
-	PowerMonitorNode::init(target);
-	PWMNode::init(target);
-	RealtimeAnalyser::init(target);
-	RecorderNode::init(target);
-	SampledAudioNode::init(target);
-	SampledInstrumentNode::init(target);
-	SfxrNode::init(target);
-	SpatializationNode::init(target);
-	SpectralMonitorNode::init(target);
+	PeriodicWave::init(target);
+	ScriptProcessorNode::init(target);
 	StereoPannerNode::init(target);
-	SupersawNode::init(target);
 	WaveShaperNode::init(target);
-	WaveTable::init(target);
 	
 }
 
 
-NODE_MODULE(NODE_GYP_MODULE_NAME, init);
+NODE_MODULE(waa, init);
 
 
 } // extern "C"
