@@ -1,6 +1,6 @@
-# Web Audio Api implementation for Node.js
+# waa
 
-Yet another Web Audio Api.
+Web Audio Api implementation for Node.js
 
 
 ## Install
@@ -38,15 +38,21 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set number frequencyBinCount` - TODO(description).
+* `get/set number fftSize` - TODO(description).
+* `get/set number minDecibels` - TODO(description).
+* `get/set number maxDecibels` - TODO(description).
+* `get/set number smoothingTimeConstant` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
+* `void getFloatFrequencyData(object getFloatFrequencyData)` - TODO(description).
+* `void getByteFrequencyData(object getByteFrequencyData)` - TODO(description).
+* `void getFloatTimeDomainData(object getFloatTimeDomainData)` - TODO(description).
+* `void getByteTimeDomainData(object getByteTimeDomainData)` - TODO(description).
 
-
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -68,15 +74,19 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set number length` - TODO(description).
+* `get/set number duration` - TODO(description).
+* `get/set number sampleRate` - TODO(description).
+* `get/set number numberOfChannels` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
+* `void getChannelData(number getChannelData)` - TODO(description).
+* `void copyFromChannel(object copyFromChannel, number copyFromChannel, number copyFromChannel)` - TODO(description).
+* `void copyToChannel(object copyToChannel, number copyToChannel, number copyToChannel)` - TODO(description).
 
-
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -98,15 +108,19 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set object buffer` - TODO(description).
+* `get/set object playbackRate` - TODO(description).
+* `get/set object detune` - TODO(description).
+* `get/set boolean loop` - TODO(description).
+* `get/set number loopStart` - TODO(description).
+* `get/set number loopEnd` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
+* `void start(number start, number start, number start)` - TODO(description).
 
-
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -128,15 +142,19 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set number baseLatency` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
+* `void suspend()` - TODO(description).
+* `void close()` - TODO(description).
+* `void getOutputTimestamp()` - TODO(description).
+* `void createMediaElementSource(object createMediaElementSource)` - TODO(description).
+* `void createMediaStreamSource(object createMediaStreamSource)` - TODO(description).
+* `void createMediaStreamDestination()` - TODO(description).
 
-
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -158,15 +176,14 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set number maxChannelCount` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
 
 
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -188,15 +205,23 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set number positionX` - TODO(description).
+* `get/set number positionY` - TODO(description).
+* `get/set number positionZ` - TODO(description).
+* `get/set number forwardX` - TODO(description).
+* `get/set number forwardY` - TODO(description).
+* `get/set number forwardZ` - TODO(description).
+* `get/set number upX` - TODO(description).
+* `get/set number upY` - TODO(description).
+* `get/set number upZ` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
+* `void setPosition(number setPosition, number setPosition, number setPosition)` - TODO(description).
+* `void setOrientation(number setOrientation, number setOrientation, number setOrientation, number setOrientation, number setOrientation, number setOrientation)` - TODO(description).
 
-
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -218,15 +243,20 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set object context` - TODO(description).
+* `get/set number numberOfInputs` - TODO(description).
+* `get/set number numberOfOutputs` - TODO(description).
+* `get/set number channelCount` - TODO(description).
+* `get/set string channelCountMode` - TODO(description).
+* `get/set string channelInterpretation` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
+* `void connect(object connect, number connect, number connect)` - TODO(description).
+* `void disconnect(object disconnect, number disconnect, number disconnect)` - TODO(description).
 
-
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -248,15 +278,23 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set number value` - TODO(description).
+* `get/set number defaultValue` - TODO(description).
+* `get/set number minValue` - TODO(description).
+* `get/set number maxValue` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
+* `void setValueAtTime(number setValueAtTime, number setValueAtTime)` - TODO(description).
+* `void linearRampToValueAtTime(number linearRampToValueAtTime, number linearRampToValueAtTime)` - TODO(description).
+* `void exponentialRampToValueAtTime(number exponentialRampToValueAtTime, number exponentialRampToValueAtTime)` - TODO(description).
+* `void setTargetAtTime(number setTargetAtTime, number setTargetAtTime, number setTargetAtTime)` - TODO(description).
+* `void setValueCurveAtTime(object setValueCurveAtTime, number setValueCurveAtTime, number setValueCurveAtTime)` - TODO(description).
+* `void cancelScheduledValues(number cancelScheduledValues)` - TODO(description).
+* `void cancelAndHoldAtTime(number cancelAndHoldAtTime)` - TODO(description).
 
-
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -278,15 +316,16 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set number playbackTime` - TODO(description).
+* `get/set object inputBuffer` - TODO(description).
+* `get/set object outputBuffer` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
 
 
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -308,15 +347,15 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set function onended` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
+* `void start(number start)` - TODO(description).
+* `void stop(number stop)` - TODO(description).
 
-
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -338,15 +377,15 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set number contextTime` - TODO(description).
+* `get/set number performanceTime` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
 
 
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -368,15 +407,16 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set number currentFrame` - TODO(description).
+* `get/set number currentTime` - TODO(description).
+* `get/set number sampleRate` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
+* `void registerProcessor(string registerProcessor, function registerProcessor)` - TODO(description).
 
-
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -398,15 +438,16 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set object parameters` - TODO(description).
+* `get/set object port` - TODO(description).
+* `get/set function onprocessorerror` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
 
 
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -428,15 +469,14 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set object port` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
 
 
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -458,15 +498,40 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set object destination` - TODO(description).
+* `get/set number currentTime` - TODO(description).
+* `get/set number sampleRate` - TODO(description).
+* `get/set object listener` - TODO(description).
+* `get/set string state` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
+* `void createBuffer(number createBuffer, number createBuffer, number createBuffer)` - TODO(description).
+* `void decodeAudioData(object decodeAudioData, function decodeAudioData, function decodeAudioData)` - TODO(description).
+* `void createBufferSource()` - TODO(description).
+* `void createConstantSource()` - TODO(description).
+* `void createGain()` - TODO(description).
+* `void createDelay(number createDelay)` - TODO(description).
+* `void createBiquadFilter()` - TODO(description).
+* `void createIIRFilter(object createIIRFilter, object createIIRFilter)` - TODO(description).
+* `void createWaveShaper()` - TODO(description).
+* `void createPanner()` - TODO(description).
+* `void createConvolver()` - TODO(description).
+* `void createDynamicsCompressor()` - TODO(description).
+* `void createAnalyser()` - TODO(description).
+* `void createScriptProcessor(number createScriptProcessor, number createScriptProcessor, number createScriptProcessor)` - TODO(description).
+* `void createStereoPanner()` - TODO(description).
+* `void createOscillator()` - TODO(description).
+* `void createPeriodicWave(object createPeriodicWave, object createPeriodicWave, object createPeriodicWave)` - TODO(description).
+* `void createChannelSplitter(number createChannelSplitter)` - TODO(description).
+* `void createChannelMerger(number createChannelMerger)` - TODO(description).
+* `void resume()` - TODO(description).
+* `void createMediaElementSource(object createMediaElementSource)` - TODO(description).
+* `void createMediaStreamSource(object createMediaStreamSource)` - TODO(description).
+* `void createMediaStreamDestination()` - TODO(description).
 
-
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -488,15 +553,18 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set string type` - TODO(description).
+* `get/set object frequency` - TODO(description).
+* `get/set object detune` - TODO(description).
+* `get/set object Q` - TODO(description).
+* `get/set object gain` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
+* `void getFrequencyResponse(object getFrequencyResponse, object getFrequencyResponse, object getFrequencyResponse)` - TODO(description).
 
-
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -518,15 +586,14 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+
 
 
 Methods:
 * `void destroy()` - destroys the instance.
 
 
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -548,15 +615,14 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+
 
 
 Methods:
 * `void destroy()` - destroys the instance.
 
 
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -578,15 +644,14 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set object offset` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
 
 
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -608,15 +673,15 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set object buffer` - TODO(description).
+* `get/set boolean normalize` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
 
 
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -638,15 +703,14 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set object delayTime` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
 
 
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -668,15 +732,19 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set object threshold` - TODO(description).
+* `get/set object knee` - TODO(description).
+* `get/set object ratio` - TODO(description).
+* `get/set number reduction` - TODO(description).
+* `get/set object attack` - TODO(description).
+* `get/set object release` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
 
 
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -698,15 +766,14 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set object gain` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
 
 
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -728,15 +795,14 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+
 
 
 Methods:
 * `void destroy()` - destroys the instance.
+* `void getFrequencyResponse(object getFrequencyResponse, object getFrequencyResponse, object getFrequencyResponse)` - TODO(description).
 
-
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -758,15 +824,14 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set object mediaElement` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
 
 
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -788,15 +853,14 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set object stream` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
 
 
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -818,15 +882,14 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set object mediaStream` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
 
 
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -848,15 +911,14 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set object renderedBuffer` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
 
 
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -878,15 +940,16 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set function oncomplete` - TODO(description).
+* `get/set number length` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
+* `void startRendering()` - TODO(description).
+* `void suspend(number suspend)` - TODO(description).
 
-
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -908,15 +971,16 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set string type` - TODO(description).
+* `get/set object frequency` - TODO(description).
+* `get/set object detune` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
+* `void setPeriodicWave(object setPeriodicWave)` - TODO(description).
 
-
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -938,15 +1002,28 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set string panningModel` - TODO(description).
+* `get/set object positionX` - TODO(description).
+* `get/set object positionY` - TODO(description).
+* `get/set object positionZ` - TODO(description).
+* `get/set object orientationX` - TODO(description).
+* `get/set object orientationY` - TODO(description).
+* `get/set object orientationZ` - TODO(description).
+* `get/set string distanceModel` - TODO(description).
+* `get/set number refDistance` - TODO(description).
+* `get/set number maxDistance` - TODO(description).
+* `get/set number rolloffFactor` - TODO(description).
+* `get/set number coneInnerAngle` - TODO(description).
+* `get/set number coneOuterAngle` - TODO(description).
+* `get/set number coneOuterGain` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
+* `void setPosition(number setPosition, number setPosition, number setPosition)` - TODO(description).
+* `void setOrientation(number setOrientation, number setOrientation, number setOrientation)` - TODO(description).
 
-
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -968,15 +1045,14 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+
 
 
 Methods:
 * `void destroy()` - destroys the instance.
 
 
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -998,15 +1074,15 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set function onaudioprocess` - TODO(description).
+* `get/set number bufferSize` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
 
 
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -1028,15 +1104,14 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set object pan` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
 
 
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
 
@@ -1058,14 +1133,14 @@ Constructor:
 
 
 Properties:
-* `get bool isDestroyed false` - see if `destroy()` was called on this instance.
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+* `get/set object curve` - TODO(description).
+* `get/set string oversample` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
 
 
-Events:
-* `'destroy'` - emitted when the scene is destroyed.
 
 
