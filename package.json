@@ -24,6 +24,7 @@
 		"url": "https://github.com/raub/node-waa.git"
 	},
 	"dependencies": {
-		"addon-tools-raub": "0.1.1"
+		"addon-tools-raub": "0.1.1",
+		"deps-labsound-raub": "0.0.1"
 	}
 }

@@ -1,6 +1,6 @@
 'use strict';
 
 // Add deps dll dirs
-require('deps-waa-raub');
+require('deps-labsound-raub');
 
 module.exports = require('./binary/waa');

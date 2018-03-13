@@ -1,8 +1,10 @@
 {
 	'variables': {
-		'rm'    : '<!(node -e "require(\'addon-tools-raub\').rm()")',
-		'cp'    : '<!(node -e "require(\'addon-tools-raub\').cp()")',
-		'mkdir' : '<!(node -e "require(\'addon-tools-raub\').mkdir()")',
+		'rm'               : '<!(node -e "require(\'addon-tools-raub\').rm()")',
+		'cp'               : '<!(node -e "require(\'addon-tools-raub\').cp()")',
+		'mkdir'            : '<!(node -e "require(\'addon-tools-raub\').mkdir()")',
+		'labsound_include' : '<!(node -e "require(\'deps-labsound-raub\').include()")',
+		'labsound_bin'     : '<!(node -e "require(\'deps-labsound-raub\').bin()")',
 	},
 	'targets': [
 		{
@@ -47,21 +49,22 @@
 			],
 			'include_dirs': [
 				'<!@(node -e "require(\'addon-tools-raub\').include()")',
+				'<(labsound_include)',
 			],
-			'library_dirs': [ ],
-			'libraries'    : [ ],
+			'library_dirs': [ '<(labsound_bin)' ],
+			'libraries'    : [ '-llabsound' ],
 			'conditions'   : [
 				[
 					'OS=="linux"', {
 						'libraries': [
-							# '-Wl,-rpath,<(TODO)',
+							'-Wl,-rpath,<(labsound_bin)',
 						],
 					}
 				],
 				[
 					'OS=="mac"', {
 						'libraries': [
-							# '-Wl,-rpath,<(TODO)',
+							'-Wl,-rpath,<(labsound_bin)',
 						],
 					}
 				],
