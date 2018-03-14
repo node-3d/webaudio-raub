@@ -3,6 +3,8 @@
 
 #include "analyser-node.hpp"
 
+#include <LabSound/core/AnalyserNode.h>
+
 using namespace v8;
 using namespace node;
 using namespace std;
@@ -74,7 +76,9 @@ NAN_METHOD(AnalyserNode::newCtor) {
 	
 	CTOR_CHECK("AnalyserNode");
 	
-	AnalyserNode *analyserNode = new AnalyserNode();
+	REQ_OFFS_ARG(0, fftSize);
+	
+	AnalyserNode *analyserNode = new AnalyserNode(fftSize);
 	analyserNode->Wrap(info.This());
 	
 	RET_VALUE(info.This());
@@ -82,9 +86,11 @@ NAN_METHOD(AnalyserNode::newCtor) {
 }
 
 
-AnalyserNode::AnalyserNode() {
+AnalyserNode::AnalyserNode(size_t fftSize) {
 	
 	_isDestroyed = false;
+	
+	_impl = new lab::AnalyserNode(fftSize);
 	
 }
 
@@ -100,7 +106,8 @@ void AnalyserNode::_destroy() { DES_CHECK;
 	
 	_isDestroyed = true;
 	
-	
+	delete _impl;
+	_impl = NULL;
 	
 }
 
@@ -117,7 +124,18 @@ NAN_METHOD(AnalyserNode::getFloatFrequencyData) { THIS_ANALYSER_NODE; THIS_CHECK
 	
 	REQ_OBJ_ARG(0, array);
 	
-	// TODO: do something?
+	std::vector<float> arrayVec;
+	
+	if ( ! array->Has(JS_STR("length")) ) {
+		return Nan::ThrowError("Argument should be array-like. Property 'length' is expected.");
+	}
+	
+	int length = static_cast<int>(array->Get(JS_STR("length"))->NumberValue());
+	for (int i = 0; i < length; i++) {
+		arrayVec.push_back(static_cast<float>(array->Get(JS_INT(i))->NumberValue()));
+	}
+	
+	analyserNode->_impl->getFloatFrequencyData(arrayVec);
 	
 }
 
@@ -126,7 +144,18 @@ NAN_METHOD(AnalyserNode::getByteFrequencyData) { THIS_ANALYSER_NODE; THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, array);
 	
-	// TODO: do something?
+	std::vector<uint8_t> arrayVec;
+	
+	if ( ! array->Has(JS_STR("length")) ) {
+		return Nan::ThrowError("Argument should be array-like. Property 'length' is expected.");
+	}
+	
+	int length = static_cast<int>(array->Get(JS_STR("length"))->NumberValue());
+	for (int i = 0; i < length; i++) {
+		arrayVec.push_back(static_cast<uint8_t>(array->Get(JS_INT(i))->NumberValue()));
+	}
+	
+	analyserNode->_impl->getByteFrequencyData(arrayVec);
 	
 }
 
@@ -135,7 +164,18 @@ NAN_METHOD(AnalyserNode::getFloatTimeDomainData) { THIS_ANALYSER_NODE; THIS_CHEC
 	
 	REQ_OBJ_ARG(0, array);
 	
-	// TODO: do something?
+	std::vector<float> arrayVec;
+	
+	if ( ! array->Has(JS_STR("length")) ) {
+		return Nan::ThrowError("Argument should be array-like. Property 'length' is expected.");
+	}
+	
+	int length = static_cast<int>(array->Get(JS_STR("length"))->NumberValue());
+	for (int i = 0; i < length; i++) {
+		arrayVec.push_back(static_cast<float>(array->Get(JS_INT(i))->NumberValue()));
+	}
+	
+	analyserNode->_impl->getFloatTimeDomainData(arrayVec);
 	
 }
 
@@ -144,7 +184,18 @@ NAN_METHOD(AnalyserNode::getByteTimeDomainData) { THIS_ANALYSER_NODE; THIS_CHECK
 	
 	REQ_OBJ_ARG(0, array);
 	
-	// TODO: do something?
+	std::vector<uint8_t> arrayVec;
+	
+	if ( ! array->Has(JS_STR("length")) ) {
+		return Nan::ThrowError("Argument should be array-like. Property 'length' is expected.");
+	}
+	
+	int length = static_cast<int>(array->Get(JS_STR("length"))->NumberValue());
+	for (int i = 0; i < length; i++) {
+		arrayVec.push_back(static_cast<uint8_t>(array->Get(JS_INT(i))->NumberValue()));
+	}
+	
+	analyserNode->_impl->getByteTimeDomainData(arrayVec);
 	
 }
 
@@ -167,7 +218,7 @@ NAN_GETTER(AnalyserNode::frequencyBinCountGetter) { THIS_ANALYSER_NODE; THIS_CHE
 
 NAN_GETTER(AnalyserNode::fftSizeGetter) { THIS_ANALYSER_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_UINT32(analyserNode->_fftSize));
+	RET_VALUE(JS_OFFS(analyserNode->_fftSize));
 	
 }
 
@@ -175,7 +226,8 @@ NAN_SETTER(AnalyserNode::fftSizeSetter) { THIS_ANALYSER_NODE; THIS_CHECK; SETTER
 	
 	CACHE_CAS(_fftSize, v);
 	
-	// TODO: may be additional actions on change?
+	delete analyserNode->_impl;
+	analyserNode->_impl = new lab::AnalyserNode(analyserNode->_fftSize);
 	
 }
 
@@ -190,7 +242,7 @@ NAN_SETTER(AnalyserNode::minDecibelsSetter) { THIS_ANALYSER_NODE; THIS_CHECK; SE
 	
 	CACHE_CAS(_minDecibels, v);
 	
-	// TODO: may be additional actions on change?
+	analyserNode->_impl->setMinDecibels(analyserNode->_minDecibels);
 	
 }
 
@@ -205,7 +257,7 @@ NAN_SETTER(AnalyserNode::maxDecibelsSetter) { THIS_ANALYSER_NODE; THIS_CHECK; SE
 	
 	CACHE_CAS(_maxDecibels, v);
 	
-	// TODO: may be additional actions on change?
+	analyserNode->_impl->setMaxDecibels(analyserNode->_maxDecibels);
 	
 }
 
@@ -220,7 +272,7 @@ NAN_SETTER(AnalyserNode::smoothingTimeConstantSetter) { THIS_ANALYSER_NODE; THIS
 	
 	CACHE_CAS(_smoothingTimeConstant, v);
 	
-	// TODO: may be additional actions on change?
+	analyserNode->_impl->setSmoothingTimeConstant(analyserNode->_maxDecibels);
 	
 }
 

@@ -4,6 +4,8 @@
 
 #include <addon-tools.hpp>
 
+namespace lab { class AnalyserNode; };
+
 
 class AnalyserNode : public Nan::ObjectWrap {
 	
@@ -20,7 +22,7 @@ public:
 // Protected C++ methods: implementing JS calls
 protected:
 	
-	AnalyserNode();
+	AnalyserNode(size_t fftSize);
 	virtual ~AnalyserNode();
 	
 	
@@ -77,10 +79,12 @@ private:
 	bool _isDestroyed;
 	
 	unsigned int _frequencyBinCount;
-	unsigned int _fftSize;
+	size_t _fftSize;
 	double _minDecibels;
 	double _maxDecibels;
 	double _smoothingTimeConstant;
+	
+	lab::AnalyserNode *_impl;
 	
 };
 
