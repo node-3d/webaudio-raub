@@ -53,7 +53,7 @@
 				'<(labsound_include)',
 			],
 			'library_dirs': [ '<(labsound_bin)' ],
-			'libraries'    : [ '-llabsound' ],
+			'libraries'    : [ '-llibnyquist', '-llabsound' ],
 			'conditions'   : [
 				[
 					'OS=="linux"', {
@@ -72,6 +72,7 @@
 				[
 					'OS=="win"',
 					{
+						'libraries' : [ '-lwinmm', '-lole32', '-luser32', '-lgdi32' ],
 						'msvs_settings' : {
 							'VCCLCompilerTool' : {
 								'AdditionalOptions' : [
@@ -80,7 +81,7 @@
 								]
 							},
 							'VCLinkerTool' : {
-								'AdditionalOptions' : ['/RELEASE','/OPT:REF','/OPT:ICF','/LTCG']
+								'AdditionalOptions' : ['/MT','/RELEASE','/OPT:REF','/OPT:ICF','/LTCG']
 							},
 						},
 					},
