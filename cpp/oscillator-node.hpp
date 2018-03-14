@@ -42,11 +42,9 @@ protected:
 	
 
 	static NAN_GETTER(frequencyGetter);
-	static NAN_SETTER(frequencySetter);
 	
 
 	static NAN_GETTER(detuneGetter);
-	static NAN_SETTER(detuneSetter);
 	
 	
 // Actual destruction-handler

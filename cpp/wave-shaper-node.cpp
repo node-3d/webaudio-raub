@@ -39,12 +39,15 @@ void WaveShaperNode::init(Local<Object> target) {
 	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
+	ACCESSOR_RW(obj, curve);
+	ACCESSOR_RW(obj, oversample);
 	
 	// -------- dynamic
 	
 	
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
+	
 	
 	
 	// -------- static

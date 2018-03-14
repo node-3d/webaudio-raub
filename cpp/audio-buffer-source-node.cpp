@@ -39,6 +39,12 @@ void AudioBufferSourceNode::init(Local<Object> target) {
 	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
+	ACCESSOR_RW(obj, buffer);
+	ACCESSOR_R(obj, playbackRate);
+	ACCESSOR_R(obj, detune);
+	ACCESSOR_RW(obj, loop);
+	ACCESSOR_RW(obj, loopStart);
+	ACCESSOR_RW(obj, loopEnd);
 	
 	// -------- dynamic
 	
@@ -46,6 +52,7 @@ void AudioBufferSourceNode::init(Local<Object> target) {
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
 	
+	Nan::SetPrototypeMethod(proto, "start", start);
 	
 	// -------- static
 	
@@ -147,16 +154,6 @@ NAN_GETTER(AudioBufferSourceNode::playbackRateGetter) { THIS_AUDIO_BUFFER_SOURCE
 	
 }
 
-NAN_SETTER(AudioBufferSourceNode::playbackRateSetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(audioBufferSourceNode->_playbackRate) == v) {
-		return;
-	}
-	audioBufferSourceNode->_playbackRate.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(AudioBufferSourceNode::detuneGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
@@ -165,16 +162,6 @@ NAN_GETTER(AudioBufferSourceNode::detuneGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE;
 	
 }
 
-NAN_SETTER(AudioBufferSourceNode::detuneSetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(audioBufferSourceNode->_detune) == v) {
-		return;
-	}
-	audioBufferSourceNode->_detune.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(AudioBufferSourceNode::loopGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;

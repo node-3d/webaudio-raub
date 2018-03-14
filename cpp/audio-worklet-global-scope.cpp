@@ -39,6 +39,9 @@ void AudioWorkletGlobalScope::init(Local<Object> target) {
 	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
+	ACCESSOR_R(obj, currentFrame);
+	ACCESSOR_R(obj, currentTime);
+	ACCESSOR_R(obj, sampleRate);
 	
 	// -------- dynamic
 	
@@ -46,6 +49,7 @@ void AudioWorkletGlobalScope::init(Local<Object> target) {
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
 	
+	Nan::SetPrototypeMethod(proto, "registerProcessor", registerProcessor);
 	
 	// -------- static
 	
@@ -128,13 +132,6 @@ NAN_GETTER(AudioWorkletGlobalScope::currentFrameGetter) { THIS_AUDIO_WORKLET_GLO
 	
 }
 
-NAN_SETTER(AudioWorkletGlobalScope::currentFrameSetter) { THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK; SETTER_OFFS_ARG;
-	
-	CACHE_CAS(_currentFrame, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(AudioWorkletGlobalScope::currentTimeGetter) { THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK;
@@ -143,13 +140,6 @@ NAN_GETTER(AudioWorkletGlobalScope::currentTimeGetter) { THIS_AUDIO_WORKLET_GLOB
 	
 }
 
-NAN_SETTER(AudioWorkletGlobalScope::currentTimeSetter) { THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK; SETTER_DOUBLE_ARG;
-	
-	CACHE_CAS(_currentTime, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(AudioWorkletGlobalScope::sampleRateGetter) { THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK;
@@ -158,11 +148,4 @@ NAN_GETTER(AudioWorkletGlobalScope::sampleRateGetter) { THIS_AUDIO_WORKLET_GLOBA
 	
 }
 
-NAN_SETTER(AudioWorkletGlobalScope::sampleRateSetter) { THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK; SETTER_FLOAT_ARG;
-	
-	CACHE_CAS(_sampleRate, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 

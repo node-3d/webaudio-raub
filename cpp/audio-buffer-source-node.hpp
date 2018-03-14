@@ -42,11 +42,9 @@ protected:
 	
 
 	static NAN_GETTER(playbackRateGetter);
-	static NAN_SETTER(playbackRateSetter);
 	
 
 	static NAN_GETTER(detuneGetter);
-	static NAN_SETTER(detuneSetter);
 	
 
 	static NAN_GETTER(loopGetter);

@@ -39,12 +39,14 @@ void MediaStreamAudioSourceNode::init(Local<Object> target) {
 	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
+	ACCESSOR_R(obj, mediaStream);
 	
 	// -------- dynamic
 	
 	
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
+	
 	
 	
 	// -------- static
@@ -119,14 +121,4 @@ NAN_GETTER(MediaStreamAudioSourceNode::mediaStreamGetter) { THIS_MEDIA_STREAM_AU
 	
 }
 
-NAN_SETTER(MediaStreamAudioSourceNode::mediaStreamSetter) { THIS_MEDIA_STREAM_AUDIO_SOURCE_NODE; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(mediaStreamAudioSourceNode->_mediaStream) == v) {
-		return;
-	}
-	mediaStreamAudioSourceNode->_mediaStream.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 

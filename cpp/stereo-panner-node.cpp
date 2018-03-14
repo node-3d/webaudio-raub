@@ -39,12 +39,14 @@ void StereoPannerNode::init(Local<Object> target) {
 	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
+	ACCESSOR_R(obj, pan);
 	
 	// -------- dynamic
 	
 	
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
+	
 	
 	
 	// -------- static
@@ -119,14 +121,4 @@ NAN_GETTER(StereoPannerNode::panGetter) { THIS_STEREO_PANNER_NODE; THIS_CHECK;
 	
 }
 
-NAN_SETTER(StereoPannerNode::panSetter) { THIS_STEREO_PANNER_NODE; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(stereoPannerNode->_pan) == v) {
-		return;
-	}
-	stereoPannerNode->_pan.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 

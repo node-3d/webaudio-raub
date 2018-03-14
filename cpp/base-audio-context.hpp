@@ -60,23 +60,18 @@ protected:
 	
 	
 	static NAN_GETTER(destinationGetter);
-	static NAN_SETTER(destinationSetter);
 	
 
 	static NAN_GETTER(currentTimeGetter);
-	static NAN_SETTER(currentTimeSetter);
 	
 
 	static NAN_GETTER(sampleRateGetter);
-	static NAN_SETTER(sampleRateSetter);
 	
 
 	static NAN_GETTER(listenerGetter);
-	static NAN_SETTER(listenerSetter);
 	
 
 	static NAN_GETTER(stateGetter);
-	static NAN_SETTER(stateSetter);
 	
 	
 // Actual destruction-handler

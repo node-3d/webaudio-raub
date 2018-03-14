@@ -39,6 +39,10 @@ void AudioBuffer::init(Local<Object> target) {
 	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
+	ACCESSOR_R(obj, length);
+	ACCESSOR_R(obj, duration);
+	ACCESSOR_R(obj, sampleRate);
+	ACCESSOR_R(obj, numberOfChannels);
 	
 	// -------- dynamic
 	
@@ -46,6 +50,9 @@ void AudioBuffer::init(Local<Object> target) {
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
 	
+	Nan::SetPrototypeMethod(proto, "getChannelData", getChannelData);
+	Nan::SetPrototypeMethod(proto, "copyFromChannel", copyFromChannel);
+	Nan::SetPrototypeMethod(proto, "copyToChannel", copyToChannel);
 	
 	// -------- static
 	
@@ -149,13 +156,6 @@ NAN_GETTER(AudioBuffer::lengthGetter) { THIS_AUDIO_BUFFER; THIS_CHECK;
 	
 }
 
-NAN_SETTER(AudioBuffer::lengthSetter) { THIS_AUDIO_BUFFER; THIS_CHECK; SETTER_INT32_ARG;
-	
-	CACHE_CAS(_length, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(AudioBuffer::durationGetter) { THIS_AUDIO_BUFFER; THIS_CHECK;
@@ -164,13 +164,6 @@ NAN_GETTER(AudioBuffer::durationGetter) { THIS_AUDIO_BUFFER; THIS_CHECK;
 	
 }
 
-NAN_SETTER(AudioBuffer::durationSetter) { THIS_AUDIO_BUFFER; THIS_CHECK; SETTER_DOUBLE_ARG;
-	
-	CACHE_CAS(_duration, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(AudioBuffer::sampleRateGetter) { THIS_AUDIO_BUFFER; THIS_CHECK;
@@ -179,13 +172,6 @@ NAN_GETTER(AudioBuffer::sampleRateGetter) { THIS_AUDIO_BUFFER; THIS_CHECK;
 	
 }
 
-NAN_SETTER(AudioBuffer::sampleRateSetter) { THIS_AUDIO_BUFFER; THIS_CHECK; SETTER_FLOAT_ARG;
-	
-	CACHE_CAS(_sampleRate, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(AudioBuffer::numberOfChannelsGetter) { THIS_AUDIO_BUFFER; THIS_CHECK;
@@ -194,11 +180,4 @@ NAN_GETTER(AudioBuffer::numberOfChannelsGetter) { THIS_AUDIO_BUFFER; THIS_CHECK;
 	
 }
 
-NAN_SETTER(AudioBuffer::numberOfChannelsSetter) { THIS_AUDIO_BUFFER; THIS_CHECK; SETTER_UINT32_ARG;
-	
-	CACHE_CAS(_numberOfChannels, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 

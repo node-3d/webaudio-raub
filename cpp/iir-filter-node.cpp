@@ -40,12 +40,14 @@ void IIRFilterNode::init(Local<Object> target) {
 	ACCESSOR_R(obj, isDestroyed);
 	
 	
+	
 	// -------- dynamic
 	
 	
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
 	
+	Nan::SetPrototypeMethod(proto, "getFrequencyResponse", getFrequencyResponse);
 	
 	// -------- static
 	

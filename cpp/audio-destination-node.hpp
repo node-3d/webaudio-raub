@@ -38,7 +38,6 @@ protected:
 	
 	
 	static NAN_GETTER(maxChannelCountGetter);
-	static NAN_SETTER(maxChannelCountSetter);
 	
 	
 // Actual destruction-handler

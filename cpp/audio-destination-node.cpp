@@ -39,12 +39,14 @@ void AudioDestinationNode::init(Local<Object> target) {
 	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
+	ACCESSOR_R(obj, maxChannelCount);
 	
 	// -------- dynamic
 	
 	
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
+	
 	
 	
 	// -------- static
@@ -119,11 +121,4 @@ NAN_GETTER(AudioDestinationNode::maxChannelCountGetter) { THIS_AUDIO_DESTINATION
 	
 }
 
-NAN_SETTER(AudioDestinationNode::maxChannelCountSetter) { THIS_AUDIO_DESTINATION_NODE; THIS_CHECK; SETTER_UINT32_ARG;
-	
-	CACHE_CAS(_maxChannelCount, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 

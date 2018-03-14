@@ -39,6 +39,11 @@ void BaseAudioContext::init(Local<Object> target) {
 	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
+	ACCESSOR_R(obj, destination);
+	ACCESSOR_R(obj, currentTime);
+	ACCESSOR_R(obj, sampleRate);
+	ACCESSOR_R(obj, listener);
+	ACCESSOR_R(obj, state);
 	
 	// -------- dynamic
 	
@@ -46,6 +51,29 @@ void BaseAudioContext::init(Local<Object> target) {
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
 	
+	Nan::SetPrototypeMethod(proto, "createBuffer", createBuffer);
+	Nan::SetPrototypeMethod(proto, "decodeAudioData", decodeAudioData);
+	Nan::SetPrototypeMethod(proto, "createBufferSource", createBufferSource);
+	Nan::SetPrototypeMethod(proto, "createConstantSource", createConstantSource);
+	Nan::SetPrototypeMethod(proto, "createGain", createGain);
+	Nan::SetPrototypeMethod(proto, "createDelay", createDelay);
+	Nan::SetPrototypeMethod(proto, "createBiquadFilter", createBiquadFilter);
+	Nan::SetPrototypeMethod(proto, "createIIRFilter", createIIRFilter);
+	Nan::SetPrototypeMethod(proto, "createWaveShaper", createWaveShaper);
+	Nan::SetPrototypeMethod(proto, "createPanner", createPanner);
+	Nan::SetPrototypeMethod(proto, "createConvolver", createConvolver);
+	Nan::SetPrototypeMethod(proto, "createDynamicsCompressor", createDynamicsCompressor);
+	Nan::SetPrototypeMethod(proto, "createAnalyser", createAnalyser);
+	Nan::SetPrototypeMethod(proto, "createScriptProcessor", createScriptProcessor);
+	Nan::SetPrototypeMethod(proto, "createStereoPanner", createStereoPanner);
+	Nan::SetPrototypeMethod(proto, "createOscillator", createOscillator);
+	Nan::SetPrototypeMethod(proto, "createPeriodicWave", createPeriodicWave);
+	Nan::SetPrototypeMethod(proto, "createChannelSplitter", createChannelSplitter);
+	Nan::SetPrototypeMethod(proto, "createChannelMerger", createChannelMerger);
+	Nan::SetPrototypeMethod(proto, "resume", resume);
+	Nan::SetPrototypeMethod(proto, "createMediaElementSource", createMediaElementSource);
+	Nan::SetPrototypeMethod(proto, "createMediaStreamSource", createMediaStreamSource);
+	Nan::SetPrototypeMethod(proto, "createMediaStreamDestination", createMediaStreamDestination);
 	
 	// -------- static
 	
@@ -334,16 +362,6 @@ NAN_GETTER(BaseAudioContext::destinationGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_
 	
 }
 
-NAN_SETTER(BaseAudioContext::destinationSetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(baseAudioContext->_destination) == v) {
-		return;
-	}
-	baseAudioContext->_destination.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(BaseAudioContext::currentTimeGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
@@ -352,13 +370,6 @@ NAN_GETTER(BaseAudioContext::currentTimeGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_
 	
 }
 
-NAN_SETTER(BaseAudioContext::currentTimeSetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK; SETTER_DOUBLE_ARG;
-	
-	CACHE_CAS(_currentTime, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(BaseAudioContext::sampleRateGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
@@ -367,13 +378,6 @@ NAN_GETTER(BaseAudioContext::sampleRateGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_C
 	
 }
 
-NAN_SETTER(BaseAudioContext::sampleRateSetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK; SETTER_FLOAT_ARG;
-	
-	CACHE_CAS(_sampleRate, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(BaseAudioContext::listenerGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
@@ -382,16 +386,6 @@ NAN_GETTER(BaseAudioContext::listenerGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHE
 	
 }
 
-NAN_SETTER(BaseAudioContext::listenerSetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(baseAudioContext->_listener) == v) {
-		return;
-	}
-	baseAudioContext->_listener.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(BaseAudioContext::stateGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
@@ -400,14 +394,4 @@ NAN_GETTER(BaseAudioContext::stateGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
 }
 
-NAN_SETTER(BaseAudioContext::stateSetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK; SETTER_UTF8_ARG;
-	
-	if (baseAudioContext->_state == *v) {
-		return;
-	}
-	baseAudioContext->_state = *v;
-	
-	// TODO: may be additional actions on change?
-	
-}
 

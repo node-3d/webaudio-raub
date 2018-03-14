@@ -38,7 +38,6 @@ protected:
 	
 	
 	static NAN_GETTER(delayTimeGetter);
-	static NAN_SETTER(delayTimeSetter);
 	
 	
 // Actual destruction-handler

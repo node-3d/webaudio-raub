@@ -39,12 +39,19 @@ void DynamicsCompressorNode::init(Local<Object> target) {
 	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
+	ACCESSOR_R(obj, threshold);
+	ACCESSOR_R(obj, knee);
+	ACCESSOR_R(obj, ratio);
+	ACCESSOR_R(obj, reduction);
+	ACCESSOR_R(obj, attack);
+	ACCESSOR_R(obj, release);
 	
 	// -------- dynamic
 	
 	
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
+	
 	
 	
 	// -------- static
@@ -119,16 +126,6 @@ NAN_GETTER(DynamicsCompressorNode::thresholdGetter) { THIS_DYNAMICS_COMPRESSOR_N
 	
 }
 
-NAN_SETTER(DynamicsCompressorNode::thresholdSetter) { THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(dynamicsCompressorNode->_threshold) == v) {
-		return;
-	}
-	dynamicsCompressorNode->_threshold.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(DynamicsCompressorNode::kneeGetter) { THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
@@ -137,16 +134,6 @@ NAN_GETTER(DynamicsCompressorNode::kneeGetter) { THIS_DYNAMICS_COMPRESSOR_NODE; 
 	
 }
 
-NAN_SETTER(DynamicsCompressorNode::kneeSetter) { THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(dynamicsCompressorNode->_knee) == v) {
-		return;
-	}
-	dynamicsCompressorNode->_knee.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(DynamicsCompressorNode::ratioGetter) { THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
@@ -155,16 +142,6 @@ NAN_GETTER(DynamicsCompressorNode::ratioGetter) { THIS_DYNAMICS_COMPRESSOR_NODE;
 	
 }
 
-NAN_SETTER(DynamicsCompressorNode::ratioSetter) { THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(dynamicsCompressorNode->_ratio) == v) {
-		return;
-	}
-	dynamicsCompressorNode->_ratio.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(DynamicsCompressorNode::reductionGetter) { THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
@@ -173,13 +150,6 @@ NAN_GETTER(DynamicsCompressorNode::reductionGetter) { THIS_DYNAMICS_COMPRESSOR_N
 	
 }
 
-NAN_SETTER(DynamicsCompressorNode::reductionSetter) { THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK; SETTER_FLOAT_ARG;
-	
-	CACHE_CAS(_reduction, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(DynamicsCompressorNode::attackGetter) { THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
@@ -188,16 +158,6 @@ NAN_GETTER(DynamicsCompressorNode::attackGetter) { THIS_DYNAMICS_COMPRESSOR_NODE
 	
 }
 
-NAN_SETTER(DynamicsCompressorNode::attackSetter) { THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(dynamicsCompressorNode->_attack) == v) {
-		return;
-	}
-	dynamicsCompressorNode->_attack.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(DynamicsCompressorNode::releaseGetter) { THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
@@ -206,14 +166,4 @@ NAN_GETTER(DynamicsCompressorNode::releaseGetter) { THIS_DYNAMICS_COMPRESSOR_NOD
 	
 }
 
-NAN_SETTER(DynamicsCompressorNode::releaseSetter) { THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(dynamicsCompressorNode->_release) == v) {
-		return;
-	}
-	dynamicsCompressorNode->_release.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 

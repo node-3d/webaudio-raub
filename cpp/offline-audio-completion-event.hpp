@@ -38,7 +38,6 @@ protected:
 	
 	
 	static NAN_GETTER(renderedBufferGetter);
-	static NAN_SETTER(renderedBufferSetter);
 	
 	
 // Actual destruction-handler

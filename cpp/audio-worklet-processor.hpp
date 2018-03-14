@@ -38,7 +38,6 @@ protected:
 	
 	
 	static NAN_GETTER(portGetter);
-	static NAN_SETTER(portSetter);
 	
 	
 // Actual destruction-handler

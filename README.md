@@ -39,7 +39,7 @@ Constructor:
 
 Properties:
 * `get bool isDestroyed` - if `destroy()` was called on this instance.
-* `get/set number frequencyBinCount` - TODO(description).
+* `get number frequencyBinCount` - TODO(description).
 * `get/set number fftSize` - TODO(description).
 * `get/set number minDecibels` - TODO(description).
 * `get/set number maxDecibels` - TODO(description).
@@ -48,10 +48,10 @@ Properties:
 
 Methods:
 * `void destroy()` - destroys the instance.
-* `void getFloatFrequencyData(object getFloatFrequencyData)` - TODO(description).
-* `void getByteFrequencyData(object getByteFrequencyData)` - TODO(description).
-* `void getFloatTimeDomainData(object getFloatTimeDomainData)` - TODO(description).
-* `void getByteTimeDomainData(object getByteTimeDomainData)` - TODO(description).
+* `void getFloatFrequencyData(object array)` - TODO(description).
+* `void getByteFrequencyData(object array)` - TODO(description).
+* `void getFloatTimeDomainData(object array)` - TODO(description).
+* `void getByteTimeDomainData(object array)` - TODO(description).
 
 
 
@@ -75,17 +75,17 @@ Constructor:
 
 Properties:
 * `get bool isDestroyed` - if `destroy()` was called on this instance.
-* `get/set number length` - TODO(description).
-* `get/set number duration` - TODO(description).
-* `get/set number sampleRate` - TODO(description).
-* `get/set number numberOfChannels` - TODO(description).
+* `get number length` - TODO(description).
+* `get number duration` - TODO(description).
+* `get number sampleRate` - TODO(description).
+* `get number numberOfChannels` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
-* `void getChannelData(number getChannelData)` - TODO(description).
-* `void copyFromChannel(object copyFromChannel, number copyFromChannel, number copyFromChannel)` - TODO(description).
-* `void copyToChannel(object copyToChannel, number copyToChannel, number copyToChannel)` - TODO(description).
+* `void getChannelData(number channelIndex)` - TODO(description).
+* `void copyFromChannel(object destination, number channelNumber, number startInChannel )` - TODO(description).
+* `void copyToChannel(object source, number channelNumber, number startInChannel )` - TODO(description).
 
 
 
@@ -110,8 +110,8 @@ Constructor:
 Properties:
 * `get bool isDestroyed` - if `destroy()` was called on this instance.
 * `get/set object buffer` - TODO(description).
-* `get/set object playbackRate` - TODO(description).
-* `get/set object detune` - TODO(description).
+* `get object playbackRate` - TODO(description).
+* `get object detune` - TODO(description).
 * `get/set boolean loop` - TODO(description).
 * `get/set number loopStart` - TODO(description).
 * `get/set number loopEnd` - TODO(description).
@@ -119,7 +119,7 @@ Properties:
 
 Methods:
 * `void destroy()` - destroys the instance.
-* `void start(number start, number start, number start)` - TODO(description).
+* `void start(number when, number grainOffset, number grainDuration )` - TODO(description).
 
 
 
@@ -143,7 +143,7 @@ Constructor:
 
 Properties:
 * `get bool isDestroyed` - if `destroy()` was called on this instance.
-* `get/set number baseLatency` - TODO(description).
+* `get number baseLatency` - TODO(description).
 
 
 Methods:
@@ -151,8 +151,8 @@ Methods:
 * `void suspend()` - TODO(description).
 * `void close()` - TODO(description).
 * `void getOutputTimestamp()` - TODO(description).
-* `void createMediaElementSource(object createMediaElementSource)` - TODO(description).
-* `void createMediaStreamSource(object createMediaStreamSource)` - TODO(description).
+* `void createMediaElementSource(object mediaElement)` - TODO(description).
+* `void createMediaStreamSource(object mediaStream)` - TODO(description).
 * `void createMediaStreamDestination()` - TODO(description).
 
 
@@ -177,7 +177,7 @@ Constructor:
 
 Properties:
 * `get bool isDestroyed` - if `destroy()` was called on this instance.
-* `get/set number maxChannelCount` - TODO(description).
+* `get number maxChannelCount` - TODO(description).
 
 
 Methods:
@@ -206,21 +206,21 @@ Constructor:
 
 Properties:
 * `get bool isDestroyed` - if `destroy()` was called on this instance.
-* `get/set number positionX` - TODO(description).
-* `get/set number positionY` - TODO(description).
-* `get/set number positionZ` - TODO(description).
-* `get/set number forwardX` - TODO(description).
-* `get/set number forwardY` - TODO(description).
-* `get/set number forwardZ` - TODO(description).
-* `get/set number upX` - TODO(description).
-* `get/set number upY` - TODO(description).
-* `get/set number upZ` - TODO(description).
+* `get object positionX` - TODO(description).
+* `get object positionY` - TODO(description).
+* `get object positionZ` - TODO(description).
+* `get object forwardX` - TODO(description).
+* `get object forwardY` - TODO(description).
+* `get object forwardZ` - TODO(description).
+* `get object upX` - TODO(description).
+* `get object upY` - TODO(description).
+* `get object upZ` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
-* `void setPosition(number setPosition, number setPosition, number setPosition)` - TODO(description).
-* `void setOrientation(number setOrientation, number setOrientation, number setOrientation, number setOrientation, number setOrientation, number setOrientation)` - TODO(description).
+* `void setPosition(number x, number y, number z)` - TODO(description).
+* `void setOrientation(number x, number y, number z, number xUp, number yUp, number zUp)` - TODO(description).
 
 
 
@@ -244,9 +244,9 @@ Constructor:
 
 Properties:
 * `get bool isDestroyed` - if `destroy()` was called on this instance.
-* `get/set object context` - TODO(description).
-* `get/set number numberOfInputs` - TODO(description).
-* `get/set number numberOfOutputs` - TODO(description).
+* `get object context` - TODO(description).
+* `get number numberOfInputs` - TODO(description).
+* `get number numberOfOutputs` - TODO(description).
 * `get/set number channelCount` - TODO(description).
 * `get/set string channelCountMode` - TODO(description).
 * `get/set string channelInterpretation` - TODO(description).
@@ -254,8 +254,8 @@ Properties:
 
 Methods:
 * `void destroy()` - destroys the instance.
-* `void connect(object connect, number connect, number connect)` - TODO(description).
-* `void disconnect(object disconnect, number disconnect, number disconnect)` - TODO(description).
+* `void connect(object destination, number output, number input)` - TODO(description).
+* `void disconnect(object destination, number output, number input)` - TODO(description).
 
 
 
@@ -280,20 +280,20 @@ Constructor:
 Properties:
 * `get bool isDestroyed` - if `destroy()` was called on this instance.
 * `get/set number value` - TODO(description).
-* `get/set number defaultValue` - TODO(description).
-* `get/set number minValue` - TODO(description).
-* `get/set number maxValue` - TODO(description).
+* `get number defaultValue` - TODO(description).
+* `get number minValue` - TODO(description).
+* `get number maxValue` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
-* `void setValueAtTime(number setValueAtTime, number setValueAtTime)` - TODO(description).
-* `void linearRampToValueAtTime(number linearRampToValueAtTime, number linearRampToValueAtTime)` - TODO(description).
-* `void exponentialRampToValueAtTime(number exponentialRampToValueAtTime, number exponentialRampToValueAtTime)` - TODO(description).
-* `void setTargetAtTime(number setTargetAtTime, number setTargetAtTime, number setTargetAtTime)` - TODO(description).
-* `void setValueCurveAtTime(object setValueCurveAtTime, number setValueCurveAtTime, number setValueCurveAtTime)` - TODO(description).
-* `void cancelScheduledValues(number cancelScheduledValues)` - TODO(description).
-* `void cancelAndHoldAtTime(number cancelAndHoldAtTime)` - TODO(description).
+* `void setValueAtTime(number value, number time)` - TODO(description).
+* `void linearRampToValueAtTime(number value, number time)` - TODO(description).
+* `void exponentialRampToValueAtTime(number value, number time)` - TODO(description).
+* `void setTargetAtTime(number target, number time, number timeConstant)` - TODO(description).
+* `void setValueCurveAtTime(object values, number time, number duration)` - TODO(description).
+* `void cancelScheduledValues(number startTime)` - TODO(description).
+* `void cancelAndHoldAtTime(number startTime)` - TODO(description).
 
 
 
@@ -317,9 +317,9 @@ Constructor:
 
 Properties:
 * `get bool isDestroyed` - if `destroy()` was called on this instance.
-* `get/set number playbackTime` - TODO(description).
-* `get/set object inputBuffer` - TODO(description).
-* `get/set object outputBuffer` - TODO(description).
+* `get number playbackTime` - TODO(description).
+* `get object inputBuffer` - TODO(description).
+* `get object outputBuffer` - TODO(description).
 
 
 Methods:
@@ -353,8 +353,8 @@ Properties:
 
 Methods:
 * `void destroy()` - destroys the instance.
-* `void start(number start)` - TODO(description).
-* `void stop(number stop)` - TODO(description).
+* `void start(number when)` - TODO(description).
+* `void stop(number when)` - TODO(description).
 
 
 
@@ -392,6 +392,35 @@ Methods:
 
 ---
 
+### class AudioWorklet
+
+TODO(description)
+
+```
+const { AudioWorklet } = require('waa-raub');
+const audioWorklet = new AudioWorklet();
+```
+
+
+Constructor:
+* `AudioWorklet()`
+
+
+Properties:
+* `get bool isDestroyed` - if `destroy()` was called on this instance.
+
+
+
+Methods:
+* `void destroy()` - destroys the instance.
+
+
+
+
+
+
+---
+
 ### class AudioWorkletGlobalScope
 
 TODO(description)
@@ -408,14 +437,14 @@ Constructor:
 
 Properties:
 * `get bool isDestroyed` - if `destroy()` was called on this instance.
-* `get/set number currentFrame` - TODO(description).
-* `get/set number currentTime` - TODO(description).
-* `get/set number sampleRate` - TODO(description).
+* `get number currentFrame` - TODO(description).
+* `get number currentTime` - TODO(description).
+* `get number sampleRate` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
-* `void registerProcessor(string registerProcessor, function registerProcessor)` - TODO(description).
+* `void registerProcessor(string name, function processorConstructor)` - TODO(description).
 
 
 
@@ -439,8 +468,8 @@ Constructor:
 
 Properties:
 * `get bool isDestroyed` - if `destroy()` was called on this instance.
-* `get/set object parameters` - TODO(description).
-* `get/set object port` - TODO(description).
+* `get object parameters` - TODO(description).
+* `get object port` - TODO(description).
 * `get/set function onprocessorerror` - TODO(description).
 
 
@@ -470,7 +499,7 @@ Constructor:
 
 Properties:
 * `get bool isDestroyed` - if `destroy()` was called on this instance.
-* `get/set object port` - TODO(description).
+* `get object port` - TODO(description).
 
 
 Methods:
@@ -499,37 +528,37 @@ Constructor:
 
 Properties:
 * `get bool isDestroyed` - if `destroy()` was called on this instance.
-* `get/set object destination` - TODO(description).
-* `get/set number currentTime` - TODO(description).
-* `get/set number sampleRate` - TODO(description).
-* `get/set object listener` - TODO(description).
-* `get/set string state` - TODO(description).
+* `get object destination` - TODO(description).
+* `get number currentTime` - TODO(description).
+* `get number sampleRate` - TODO(description).
+* `get object listener` - TODO(description).
+* `get string state` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
-* `void createBuffer(number createBuffer, number createBuffer, number createBuffer)` - TODO(description).
-* `void decodeAudioData(object decodeAudioData, function decodeAudioData, function decodeAudioData)` - TODO(description).
+* `void createBuffer(number numberOfChannels, number numberOfFrames, number sampleRate)` - TODO(description).
+* `void decodeAudioData(object audioData, function successCallback, function  errorCallback)` - TODO(description).
 * `void createBufferSource()` - TODO(description).
 * `void createConstantSource()` - TODO(description).
 * `void createGain()` - TODO(description).
-* `void createDelay(number createDelay)` - TODO(description).
+* `void createDelay(number maxDelayTime)` - TODO(description).
 * `void createBiquadFilter()` - TODO(description).
-* `void createIIRFilter(object createIIRFilter, object createIIRFilter)` - TODO(description).
+* `void createIIRFilter(object feedForward, object feedBack)` - TODO(description).
 * `void createWaveShaper()` - TODO(description).
 * `void createPanner()` - TODO(description).
 * `void createConvolver()` - TODO(description).
 * `void createDynamicsCompressor()` - TODO(description).
 * `void createAnalyser()` - TODO(description).
-* `void createScriptProcessor(number createScriptProcessor, number createScriptProcessor, number createScriptProcessor)` - TODO(description).
+* `void createScriptProcessor(number bufferSize, number numberOfInputChannels, number numberOfOutputChannels)` - TODO(description).
 * `void createStereoPanner()` - TODO(description).
 * `void createOscillator()` - TODO(description).
-* `void createPeriodicWave(object createPeriodicWave, object createPeriodicWave, object createPeriodicWave)` - TODO(description).
-* `void createChannelSplitter(number createChannelSplitter)` - TODO(description).
-* `void createChannelMerger(number createChannelMerger)` - TODO(description).
+* `void createPeriodicWave(object real, object imag, object options)` - TODO(description).
+* `void createChannelSplitter(number numberOfOutputs)` - TODO(description).
+* `void createChannelMerger(number numberOfInputs)` - TODO(description).
 * `void resume()` - TODO(description).
-* `void createMediaElementSource(object createMediaElementSource)` - TODO(description).
-* `void createMediaStreamSource(object createMediaStreamSource)` - TODO(description).
+* `void createMediaElementSource(object mediaElement)` - TODO(description).
+* `void createMediaStreamSource(object mediaStream)` - TODO(description).
 * `void createMediaStreamDestination()` - TODO(description).
 
 
@@ -555,15 +584,15 @@ Constructor:
 Properties:
 * `get bool isDestroyed` - if `destroy()` was called on this instance.
 * `get/set string type` - TODO(description).
-* `get/set object frequency` - TODO(description).
-* `get/set object detune` - TODO(description).
-* `get/set object Q` - TODO(description).
-* `get/set object gain` - TODO(description).
+* `get object frequency` - TODO(description).
+* `get object detune` - TODO(description).
+* `get object Q` - TODO(description).
+* `get object gain` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
-* `void getFrequencyResponse(object getFrequencyResponse, object getFrequencyResponse, object getFrequencyResponse)` - TODO(description).
+* `void getFrequencyResponse(object frequencyHz, object magResponse, object phaseResponse)` - TODO(description).
 
 
 
@@ -645,7 +674,7 @@ Constructor:
 
 Properties:
 * `get bool isDestroyed` - if `destroy()` was called on this instance.
-* `get/set object offset` - TODO(description).
+* `get object offset` - TODO(description).
 
 
 Methods:
@@ -704,7 +733,7 @@ Constructor:
 
 Properties:
 * `get bool isDestroyed` - if `destroy()` was called on this instance.
-* `get/set object delayTime` - TODO(description).
+* `get object delayTime` - TODO(description).
 
 
 Methods:
@@ -733,12 +762,12 @@ Constructor:
 
 Properties:
 * `get bool isDestroyed` - if `destroy()` was called on this instance.
-* `get/set object threshold` - TODO(description).
-* `get/set object knee` - TODO(description).
-* `get/set object ratio` - TODO(description).
-* `get/set number reduction` - TODO(description).
-* `get/set object attack` - TODO(description).
-* `get/set object release` - TODO(description).
+* `get object threshold` - TODO(description).
+* `get object knee` - TODO(description).
+* `get object ratio` - TODO(description).
+* `get number reduction` - TODO(description).
+* `get object attack` - TODO(description).
+* `get object release` - TODO(description).
 
 
 Methods:
@@ -767,7 +796,7 @@ Constructor:
 
 Properties:
 * `get bool isDestroyed` - if `destroy()` was called on this instance.
-* `get/set object gain` - TODO(description).
+* `get object gain` - TODO(description).
 
 
 Methods:
@@ -801,7 +830,7 @@ Properties:
 
 Methods:
 * `void destroy()` - destroys the instance.
-* `void getFrequencyResponse(object getFrequencyResponse, object getFrequencyResponse, object getFrequencyResponse)` - TODO(description).
+* `void getFrequencyResponse(object frequencyHz, object magResponse, object phaseResponse)` - TODO(description).
 
 
 
@@ -825,7 +854,7 @@ Constructor:
 
 Properties:
 * `get bool isDestroyed` - if `destroy()` was called on this instance.
-* `get/set object mediaElement` - TODO(description).
+* `get object mediaElement` - TODO(description).
 
 
 Methods:
@@ -854,7 +883,7 @@ Constructor:
 
 Properties:
 * `get bool isDestroyed` - if `destroy()` was called on this instance.
-* `get/set object stream` - TODO(description).
+* `get object stream` - TODO(description).
 
 
 Methods:
@@ -883,7 +912,7 @@ Constructor:
 
 Properties:
 * `get bool isDestroyed` - if `destroy()` was called on this instance.
-* `get/set object mediaStream` - TODO(description).
+* `get object mediaStream` - TODO(description).
 
 
 Methods:
@@ -912,7 +941,7 @@ Constructor:
 
 Properties:
 * `get bool isDestroyed` - if `destroy()` was called on this instance.
-* `get/set object renderedBuffer` - TODO(description).
+* `get object renderedBuffer` - TODO(description).
 
 
 Methods:
@@ -942,13 +971,13 @@ Constructor:
 Properties:
 * `get bool isDestroyed` - if `destroy()` was called on this instance.
 * `get/set function oncomplete` - TODO(description).
-* `get/set number length` - TODO(description).
+* `get number length` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
 * `void startRendering()` - TODO(description).
-* `void suspend(number suspend)` - TODO(description).
+* `void suspend(number suspendTime)` - TODO(description).
 
 
 
@@ -973,13 +1002,13 @@ Constructor:
 Properties:
 * `get bool isDestroyed` - if `destroy()` was called on this instance.
 * `get/set string type` - TODO(description).
-* `get/set object frequency` - TODO(description).
-* `get/set object detune` - TODO(description).
+* `get object frequency` - TODO(description).
+* `get object detune` - TODO(description).
 
 
 Methods:
 * `void destroy()` - destroys the instance.
-* `void setPeriodicWave(object setPeriodicWave)` - TODO(description).
+* `void setPeriodicWave(object periodicWave)` - TODO(description).
 
 
 
@@ -1004,12 +1033,12 @@ Constructor:
 Properties:
 * `get bool isDestroyed` - if `destroy()` was called on this instance.
 * `get/set string panningModel` - TODO(description).
-* `get/set object positionX` - TODO(description).
-* `get/set object positionY` - TODO(description).
-* `get/set object positionZ` - TODO(description).
-* `get/set object orientationX` - TODO(description).
-* `get/set object orientationY` - TODO(description).
-* `get/set object orientationZ` - TODO(description).
+* `get object positionX` - TODO(description).
+* `get object positionY` - TODO(description).
+* `get object positionZ` - TODO(description).
+* `get object orientationX` - TODO(description).
+* `get object orientationY` - TODO(description).
+* `get object orientationZ` - TODO(description).
 * `get/set string distanceModel` - TODO(description).
 * `get/set number refDistance` - TODO(description).
 * `get/set number maxDistance` - TODO(description).
@@ -1021,8 +1050,8 @@ Properties:
 
 Methods:
 * `void destroy()` - destroys the instance.
-* `void setPosition(number setPosition, number setPosition, number setPosition)` - TODO(description).
-* `void setOrientation(number setOrientation, number setOrientation, number setOrientation)` - TODO(description).
+* `void setPosition(number x, number y, number z)` - TODO(description).
+* `void setOrientation(number x, number y, number z)` - TODO(description).
 
 
 
@@ -1076,7 +1105,7 @@ Constructor:
 Properties:
 * `get bool isDestroyed` - if `destroy()` was called on this instance.
 * `get/set function onaudioprocess` - TODO(description).
-* `get/set number bufferSize` - TODO(description).
+* `get number bufferSize` - TODO(description).
 
 
 Methods:
@@ -1105,7 +1134,7 @@ Constructor:
 
 Properties:
 * `get bool isDestroyed` - if `destroy()` was called on this instance.
-* `get/set object pan` - TODO(description).
+* `get object pan` - TODO(description).
 
 
 Methods:

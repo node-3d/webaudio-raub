@@ -39,12 +39,14 @@ void AudioWorkletProcessor::init(Local<Object> target) {
 	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
+	ACCESSOR_R(obj, port);
 	
 	// -------- dynamic
 	
 	
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
+	
 	
 	
 	// -------- static
@@ -119,14 +121,4 @@ NAN_GETTER(AudioWorkletProcessor::portGetter) { THIS_AUDIO_WORKLET_PROCESSOR; TH
 	
 }
 
-NAN_SETTER(AudioWorkletProcessor::portSetter) { THIS_AUDIO_WORKLET_PROCESSOR; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(audioWorkletProcessor->_port) == v) {
-		return;
-	}
-	audioWorkletProcessor->_port.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 

@@ -38,15 +38,12 @@ protected:
 	
 	
 	static NAN_GETTER(currentFrameGetter);
-	static NAN_SETTER(currentFrameSetter);
 	
 
 	static NAN_GETTER(currentTimeGetter);
-	static NAN_SETTER(currentTimeSetter);
 	
 
 	static NAN_GETTER(sampleRateGetter);
-	static NAN_SETTER(sampleRateSetter);
 	
 	
 // Actual destruction-handler

@@ -39,6 +39,11 @@ void BiquadFilterNode::init(Local<Object> target) {
 	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
+	ACCESSOR_RW(obj, type);
+	ACCESSOR_R(obj, frequency);
+	ACCESSOR_R(obj, detune);
+	ACCESSOR_R(obj, Q);
+	ACCESSOR_R(obj, gain);
 	
 	// -------- dynamic
 	
@@ -46,6 +51,7 @@ void BiquadFilterNode::init(Local<Object> target) {
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
 	
+	Nan::SetPrototypeMethod(proto, "getFrequencyResponse", getFrequencyResponse);
 	
 	// -------- static
 	
@@ -147,16 +153,6 @@ NAN_GETTER(BiquadFilterNode::frequencyGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CH
 	
 }
 
-NAN_SETTER(BiquadFilterNode::frequencySetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(biquadFilterNode->_frequency) == v) {
-		return;
-	}
-	biquadFilterNode->_frequency.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(BiquadFilterNode::detuneGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
@@ -165,16 +161,6 @@ NAN_GETTER(BiquadFilterNode::detuneGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK
 	
 }
 
-NAN_SETTER(BiquadFilterNode::detuneSetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(biquadFilterNode->_detune) == v) {
-		return;
-	}
-	biquadFilterNode->_detune.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(BiquadFilterNode::QGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
@@ -183,16 +169,6 @@ NAN_GETTER(BiquadFilterNode::QGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
 	
 }
 
-NAN_SETTER(BiquadFilterNode::QSetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(biquadFilterNode->_Q) == v) {
-		return;
-	}
-	biquadFilterNode->_Q.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(BiquadFilterNode::gainGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
@@ -201,14 +177,4 @@ NAN_GETTER(BiquadFilterNode::gainGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
 	
 }
 
-NAN_SETTER(BiquadFilterNode::gainSetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(biquadFilterNode->_gain) == v) {
-		return;
-	}
-	biquadFilterNode->_gain.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 

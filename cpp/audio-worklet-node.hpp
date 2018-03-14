@@ -38,11 +38,9 @@ protected:
 	
 	
 	static NAN_GETTER(parametersGetter);
-	static NAN_SETTER(parametersSetter);
 	
 
 	static NAN_GETTER(portGetter);
-	static NAN_SETTER(portSetter);
 	
 
 	static NAN_GETTER(onprocessorerrorGetter);

@@ -38,7 +38,6 @@ protected:
 	
 	
 	static NAN_GETTER(mediaStreamGetter);
-	static NAN_SETTER(mediaStreamSetter);
 	
 	
 // Actual destruction-handler

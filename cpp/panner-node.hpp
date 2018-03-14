@@ -43,27 +43,21 @@ protected:
 	
 
 	static NAN_GETTER(positionXGetter);
-	static NAN_SETTER(positionXSetter);
 	
 
 	static NAN_GETTER(positionYGetter);
-	static NAN_SETTER(positionYSetter);
 	
 
 	static NAN_GETTER(positionZGetter);
-	static NAN_SETTER(positionZSetter);
 	
 
 	static NAN_GETTER(orientationXGetter);
-	static NAN_SETTER(orientationXSetter);
 	
 
 	static NAN_GETTER(orientationYGetter);
-	static NAN_SETTER(orientationYSetter);
 	
 
 	static NAN_GETTER(orientationZGetter);
-	static NAN_SETTER(orientationZSetter);
 	
 
 	static NAN_GETTER(distanceModelGetter);

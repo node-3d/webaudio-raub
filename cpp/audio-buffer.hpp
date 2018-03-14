@@ -40,19 +40,15 @@ protected:
 	
 	
 	static NAN_GETTER(lengthGetter);
-	static NAN_SETTER(lengthSetter);
 	
 
 	static NAN_GETTER(durationGetter);
-	static NAN_SETTER(durationSetter);
 	
 
 	static NAN_GETTER(sampleRateGetter);
-	static NAN_SETTER(sampleRateSetter);
 	
 
 	static NAN_GETTER(numberOfChannelsGetter);
-	static NAN_SETTER(numberOfChannelsSetter);
 	
 	
 // Actual destruction-handler

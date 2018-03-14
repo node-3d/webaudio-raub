@@ -39,6 +39,8 @@ void OfflineAudioContext::init(Local<Object> target) {
 	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
+	ACCESSOR_RW(obj, oncomplete);
+	ACCESSOR_R(obj, length);
 	
 	// -------- dynamic
 	
@@ -46,6 +48,8 @@ void OfflineAudioContext::init(Local<Object> target) {
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
 	
+	Nan::SetPrototypeMethod(proto, "startRendering", startRendering);
+	Nan::SetPrototypeMethod(proto, "suspend", suspend);
 	
 	// -------- static
 	
@@ -150,15 +154,8 @@ NAN_SETTER(OfflineAudioContext::oncompleteSetter) { THIS_OFFLINE_AUDIO_CONTEXT; 
 
 NAN_GETTER(OfflineAudioContext::lengthGetter) { THIS_OFFLINE_AUDIO_CONTEXT; THIS_CHECK;
 	
-	RET_VALUE(JS_INT32(offlineAudioContext->_length));
+	RET_VALUE(JS_UINT32(offlineAudioContext->_length));
 	
 }
 
-NAN_SETTER(OfflineAudioContext::lengthSetter) { THIS_OFFLINE_AUDIO_CONTEXT; THIS_CHECK; SETTER_INT32_ARG;
-	
-	CACHE_CAS(_length, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 

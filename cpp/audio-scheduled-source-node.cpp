@@ -39,6 +39,7 @@ void AudioScheduledSourceNode::init(Local<Object> target) {
 	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
+	ACCESSOR_RW(obj, onended);
 	
 	// -------- dynamic
 	
@@ -46,6 +47,8 @@ void AudioScheduledSourceNode::init(Local<Object> target) {
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
 	
+	Nan::SetPrototypeMethod(proto, "start", start);
+	Nan::SetPrototypeMethod(proto, "stop", stop);
 	
 	// -------- static
 	

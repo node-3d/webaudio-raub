@@ -39,12 +39,14 @@ void DelayNode::init(Local<Object> target) {
 	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
+	ACCESSOR_R(obj, delayTime);
 	
 	// -------- dynamic
 	
 	
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
+	
 	
 	
 	// -------- static
@@ -119,14 +121,4 @@ NAN_GETTER(DelayNode::delayTimeGetter) { THIS_DELAY_NODE; THIS_CHECK;
 	
 }
 
-NAN_SETTER(DelayNode::delayTimeSetter) { THIS_DELAY_NODE; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(delayNode->_delayTime) == v) {
-		return;
-	}
-	delayNode->_delayTime.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 

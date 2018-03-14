@@ -41,7 +41,6 @@ protected:
 	
 	
 	static NAN_GETTER(frequencyBinCountGetter);
-	static NAN_SETTER(frequencyBinCountSetter);
 	
 
 	static NAN_GETTER(fftSizeGetter);

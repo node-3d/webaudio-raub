@@ -39,6 +39,15 @@ void AudioListener::init(Local<Object> target) {
 	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
+	ACCESSOR_R(obj, positionX);
+	ACCESSOR_R(obj, positionY);
+	ACCESSOR_R(obj, positionZ);
+	ACCESSOR_R(obj, forwardX);
+	ACCESSOR_R(obj, forwardY);
+	ACCESSOR_R(obj, forwardZ);
+	ACCESSOR_R(obj, upX);
+	ACCESSOR_R(obj, upY);
+	ACCESSOR_R(obj, upZ);
 	
 	// -------- dynamic
 	
@@ -46,6 +55,8 @@ void AudioListener::init(Local<Object> target) {
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
 	
+	Nan::SetPrototypeMethod(proto, "setPosition", setPosition);
+	Nan::SetPrototypeMethod(proto, "setOrientation", setOrientation);
 	
 	// -------- static
 	
@@ -139,135 +150,72 @@ NAN_GETTER(AudioListener::isDestroyedGetter) { THIS_AUDIO_LISTENER;
 
 NAN_GETTER(AudioListener::positionXGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
 	
-	RET_VALUE(JS_FLOAT(audioListener->_positionX));
+	RET_VALUE(JS_OBJ(audioListener->_positionX));
 	
 }
 
-NAN_SETTER(AudioListener::positionXSetter) { THIS_AUDIO_LISTENER; THIS_CHECK; SETTER_FLOAT_ARG;
-	
-	CACHE_CAS(_positionX, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(AudioListener::positionYGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
 	
-	RET_VALUE(JS_FLOAT(audioListener->_positionY));
+	RET_VALUE(JS_OBJ(audioListener->_positionY));
 	
 }
 
-NAN_SETTER(AudioListener::positionYSetter) { THIS_AUDIO_LISTENER; THIS_CHECK; SETTER_FLOAT_ARG;
-	
-	CACHE_CAS(_positionY, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(AudioListener::positionZGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
 	
-	RET_VALUE(JS_FLOAT(audioListener->_positionZ));
+	RET_VALUE(JS_OBJ(audioListener->_positionZ));
 	
 }
 
-NAN_SETTER(AudioListener::positionZSetter) { THIS_AUDIO_LISTENER; THIS_CHECK; SETTER_FLOAT_ARG;
-	
-	CACHE_CAS(_positionZ, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(AudioListener::forwardXGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
 	
-	RET_VALUE(JS_FLOAT(audioListener->_forwardX));
+	RET_VALUE(JS_OBJ(audioListener->_forwardX));
 	
 }
 
-NAN_SETTER(AudioListener::forwardXSetter) { THIS_AUDIO_LISTENER; THIS_CHECK; SETTER_FLOAT_ARG;
-	
-	CACHE_CAS(_forwardX, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(AudioListener::forwardYGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
 	
-	RET_VALUE(JS_FLOAT(audioListener->_forwardY));
+	RET_VALUE(JS_OBJ(audioListener->_forwardY));
 	
 }
 
-NAN_SETTER(AudioListener::forwardYSetter) { THIS_AUDIO_LISTENER; THIS_CHECK; SETTER_FLOAT_ARG;
-	
-	CACHE_CAS(_forwardY, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(AudioListener::forwardZGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
 	
-	RET_VALUE(JS_FLOAT(audioListener->_forwardZ));
+	RET_VALUE(JS_OBJ(audioListener->_forwardZ));
 	
 }
 
-NAN_SETTER(AudioListener::forwardZSetter) { THIS_AUDIO_LISTENER; THIS_CHECK; SETTER_FLOAT_ARG;
-	
-	CACHE_CAS(_forwardZ, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(AudioListener::upXGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
 	
-	RET_VALUE(JS_FLOAT(audioListener->_upX));
+	RET_VALUE(JS_OBJ(audioListener->_upX));
 	
 }
 
-NAN_SETTER(AudioListener::upXSetter) { THIS_AUDIO_LISTENER; THIS_CHECK; SETTER_FLOAT_ARG;
-	
-	CACHE_CAS(_upX, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(AudioListener::upYGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
 	
-	RET_VALUE(JS_FLOAT(audioListener->_upY));
+	RET_VALUE(JS_OBJ(audioListener->_upY));
 	
 }
 
-NAN_SETTER(AudioListener::upYSetter) { THIS_AUDIO_LISTENER; THIS_CHECK; SETTER_FLOAT_ARG;
-	
-	CACHE_CAS(_upY, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(AudioListener::upZGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
 	
-	RET_VALUE(JS_FLOAT(audioListener->_upZ));
+	RET_VALUE(JS_OBJ(audioListener->_upZ));
 	
 }
 
-NAN_SETTER(AudioListener::upZSetter) { THIS_AUDIO_LISTENER; THIS_CHECK; SETTER_FLOAT_ARG;
-	
-	CACHE_CAS(_upZ, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 

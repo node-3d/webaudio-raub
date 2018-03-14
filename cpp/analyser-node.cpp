@@ -39,6 +39,11 @@ void AnalyserNode::init(Local<Object> target) {
 	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
+	ACCESSOR_R(obj, frequencyBinCount);
+	ACCESSOR_RW(obj, fftSize);
+	ACCESSOR_RW(obj, minDecibels);
+	ACCESSOR_RW(obj, maxDecibels);
+	ACCESSOR_RW(obj, smoothingTimeConstant);
 	
 	// -------- dynamic
 	
@@ -46,6 +51,10 @@ void AnalyserNode::init(Local<Object> target) {
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
 	
+	Nan::SetPrototypeMethod(proto, "getFloatFrequencyData", getFloatFrequencyData);
+	Nan::SetPrototypeMethod(proto, "getByteFrequencyData", getByteFrequencyData);
+	Nan::SetPrototypeMethod(proto, "getFloatTimeDomainData", getFloatTimeDomainData);
+	Nan::SetPrototypeMethod(proto, "getByteTimeDomainData", getByteTimeDomainData);
 	
 	// -------- static
 	
@@ -154,13 +163,6 @@ NAN_GETTER(AnalyserNode::frequencyBinCountGetter) { THIS_ANALYSER_NODE; THIS_CHE
 	
 }
 
-NAN_SETTER(AnalyserNode::frequencyBinCountSetter) { THIS_ANALYSER_NODE; THIS_CHECK; SETTER_UINT32_ARG;
-	
-	CACHE_CAS(_frequencyBinCount, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(AnalyserNode::fftSizeGetter) { THIS_ANALYSER_NODE; THIS_CHECK;

@@ -43,7 +43,6 @@ protected:
 	
 
 	static NAN_GETTER(lengthGetter);
-	static NAN_SETTER(lengthSetter);
 	
 	
 // Actual destruction-handler
@@ -64,7 +63,7 @@ private:
 	bool _isDestroyed;
 	
 	Nan::Persistent<v8::Function> _oncomplete;
-	int _length;
+	unsigned int _length;
 	
 };
 

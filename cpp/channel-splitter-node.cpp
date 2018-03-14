@@ -40,11 +40,13 @@ void ChannelSplitterNode::init(Local<Object> target) {
 	ACCESSOR_R(obj, isDestroyed);
 	
 	
+	
 	// -------- dynamic
 	
 	
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
+	
 	
 	
 	// -------- static

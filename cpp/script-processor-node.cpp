@@ -39,12 +39,15 @@ void ScriptProcessorNode::init(Local<Object> target) {
 	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
+	ACCESSOR_RW(obj, onaudioprocess);
+	ACCESSOR_R(obj, bufferSize);
 	
 	// -------- dynamic
 	
 	
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
+	
 	
 	
 	// -------- static
@@ -137,11 +140,4 @@ NAN_GETTER(ScriptProcessorNode::bufferSizeGetter) { THIS_SCRIPT_PROCESSOR_NODE; 
 	
 }
 
-NAN_SETTER(ScriptProcessorNode::bufferSizeSetter) { THIS_SCRIPT_PROCESSOR_NODE; THIS_CHECK; SETTER_INT32_ARG;
-	
-	CACHE_CAS(_bufferSize, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 

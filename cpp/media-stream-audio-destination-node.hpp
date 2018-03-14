@@ -38,7 +38,6 @@ protected:
 	
 	
 	static NAN_GETTER(streamGetter);
-	static NAN_SETTER(streamSetter);
 	
 	
 // Actual destruction-handler

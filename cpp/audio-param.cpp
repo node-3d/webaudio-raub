@@ -39,6 +39,10 @@ void AudioParam::init(Local<Object> target) {
 	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
+	ACCESSOR_RW(obj, value);
+	ACCESSOR_R(obj, defaultValue);
+	ACCESSOR_R(obj, minValue);
+	ACCESSOR_R(obj, maxValue);
 	
 	// -------- dynamic
 	
@@ -46,6 +50,13 @@ void AudioParam::init(Local<Object> target) {
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
 	
+	Nan::SetPrototypeMethod(proto, "setValueAtTime", setValueAtTime);
+	Nan::SetPrototypeMethod(proto, "linearRampToValueAtTime", linearRampToValueAtTime);
+	Nan::SetPrototypeMethod(proto, "exponentialRampToValueAtTime", exponentialRampToValueAtTime);
+	Nan::SetPrototypeMethod(proto, "setTargetAtTime", setTargetAtTime);
+	Nan::SetPrototypeMethod(proto, "setValueCurveAtTime", setValueCurveAtTime);
+	Nan::SetPrototypeMethod(proto, "cancelScheduledValues", cancelScheduledValues);
+	Nan::SetPrototypeMethod(proto, "cancelAndHoldAtTime", cancelAndHoldAtTime);
 	
 	// -------- static
 	
@@ -203,13 +214,6 @@ NAN_GETTER(AudioParam::defaultValueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
 	
 }
 
-NAN_SETTER(AudioParam::defaultValueSetter) { THIS_AUDIO_PARAM; THIS_CHECK; SETTER_FLOAT_ARG;
-	
-	CACHE_CAS(_defaultValue, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(AudioParam::minValueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
@@ -218,13 +222,6 @@ NAN_GETTER(AudioParam::minValueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
 	
 }
 
-NAN_SETTER(AudioParam::minValueSetter) { THIS_AUDIO_PARAM; THIS_CHECK; SETTER_FLOAT_ARG;
-	
-	CACHE_CAS(_minValue, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(AudioParam::maxValueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
@@ -233,11 +230,4 @@ NAN_GETTER(AudioParam::maxValueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
 	
 }
 
-NAN_SETTER(AudioParam::maxValueSetter) { THIS_AUDIO_PARAM; THIS_CHECK; SETTER_FLOAT_ARG;
-	
-	CACHE_CAS(_maxValue, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 

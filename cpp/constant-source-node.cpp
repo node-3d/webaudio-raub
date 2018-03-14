@@ -39,12 +39,14 @@ void ConstantSourceNode::init(Local<Object> target) {
 	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
+	ACCESSOR_R(obj, offset);
 	
 	// -------- dynamic
 	
 	
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
+	
 	
 	
 	// -------- static
@@ -119,14 +121,4 @@ NAN_GETTER(ConstantSourceNode::offsetGetter) { THIS_CONSTANT_SOURCE_NODE; THIS_C
 	
 }
 
-NAN_SETTER(ConstantSourceNode::offsetSetter) { THIS_CONSTANT_SOURCE_NODE; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(constantSourceNode->_offset) == v) {
-		return;
-	}
-	constantSourceNode->_offset.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 

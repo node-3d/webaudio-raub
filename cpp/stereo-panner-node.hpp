@@ -38,7 +38,6 @@ protected:
 	
 	
 	static NAN_GETTER(panGetter);
-	static NAN_SETTER(panSetter);
 	
 	
 // Actual destruction-handler

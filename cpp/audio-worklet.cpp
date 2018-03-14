@@ -1,45 +1,45 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "gain-node.hpp"
+#include "audio-worklet.hpp"
 
 using namespace v8;
 using namespace node;
 using namespace std;
 
 
-#define THIS_GAIN_NODE                                                    \
-	GainNode *gainNode = ObjectWrap::Unwrap<GainNode>(info.This());
+#define THIS_AUDIO_WORKLET                                                    \
+	AudioWorklet *audioWorklet = ObjectWrap::Unwrap<AudioWorklet>(info.This());
 
 #define THIS_CHECK                                                            \
-	if (gainNode->_isDestroyed) return;
+	if (audioWorklet->_isDestroyed) return;
 
 #define DES_CHECK                                                             \
 	if (_isDestroyed) return;
 
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (gainNode->CACHE == V) {                                           \
+	if (audioWorklet->CACHE == V) {                                           \
 		return;                                                               \
 	}                                                                         \
-	gainNode->CACHE = V;
+	audioWorklet->CACHE = V;
 
 
-Nan::Persistent<v8::Function> GainNode::_constructor;
+Nan::Persistent<v8::Function> AudioWorklet::_constructor;
 
 
-void GainNode::init(Local<Object> target) {
+void AudioWorklet::init(Local<Object> target) {
 	
 	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
 	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("GainNode"));
+	proto->SetClassName(JS_STR("AudioWorklet"));
 	
 	
 	// Accessors
 	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
-	ACCESSOR_R(obj, gain);
+	
 	
 	// -------- dynamic
 	
@@ -57,39 +57,39 @@ void GainNode::init(Local<Object> target) {
 	
 	
 	_constructor.Reset(ctor);
-	Nan::Set(target, JS_STR("GainNode"), ctor);
+	Nan::Set(target, JS_STR("AudioWorklet"), ctor);
 	
 	
 }
 
 
-NAN_METHOD(GainNode::newCtor) {
+NAN_METHOD(AudioWorklet::newCtor) {
 	
-	CTOR_CHECK("GainNode");
+	CTOR_CHECK("AudioWorklet");
 	
-	GainNode *gainNode = new GainNode();
-	gainNode->Wrap(info.This());
+	AudioWorklet *audioWorklet = new AudioWorklet();
+	audioWorklet->Wrap(info.This());
 	
 	RET_VALUE(info.This());
 	
 }
 
 
-GainNode::GainNode() {
+AudioWorklet::AudioWorklet() {
 	
 	_isDestroyed = false;
 	
 }
 
 
-GainNode::~GainNode() {
+AudioWorklet::~AudioWorklet() {
 	
 	_destroy();
 	
 }
 
 
-void GainNode::_destroy() { DES_CHECK;
+void AudioWorklet::_destroy() { DES_CHECK;
 	
 	_isDestroyed = true;
 	
@@ -99,25 +99,18 @@ void GainNode::_destroy() { DES_CHECK;
 
 
 
-NAN_METHOD(GainNode::destroy) { THIS_GAIN_NODE; THIS_CHECK;
+NAN_METHOD(AudioWorklet::destroy) { THIS_AUDIO_WORKLET; THIS_CHECK;
 	
-	gainNode->_destroy();
-	
-}
-
-
-
-
-NAN_GETTER(GainNode::isDestroyedGetter) { THIS_GAIN_NODE;
-	
-	RET_VALUE(JS_BOOL(gainNode->_isDestroyed));
+	audioWorklet->_destroy();
 	
 }
 
 
-NAN_GETTER(GainNode::gainGetter) { THIS_GAIN_NODE; THIS_CHECK;
+
+
+NAN_GETTER(AudioWorklet::isDestroyedGetter) { THIS_AUDIO_WORKLET;
 	
-	RET_VALUE(JS_OBJ(gainNode->_gain));
+	RET_VALUE(JS_BOOL(audioWorklet->_isDestroyed));
 	
 }
 

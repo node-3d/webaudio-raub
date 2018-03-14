@@ -39,39 +39,30 @@ protected:
 	
 	
 	static NAN_GETTER(positionXGetter);
-	static NAN_SETTER(positionXSetter);
 	
 
 	static NAN_GETTER(positionYGetter);
-	static NAN_SETTER(positionYSetter);
 	
 
 	static NAN_GETTER(positionZGetter);
-	static NAN_SETTER(positionZSetter);
 	
 
 	static NAN_GETTER(forwardXGetter);
-	static NAN_SETTER(forwardXSetter);
 	
 
 	static NAN_GETTER(forwardYGetter);
-	static NAN_SETTER(forwardYSetter);
 	
 
 	static NAN_GETTER(forwardZGetter);
-	static NAN_SETTER(forwardZSetter);
 	
 
 	static NAN_GETTER(upXGetter);
-	static NAN_SETTER(upXSetter);
 	
 
 	static NAN_GETTER(upYGetter);
-	static NAN_SETTER(upYSetter);
 	
 
 	static NAN_GETTER(upZGetter);
-	static NAN_SETTER(upZSetter);
 	
 	
 // Actual destruction-handler
@@ -91,15 +82,15 @@ private:
 	
 	bool _isDestroyed;
 	
-	float _positionX;
-	float _positionY;
-	float _positionZ;
-	float _forwardX;
-	float _forwardY;
-	float _forwardZ;
-	float _upX;
-	float _upY;
-	float _upZ;
+	Nan::Persistent<v8::Object> _positionX;
+	Nan::Persistent<v8::Object> _positionY;
+	Nan::Persistent<v8::Object> _positionZ;
+	Nan::Persistent<v8::Object> _forwardX;
+	Nan::Persistent<v8::Object> _forwardY;
+	Nan::Persistent<v8::Object> _forwardZ;
+	Nan::Persistent<v8::Object> _upX;
+	Nan::Persistent<v8::Object> _upY;
+	Nan::Persistent<v8::Object> _upZ;
 	
 };
 

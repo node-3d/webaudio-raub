@@ -39,12 +39,16 @@ void AudioWorkletNode::init(Local<Object> target) {
 	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
+	ACCESSOR_R(obj, parameters);
+	ACCESSOR_R(obj, port);
+	ACCESSOR_RW(obj, onprocessorerror);
 	
 	// -------- dynamic
 	
 	
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
+	
 	
 	
 	// -------- static
@@ -119,16 +123,6 @@ NAN_GETTER(AudioWorkletNode::parametersGetter) { THIS_AUDIO_WORKLET_NODE; THIS_C
 	
 }
 
-NAN_SETTER(AudioWorkletNode::parametersSetter) { THIS_AUDIO_WORKLET_NODE; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(audioWorkletNode->_parameters) == v) {
-		return;
-	}
-	audioWorkletNode->_parameters.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(AudioWorkletNode::portGetter) { THIS_AUDIO_WORKLET_NODE; THIS_CHECK;
@@ -137,16 +131,6 @@ NAN_GETTER(AudioWorkletNode::portGetter) { THIS_AUDIO_WORKLET_NODE; THIS_CHECK;
 	
 }
 
-NAN_SETTER(AudioWorkletNode::portSetter) { THIS_AUDIO_WORKLET_NODE; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(audioWorkletNode->_port) == v) {
-		return;
-	}
-	audioWorkletNode->_port.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(AudioWorkletNode::onprocessorerrorGetter) { THIS_AUDIO_WORKLET_NODE; THIS_CHECK;

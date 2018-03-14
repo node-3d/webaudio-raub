@@ -39,6 +39,20 @@ void PannerNode::init(Local<Object> target) {
 	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
+	ACCESSOR_RW(obj, panningModel);
+	ACCESSOR_R(obj, positionX);
+	ACCESSOR_R(obj, positionY);
+	ACCESSOR_R(obj, positionZ);
+	ACCESSOR_R(obj, orientationX);
+	ACCESSOR_R(obj, orientationY);
+	ACCESSOR_R(obj, orientationZ);
+	ACCESSOR_RW(obj, distanceModel);
+	ACCESSOR_RW(obj, refDistance);
+	ACCESSOR_RW(obj, maxDistance);
+	ACCESSOR_RW(obj, rolloffFactor);
+	ACCESSOR_RW(obj, coneInnerAngle);
+	ACCESSOR_RW(obj, coneOuterAngle);
+	ACCESSOR_RW(obj, coneOuterGain);
 	
 	// -------- dynamic
 	
@@ -46,6 +60,8 @@ void PannerNode::init(Local<Object> target) {
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
 	
+	Nan::SetPrototypeMethod(proto, "setPosition", setPosition);
+	Nan::SetPrototypeMethod(proto, "setOrientation", setOrientation);
 	
 	// -------- static
 	
@@ -158,16 +174,6 @@ NAN_GETTER(PannerNode::positionXGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
 }
 
-NAN_SETTER(PannerNode::positionXSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(pannerNode->_positionX) == v) {
-		return;
-	}
-	pannerNode->_positionX.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(PannerNode::positionYGetter) { THIS_PANNER_NODE; THIS_CHECK;
@@ -176,16 +182,6 @@ NAN_GETTER(PannerNode::positionYGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
 }
 
-NAN_SETTER(PannerNode::positionYSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(pannerNode->_positionY) == v) {
-		return;
-	}
-	pannerNode->_positionY.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(PannerNode::positionZGetter) { THIS_PANNER_NODE; THIS_CHECK;
@@ -194,16 +190,6 @@ NAN_GETTER(PannerNode::positionZGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
 }
 
-NAN_SETTER(PannerNode::positionZSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(pannerNode->_positionZ) == v) {
-		return;
-	}
-	pannerNode->_positionZ.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(PannerNode::orientationXGetter) { THIS_PANNER_NODE; THIS_CHECK;
@@ -212,16 +198,6 @@ NAN_GETTER(PannerNode::orientationXGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
 }
 
-NAN_SETTER(PannerNode::orientationXSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(pannerNode->_orientationX) == v) {
-		return;
-	}
-	pannerNode->_orientationX.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(PannerNode::orientationYGetter) { THIS_PANNER_NODE; THIS_CHECK;
@@ -230,16 +206,6 @@ NAN_GETTER(PannerNode::orientationYGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
 }
 
-NAN_SETTER(PannerNode::orientationYSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(pannerNode->_orientationY) == v) {
-		return;
-	}
-	pannerNode->_orientationY.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(PannerNode::orientationZGetter) { THIS_PANNER_NODE; THIS_CHECK;
@@ -248,16 +214,6 @@ NAN_GETTER(PannerNode::orientationZGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
 }
 
-NAN_SETTER(PannerNode::orientationZSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(pannerNode->_orientationZ) == v) {
-		return;
-	}
-	pannerNode->_orientationZ.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(PannerNode::distanceModelGetter) { THIS_PANNER_NODE; THIS_CHECK;

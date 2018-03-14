@@ -39,6 +39,7 @@ void AudioContext::init(Local<Object> target) {
 	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
+	ACCESSOR_R(obj, baseLatency);
 	
 	// -------- dynamic
 	
@@ -46,6 +47,12 @@ void AudioContext::init(Local<Object> target) {
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
 	
+	Nan::SetPrototypeMethod(proto, "suspend", suspend);
+	Nan::SetPrototypeMethod(proto, "close", close);
+	Nan::SetPrototypeMethod(proto, "getOutputTimestamp", getOutputTimestamp);
+	Nan::SetPrototypeMethod(proto, "createMediaElementSource", createMediaElementSource);
+	Nan::SetPrototypeMethod(proto, "createMediaStreamSource", createMediaStreamSource);
+	Nan::SetPrototypeMethod(proto, "createMediaStreamDestination", createMediaStreamDestination);
 	
 	// -------- static
 	
@@ -172,11 +179,4 @@ NAN_GETTER(AudioContext::baseLatencyGetter) { THIS_AUDIO_CONTEXT; THIS_CHECK;
 	
 }
 
-NAN_SETTER(AudioContext::baseLatencySetter) { THIS_AUDIO_CONTEXT; THIS_CHECK; SETTER_DOUBLE_ARG;
-	
-	CACHE_CAS(_baseLatency, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 

@@ -39,15 +39,12 @@ protected:
 	
 	
 	static NAN_GETTER(contextGetter);
-	static NAN_SETTER(contextSetter);
 	
 
 	static NAN_GETTER(numberOfInputsGetter);
-	static NAN_SETTER(numberOfInputsSetter);
 	
 
 	static NAN_GETTER(numberOfOutputsGetter);
-	static NAN_SETTER(numberOfOutputsSetter);
 	
 
 	static NAN_GETTER(channelCountGetter);
@@ -80,9 +77,9 @@ private:
 	bool _isDestroyed;
 	
 	Nan::Persistent<v8::Object> _context;
-	int _numberOfInputs;
-	int _numberOfOutputs;
-	int _channelCount;
+	unsigned int _numberOfInputs;
+	unsigned int _numberOfOutputs;
+	unsigned int _channelCount;
 	std::string _channelCountMode;
 	std::string _channelInterpretation;
 	

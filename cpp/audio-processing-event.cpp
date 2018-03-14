@@ -39,12 +39,16 @@ void AudioProcessingEvent::init(Local<Object> target) {
 	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
+	ACCESSOR_R(obj, playbackTime);
+	ACCESSOR_R(obj, inputBuffer);
+	ACCESSOR_R(obj, outputBuffer);
 	
 	// -------- dynamic
 	
 	
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
+	
 	
 	
 	// -------- static
@@ -119,13 +123,6 @@ NAN_GETTER(AudioProcessingEvent::playbackTimeGetter) { THIS_AUDIO_PROCESSING_EVE
 	
 }
 
-NAN_SETTER(AudioProcessingEvent::playbackTimeSetter) { THIS_AUDIO_PROCESSING_EVENT; THIS_CHECK; SETTER_DOUBLE_ARG;
-	
-	CACHE_CAS(_playbackTime, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(AudioProcessingEvent::inputBufferGetter) { THIS_AUDIO_PROCESSING_EVENT; THIS_CHECK;
@@ -134,16 +131,6 @@ NAN_GETTER(AudioProcessingEvent::inputBufferGetter) { THIS_AUDIO_PROCESSING_EVEN
 	
 }
 
-NAN_SETTER(AudioProcessingEvent::inputBufferSetter) { THIS_AUDIO_PROCESSING_EVENT; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(audioProcessingEvent->_inputBuffer) == v) {
-		return;
-	}
-	audioProcessingEvent->_inputBuffer.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(AudioProcessingEvent::outputBufferGetter) { THIS_AUDIO_PROCESSING_EVENT; THIS_CHECK;
@@ -152,14 +139,4 @@ NAN_GETTER(AudioProcessingEvent::outputBufferGetter) { THIS_AUDIO_PROCESSING_EVE
 	
 }
 
-NAN_SETTER(AudioProcessingEvent::outputBufferSetter) { THIS_AUDIO_PROCESSING_EVENT; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(audioProcessingEvent->_outputBuffer) == v) {
-		return;
-	}
-	audioProcessingEvent->_outputBuffer.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 

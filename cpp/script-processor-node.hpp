@@ -42,7 +42,6 @@ protected:
 	
 
 	static NAN_GETTER(bufferSizeGetter);
-	static NAN_SETTER(bufferSizeSetter);
 	
 	
 // Actual destruction-handler

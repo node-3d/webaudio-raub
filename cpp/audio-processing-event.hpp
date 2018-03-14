@@ -38,15 +38,12 @@ protected:
 	
 	
 	static NAN_GETTER(playbackTimeGetter);
-	static NAN_SETTER(playbackTimeSetter);
 	
 
 	static NAN_GETTER(inputBufferGetter);
-	static NAN_SETTER(inputBufferSetter);
 	
 
 	static NAN_GETTER(outputBufferGetter);
-	static NAN_SETTER(outputBufferSetter);
 	
 	
 // Actual destruction-handler

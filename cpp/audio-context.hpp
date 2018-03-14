@@ -43,7 +43,6 @@ protected:
 	
 	
 	static NAN_GETTER(baseLatencyGetter);
-	static NAN_SETTER(baseLatencySetter);
 	
 	
 // Actual destruction-handler

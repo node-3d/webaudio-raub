@@ -48,15 +48,12 @@ protected:
 	
 
 	static NAN_GETTER(defaultValueGetter);
-	static NAN_SETTER(defaultValueSetter);
 	
 
 	static NAN_GETTER(minValueGetter);
-	static NAN_SETTER(minValueSetter);
 	
 
 	static NAN_GETTER(maxValueGetter);
-	static NAN_SETTER(maxValueSetter);
 	
 	
 // Actual destruction-handler

@@ -22,6 +22,7 @@
 				'cpp/audio-processing-event.cpp',
 				'cpp/audio-scheduled-source-node.cpp',
 				'cpp/audio-timestamp.cpp',
+				'cpp/audio-worklet.cpp',
 				'cpp/audio-worklet-global-scope.cpp',
 				'cpp/audio-worklet-node.cpp',
 				'cpp/audio-worklet-processor.cpp',

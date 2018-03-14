@@ -1,11 +1,11 @@
-#ifndef _MEDIA_ELEMENT_AUDIO_SOURCE_NODE_HPP_
-#define _MEDIA_ELEMENT_AUDIO_SOURCE_NODE_HPP_
+#ifndef _AUDIO_WORKLET_HPP_
+#define _AUDIO_WORKLET_HPP_
 
 
 #include <addon-tools.hpp>
 
 
-class MediaElementAudioSourceNode : public Nan::ObjectWrap {
+class AudioWorklet : public Nan::ObjectWrap {
 	
 // Public V8 init
 public:
@@ -20,8 +20,8 @@ public:
 // Protected C++ methods: implementing JS calls
 protected:
 	
-	MediaElementAudioSourceNode();
-	virtual ~MediaElementAudioSourceNode();
+	AudioWorklet();
+	virtual ~AudioWorklet();
 	
 	
 // JS methods and props
@@ -36,8 +36,6 @@ protected:
 	
 	static NAN_GETTER(isDestroyedGetter);
 	
-	
-	static NAN_GETTER(mediaElementGetter);
 	
 	
 // Actual destruction-handler
@@ -57,9 +55,9 @@ private:
 	
 	bool _isDestroyed;
 	
-	Nan::Persistent<v8::Object> _mediaElement;
+	
 	
 };
 
 
-#endif // _MEDIA_ELEMENT_AUDIO_SOURCE_NODE_HPP_
+#endif // _AUDIO_WORKLET_HPP_

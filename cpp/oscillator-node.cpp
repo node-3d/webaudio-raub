@@ -39,6 +39,9 @@ void OscillatorNode::init(Local<Object> target) {
 	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
+	ACCESSOR_RW(obj, type);
+	ACCESSOR_R(obj, frequency);
+	ACCESSOR_R(obj, detune);
 	
 	// -------- dynamic
 	
@@ -46,6 +49,7 @@ void OscillatorNode::init(Local<Object> target) {
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
 	
+	Nan::SetPrototypeMethod(proto, "setPeriodicWave", setPeriodicWave);
 	
 	// -------- static
 	
@@ -145,16 +149,6 @@ NAN_GETTER(OscillatorNode::frequencyGetter) { THIS_OSCILLATOR_NODE; THIS_CHECK;
 	
 }
 
-NAN_SETTER(OscillatorNode::frequencySetter) { THIS_OSCILLATOR_NODE; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(oscillatorNode->_frequency) == v) {
-		return;
-	}
-	oscillatorNode->_frequency.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(OscillatorNode::detuneGetter) { THIS_OSCILLATOR_NODE; THIS_CHECK;
@@ -163,14 +157,4 @@ NAN_GETTER(OscillatorNode::detuneGetter) { THIS_OSCILLATOR_NODE; THIS_CHECK;
 	
 }
 
-NAN_SETTER(OscillatorNode::detuneSetter) { THIS_OSCILLATOR_NODE; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(oscillatorNode->_detune) == v) {
-		return;
-	}
-	oscillatorNode->_detune.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 

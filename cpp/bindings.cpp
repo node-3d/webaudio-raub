@@ -11,6 +11,7 @@
 #include "audio-processing-event.hpp"
 #include "audio-scheduled-source-node.hpp"
 #include "audio-timestamp.hpp"
+#include "audio-worklet.hpp"
 #include "audio-worklet-global-scope.hpp"
 #include "audio-worklet-node.hpp"
 #include "audio-worklet-processor.hpp"
@@ -58,6 +59,7 @@ void init(Local<Object> target) {
 	AudioProcessingEvent::init(target);
 	AudioScheduledSourceNode::init(target);
 	AudioTimestamp::init(target);
+	AudioWorklet::init(target);
 	AudioWorkletGlobalScope::init(target);
 	AudioWorkletNode::init(target);
 	AudioWorkletProcessor::init(target);

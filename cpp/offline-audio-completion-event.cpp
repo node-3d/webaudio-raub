@@ -39,12 +39,14 @@ void OfflineAudioCompletionEvent::init(Local<Object> target) {
 	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
+	ACCESSOR_R(obj, renderedBuffer);
 	
 	// -------- dynamic
 	
 	
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
+	
 	
 	
 	// -------- static
@@ -119,14 +121,4 @@ NAN_GETTER(OfflineAudioCompletionEvent::renderedBufferGetter) { THIS_OFFLINE_AUD
 	
 }
 
-NAN_SETTER(OfflineAudioCompletionEvent::renderedBufferSetter) { THIS_OFFLINE_AUDIO_COMPLETION_EVENT; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(offlineAudioCompletionEvent->_renderedBuffer) == v) {
-		return;
-	}
-	offlineAudioCompletionEvent->_renderedBuffer.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 

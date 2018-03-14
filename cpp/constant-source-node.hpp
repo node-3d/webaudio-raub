@@ -38,7 +38,6 @@ protected:
 	
 	
 	static NAN_GETTER(offsetGetter);
-	static NAN_SETTER(offsetSetter);
 	
 	
 // Actual destruction-handler

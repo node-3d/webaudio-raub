@@ -38,27 +38,21 @@ protected:
 	
 	
 	static NAN_GETTER(thresholdGetter);
-	static NAN_SETTER(thresholdSetter);
 	
 
 	static NAN_GETTER(kneeGetter);
-	static NAN_SETTER(kneeSetter);
 	
 
 	static NAN_GETTER(ratioGetter);
-	static NAN_SETTER(ratioSetter);
 	
 
 	static NAN_GETTER(reductionGetter);
-	static NAN_SETTER(reductionSetter);
 	
 
 	static NAN_GETTER(attackGetter);
-	static NAN_SETTER(attackSetter);
 	
 
 	static NAN_GETTER(releaseGetter);
-	static NAN_SETTER(releaseSetter);
 	
 	
 // Actual destruction-handler

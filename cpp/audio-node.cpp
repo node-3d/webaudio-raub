@@ -39,6 +39,12 @@ void AudioNode::init(Local<Object> target) {
 	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
+	ACCESSOR_R(obj, context);
+	ACCESSOR_R(obj, numberOfInputs);
+	ACCESSOR_R(obj, numberOfOutputs);
+	ACCESSOR_RW(obj, channelCount);
+	ACCESSOR_RW(obj, channelCountMode);
+	ACCESSOR_RW(obj, channelInterpretation);
 	
 	// -------- dynamic
 	
@@ -46,6 +52,8 @@ void AudioNode::init(Local<Object> target) {
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
 	
+	Nan::SetPrototypeMethod(proto, "connect", connect);
+	Nan::SetPrototypeMethod(proto, "disconnect", disconnect);
 	
 	// -------- static
 	
@@ -140,55 +148,31 @@ NAN_GETTER(AudioNode::contextGetter) { THIS_AUDIO_NODE; THIS_CHECK;
 	
 }
 
-NAN_SETTER(AudioNode::contextSetter) { THIS_AUDIO_NODE; THIS_CHECK; SETTER_OBJ_ARG;
-	
-	if (Nan::New(audioNode->_context) == v) {
-		return;
-	}
-	audioNode->_context.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(AudioNode::numberOfInputsGetter) { THIS_AUDIO_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_INT32(audioNode->_numberOfInputs));
+	RET_VALUE(JS_UINT32(audioNode->_numberOfInputs));
 	
 }
 
-NAN_SETTER(AudioNode::numberOfInputsSetter) { THIS_AUDIO_NODE; THIS_CHECK; SETTER_INT32_ARG;
-	
-	CACHE_CAS(_numberOfInputs, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(AudioNode::numberOfOutputsGetter) { THIS_AUDIO_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_INT32(audioNode->_numberOfOutputs));
+	RET_VALUE(JS_UINT32(audioNode->_numberOfOutputs));
 	
 }
 
-NAN_SETTER(AudioNode::numberOfOutputsSetter) { THIS_AUDIO_NODE; THIS_CHECK; SETTER_INT32_ARG;
-	
-	CACHE_CAS(_numberOfOutputs, v);
-	
-	// TODO: may be additional actions on change?
-	
-}
 
 
 NAN_GETTER(AudioNode::channelCountGetter) { THIS_AUDIO_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_INT32(audioNode->_channelCount));
+	RET_VALUE(JS_UINT32(audioNode->_channelCount));
 	
 }
 
-NAN_SETTER(AudioNode::channelCountSetter) { THIS_AUDIO_NODE; THIS_CHECK; SETTER_INT32_ARG;
+NAN_SETTER(AudioNode::channelCountSetter) { THIS_AUDIO_NODE; THIS_CHECK; SETTER_UINT32_ARG;
 	
 	CACHE_CAS(_channelCount, v);
 	
