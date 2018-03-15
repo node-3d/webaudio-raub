@@ -81,7 +81,7 @@
 								]
 							},
 							'VCLinkerTool' : {
-								'AdditionalOptions' : ['/MT','/RELEASE','/OPT:REF','/OPT:ICF','/LTCG']
+								'AdditionalOptions' : ['/RELEASE','/OPT:REF','/OPT:ICF','/LTCG']
 							},
 						},
 					},

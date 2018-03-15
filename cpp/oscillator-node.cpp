@@ -81,6 +81,9 @@ OscillatorNode::OscillatorNode() {
 	
 	_isDestroyed = false;
 	
+	_impl = new lab::OscillatorNode(_fftSize);
+	
+	
 }
 
 

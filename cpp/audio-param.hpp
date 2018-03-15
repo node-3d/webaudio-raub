@@ -4,6 +4,8 @@
 
 #include <addon-tools.hpp>
 
+namespace lab { class AudioParam; };
+
 
 class AudioParam : public Nan::ObjectWrap {
 	
@@ -77,6 +79,8 @@ private:
 	float _defaultValue;
 	float _minValue;
 	float _maxValue;
+	
+	lab::AudioParam *_impl;
 	
 };
 

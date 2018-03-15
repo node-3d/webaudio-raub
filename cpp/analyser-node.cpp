@@ -86,11 +86,15 @@ NAN_METHOD(AnalyserNode::newCtor) {
 }
 
 
-AnalyserNode::AnalyserNode(size_t fftSize) {
+AnalyserNode::AnalyserNode() {
 	
 	_isDestroyed = false;
 	
-	_impl = new lab::AnalyserNode(fftSize);
+	_fftSize = 2048;
+	
+	_impl = new lab::AnalyserNode(_fftSize);
+	
+	
 	
 }
 

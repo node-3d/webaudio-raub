@@ -68,6 +68,8 @@ private:
 	Nan::Persistent<v8::Object> _frequency;
 	Nan::Persistent<v8::Object> _detune;
 	
+	lab::OscillatorNode *_impl;
+	
 };
 
 

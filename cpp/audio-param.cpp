@@ -76,7 +76,10 @@ NAN_METHOD(AudioParam::newCtor) {
 	
 	CTOR_CHECK("AudioParam");
 	
-	AudioParam *audioParam = new AudioParam();
+	REQ_EXT_ARG(0, ext);
+	lab::AudioParam *param = reinterpret_cast<lab::AudioParam *>(ext);
+	
+	AudioParam *audioParam = new AudioParam(param);
 	audioParam->Wrap(info.This());
 	
 	RET_VALUE(info.This());
@@ -84,9 +87,11 @@ NAN_METHOD(AudioParam::newCtor) {
 }
 
 
-AudioParam::AudioParam() {
+AudioParam::AudioParam(lab::AudioParam *param) {
 	
 	_isDestroyed = false;
+	
+	_impl = param;
 	
 }
 
@@ -102,7 +107,7 @@ void AudioParam::_destroy() { DES_CHECK;
 	
 	_isDestroyed = true;
 	
-	
+	_impl = NULL;
 	
 }
 
