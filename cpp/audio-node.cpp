@@ -3,6 +3,8 @@
 
 #include "audio-node.hpp"
 
+#include <LabSound/core/AnalyserNode.h>
+
 using namespace v8;
 using namespace node;
 using namespace std;

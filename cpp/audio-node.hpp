@@ -4,6 +4,8 @@
 
 #include <addon-tools.hpp>
 
+namespace lab { class AudioNode; };
+
 
 class AudioNode : public Nan::ObjectWrap {
 	
@@ -82,6 +84,8 @@ private:
 	unsigned int _channelCount;
 	std::string _channelCountMode;
 	std::string _channelInterpretation;
+	
+	lab::AudioNode *_impl;
 	
 };
 
