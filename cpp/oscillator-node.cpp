@@ -3,6 +3,8 @@
 
 #include "oscillator-node.hpp"
 
+#include <LabSound/core/OscillatorNode.h>
+
 using namespace v8;
 using namespace node;
 using namespace std;
@@ -69,6 +71,8 @@ NAN_METHOD(OscillatorNode::newCtor) {
 	
 	CTOR_CHECK("OscillatorNode");
 	
+	// TODO receive context
+	
 	OscillatorNode *oscillatorNode = new OscillatorNode();
 	oscillatorNode->Wrap(info.This());
 	
@@ -81,7 +85,7 @@ OscillatorNode::OscillatorNode() {
 	
 	_isDestroyed = false;
 	
-	_impl = new lab::OscillatorNode(_fftSize);
+	_impl = new lab::OscillatorNode(44100);
 	
 	
 }

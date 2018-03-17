@@ -22,7 +22,7 @@ public:
 // Protected C++ methods: implementing JS calls
 protected:
 	
-	AudioParam();
+	AudioParam(lab::AudioParam *param);
 	virtual ~AudioParam();
 	
 	

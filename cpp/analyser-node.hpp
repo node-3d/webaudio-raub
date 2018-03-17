@@ -22,7 +22,7 @@ public:
 // Protected C++ methods: implementing JS calls
 protected:
 	
-	AnalyserNode();
+	AnalyserNode(float fftSize = 2048);
 	virtual ~AnalyserNode();
 	
 	

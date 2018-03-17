@@ -9,7 +9,9 @@
 namespace lab { class AudioContext; };
 
 
-class AudioContext : public EventEmitter {
+class AudioContext : public Nan::ObjectWrap {
+	
+	enum AudioContextState { Running, Suspended, Closed };
 	
 // Public V8 init
 public:
@@ -24,7 +26,7 @@ public:
 // Protected C++ methods: implementing JS calls
 protected:
 	
-	AudioContext();
+	AudioContext(float sampleRate = 44100.f);
 	virtual ~AudioContext();
 	
 	
@@ -65,6 +67,7 @@ private:
 private:
 	
 	bool _isDestroyed;
+	AudioContextState _state;
 	
 	double _baseLatency;
 	

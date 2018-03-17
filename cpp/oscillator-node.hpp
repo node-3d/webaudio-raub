@@ -4,6 +4,8 @@
 
 #include <addon-tools.hpp>
 
+namespace lab { class OscillatorNode; };
+
 
 class OscillatorNode : public Nan::ObjectWrap {
 	

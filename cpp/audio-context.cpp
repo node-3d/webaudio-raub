@@ -4,6 +4,7 @@
 #include "audio-context.hpp"
 
 #include <LabSound/core/AudioContext.h>
+#include <LabSound/core/DefaultAudioDestinationNode.h>
 
 using namespace v8;
 using namespace node;
@@ -60,8 +61,6 @@ void AudioContext::init(Local<Object> target) {
 	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	
-	
-	
 	_constructor.Reset(ctor);
 	Nan::Set(target, JS_STR("AudioContext"), ctor);
 	
@@ -90,7 +89,9 @@ NAN_METHOD(AudioContext::newCtor) {
 			audioContext = new AudioContext(sampleRate);
 			
 		} else {
+			
 			audioContext = new AudioContext();
+			
 		}
 		
 	} else {
@@ -106,14 +107,20 @@ NAN_METHOD(AudioContext::newCtor) {
 }
 
 
-AudioContext::AudioContext(float sampleRate = 44100.f) {
+AudioContext::AudioContext(float sampleRate) {
 	
 	_isDestroyed = false;
 	
 	_impl.reset(new lab::AudioContext(false));
 	
-	_impl->setDestinationNode(std::make_shared<lab::DefaultAudioDestinationNode>(_impl.get(), sampleRate));
+	_impl->setDestinationNode(
+		std::make_shared<lab::DefaultAudioDestinationNode>(
+			_impl.get(), sampleRate
+		)
+	);
 	_impl->lazyInitialize();
+	
+	_state = Running;
 	
 }
 
@@ -127,12 +134,15 @@ AudioContext::~AudioContext() {
 
 void AudioContext::_destroy() { DES_CHECK;
 	
+	if (_state != Closed) {
+		_state = Closed;
+	}
+	
 	_isDestroyed = true;
 	
-	
+	_impl.reset(NULL);
 	
 }
-
 
 
 NAN_METHOD(AudioContext::destroy) { THIS_AUDIO_CONTEXT; THIS_CHECK;
@@ -144,7 +154,15 @@ NAN_METHOD(AudioContext::destroy) { THIS_AUDIO_CONTEXT; THIS_CHECK;
 
 NAN_METHOD(AudioContext::suspend) { THIS_AUDIO_CONTEXT; THIS_CHECK;
 	
+	if (audioContext->_state == Closed) {
+		// error
+	}
 	
+	if (audioContext->_state == Suspended) {
+		return;
+	}
+	
+	audioContext->_state = Suspended;
 	
 	// TODO: do something?
 	
@@ -153,18 +171,14 @@ NAN_METHOD(AudioContext::suspend) { THIS_AUDIO_CONTEXT; THIS_CHECK;
 
 NAN_METHOD(AudioContext::close) { THIS_AUDIO_CONTEXT; THIS_CHECK;
 	
-	
-	
-	// TODO: do something?
+	audioContext->_destroy();
 	
 }
 
 
 NAN_METHOD(AudioContext::getOutputTimestamp) { THIS_AUDIO_CONTEXT; THIS_CHECK;
 	
-	
-	
-	// TODO: do something?
+	// FIXME: audioContext->_impl->getOutputTimestamp
 	
 }
 

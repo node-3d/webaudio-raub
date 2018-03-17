@@ -77,7 +77,7 @@ NAN_METHOD(AudioParam::newCtor) {
 	CTOR_CHECK("AudioParam");
 	
 	REQ_EXT_ARG(0, ext);
-	lab::AudioParam *param = reinterpret_cast<lab::AudioParam *>(ext);
+	lab::AudioParam *param = reinterpret_cast<lab::AudioParam *>(ext->Value());
 	
 	AudioParam *audioParam = new AudioParam(param);
 	audioParam->Wrap(info.This());
