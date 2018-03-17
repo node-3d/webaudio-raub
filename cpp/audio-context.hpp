@@ -2,10 +2,14 @@
 #define _AUDIO_CONTEXT_HPP_
 
 
+#include <memory>
+
 #include <addon-tools.hpp>
 
+namespace lab { class AudioContext; };
 
-class AudioContext : public Nan::ObjectWrap {
+
+class AudioContext : public EventEmitter {
 	
 // Public V8 init
 public:
@@ -63,6 +67,8 @@ private:
 	bool _isDestroyed;
 	
 	double _baseLatency;
+	
+	std::unique_ptr<lab::AudioContext> _impl;
 	
 };
 

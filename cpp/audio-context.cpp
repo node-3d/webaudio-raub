@@ -3,10 +3,11 @@
 
 #include "audio-context.hpp"
 
+#include <LabSound/core/AudioContext.h>
+
 using namespace v8;
 using namespace node;
 using namespace std;
-
 
 #define THIS_AUDIO_CONTEXT                                                    \
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(info.This());
@@ -72,7 +73,32 @@ NAN_METHOD(AudioContext::newCtor) {
 	
 	CTOR_CHECK("AudioContext");
 	
-	AudioContext *audioContext = new AudioContext();
+	AudioContext *audioContext = NULL;
+	
+	if (info.Length() > 0) {
+		
+		REQ_OBJ_ARG(0, opts);
+		
+		if (opts->Has(JS_STR("sampleRate"))) {
+			
+			if ( ! opts->Get(JS_STR("sampleRate"))->IsNumber() ) {
+				return Nan::ThrowTypeError("Type of 'opts.sampleRate' must be 'number'.");
+			}
+			
+			float sampleRate = static_cast<float>(opts->Get(JS_STR("sampleRate"))->NumberValue());
+			
+			audioContext = new AudioContext(sampleRate);
+			
+		} else {
+			audioContext = new AudioContext();
+		}
+		
+	} else {
+		
+		audioContext = new AudioContext();
+		
+	}
+	
 	audioContext->Wrap(info.This());
 	
 	RET_VALUE(info.This());
@@ -80,9 +106,14 @@ NAN_METHOD(AudioContext::newCtor) {
 }
 
 
-AudioContext::AudioContext() {
+AudioContext::AudioContext(float sampleRate = 44100.f) {
 	
 	_isDestroyed = false;
+	
+	_impl.reset(new lab::AudioContext(false));
+	
+	_impl->setDestinationNode(std::make_shared<lab::DefaultAudioDestinationNode>(_impl.get(), sampleRate));
+	_impl->lazyInitialize();
 	
 }
 
