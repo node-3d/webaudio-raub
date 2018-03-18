@@ -48,14 +48,19 @@ extern "C" {
 
 void init(Local<Object> target) {
 	
+	BaseAudioContext::init(target);
+	AudioContext::init(target);
+	OfflineAudioContext::init(target);
+	
+	AudioParam::init(target);
+	
+	AudioNode::init(target);
+	
 	AnalyserNode::init(target);
 	AudioBuffer::init(target);
 	AudioBufferSourceNode::init(target);
-	AudioContext::init(target);
 	AudioDestinationNode::init(target);
 	AudioListener::init(target);
-	AudioNode::init(target);
-	AudioParam::init(target);
 	AudioProcessingEvent::init(target);
 	AudioScheduledSourceNode::init(target);
 	AudioTimestamp::init(target);
@@ -63,7 +68,6 @@ void init(Local<Object> target) {
 	AudioWorkletGlobalScope::init(target);
 	AudioWorkletNode::init(target);
 	AudioWorkletProcessor::init(target);
-	BaseAudioContext::init(target);
 	BiquadFilterNode::init(target);
 	ChannelMergerNode::init(target);
 	ChannelSplitterNode::init(target);
@@ -77,7 +81,6 @@ void init(Local<Object> target) {
 	MediaStreamAudioDestinationNode::init(target);
 	MediaStreamAudioSourceNode::init(target);
 	OfflineAudioCompletionEvent::init(target);
-	OfflineAudioContext::init(target);
 	OscillatorNode::init(target);
 	PannerNode::init(target);
 	PeriodicWave::init(target);

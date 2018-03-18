@@ -11,6 +11,7 @@ const { AudioContext, GainNode } = require('..');
 	const oscillator2 = context.createOscillator();
 	
 	const gain = context.createGain();
+	console.log('gain', context.createGain);
 	gain.gain.value = 0.5;
 	
 	// osc . gain . destination

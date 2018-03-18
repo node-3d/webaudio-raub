@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "audio-context.hpp"
+#include "base-audio-context.hpp"
 
 #include <LabSound/core/AudioContext.h>
 #include <LabSound/core/DefaultAudioDestinationNode.h>
@@ -32,6 +33,11 @@ Nan::Persistent<v8::Function> AudioContext::_constructor;
 void AudioContext::init(Local<Object> target) {
 	
 	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
+	
+	// class AudioContext extends BaseAudioContext
+	Local<FunctionTemplate> parent = Nan::New(BaseAudioContext::protorype);
+	proto->Inherit(parent);
+	
 	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
 	proto->SetClassName(JS_STR("AudioContext"));

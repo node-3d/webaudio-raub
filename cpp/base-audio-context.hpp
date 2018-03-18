@@ -86,6 +86,11 @@ private:
 	static Nan::Persistent<v8::Function> _constructor;
 	
 	
+public:
+	
+	static Nan::Persistent<v8::FunctionTemplate> protorype;
+	
+	
 // This-state storage
 private:
 	

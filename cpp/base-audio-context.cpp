@@ -25,6 +25,7 @@ using namespace std;
 
 
 Nan::Persistent<v8::Function> BaseAudioContext::_constructor;
+Nan::Persistent<v8::FunctionTemplate> BaseAudioContext::protorype;
 
 
 void BaseAudioContext::init(Local<Object> target) {
@@ -83,6 +84,7 @@ void BaseAudioContext::init(Local<Object> target) {
 	
 	
 	_constructor.Reset(ctor);
+	protorype.Reset(proto);
 	Nan::Set(target, JS_STR("BaseAudioContext"), ctor);
 	
 	
