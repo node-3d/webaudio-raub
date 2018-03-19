@@ -5,7 +5,13 @@ const { AudioContext, GainNode } = require('..');
 
 (async () => { try {
 	
+	console.log('index.js', 'ty', typeof AudioContext);
 	const context = new AudioContext();
+	console.log('index.js', 'CC', context);
+	console.log('index.js', 'SUS');
+	context.suspend();
+	console.log('index.js', 'SUS OK');
+	console.log('index.js', context.state);
 	
 	const oscillator1 = context.createOscillator();
 	const oscillator2 = context.createOscillator();

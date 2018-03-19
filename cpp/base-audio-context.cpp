@@ -7,8 +7,10 @@ using namespace v8;
 using namespace node;
 using namespace std;
 
+#include <LabSound/core/AudioContext.h>
+#include <LabSound/core/DefaultAudioDestinationNode.h>
 
-#define THIS_BASE_AUDIO_CONTEXT                                                    \
+#define THIS_BASE_AUDIO_CONTEXT                                               \
 	BaseAudioContext *baseAudioContext = ObjectWrap::Unwrap<BaseAudioContext>(info.This());
 
 #define THIS_CHECK                                                            \
@@ -18,14 +20,14 @@ using namespace std;
 	if (_isDestroyed) return;
 
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (baseAudioContext->CACHE == V) {                                           \
+	if (baseAudioContext->CACHE == V) {                                       \
 		return;                                                               \
 	}                                                                         \
 	baseAudioContext->CACHE = V;
 
 
 Nan::Persistent<v8::Function> BaseAudioContext::_constructor;
-Nan::Persistent<v8::FunctionTemplate> BaseAudioContext::protorype;
+Nan::Persistent<v8::FunctionTemplate> BaseAudioContext::_protorype;
 
 
 void BaseAudioContext::init(Local<Object> target) {
@@ -71,7 +73,6 @@ void BaseAudioContext::init(Local<Object> target) {
 	Nan::SetPrototypeMethod(proto, "createPeriodicWave", createPeriodicWave);
 	Nan::SetPrototypeMethod(proto, "createChannelSplitter", createChannelSplitter);
 	Nan::SetPrototypeMethod(proto, "createChannelMerger", createChannelMerger);
-	Nan::SetPrototypeMethod(proto, "resume", resume);
 	Nan::SetPrototypeMethod(proto, "createMediaElementSource", createMediaElementSource);
 	Nan::SetPrototypeMethod(proto, "createMediaStreamSource", createMediaStreamSource);
 	Nan::SetPrototypeMethod(proto, "createMediaStreamDestination", createMediaStreamDestination);
@@ -84,7 +85,7 @@ void BaseAudioContext::init(Local<Object> target) {
 	
 	
 	_constructor.Reset(ctor);
-	protorype.Reset(proto);
+	_protorype.Reset(proto);
 	Nan::Set(target, JS_STR("BaseAudioContext"), ctor);
 	
 	
@@ -93,19 +94,59 @@ void BaseAudioContext::init(Local<Object> target) {
 
 NAN_METHOD(BaseAudioContext::newCtor) {
 	
-	CTOR_CHECK("BaseAudioContext");
+	// CTOR_CHECK("BaseAudioContext");
+	std::cout << "CALL BaseAudioContext" << std::endl;
+	REQ_BOOL_ARG(0, isOffline);
 	
-	BaseAudioContext *baseAudioContext = new BaseAudioContext();
+	BaseAudioContext *baseAudioContext = NULL;
+	
+	if (info.Length() > 1) {
+		std::cout << "CALL BaseAudioContext > 1" << std::endl;
+		REQ_OBJ_ARG(1, opts);
+		std::cout << "CALL BaseAudioContext OBJ" << std::endl;
+		if (opts->Has(JS_STR("sampleRate"))) {
+			std::cout << "CALL BaseAudioContext HAS" << std::endl;
+			if ( ! opts->Get(JS_STR("sampleRate"))->IsNumber() ) {
+				return Nan::ThrowTypeError("Type of 'opts.sampleRate' must be 'number'.");
+			}
+			
+			float sampleRate = static_cast<float>(opts->Get(JS_STR("sampleRate"))->NumberValue());
+			
+			baseAudioContext = new BaseAudioContext(isOffline, sampleRate);
+			
+		} else {
+			std::cout << "CALL BaseAudioContext NO" << std::endl;
+			baseAudioContext = new BaseAudioContext(isOffline);
+			
+		}
+		
+	} else {
+		std::cout << "CALL BaseAudioContext <= 1" << std::endl;
+		baseAudioContext = new BaseAudioContext(isOffline);
+		
+	}
+	
 	baseAudioContext->Wrap(info.This());
-	
 	RET_VALUE(info.This());
+	std::cout << "CALL BaseAudioContext DONE" << std::endl;
 	
 }
 
 
-BaseAudioContext::BaseAudioContext() {
+BaseAudioContext::BaseAudioContext(bool isOffline, float sampleRate) {
 	
 	_isDestroyed = false;
+	
+	_impl.reset(new lab::AudioContext(isOffline));
+	
+	_impl->setDestinationNode(
+		std::make_shared<lab::DefaultAudioDestinationNode>(
+			_impl.get(), sampleRate
+		)
+	);
+	_impl->lazyInitialize();
+	
+	_state = Running;
 	
 }
 
@@ -119,9 +160,13 @@ BaseAudioContext::~BaseAudioContext() {
 
 void BaseAudioContext::_destroy() { DES_CHECK;
 	
+	if (_state != Closed) {
+		_state = Closed;
+	}
+	
 	_isDestroyed = true;
 	
-	
+	_impl.reset(NULL);
 	
 }
 
@@ -314,15 +359,6 @@ NAN_METHOD(BaseAudioContext::createChannelMerger) { THIS_BASE_AUDIO_CONTEXT; THI
 }
 
 
-NAN_METHOD(BaseAudioContext::resume) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
-	
-	
-	
-	// TODO: do something?
-	
-}
-
-
 NAN_METHOD(BaseAudioContext::createMediaElementSource) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, mediaElement);
@@ -392,7 +428,21 @@ NAN_GETTER(BaseAudioContext::listenerGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHE
 
 NAN_GETTER(BaseAudioContext::stateGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
-	RET_VALUE(JS_UTF8(baseAudioContext->_state));
+	switch (baseAudioContext->_state) {
+		
+		case Closed :
+			RET_VALUE(JS_UTF8("closed"));
+			break;
+			
+		case Suspended :
+			RET_VALUE(JS_UTF8("suspended"));
+			break;
+			
+		default:
+			RET_VALUE(JS_UTF8("running"));
+			break;
+		
+	}
 	
 }
 

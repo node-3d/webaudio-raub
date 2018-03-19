@@ -14,8 +14,11 @@ using namespace std;
 #define THIS_AUDIO_CONTEXT                                                    \
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(info.This());
 
+#define THIS_BASE_CONTEXT                                                    \
+	BaseAudioContext *baseAudioContext = ObjectWrap::Unwrap<BaseAudioContext>(info.This());
+
 #define THIS_CHECK                                                            \
-	if (audioContext->_isDestroyed) return;
+	if (baseAudioContext->_isDestroyed) return;
 
 #define DES_CHECK                                                             \
 	if (_isDestroyed) return;
@@ -35,7 +38,7 @@ void AudioContext::init(Local<Object> target) {
 	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
 	
 	// class AudioContext extends BaseAudioContext
-	Local<FunctionTemplate> parent = Nan::New(BaseAudioContext::protorype);
+	Local<FunctionTemplate> parent = Nan::New(BaseAudioContext::_protorype);
 	proto->Inherit(parent);
 	
 	
@@ -45,15 +48,11 @@ void AudioContext::init(Local<Object> target) {
 	
 	// Accessors
 	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
-	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, baseLatency);
 	
 	// -------- dynamic
 	
-	
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
 	
 	Nan::SetPrototypeMethod(proto, "suspend", suspend);
 	Nan::SetPrototypeMethod(proto, "close", close);
@@ -76,36 +75,18 @@ void AudioContext::init(Local<Object> target) {
 
 NAN_METHOD(AudioContext::newCtor) {
 	
-	CTOR_CHECK("AudioContext");
-	
-	AudioContext *audioContext = NULL;
+	v8::Local<v8::Function> superCtor = Nan::New(BaseAudioContext::_constructor);
 	
 	if (info.Length() > 0) {
-		
 		REQ_OBJ_ARG(0, opts);
-		
-		if (opts->Has(JS_STR("sampleRate"))) {
-			
-			if ( ! opts->Get(JS_STR("sampleRate"))->IsNumber() ) {
-				return Nan::ThrowTypeError("Type of 'opts.sampleRate' must be 'number'.");
-			}
-			
-			float sampleRate = static_cast<float>(opts->Get(JS_STR("sampleRate"))->NumberValue());
-			
-			audioContext = new AudioContext(sampleRate);
-			
-		} else {
-			
-			audioContext = new AudioContext();
-			
-		}
-		
+		v8::Local<v8::Value> argv[] = { JS_BOOL(false), opts };
+		superCtor->Call(info.This(), 2, argv);
 	} else {
-		
-		audioContext = new AudioContext();
-		
+		v8::Local<v8::Value> argv = JS_BOOL(false);
+		superCtor->Call(info.This(), 1, &argv);
 	}
 	
+	AudioContext *audioContext = new AudioContext();
 	audioContext->Wrap(info.This());
 	
 	RET_VALUE(info.This());
@@ -113,83 +94,46 @@ NAN_METHOD(AudioContext::newCtor) {
 }
 
 
-AudioContext::AudioContext(float sampleRate) {
-	
-	_isDestroyed = false;
-	
-	_impl.reset(new lab::AudioContext(false));
-	
-	_impl->setDestinationNode(
-		std::make_shared<lab::DefaultAudioDestinationNode>(
-			_impl.get(), sampleRate
-		)
-	);
-	_impl->lazyInitialize();
-	
-	_state = Running;
-	
-}
+AudioContext::AudioContext() {}
+
+AudioContext::~AudioContext() {}
 
 
-AudioContext::~AudioContext() {
+NAN_METHOD(AudioContext::suspend) { THIS_BASE_CONTEXT; THIS_CHECK;
 	
-	_destroy();
+	std::cout << "CALL suspend"  << baseAudioContext << std::endl;
 	
-}
-
-
-void AudioContext::_destroy() { DES_CHECK;
 	
-	if (_state != Closed) {
-		_state = Closed;
-	}
-	
-	_isDestroyed = true;
-	
-	_impl.reset(NULL);
-	
-}
-
-
-NAN_METHOD(AudioContext::destroy) { THIS_AUDIO_CONTEXT; THIS_CHECK;
-	
-	audioContext->_destroy();
-	
-}
-
-
-NAN_METHOD(AudioContext::suspend) { THIS_AUDIO_CONTEXT; THIS_CHECK;
-	
-	if (audioContext->_state == Closed) {
+	if (baseAudioContext->_state == BaseAudioContext::Closed) {
 		// error
 	}
 	
-	if (audioContext->_state == Suspended) {
+	if (baseAudioContext->_state == BaseAudioContext::Suspended) {
 		return;
 	}
 	
-	audioContext->_state = Suspended;
+	baseAudioContext->_state = BaseAudioContext::Suspended;
 	
 	// TODO: do something?
 	
 }
 
 
-NAN_METHOD(AudioContext::close) { THIS_AUDIO_CONTEXT; THIS_CHECK;
+NAN_METHOD(AudioContext::close) { THIS_BASE_CONTEXT; THIS_CHECK;
 	
-	audioContext->_destroy();
+	baseAudioContext->_destroy();
 	
 }
 
 
-NAN_METHOD(AudioContext::getOutputTimestamp) { THIS_AUDIO_CONTEXT; THIS_CHECK;
+NAN_METHOD(AudioContext::getOutputTimestamp) { THIS_BASE_CONTEXT; THIS_CHECK;
 	
 	// FIXME: audioContext->_impl->getOutputTimestamp
 	
 }
 
 
-NAN_METHOD(AudioContext::createMediaElementSource) { THIS_AUDIO_CONTEXT; THIS_CHECK;
+NAN_METHOD(AudioContext::createMediaElementSource) { THIS_BASE_CONTEXT; THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, mediaElement);
 	
@@ -198,7 +142,7 @@ NAN_METHOD(AudioContext::createMediaElementSource) { THIS_AUDIO_CONTEXT; THIS_CH
 }
 
 
-NAN_METHOD(AudioContext::createMediaStreamSource) { THIS_AUDIO_CONTEXT; THIS_CHECK;
+NAN_METHOD(AudioContext::createMediaStreamSource) { THIS_BASE_CONTEXT; THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, mediaStream);
 	
@@ -207,7 +151,7 @@ NAN_METHOD(AudioContext::createMediaStreamSource) { THIS_AUDIO_CONTEXT; THIS_CHE
 }
 
 
-NAN_METHOD(AudioContext::createMediaStreamDestination) { THIS_AUDIO_CONTEXT; THIS_CHECK;
+NAN_METHOD(AudioContext::createMediaStreamDestination) { THIS_BASE_CONTEXT; THIS_CHECK;
 	
 	
 	
@@ -216,18 +160,8 @@ NAN_METHOD(AudioContext::createMediaStreamDestination) { THIS_AUDIO_CONTEXT; THI
 }
 
 
-
-NAN_GETTER(AudioContext::isDestroyedGetter) { THIS_AUDIO_CONTEXT;
-	
-	RET_VALUE(JS_BOOL(audioContext->_isDestroyed));
-	
-}
-
-
-NAN_GETTER(AudioContext::baseLatencyGetter) { THIS_AUDIO_CONTEXT; THIS_CHECK;
+NAN_GETTER(AudioContext::baseLatencyGetter) { THIS_AUDIO_CONTEXT; THIS_BASE_CONTEXT; THIS_CHECK;
 	
 	RET_VALUE(JS_DOUBLE(audioContext->_baseLatency));
 	
 }
-
-

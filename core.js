@@ -9,9 +9,9 @@ require('deps-labsound-raub');
 const core = require('./binary/waa');
 const { AudioContext, BaseAudioContext/*, GainNode, OscillatorNode*/ } = core;
 
-console.log('AudioContext', AudioContext.name);
-console.log('BaseAudioContext', BaseAudioContext.name);
-console.log('AudioContext', Object.getPrototypeOf(AudioContext).name);
+console.log('AudioContext', AudioContext);
+console.log('BaseAudioContext', BaseAudioContext);
+console.log('AudioContext', Object.getPrototypeOf(AudioContext));
 // AudioContext.prototype.createGain = function() {
 // 	return new GainNode();
 // };

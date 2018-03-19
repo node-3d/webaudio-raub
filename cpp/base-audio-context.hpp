@@ -2,10 +2,21 @@
 #define _BASE_AUDIO_CONTEXT_HPP_
 
 
+#include <memory>
+
 #include <addon-tools.hpp>
+
+namespace lab { class AudioContext; };
 
 
 class BaseAudioContext : public Nan::ObjectWrap {
+	
+	friend class AudioContext;
+	friend class OfflineAudioContext;
+	
+
+	enum AudioContextState { Running, Suspended, Closed };
+	
 	
 // Public V8 init
 public:
@@ -20,7 +31,7 @@ public:
 // Protected C++ methods: implementing JS calls
 protected:
 	
-	BaseAudioContext();
+	BaseAudioContext(bool isOffline = false, float sampleRate = 44100.f);
 	virtual ~BaseAudioContext();
 	
 	
@@ -50,7 +61,6 @@ protected:
 	static NAN_METHOD(createPeriodicWave);
 	static NAN_METHOD(createChannelSplitter);
 	static NAN_METHOD(createChannelMerger);
-	static NAN_METHOD(resume);
 	static NAN_METHOD(createMediaElementSource);
 	static NAN_METHOD(createMediaStreamSource);
 	static NAN_METHOD(createMediaStreamDestination);
@@ -61,16 +71,12 @@ protected:
 	
 	static NAN_GETTER(destinationGetter);
 	
-
 	static NAN_GETTER(currentTimeGetter);
 	
-
 	static NAN_GETTER(sampleRateGetter);
 	
-
 	static NAN_GETTER(listenerGetter);
 	
-
 	static NAN_GETTER(stateGetter);
 	
 	
@@ -83,16 +89,14 @@ private:
 // Stored JS constructor and helpers
 private:
 	
+	static Nan::Persistent<v8::FunctionTemplate> _protorype;
 	static Nan::Persistent<v8::Function> _constructor;
-	
-	
-public:
-	
-	static Nan::Persistent<v8::FunctionTemplate> protorype;
 	
 	
 // This-state storage
 private:
+	
+	std::unique_ptr<lab::AudioContext> _impl;
 	
 	bool _isDestroyed;
 	
@@ -100,7 +104,7 @@ private:
 	double _currentTime;
 	float _sampleRate;
 	Nan::Persistent<v8::Object> _listener;
-	std::string _state;
+	AudioContextState _state;
 	
 };
 
