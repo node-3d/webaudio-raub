@@ -1,21 +1,22 @@
 #include <cstdlib>
-#include <iostream>
+//#include <iostream> // -> std::cout << "..." << std::endl;
+
 
 #include "audio-scheduled-source-node.hpp"
+
 
 using namespace v8;
 using namespace node;
 using namespace std;
 
 
+// ------ Aux macros
+
 #define THIS_AUDIO_SCHEDULED_SOURCE_NODE                                                    \
 	AudioScheduledSourceNode *audioScheduledSourceNode = ObjectWrap::Unwrap<AudioScheduledSourceNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (audioScheduledSourceNode->_isDestroyed) return;
-
-#define DES_CHECK                                                             \
-	if (_isDestroyed) return;
 
 #define CACHE_CAS(CACHE, V)                                                   \
 	if (audioScheduledSourceNode->CACHE == V) {                                           \
@@ -24,59 +25,9 @@ using namespace std;
 	audioScheduledSourceNode->CACHE = V;
 
 
-Nan::Persistent<v8::Function> AudioScheduledSourceNode::_constructor;
+// ------ Constructor and Destructor
 
-
-void AudioScheduledSourceNode::init(Local<Object> target) {
-	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("AudioScheduledSourceNode"));
-	
-	
-	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_RW(obj, onended);
-	
-	// -------- dynamic
-	
-	
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	Nan::SetPrototypeMethod(proto, "start", start);
-	Nan::SetPrototypeMethod(proto, "stop", stop);
-	
-	// -------- static
-	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
-	
-	
-	
-	
-	_constructor.Reset(ctor);
-	Nan::Set(target, JS_STR("AudioScheduledSourceNode"), ctor);
-	
-	
-}
-
-
-NAN_METHOD(AudioScheduledSourceNode::newCtor) {
-	
-	CTOR_CHECK("AudioScheduledSourceNode");
-	
-	AudioScheduledSourceNode *audioScheduledSourceNode = new AudioScheduledSourceNode();
-	audioScheduledSourceNode->Wrap(info.This());
-	
-	RET_VALUE(info.This());
-	
-}
-
-
-AudioScheduledSourceNode::AudioScheduledSourceNode() {
+AudioScheduledSourceNode::AudioScheduledSourceNode() : AudioNode() {
 	
 	_isDestroyed = false;
 	
@@ -94,17 +45,12 @@ void AudioScheduledSourceNode::_destroy() { DES_CHECK;
 	
 	_isDestroyed = true;
 	
-	
-	
-}
-
-
-
-NAN_METHOD(AudioScheduledSourceNode::destroy) { THIS_AUDIO_SCHEDULED_SOURCE_NODE; THIS_CHECK;
-	
-	audioScheduledSourceNode->_destroy();
+	AudioNode::_destroy();
 	
 }
+
+
+// ------ Methods and props
 
 
 NAN_METHOD(AudioScheduledSourceNode::start) { THIS_AUDIO_SCHEDULED_SOURCE_NODE; THIS_CHECK;
@@ -126,13 +72,6 @@ NAN_METHOD(AudioScheduledSourceNode::stop) { THIS_AUDIO_SCHEDULED_SOURCE_NODE; T
 
 
 
-NAN_GETTER(AudioScheduledSourceNode::isDestroyedGetter) { THIS_AUDIO_SCHEDULED_SOURCE_NODE;
-	
-	RET_VALUE(JS_BOOL(audioScheduledSourceNode->_isDestroyed));
-	
-}
-
-
 NAN_GETTER(AudioScheduledSourceNode::onendedGetter) { THIS_AUDIO_SCHEDULED_SOURCE_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_FUN(audioScheduledSourceNode->_onended));
@@ -150,3 +89,73 @@ NAN_SETTER(AudioScheduledSourceNode::onendedSetter) { THIS_AUDIO_SCHEDULED_SOURC
 	
 }
 
+
+
+// ------ System methods and props for ObjectWrap
+
+Nan::Persistent<v8::FunctionTemplate> AudioScheduledSourceNode::_protoAudioScheduledSourceNode;
+Nan::Persistent<v8::Function> AudioScheduledSourceNode::_ctorAudioScheduledSourceNode;
+
+
+void AudioScheduledSourceNode::init(Local<Object> target) {
+	
+	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
+	
+	// class AudioScheduledSourceNode inherits AudioNode
+	Local<FunctionTemplate> parent = Nan::New(AudioNode::_protoAudioNode);
+	proto->Inherit(parent);
+	
+	proto->InstanceTemplate()->SetInternalFieldCount(1);
+	proto->SetClassName(JS_STR("AudioScheduledSourceNode"));
+	
+	
+	// Accessors
+	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	ACCESSOR_R(obj, isDestroyed);
+	
+	ACCESSOR_RW(obj, onended);
+	
+	// -------- dynamic
+	
+	Nan::SetPrototypeMethod(proto, "destroy", destroy);
+	
+	Nan::SetPrototypeMethod(proto, "start", start);
+	Nan::SetPrototypeMethod(proto, "stop", stop);
+	
+	// -------- static
+	
+	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	
+	_protoAudioScheduledSourceNode.Reset(proto);
+	_ctorAudioScheduledSourceNode.Reset(ctor);
+	
+	Nan::Set(target, JS_STR("AudioScheduledSourceNode"), ctor);
+	
+	
+}
+
+
+NAN_METHOD(AudioScheduledSourceNode::newCtor) {
+	
+	CTOR_CHECK("AudioScheduledSourceNode");
+	
+	AudioScheduledSourceNode *audioScheduledSourceNode = new AudioScheduledSourceNode();
+	audioScheduledSourceNode->Wrap(info.This());
+	
+	RET_VALUE(info.This());
+	
+}
+
+
+NAN_METHOD(AudioScheduledSourceNode::destroy) { THIS_AUDIO_SCHEDULED_SOURCE_NODE; THIS_CHECK;
+	
+	audioScheduledSourceNode->_destroy();
+	
+}
+
+
+NAN_GETTER(AudioScheduledSourceNode::isDestroyedGetter) { THIS_AUDIO_SCHEDULED_SOURCE_NODE;
+	
+	RET_VALUE(JS_BOOL(audioScheduledSourceNode->_isDestroyed));
+	
+}

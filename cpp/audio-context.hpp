@@ -4,52 +4,51 @@
 
 #include <addon-tools.hpp>
 
+#include "base-audio-context.hpp"
 
-class AudioContext : public Nan::ObjectWrap {
+
+class AudioContext : public BaseAudioContext {
 	
-// Public V8 init
 public:
 	
+	// Public V8 init
 	static void init(v8::Local<v8::Object> target);
 	
-	
-// Public C++ methods: in-engine calls
-public:
+	void _destroy();
 	
 	
-// Protected C++ methods: implementing JS calls
+// Methods and props
 protected:
 	
 	AudioContext();
+	explicit AudioContext(float sampleRate);
 	virtual ~AudioContext();
 	
+	static Nan::Persistent<v8::FunctionTemplate> _protoAudioContext; // for inheritance
+	static Nan::Persistent<v8::Function> _ctorAudioContext;
 	
-// JS methods and props
-protected:
+	
+// System methods and props for ObjectWrap
+private:
 	
 	static NAN_METHOD(newCtor);
 	
+	static NAN_METHOD(destroy);
+	static NAN_GETTER(isDestroyedGetter);
+	
 	static NAN_METHOD(suspend);
 	static NAN_METHOD(close);
-	
 	static NAN_METHOD(getOutputTimestamp);
-	
 	static NAN_METHOD(createMediaElementSource);
 	static NAN_METHOD(createMediaStreamSource);
 	static NAN_METHOD(createMediaStreamDestination);
 	
-	
 	static NAN_GETTER(baseLatencyGetter);
 	
 	
-// Stored JS constructor and helpers
 private:
 	
-	static Nan::Persistent<v8::Function> _constructor;
-	
-	
-// This-state storage
-private:
+	bool _isDestroyed;
 	
 	double _baseLatency;
 	

@@ -4,34 +4,34 @@
 
 #include <addon-tools.hpp>
 
-namespace lab { class AudioParam; };
-
 
 class AudioParam : public Nan::ObjectWrap {
 	
-// Public V8 init
 public:
 	
+	// Public V8 init
 	static void init(v8::Local<v8::Object> target);
 	
-	
-// Public C++ methods: in-engine calls
-public:
+	void _destroy();
 	
 	
-// Protected C++ methods: implementing JS calls
+// Methods and props
 protected:
 	
-	AudioParam(lab::AudioParam *param);
+	AudioParam();
 	virtual ~AudioParam();
 	
+	static Nan::Persistent<v8::FunctionTemplate> _protoAudioParam; // for inheritance
+	static Nan::Persistent<v8::Function> _ctorAudioParam;
 	
-// JS methods and props
-protected:
+	
+// System methods and props for ObjectWrap
+private:
 	
 	static NAN_METHOD(newCtor);
 	
 	static NAN_METHOD(destroy);
+	static NAN_GETTER(isDestroyedGetter);
 	
 	static NAN_METHOD(setValueAtTime);
 	static NAN_METHOD(linearRampToValueAtTime);
@@ -41,36 +41,16 @@ protected:
 	static NAN_METHOD(cancelScheduledValues);
 	static NAN_METHOD(cancelAndHoldAtTime);
 	
-	
-	static NAN_GETTER(isDestroyedGetter);
-	
-	
 	static NAN_GETTER(valueGetter);
 	static NAN_SETTER(valueSetter);
 	
-
 	static NAN_GETTER(defaultValueGetter);
 	
-
 	static NAN_GETTER(minValueGetter);
 	
-
 	static NAN_GETTER(maxValueGetter);
 	
 	
-// Actual destruction-handler
-private:
-	
-	void _destroy();
-	
-	
-// Stored JS constructor and helpers
-private:
-	
-	static Nan::Persistent<v8::Function> _constructor;
-	
-	
-// This-state storage
 private:
 	
 	bool _isDestroyed;
@@ -79,8 +59,6 @@ private:
 	float _defaultValue;
 	float _minValue;
 	float _maxValue;
-	
-	lab::AudioParam *_impl;
 	
 };
 

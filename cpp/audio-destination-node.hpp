@@ -4,55 +4,42 @@
 
 #include <addon-tools.hpp>
 
+#include "audio-node.hpp"
 
-class AudioDestinationNode : public Nan::ObjectWrap {
+
+class AudioDestinationNode : public AudioNode {
 	
-// Public V8 init
 public:
 	
+	// Public V8 init
 	static void init(v8::Local<v8::Object> target);
 	
-	
-// Public C++ methods: in-engine calls
-public:
+	void _destroy();
 	
 	
-// Protected C++ methods: implementing JS calls
+// Methods and props
 protected:
 	
 	AudioDestinationNode();
 	virtual ~AudioDestinationNode();
 	
+	static Nan::Persistent<v8::FunctionTemplate> _protoAudioDestinationNode; // for inheritance
+	static Nan::Persistent<v8::Function> _ctorAudioDestinationNode;
 	
-// JS methods and props
-protected:
+	
+// System methods and props for ObjectWrap
+private:
 	
 	static NAN_METHOD(newCtor);
 	
 	static NAN_METHOD(destroy);
-	
-	
-	
-	
 	static NAN_GETTER(isDestroyedGetter);
+	
 	
 	
 	static NAN_GETTER(maxChannelCountGetter);
 	
 	
-// Actual destruction-handler
-private:
-	
-	void _destroy();
-	
-	
-// Stored JS constructor and helpers
-private:
-	
-	static Nan::Persistent<v8::Function> _constructor;
-	
-	
-// This-state storage
 private:
 	
 	bool _isDestroyed;

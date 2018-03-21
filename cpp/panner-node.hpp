@@ -4,103 +4,77 @@
 
 #include <addon-tools.hpp>
 
+#include "audio-node.hpp"
 
-class PannerNode : public Nan::ObjectWrap {
+
+class PannerNode : public AudioNode {
 	
-// Public V8 init
 public:
 	
+	// Public V8 init
 	static void init(v8::Local<v8::Object> target);
 	
-	
-// Public C++ methods: in-engine calls
-public:
+	void _destroy();
 	
 	
-// Protected C++ methods: implementing JS calls
+// Methods and props
 protected:
 	
 	PannerNode();
 	virtual ~PannerNode();
 	
+	static Nan::Persistent<v8::FunctionTemplate> _protoPannerNode; // for inheritance
+	static Nan::Persistent<v8::Function> _ctorPannerNode;
 	
-// JS methods and props
-protected:
+	
+// System methods and props for ObjectWrap
+private:
 	
 	static NAN_METHOD(newCtor);
 	
 	static NAN_METHOD(destroy);
+	static NAN_GETTER(isDestroyedGetter);
 	
 	static NAN_METHOD(setPosition);
 	static NAN_METHOD(setOrientation);
 	
-	
-	static NAN_GETTER(isDestroyedGetter);
-	
-	
 	static NAN_GETTER(panningModelGetter);
 	static NAN_SETTER(panningModelSetter);
 	
-
 	static NAN_GETTER(positionXGetter);
 	
-
 	static NAN_GETTER(positionYGetter);
 	
-
 	static NAN_GETTER(positionZGetter);
 	
-
 	static NAN_GETTER(orientationXGetter);
 	
-
 	static NAN_GETTER(orientationYGetter);
 	
-
 	static NAN_GETTER(orientationZGetter);
 	
-
 	static NAN_GETTER(distanceModelGetter);
 	static NAN_SETTER(distanceModelSetter);
 	
-
 	static NAN_GETTER(refDistanceGetter);
 	static NAN_SETTER(refDistanceSetter);
 	
-
 	static NAN_GETTER(maxDistanceGetter);
 	static NAN_SETTER(maxDistanceSetter);
 	
-
 	static NAN_GETTER(rolloffFactorGetter);
 	static NAN_SETTER(rolloffFactorSetter);
 	
-
 	static NAN_GETTER(coneInnerAngleGetter);
 	static NAN_SETTER(coneInnerAngleSetter);
 	
-
 	static NAN_GETTER(coneOuterAngleGetter);
 	static NAN_SETTER(coneOuterAngleSetter);
 	
-
 	static NAN_GETTER(coneOuterGainGetter);
 	static NAN_SETTER(coneOuterGainSetter);
 	
 	
-// Actual destruction-handler
-private:
-	
-	void _destroy();
-	
-	
-// Stored JS constructor and helpers
-private:
-	
-	static Nan::Persistent<v8::Function> _constructor;
-	
-	
-// This-state storage
 private:
 	
 	bool _isDestroyed;

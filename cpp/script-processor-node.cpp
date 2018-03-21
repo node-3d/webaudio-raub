@@ -1,21 +1,22 @@
 #include <cstdlib>
-#include <iostream>
+//#include <iostream> // -> std::cout << "..." << std::endl;
+
 
 #include "script-processor-node.hpp"
+
 
 using namespace v8;
 using namespace node;
 using namespace std;
 
 
+// ------ Aux macros
+
 #define THIS_SCRIPT_PROCESSOR_NODE                                                    \
 	ScriptProcessorNode *scriptProcessorNode = ObjectWrap::Unwrap<ScriptProcessorNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (scriptProcessorNode->_isDestroyed) return;
-
-#define DES_CHECK                                                             \
-	if (_isDestroyed) return;
 
 #define CACHE_CAS(CACHE, V)                                                   \
 	if (scriptProcessorNode->CACHE == V) {                                           \
@@ -24,59 +25,9 @@ using namespace std;
 	scriptProcessorNode->CACHE = V;
 
 
-Nan::Persistent<v8::Function> ScriptProcessorNode::_constructor;
+// ------ Constructor and Destructor
 
-
-void ScriptProcessorNode::init(Local<Object> target) {
-	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("ScriptProcessorNode"));
-	
-	
-	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_RW(obj, onaudioprocess);
-	ACCESSOR_R(obj, bufferSize);
-	
-	// -------- dynamic
-	
-	
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	
-	
-	// -------- static
-	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
-	
-	
-	
-	
-	_constructor.Reset(ctor);
-	Nan::Set(target, JS_STR("ScriptProcessorNode"), ctor);
-	
-	
-}
-
-
-NAN_METHOD(ScriptProcessorNode::newCtor) {
-	
-	CTOR_CHECK("ScriptProcessorNode");
-	
-	ScriptProcessorNode *scriptProcessorNode = new ScriptProcessorNode();
-	scriptProcessorNode->Wrap(info.This());
-	
-	RET_VALUE(info.This());
-	
-}
-
-
-ScriptProcessorNode::ScriptProcessorNode() {
+ScriptProcessorNode::ScriptProcessorNode() : AudioNode() {
 	
 	_isDestroyed = false;
 	
@@ -94,26 +45,14 @@ void ScriptProcessorNode::_destroy() { DES_CHECK;
 	
 	_isDestroyed = true;
 	
-	
-	
-}
-
-
-
-NAN_METHOD(ScriptProcessorNode::destroy) { THIS_SCRIPT_PROCESSOR_NODE; THIS_CHECK;
-	
-	scriptProcessorNode->_destroy();
+	AudioNode::_destroy();
 	
 }
 
 
+// ------ Methods and props
 
 
-NAN_GETTER(ScriptProcessorNode::isDestroyedGetter) { THIS_SCRIPT_PROCESSOR_NODE;
-	
-	RET_VALUE(JS_BOOL(scriptProcessorNode->_isDestroyed));
-	
-}
 
 
 NAN_GETTER(ScriptProcessorNode::onaudioprocessGetter) { THIS_SCRIPT_PROCESSOR_NODE; THIS_CHECK;
@@ -141,3 +80,73 @@ NAN_GETTER(ScriptProcessorNode::bufferSizeGetter) { THIS_SCRIPT_PROCESSOR_NODE; 
 }
 
 
+
+
+// ------ System methods and props for ObjectWrap
+
+Nan::Persistent<v8::FunctionTemplate> ScriptProcessorNode::_protoScriptProcessorNode;
+Nan::Persistent<v8::Function> ScriptProcessorNode::_ctorScriptProcessorNode;
+
+
+void ScriptProcessorNode::init(Local<Object> target) {
+	
+	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
+	
+	// class ScriptProcessorNode inherits AudioNode
+	Local<FunctionTemplate> parent = Nan::New(AudioNode::_protoAudioNode);
+	proto->Inherit(parent);
+	
+	proto->InstanceTemplate()->SetInternalFieldCount(1);
+	proto->SetClassName(JS_STR("ScriptProcessorNode"));
+	
+	
+	// Accessors
+	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	ACCESSOR_R(obj, isDestroyed);
+	
+	ACCESSOR_RW(obj, onaudioprocess);
+	ACCESSOR_R(obj, bufferSize);
+	
+	// -------- dynamic
+	
+	Nan::SetPrototypeMethod(proto, "destroy", destroy);
+	
+	
+	
+	// -------- static
+	
+	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	
+	_protoScriptProcessorNode.Reset(proto);
+	_ctorScriptProcessorNode.Reset(ctor);
+	
+	Nan::Set(target, JS_STR("ScriptProcessorNode"), ctor);
+	
+	
+}
+
+
+NAN_METHOD(ScriptProcessorNode::newCtor) {
+	
+	CTOR_CHECK("ScriptProcessorNode");
+	
+	ScriptProcessorNode *scriptProcessorNode = new ScriptProcessorNode();
+	scriptProcessorNode->Wrap(info.This());
+	
+	RET_VALUE(info.This());
+	
+}
+
+
+NAN_METHOD(ScriptProcessorNode::destroy) { THIS_SCRIPT_PROCESSOR_NODE; THIS_CHECK;
+	
+	scriptProcessorNode->_destroy();
+	
+}
+
+
+NAN_GETTER(ScriptProcessorNode::isDestroyedGetter) { THIS_SCRIPT_PROCESSOR_NODE;
+	
+	RET_VALUE(JS_BOOL(scriptProcessorNode->_isDestroyed));
+	
+}

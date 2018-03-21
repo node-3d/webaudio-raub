@@ -4,43 +4,38 @@
 
 #include <memory>
 
-#include <addon-tools.hpp>
+#include <event-emitter.hpp>
 
 namespace lab { class AudioContext; };
 
 
-class BaseAudioContext : public Nan::ObjectWrap {
+class BaseAudioContext : public EventEmitter {
 	
-	friend class AudioContext;
-	friend class OfflineAudioContext;
-	
-
-	enum AudioContextState { Running, Suspended, Closed };
-	
-	
-// Public V8 init
 public:
 	
+	// Public V8 init
 	static void init(v8::Local<v8::Object> target);
 	
-	
-// Public C++ methods: in-engine calls
-public:
+	void _destroy();
 	
 	
-// Protected C++ methods: implementing JS calls
+// Methods and props
 protected:
 	
 	BaseAudioContext(bool isOffline = false, float sampleRate = 44100.f);
 	virtual ~BaseAudioContext();
 	
+	static Nan::Persistent<v8::FunctionTemplate> _protoBaseAudioContext; // for inheritance
+	static Nan::Persistent<v8::Function> _ctorBaseAudioContext;
 	
-// JS methods and props
-protected:
+	
+// System methods and props for ObjectWrap
+private:
 	
 	static NAN_METHOD(newCtor);
 	
 	static NAN_METHOD(destroy);
+	static NAN_GETTER(isDestroyedGetter);
 	
 	static NAN_METHOD(createBuffer);
 	static NAN_METHOD(decodeAudioData);
@@ -61,13 +56,10 @@ protected:
 	static NAN_METHOD(createPeriodicWave);
 	static NAN_METHOD(createChannelSplitter);
 	static NAN_METHOD(createChannelMerger);
+	static NAN_METHOD(resume);
 	static NAN_METHOD(createMediaElementSource);
 	static NAN_METHOD(createMediaStreamSource);
 	static NAN_METHOD(createMediaStreamDestination);
-	
-	
-	static NAN_GETTER(isDestroyedGetter);
-	
 	
 	static NAN_GETTER(destinationGetter);
 	
@@ -80,23 +72,7 @@ protected:
 	static NAN_GETTER(stateGetter);
 	
 	
-// Actual destruction-handler
 private:
-	
-	void _destroy();
-	
-	
-// Stored JS constructor and helpers
-private:
-	
-	static Nan::Persistent<v8::FunctionTemplate> _protorype;
-	static Nan::Persistent<v8::Function> _constructor;
-	
-	
-// This-state storage
-private:
-	
-	std::unique_ptr<lab::AudioContext> _impl;
 	
 	bool _isDestroyed;
 	
@@ -104,7 +80,9 @@ private:
 	double _currentTime;
 	float _sampleRate;
 	Nan::Persistent<v8::Object> _listener;
-	AudioContextState _state;
+	std::string _state;
+	
+	std::unique_ptr<lab::AudioContext> _impl;
 	
 };
 

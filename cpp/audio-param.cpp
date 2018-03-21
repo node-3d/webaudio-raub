@@ -1,21 +1,22 @@
 #include <cstdlib>
-#include <iostream>
+//#include <iostream> // -> std::cout << "..." << std::endl;
+
 
 #include "audio-param.hpp"
+
 
 using namespace v8;
 using namespace node;
 using namespace std;
 
 
+// ------ Aux macros
+
 #define THIS_AUDIO_PARAM                                                    \
 	AudioParam *audioParam = ObjectWrap::Unwrap<AudioParam>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (audioParam->_isDestroyed) return;
-
-#define DES_CHECK                                                             \
-	if (_isDestroyed) return;
 
 #define CACHE_CAS(CACHE, V)                                                   \
 	if (audioParam->CACHE == V) {                                           \
@@ -24,74 +25,11 @@ using namespace std;
 	audioParam->CACHE = V;
 
 
-Nan::Persistent<v8::Function> AudioParam::_constructor;
+// ------ Constructor and Destructor
 
-
-void AudioParam::init(Local<Object> target) {
-	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("AudioParam"));
-	
-	
-	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_RW(obj, value);
-	ACCESSOR_R(obj, defaultValue);
-	ACCESSOR_R(obj, minValue);
-	ACCESSOR_R(obj, maxValue);
-	
-	// -------- dynamic
-	
-	
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	Nan::SetPrototypeMethod(proto, "setValueAtTime", setValueAtTime);
-	Nan::SetPrototypeMethod(proto, "linearRampToValueAtTime", linearRampToValueAtTime);
-	Nan::SetPrototypeMethod(proto, "exponentialRampToValueAtTime", exponentialRampToValueAtTime);
-	Nan::SetPrototypeMethod(proto, "setTargetAtTime", setTargetAtTime);
-	Nan::SetPrototypeMethod(proto, "setValueCurveAtTime", setValueCurveAtTime);
-	Nan::SetPrototypeMethod(proto, "cancelScheduledValues", cancelScheduledValues);
-	Nan::SetPrototypeMethod(proto, "cancelAndHoldAtTime", cancelAndHoldAtTime);
-	
-	// -------- static
-	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
-	
-	
-	
-	
-	_constructor.Reset(ctor);
-	Nan::Set(target, JS_STR("AudioParam"), ctor);
-	
-	
-}
-
-
-NAN_METHOD(AudioParam::newCtor) {
-	
-	CTOR_CHECK("AudioParam");
-	
-	REQ_EXT_ARG(0, ext);
-	lab::AudioParam *param = reinterpret_cast<lab::AudioParam *>(ext->Value());
-	
-	AudioParam *audioParam = new AudioParam(param);
-	audioParam->Wrap(info.This());
-	
-	RET_VALUE(info.This());
-	
-}
-
-
-AudioParam::AudioParam(lab::AudioParam *param) {
+AudioParam::AudioParam() {
 	
 	_isDestroyed = false;
-	
-	_impl = param;
 	
 }
 
@@ -107,17 +45,10 @@ void AudioParam::_destroy() { DES_CHECK;
 	
 	_isDestroyed = true;
 	
-	_impl = NULL;
-	
 }
 
 
-
-NAN_METHOD(AudioParam::destroy) { THIS_AUDIO_PARAM; THIS_CHECK;
-	
-	audioParam->_destroy();
-	
-}
+// ------ Methods and props
 
 
 NAN_METHOD(AudioParam::setValueAtTime) { THIS_AUDIO_PARAM; THIS_CHECK;
@@ -191,13 +122,6 @@ NAN_METHOD(AudioParam::cancelAndHoldAtTime) { THIS_AUDIO_PARAM; THIS_CHECK;
 
 
 
-NAN_GETTER(AudioParam::isDestroyedGetter) { THIS_AUDIO_PARAM;
-	
-	RET_VALUE(JS_BOOL(audioParam->_isDestroyed));
-	
-}
-
-
 NAN_GETTER(AudioParam::valueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
 	
 	RET_VALUE(JS_FLOAT(audioParam->_value));
@@ -236,3 +160,77 @@ NAN_GETTER(AudioParam::maxValueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
 }
 
 
+
+
+// ------ System methods and props for ObjectWrap
+
+Nan::Persistent<v8::FunctionTemplate> AudioParam::_protoAudioParam;
+Nan::Persistent<v8::Function> AudioParam::_ctorAudioParam;
+
+
+void AudioParam::init(Local<Object> target) {
+	
+	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
+	
+	proto->InstanceTemplate()->SetInternalFieldCount(1);
+	proto->SetClassName(JS_STR("AudioParam"));
+	
+	
+	// Accessors
+	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	ACCESSOR_R(obj, isDestroyed);
+	
+	ACCESSOR_RW(obj, value);
+	ACCESSOR_R(obj, defaultValue);
+	ACCESSOR_R(obj, minValue);
+	ACCESSOR_R(obj, maxValue);
+	
+	// -------- dynamic
+	
+	Nan::SetPrototypeMethod(proto, "destroy", destroy);
+	
+	Nan::SetPrototypeMethod(proto, "setValueAtTime", setValueAtTime);
+	Nan::SetPrototypeMethod(proto, "linearRampToValueAtTime", linearRampToValueAtTime);
+	Nan::SetPrototypeMethod(proto, "exponentialRampToValueAtTime", exponentialRampToValueAtTime);
+	Nan::SetPrototypeMethod(proto, "setTargetAtTime", setTargetAtTime);
+	Nan::SetPrototypeMethod(proto, "setValueCurveAtTime", setValueCurveAtTime);
+	Nan::SetPrototypeMethod(proto, "cancelScheduledValues", cancelScheduledValues);
+	Nan::SetPrototypeMethod(proto, "cancelAndHoldAtTime", cancelAndHoldAtTime);
+	
+	// -------- static
+	
+	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	
+	_protoAudioParam.Reset(proto);
+	_ctorAudioParam.Reset(ctor);
+	
+	Nan::Set(target, JS_STR("AudioParam"), ctor);
+	
+	
+}
+
+
+NAN_METHOD(AudioParam::newCtor) {
+	
+	CTOR_CHECK("AudioParam");
+	
+	AudioParam *audioParam = new AudioParam();
+	audioParam->Wrap(info.This());
+	
+	RET_VALUE(info.This());
+	
+}
+
+
+NAN_METHOD(AudioParam::destroy) { THIS_AUDIO_PARAM; THIS_CHECK;
+	
+	audioParam->_destroy();
+	
+}
+
+
+NAN_GETTER(AudioParam::isDestroyedGetter) { THIS_AUDIO_PARAM;
+	
+	RET_VALUE(JS_BOOL(audioParam->_isDestroyed));
+	
+}

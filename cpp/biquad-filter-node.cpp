@@ -1,21 +1,22 @@
 #include <cstdlib>
-#include <iostream>
+//#include <iostream> // -> std::cout << "..." << std::endl;
+
 
 #include "biquad-filter-node.hpp"
+
 
 using namespace v8;
 using namespace node;
 using namespace std;
 
 
+// ------ Aux macros
+
 #define THIS_BIQUAD_FILTER_NODE                                                    \
 	BiquadFilterNode *biquadFilterNode = ObjectWrap::Unwrap<BiquadFilterNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (biquadFilterNode->_isDestroyed) return;
-
-#define DES_CHECK                                                             \
-	if (_isDestroyed) return;
 
 #define CACHE_CAS(CACHE, V)                                                   \
 	if (biquadFilterNode->CACHE == V) {                                           \
@@ -24,62 +25,9 @@ using namespace std;
 	biquadFilterNode->CACHE = V;
 
 
-Nan::Persistent<v8::Function> BiquadFilterNode::_constructor;
+// ------ Constructor and Destructor
 
-
-void BiquadFilterNode::init(Local<Object> target) {
-	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("BiquadFilterNode"));
-	
-	
-	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_RW(obj, type);
-	ACCESSOR_R(obj, frequency);
-	ACCESSOR_R(obj, detune);
-	ACCESSOR_R(obj, Q);
-	ACCESSOR_R(obj, gain);
-	
-	// -------- dynamic
-	
-	
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	Nan::SetPrototypeMethod(proto, "getFrequencyResponse", getFrequencyResponse);
-	
-	// -------- static
-	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
-	
-	
-	
-	
-	_constructor.Reset(ctor);
-	Nan::Set(target, JS_STR("BiquadFilterNode"), ctor);
-	
-	
-}
-
-
-NAN_METHOD(BiquadFilterNode::newCtor) {
-	
-	CTOR_CHECK("BiquadFilterNode");
-	
-	BiquadFilterNode *biquadFilterNode = new BiquadFilterNode();
-	biquadFilterNode->Wrap(info.This());
-	
-	RET_VALUE(info.This());
-	
-}
-
-
-BiquadFilterNode::BiquadFilterNode() {
+BiquadFilterNode::BiquadFilterNode() : AudioNode() {
 	
 	_isDestroyed = false;
 	
@@ -97,17 +45,12 @@ void BiquadFilterNode::_destroy() { DES_CHECK;
 	
 	_isDestroyed = true;
 	
-	
-	
-}
-
-
-
-NAN_METHOD(BiquadFilterNode::destroy) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
-	
-	biquadFilterNode->_destroy();
+	AudioNode::_destroy();
 	
 }
+
+
+// ------ Methods and props
 
 
 NAN_METHOD(BiquadFilterNode::getFrequencyResponse) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
@@ -120,13 +63,6 @@ NAN_METHOD(BiquadFilterNode::getFrequencyResponse) { THIS_BIQUAD_FILTER_NODE; TH
 	
 }
 
-
-
-NAN_GETTER(BiquadFilterNode::isDestroyedGetter) { THIS_BIQUAD_FILTER_NODE;
-	
-	RET_VALUE(JS_BOOL(biquadFilterNode->_isDestroyed));
-	
-}
 
 
 NAN_GETTER(BiquadFilterNode::typeGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
@@ -178,3 +114,76 @@ NAN_GETTER(BiquadFilterNode::gainGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
 }
 
 
+
+
+// ------ System methods and props for ObjectWrap
+
+Nan::Persistent<v8::FunctionTemplate> BiquadFilterNode::_protoBiquadFilterNode;
+Nan::Persistent<v8::Function> BiquadFilterNode::_ctorBiquadFilterNode;
+
+
+void BiquadFilterNode::init(Local<Object> target) {
+	
+	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
+	
+	// class BiquadFilterNode inherits AudioNode
+	Local<FunctionTemplate> parent = Nan::New(AudioNode::_protoAudioNode);
+	proto->Inherit(parent);
+	
+	proto->InstanceTemplate()->SetInternalFieldCount(1);
+	proto->SetClassName(JS_STR("BiquadFilterNode"));
+	
+	
+	// Accessors
+	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	ACCESSOR_R(obj, isDestroyed);
+	
+	ACCESSOR_RW(obj, type);
+	ACCESSOR_R(obj, frequency);
+	ACCESSOR_R(obj, detune);
+	ACCESSOR_R(obj, Q);
+	ACCESSOR_R(obj, gain);
+	
+	// -------- dynamic
+	
+	Nan::SetPrototypeMethod(proto, "destroy", destroy);
+	
+	Nan::SetPrototypeMethod(proto, "getFrequencyResponse", getFrequencyResponse);
+	
+	// -------- static
+	
+	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	
+	_protoBiquadFilterNode.Reset(proto);
+	_ctorBiquadFilterNode.Reset(ctor);
+	
+	Nan::Set(target, JS_STR("BiquadFilterNode"), ctor);
+	
+	
+}
+
+
+NAN_METHOD(BiquadFilterNode::newCtor) {
+	
+	CTOR_CHECK("BiquadFilterNode");
+	
+	BiquadFilterNode *biquadFilterNode = new BiquadFilterNode();
+	biquadFilterNode->Wrap(info.This());
+	
+	RET_VALUE(info.This());
+	
+}
+
+
+NAN_METHOD(BiquadFilterNode::destroy) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
+	
+	biquadFilterNode->_destroy();
+	
+}
+
+
+NAN_GETTER(BiquadFilterNode::isDestroyedGetter) { THIS_BIQUAD_FILTER_NODE;
+	
+	RET_VALUE(JS_BOOL(biquadFilterNode->_isDestroyed));
+	
+}

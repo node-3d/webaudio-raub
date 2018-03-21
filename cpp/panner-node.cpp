@@ -1,21 +1,22 @@
 #include <cstdlib>
-#include <iostream>
+//#include <iostream> // -> std::cout << "..." << std::endl;
+
 
 #include "panner-node.hpp"
+
 
 using namespace v8;
 using namespace node;
 using namespace std;
 
 
+// ------ Aux macros
+
 #define THIS_PANNER_NODE                                                    \
 	PannerNode *pannerNode = ObjectWrap::Unwrap<PannerNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (pannerNode->_isDestroyed) return;
-
-#define DES_CHECK                                                             \
-	if (_isDestroyed) return;
 
 #define CACHE_CAS(CACHE, V)                                                   \
 	if (pannerNode->CACHE == V) {                                           \
@@ -24,72 +25,9 @@ using namespace std;
 	pannerNode->CACHE = V;
 
 
-Nan::Persistent<v8::Function> PannerNode::_constructor;
+// ------ Constructor and Destructor
 
-
-void PannerNode::init(Local<Object> target) {
-	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("PannerNode"));
-	
-	
-	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_RW(obj, panningModel);
-	ACCESSOR_R(obj, positionX);
-	ACCESSOR_R(obj, positionY);
-	ACCESSOR_R(obj, positionZ);
-	ACCESSOR_R(obj, orientationX);
-	ACCESSOR_R(obj, orientationY);
-	ACCESSOR_R(obj, orientationZ);
-	ACCESSOR_RW(obj, distanceModel);
-	ACCESSOR_RW(obj, refDistance);
-	ACCESSOR_RW(obj, maxDistance);
-	ACCESSOR_RW(obj, rolloffFactor);
-	ACCESSOR_RW(obj, coneInnerAngle);
-	ACCESSOR_RW(obj, coneOuterAngle);
-	ACCESSOR_RW(obj, coneOuterGain);
-	
-	// -------- dynamic
-	
-	
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	Nan::SetPrototypeMethod(proto, "setPosition", setPosition);
-	Nan::SetPrototypeMethod(proto, "setOrientation", setOrientation);
-	
-	// -------- static
-	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
-	
-	
-	
-	
-	_constructor.Reset(ctor);
-	Nan::Set(target, JS_STR("PannerNode"), ctor);
-	
-	
-}
-
-
-NAN_METHOD(PannerNode::newCtor) {
-	
-	CTOR_CHECK("PannerNode");
-	
-	PannerNode *pannerNode = new PannerNode();
-	pannerNode->Wrap(info.This());
-	
-	RET_VALUE(info.This());
-	
-}
-
-
-PannerNode::PannerNode() {
+PannerNode::PannerNode() : AudioNode() {
 	
 	_isDestroyed = false;
 	
@@ -107,17 +45,12 @@ void PannerNode::_destroy() { DES_CHECK;
 	
 	_isDestroyed = true;
 	
-	
-	
-}
-
-
-
-NAN_METHOD(PannerNode::destroy) { THIS_PANNER_NODE; THIS_CHECK;
-	
-	pannerNode->_destroy();
+	AudioNode::_destroy();
 	
 }
+
+
+// ------ Methods and props
 
 
 NAN_METHOD(PannerNode::setPosition) { THIS_PANNER_NODE; THIS_CHECK;
@@ -141,13 +74,6 @@ NAN_METHOD(PannerNode::setOrientation) { THIS_PANNER_NODE; THIS_CHECK;
 	
 }
 
-
-
-NAN_GETTER(PannerNode::isDestroyedGetter) { THIS_PANNER_NODE;
-	
-	RET_VALUE(JS_BOOL(pannerNode->_isDestroyed));
-	
-}
 
 
 NAN_GETTER(PannerNode::panningModelGetter) { THIS_PANNER_NODE; THIS_CHECK;
@@ -323,3 +249,86 @@ NAN_SETTER(PannerNode::coneOuterGainSetter) { THIS_PANNER_NODE; THIS_CHECK; SETT
 	
 }
 
+
+
+// ------ System methods and props for ObjectWrap
+
+Nan::Persistent<v8::FunctionTemplate> PannerNode::_protoPannerNode;
+Nan::Persistent<v8::Function> PannerNode::_ctorPannerNode;
+
+
+void PannerNode::init(Local<Object> target) {
+	
+	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
+	
+	// class PannerNode inherits AudioNode
+	Local<FunctionTemplate> parent = Nan::New(AudioNode::_protoAudioNode);
+	proto->Inherit(parent);
+	
+	proto->InstanceTemplate()->SetInternalFieldCount(1);
+	proto->SetClassName(JS_STR("PannerNode"));
+	
+	
+	// Accessors
+	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	ACCESSOR_R(obj, isDestroyed);
+	
+	ACCESSOR_RW(obj, panningModel);
+	ACCESSOR_R(obj, positionX);
+	ACCESSOR_R(obj, positionY);
+	ACCESSOR_R(obj, positionZ);
+	ACCESSOR_R(obj, orientationX);
+	ACCESSOR_R(obj, orientationY);
+	ACCESSOR_R(obj, orientationZ);
+	ACCESSOR_RW(obj, distanceModel);
+	ACCESSOR_RW(obj, refDistance);
+	ACCESSOR_RW(obj, maxDistance);
+	ACCESSOR_RW(obj, rolloffFactor);
+	ACCESSOR_RW(obj, coneInnerAngle);
+	ACCESSOR_RW(obj, coneOuterAngle);
+	ACCESSOR_RW(obj, coneOuterGain);
+	
+	// -------- dynamic
+	
+	Nan::SetPrototypeMethod(proto, "destroy", destroy);
+	
+	Nan::SetPrototypeMethod(proto, "setPosition", setPosition);
+	Nan::SetPrototypeMethod(proto, "setOrientation", setOrientation);
+	
+	// -------- static
+	
+	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	
+	_protoPannerNode.Reset(proto);
+	_ctorPannerNode.Reset(ctor);
+	
+	Nan::Set(target, JS_STR("PannerNode"), ctor);
+	
+	
+}
+
+
+NAN_METHOD(PannerNode::newCtor) {
+	
+	CTOR_CHECK("PannerNode");
+	
+	PannerNode *pannerNode = new PannerNode();
+	pannerNode->Wrap(info.This());
+	
+	RET_VALUE(info.This());
+	
+}
+
+
+NAN_METHOD(PannerNode::destroy) { THIS_PANNER_NODE; THIS_CHECK;
+	
+	pannerNode->_destroy();
+	
+}
+
+
+NAN_GETTER(PannerNode::isDestroyedGetter) { THIS_PANNER_NODE;
+	
+	RET_VALUE(JS_BOOL(pannerNode->_isDestroyed));
+	
+}

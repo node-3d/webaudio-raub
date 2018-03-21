@@ -4,64 +4,47 @@
 
 #include <addon-tools.hpp>
 
-namespace lab { class OscillatorNode; };
+#include "audio-node.hpp"
 
 
-class OscillatorNode : public Nan::ObjectWrap {
+class OscillatorNode : public AudioNode {
 	
-// Public V8 init
 public:
 	
+	// Public V8 init
 	static void init(v8::Local<v8::Object> target);
 	
-	
-// Public C++ methods: in-engine calls
-public:
+	void _destroy();
 	
 	
-// Protected C++ methods: implementing JS calls
+// Methods and props
 protected:
 	
 	OscillatorNode();
 	virtual ~OscillatorNode();
 	
+	static Nan::Persistent<v8::FunctionTemplate> _protoOscillatorNode; // for inheritance
+	static Nan::Persistent<v8::Function> _ctorOscillatorNode;
 	
-// JS methods and props
-protected:
+	
+// System methods and props for ObjectWrap
+private:
 	
 	static NAN_METHOD(newCtor);
 	
 	static NAN_METHOD(destroy);
-	
-	static NAN_METHOD(setPeriodicWave);
-	
-	
 	static NAN_GETTER(isDestroyedGetter);
 	
+	static NAN_METHOD(setPeriodicWave);
 	
 	static NAN_GETTER(typeGetter);
 	static NAN_SETTER(typeSetter);
 	
-
 	static NAN_GETTER(frequencyGetter);
 	
-
 	static NAN_GETTER(detuneGetter);
 	
 	
-// Actual destruction-handler
-private:
-	
-	void _destroy();
-	
-	
-// Stored JS constructor and helpers
-private:
-	
-	static Nan::Persistent<v8::Function> _constructor;
-	
-	
-// This-state storage
 private:
 	
 	bool _isDestroyed;
@@ -69,8 +52,6 @@ private:
 	std::string _type;
 	Nan::Persistent<v8::Object> _frequency;
 	Nan::Persistent<v8::Object> _detune;
-	
-	lab::OscillatorNode *_impl;
 	
 };
 

@@ -1,21 +1,22 @@
 #include <cstdlib>
-#include <iostream>
+//#include <iostream> // -> std::cout << "..." << std::endl;
+
 
 #include "gain-node.hpp"
+
 
 using namespace v8;
 using namespace node;
 using namespace std;
 
 
+// ------ Aux macros
+
 #define THIS_GAIN_NODE                                                    \
 	GainNode *gainNode = ObjectWrap::Unwrap<GainNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (gainNode->_isDestroyed) return;
-
-#define DES_CHECK                                                             \
-	if (_isDestroyed) return;
 
 #define CACHE_CAS(CACHE, V)                                                   \
 	if (gainNode->CACHE == V) {                                           \
@@ -24,12 +25,58 @@ using namespace std;
 	gainNode->CACHE = V;
 
 
-Nan::Persistent<v8::Function> GainNode::_constructor;
+// ------ Constructor and Destructor
+
+GainNode::GainNode() : AudioNode() {
+	
+	_isDestroyed = false;
+	
+}
+
+
+GainNode::~GainNode() {
+	
+	_destroy();
+	
+}
+
+
+void GainNode::_destroy() { DES_CHECK;
+	
+	_isDestroyed = true;
+	
+	AudioNode::_destroy();
+	
+}
+
+
+// ------ Methods and props
+
+
+
+
+NAN_GETTER(GainNode::gainGetter) { THIS_GAIN_NODE; THIS_CHECK;
+	
+	RET_VALUE(JS_OBJ(gainNode->_gain));
+	
+}
+
+
+
+
+// ------ System methods and props for ObjectWrap
+
+Nan::Persistent<v8::FunctionTemplate> GainNode::_protoGainNode;
+Nan::Persistent<v8::Function> GainNode::_ctorGainNode;
 
 
 void GainNode::init(Local<Object> target) {
 	
 	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
+	
+	// class GainNode inherits AudioNode
+	Local<FunctionTemplate> parent = Nan::New(AudioNode::_protoAudioNode);
+	proto->Inherit(parent);
 	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
 	proto->SetClassName(JS_STR("GainNode"));
@@ -43,8 +90,6 @@ void GainNode::init(Local<Object> target) {
 	
 	// -------- dynamic
 	
-	
-	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
 	
 	
@@ -53,10 +98,9 @@ void GainNode::init(Local<Object> target) {
 	
 	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
+	_protoGainNode.Reset(proto);
+	_ctorGainNode.Reset(ctor);
 	
-	
-	
-	_constructor.Reset(ctor);
 	Nan::Set(target, JS_STR("GainNode"), ctor);
 	
 	
@@ -75,30 +119,6 @@ NAN_METHOD(GainNode::newCtor) {
 }
 
 
-GainNode::GainNode() {
-	
-	_isDestroyed = false;
-	
-}
-
-
-GainNode::~GainNode() {
-	
-	_destroy();
-	
-}
-
-
-void GainNode::_destroy() { DES_CHECK;
-	
-	_isDestroyed = true;
-	
-	
-	
-}
-
-
-
 NAN_METHOD(GainNode::destroy) { THIS_GAIN_NODE; THIS_CHECK;
 	
 	gainNode->_destroy();
@@ -106,19 +126,8 @@ NAN_METHOD(GainNode::destroy) { THIS_GAIN_NODE; THIS_CHECK;
 }
 
 
-
-
 NAN_GETTER(GainNode::isDestroyedGetter) { THIS_GAIN_NODE;
 	
 	RET_VALUE(JS_BOOL(gainNode->_isDestroyed));
 	
 }
-
-
-NAN_GETTER(GainNode::gainGetter) { THIS_GAIN_NODE; THIS_CHECK;
-	
-	RET_VALUE(JS_OBJ(gainNode->_gain));
-	
-}
-
-

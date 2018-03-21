@@ -7,63 +7,45 @@
 
 class AudioBuffer : public Nan::ObjectWrap {
 	
-// Public V8 init
 public:
 	
+	// Public V8 init
 	static void init(v8::Local<v8::Object> target);
 	
-	
-// Public C++ methods: in-engine calls
-public:
+	void _destroy();
 	
 	
-// Protected C++ methods: implementing JS calls
+// Methods and props
 protected:
 	
 	AudioBuffer();
 	virtual ~AudioBuffer();
 	
+	static Nan::Persistent<v8::FunctionTemplate> _protoAudioBuffer; // for inheritance
+	static Nan::Persistent<v8::Function> _ctorAudioBuffer;
 	
-// JS methods and props
-protected:
+	
+// System methods and props for ObjectWrap
+private:
 	
 	static NAN_METHOD(newCtor);
 	
 	static NAN_METHOD(destroy);
+	static NAN_GETTER(isDestroyedGetter);
 	
 	static NAN_METHOD(getChannelData);
 	static NAN_METHOD(copyFromChannel);
 	static NAN_METHOD(copyToChannel);
 	
-	
-	static NAN_GETTER(isDestroyedGetter);
-	
-	
 	static NAN_GETTER(lengthGetter);
 	
-
 	static NAN_GETTER(durationGetter);
 	
-
 	static NAN_GETTER(sampleRateGetter);
 	
-
 	static NAN_GETTER(numberOfChannelsGetter);
 	
 	
-// Actual destruction-handler
-private:
-	
-	void _destroy();
-	
-	
-// Stored JS constructor and helpers
-private:
-	
-	static Nan::Persistent<v8::Function> _constructor;
-	
-	
-// This-state storage
 private:
 	
 	bool _isDestroyed;

@@ -1,21 +1,22 @@
 #include <cstdlib>
-#include <iostream>
+//#include <iostream> // -> std::cout << "..." << std::endl;
+
 
 #include "delay-node.hpp"
+
 
 using namespace v8;
 using namespace node;
 using namespace std;
 
 
+// ------ Aux macros
+
 #define THIS_DELAY_NODE                                                    \
 	DelayNode *delayNode = ObjectWrap::Unwrap<DelayNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (delayNode->_isDestroyed) return;
-
-#define DES_CHECK                                                             \
-	if (_isDestroyed) return;
 
 #define CACHE_CAS(CACHE, V)                                                   \
 	if (delayNode->CACHE == V) {                                           \
@@ -24,12 +25,58 @@ using namespace std;
 	delayNode->CACHE = V;
 
 
-Nan::Persistent<v8::Function> DelayNode::_constructor;
+// ------ Constructor and Destructor
+
+DelayNode::DelayNode() : AudioNode() {
+	
+	_isDestroyed = false;
+	
+}
+
+
+DelayNode::~DelayNode() {
+	
+	_destroy();
+	
+}
+
+
+void DelayNode::_destroy() { DES_CHECK;
+	
+	_isDestroyed = true;
+	
+	AudioNode::_destroy();
+	
+}
+
+
+// ------ Methods and props
+
+
+
+
+NAN_GETTER(DelayNode::delayTimeGetter) { THIS_DELAY_NODE; THIS_CHECK;
+	
+	RET_VALUE(JS_OBJ(delayNode->_delayTime));
+	
+}
+
+
+
+
+// ------ System methods and props for ObjectWrap
+
+Nan::Persistent<v8::FunctionTemplate> DelayNode::_protoDelayNode;
+Nan::Persistent<v8::Function> DelayNode::_ctorDelayNode;
 
 
 void DelayNode::init(Local<Object> target) {
 	
 	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
+	
+	// class DelayNode inherits AudioNode
+	Local<FunctionTemplate> parent = Nan::New(AudioNode::_protoAudioNode);
+	proto->Inherit(parent);
 	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
 	proto->SetClassName(JS_STR("DelayNode"));
@@ -43,8 +90,6 @@ void DelayNode::init(Local<Object> target) {
 	
 	// -------- dynamic
 	
-	
-	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
 	
 	
@@ -53,10 +98,9 @@ void DelayNode::init(Local<Object> target) {
 	
 	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
+	_protoDelayNode.Reset(proto);
+	_ctorDelayNode.Reset(ctor);
 	
-	
-	
-	_constructor.Reset(ctor);
 	Nan::Set(target, JS_STR("DelayNode"), ctor);
 	
 	
@@ -75,30 +119,6 @@ NAN_METHOD(DelayNode::newCtor) {
 }
 
 
-DelayNode::DelayNode() {
-	
-	_isDestroyed = false;
-	
-}
-
-
-DelayNode::~DelayNode() {
-	
-	_destroy();
-	
-}
-
-
-void DelayNode::_destroy() { DES_CHECK;
-	
-	_isDestroyed = true;
-	
-	
-	
-}
-
-
-
 NAN_METHOD(DelayNode::destroy) { THIS_DELAY_NODE; THIS_CHECK;
 	
 	delayNode->_destroy();
@@ -106,19 +126,8 @@ NAN_METHOD(DelayNode::destroy) { THIS_DELAY_NODE; THIS_CHECK;
 }
 
 
-
-
 NAN_GETTER(DelayNode::isDestroyedGetter) { THIS_DELAY_NODE;
 	
 	RET_VALUE(JS_BOOL(delayNode->_isDestroyed));
 	
 }
-
-
-NAN_GETTER(DelayNode::delayTimeGetter) { THIS_DELAY_NODE; THIS_CHECK;
-	
-	RET_VALUE(JS_OBJ(delayNode->_delayTime));
-	
-}
-
-

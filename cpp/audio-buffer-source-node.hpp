@@ -4,74 +4,56 @@
 
 #include <addon-tools.hpp>
 
+#include "audio-node.hpp"
 
-class AudioBufferSourceNode : public Nan::ObjectWrap {
+
+class AudioBufferSourceNode : public AudioNode {
 	
-// Public V8 init
 public:
 	
+	// Public V8 init
 	static void init(v8::Local<v8::Object> target);
 	
-	
-// Public C++ methods: in-engine calls
-public:
+	void _destroy();
 	
 	
-// Protected C++ methods: implementing JS calls
+// Methods and props
 protected:
 	
 	AudioBufferSourceNode();
 	virtual ~AudioBufferSourceNode();
 	
+	static Nan::Persistent<v8::FunctionTemplate> _protoAudioBufferSourceNode; // for inheritance
+	static Nan::Persistent<v8::Function> _ctorAudioBufferSourceNode;
 	
-// JS methods and props
-protected:
+	
+// System methods and props for ObjectWrap
+private:
 	
 	static NAN_METHOD(newCtor);
 	
 	static NAN_METHOD(destroy);
-	
-	static NAN_METHOD(start);
-	
-	
 	static NAN_GETTER(isDestroyedGetter);
 	
+	static NAN_METHOD(start);
 	
 	static NAN_GETTER(bufferGetter);
 	static NAN_SETTER(bufferSetter);
 	
-
 	static NAN_GETTER(playbackRateGetter);
 	
-
 	static NAN_GETTER(detuneGetter);
 	
-
 	static NAN_GETTER(loopGetter);
 	static NAN_SETTER(loopSetter);
 	
-
 	static NAN_GETTER(loopStartGetter);
 	static NAN_SETTER(loopStartSetter);
 	
-
 	static NAN_GETTER(loopEndGetter);
 	static NAN_SETTER(loopEndSetter);
 	
 	
-// Actual destruction-handler
-private:
-	
-	void _destroy();
-	
-	
-// Stored JS constructor and helpers
-private:
-	
-	static Nan::Persistent<v8::Function> _constructor;
-	
-	
-// This-state storage
 private:
 	
 	bool _isDestroyed;

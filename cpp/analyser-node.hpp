@@ -4,87 +4,66 @@
 
 #include <addon-tools.hpp>
 
-namespace lab { class AnalyserNode; };
+#include "audio-node.hpp"
 
 
-class AnalyserNode : public Nan::ObjectWrap {
+class AnalyserNode : public AudioNode {
 	
-// Public V8 init
 public:
 	
+	// Public V8 init
 	static void init(v8::Local<v8::Object> target);
 	
-	
-// Public C++ methods: in-engine calls
-public:
+	void _destroy();
 	
 	
-// Protected C++ methods: implementing JS calls
+// Methods and props
 protected:
 	
-	AnalyserNode(size_t fftSize = 2048);
+	AnalyserNode();
 	virtual ~AnalyserNode();
 	
+	static Nan::Persistent<v8::FunctionTemplate> _protoAnalyserNode; // for inheritance
+	static Nan::Persistent<v8::Function> _ctorAnalyserNode;
 	
-// JS methods and props
-protected:
+	
+// System methods and props for ObjectWrap
+private:
 	
 	static NAN_METHOD(newCtor);
 	
 	static NAN_METHOD(destroy);
+	static NAN_GETTER(isDestroyedGetter);
 	
 	static NAN_METHOD(getFloatFrequencyData);
 	static NAN_METHOD(getByteFrequencyData);
 	static NAN_METHOD(getFloatTimeDomainData);
 	static NAN_METHOD(getByteTimeDomainData);
 	
-	
-	static NAN_GETTER(isDestroyedGetter);
-	
-	
 	static NAN_GETTER(frequencyBinCountGetter);
 	
-
 	static NAN_GETTER(fftSizeGetter);
 	static NAN_SETTER(fftSizeSetter);
 	
-
 	static NAN_GETTER(minDecibelsGetter);
 	static NAN_SETTER(minDecibelsSetter);
 	
-
 	static NAN_GETTER(maxDecibelsGetter);
 	static NAN_SETTER(maxDecibelsSetter);
 	
-
 	static NAN_GETTER(smoothingTimeConstantGetter);
 	static NAN_SETTER(smoothingTimeConstantSetter);
 	
 	
-// Actual destruction-handler
-private:
-	
-	void _destroy();
-	
-	
-// Stored JS constructor and helpers
-private:
-	
-	static Nan::Persistent<v8::Function> _constructor;
-	
-	
-// This-state storage
 private:
 	
 	bool _isDestroyed;
 	
 	unsigned int _frequencyBinCount;
-	size_t _fftSize;
+	unsigned int _fftSize;
 	double _minDecibels;
 	double _maxDecibels;
 	double _smoothingTimeConstant;
-	
-	lab::AnalyserNode *_impl;
 	
 };
 

@@ -7,57 +7,41 @@
 
 class AudioTimestamp : public Nan::ObjectWrap {
 	
-// Public V8 init
 public:
 	
+	// Public V8 init
 	static void init(v8::Local<v8::Object> target);
 	
-	
-// Public C++ methods: in-engine calls
-public:
+	void _destroy();
 	
 	
-// Protected C++ methods: implementing JS calls
+// Methods and props
 protected:
 	
 	AudioTimestamp();
 	virtual ~AudioTimestamp();
 	
+	static Nan::Persistent<v8::FunctionTemplate> _protoAudioTimestamp; // for inheritance
+	static Nan::Persistent<v8::Function> _ctorAudioTimestamp;
 	
-// JS methods and props
-protected:
+	
+// System methods and props for ObjectWrap
+private:
 	
 	static NAN_METHOD(newCtor);
 	
 	static NAN_METHOD(destroy);
-	
-	
-	
-	
 	static NAN_GETTER(isDestroyedGetter);
+	
 	
 	
 	static NAN_GETTER(contextTimeGetter);
 	static NAN_SETTER(contextTimeSetter);
 	
-
 	static NAN_GETTER(performanceTimeGetter);
 	static NAN_SETTER(performanceTimeSetter);
 	
 	
-// Actual destruction-handler
-private:
-	
-	void _destroy();
-	
-	
-// Stored JS constructor and helpers
-private:
-	
-	static Nan::Persistent<v8::Function> _constructor;
-	
-	
-// This-state storage
 private:
 	
 	bool _isDestroyed;
