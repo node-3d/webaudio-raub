@@ -17,7 +17,7 @@ public:
 	void _destroy();
 	
 	
-// Methods and props
+// Methods and props, available for children
 protected:
 	
 	ScriptProcessorNode();
@@ -26,8 +26,13 @@ protected:
 	static Nan::Persistent<v8::FunctionTemplate> _protoScriptProcessorNode; // for inheritance
 	static Nan::Persistent<v8::Function> _ctorScriptProcessorNode;
 	
+	bool _isDestroyed;
 	
-// System methods and props for ObjectWrap
+	Nan::Persistent<v8::Function> _onaudioprocess;
+	int _bufferSize;
+	
+	
+// JS methods and props, available through V8 APIs
 private:
 	
 	static NAN_METHOD(newCtor);
@@ -41,14 +46,6 @@ private:
 	static NAN_SETTER(onaudioprocessSetter);
 	
 	static NAN_GETTER(bufferSizeGetter);
-	
-	
-private:
-	
-	bool _isDestroyed;
-	
-	Nan::Persistent<v8::Function> _onaudioprocess;
-	int _bufferSize;
 	
 };
 

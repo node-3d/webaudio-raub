@@ -15,7 +15,7 @@ public:
 	void _destroy();
 	
 	
-// Methods and props
+// Methods and props, available for children
 protected:
 	
 	AudioWorkletGlobalScope();
@@ -24,8 +24,14 @@ protected:
 	static Nan::Persistent<v8::FunctionTemplate> _protoAudioWorkletGlobalScope; // for inheritance
 	static Nan::Persistent<v8::Function> _ctorAudioWorkletGlobalScope;
 	
+	bool _isDestroyed;
 	
-// System methods and props for ObjectWrap
+	size_t _currentFrame;
+	double _currentTime;
+	float _sampleRate;
+	
+	
+// JS methods and props, available through V8 APIs
 private:
 	
 	static NAN_METHOD(newCtor);
@@ -40,15 +46,6 @@ private:
 	static NAN_GETTER(currentTimeGetter);
 	
 	static NAN_GETTER(sampleRateGetter);
-	
-	
-private:
-	
-	bool _isDestroyed;
-	
-	size_t _currentFrame;
-	double _currentTime;
-	float _sampleRate;
 	
 };
 

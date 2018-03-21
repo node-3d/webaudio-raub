@@ -65,8 +65,6 @@ NAN_METHOD(IIRFilterNode::getFrequencyResponse) { THIS_IIR_FILTER_NODE; THIS_CHE
 
 
 
-
-
 // ------ System methods and props for ObjectWrap
 
 Nan::Persistent<v8::FunctionTemplate> IIRFilterNode::_protoIIRFilterNode;

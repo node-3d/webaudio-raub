@@ -54,14 +54,11 @@ void DelayNode::_destroy() { DES_CHECK;
 
 
 
-
 NAN_GETTER(DelayNode::delayTimeGetter) { THIS_DELAY_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(delayNode->_delayTime));
 	
 }
-
-
 
 
 // ------ System methods and props for ObjectWrap

@@ -17,7 +17,7 @@ public:
 	void _destroy();
 	
 	
-// Methods and props
+// Methods and props, available for children
 protected:
 	
 	AnalyserNode();
@@ -26,8 +26,16 @@ protected:
 	static Nan::Persistent<v8::FunctionTemplate> _protoAnalyserNode; // for inheritance
 	static Nan::Persistent<v8::Function> _ctorAnalyserNode;
 	
+	bool _isDestroyed;
 	
-// System methods and props for ObjectWrap
+	unsigned int _frequencyBinCount;
+	unsigned int _fftSize;
+	double _minDecibels;
+	double _maxDecibels;
+	double _smoothingTimeConstant;
+	
+	
+// JS methods and props, available through V8 APIs
 private:
 	
 	static NAN_METHOD(newCtor);
@@ -53,17 +61,6 @@ private:
 	
 	static NAN_GETTER(smoothingTimeConstantGetter);
 	static NAN_SETTER(smoothingTimeConstantSetter);
-	
-	
-private:
-	
-	bool _isDestroyed;
-	
-	unsigned int _frequencyBinCount;
-	unsigned int _fftSize;
-	double _minDecibels;
-	double _maxDecibels;
-	double _smoothingTimeConstant;
 	
 };
 

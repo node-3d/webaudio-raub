@@ -52,14 +52,11 @@ void AudioWorkletProcessor::_destroy() { DES_CHECK;
 
 
 
-
 NAN_GETTER(AudioWorkletProcessor::portGetter) { THIS_AUDIO_WORKLET_PROCESSOR; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(audioWorkletProcessor->_port));
 	
 }
-
-
 
 
 // ------ System methods and props for ObjectWrap

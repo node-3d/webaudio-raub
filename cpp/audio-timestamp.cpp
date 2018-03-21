@@ -52,7 +52,6 @@ void AudioTimestamp::_destroy() { DES_CHECK;
 
 
 
-
 NAN_GETTER(AudioTimestamp::contextTimeGetter) { THIS_AUDIO_TIMESTAMP; THIS_CHECK;
 	
 	RET_VALUE(JS_DOUBLE(audioTimestamp->_contextTime));
@@ -81,7 +80,6 @@ NAN_SETTER(AudioTimestamp::performanceTimeSetter) { THIS_AUDIO_TIMESTAMP; THIS_C
 	// TODO: may be additional actions on change?
 	
 }
-
 
 
 // ------ System methods and props for ObjectWrap

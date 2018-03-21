@@ -17,7 +17,7 @@ public:
 	void _destroy();
 	
 	
-// Methods and props
+// Methods and props, available for children
 protected:
 	
 	OscillatorNode();
@@ -26,8 +26,14 @@ protected:
 	static Nan::Persistent<v8::FunctionTemplate> _protoOscillatorNode; // for inheritance
 	static Nan::Persistent<v8::Function> _ctorOscillatorNode;
 	
+	bool _isDestroyed;
 	
-// System methods and props for ObjectWrap
+	std::string _type;
+	Nan::Persistent<v8::Object> _frequency;
+	Nan::Persistent<v8::Object> _detune;
+	
+	
+// JS methods and props, available through V8 APIs
 private:
 	
 	static NAN_METHOD(newCtor);
@@ -43,15 +49,6 @@ private:
 	static NAN_GETTER(frequencyGetter);
 	
 	static NAN_GETTER(detuneGetter);
-	
-	
-private:
-	
-	bool _isDestroyed;
-	
-	std::string _type;
-	Nan::Persistent<v8::Object> _frequency;
-	Nan::Persistent<v8::Object> _detune;
 	
 };
 

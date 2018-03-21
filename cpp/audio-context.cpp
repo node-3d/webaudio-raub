@@ -62,8 +62,6 @@ void AudioContext::_destroy() { DES_CHECK;
 
 NAN_METHOD(AudioContext::suspend) { THIS_AUDIO_CONTEXT; THIS_CHECK;
 	
-	
-	
 	// TODO: do something?
 	
 }
@@ -71,16 +69,12 @@ NAN_METHOD(AudioContext::suspend) { THIS_AUDIO_CONTEXT; THIS_CHECK;
 
 NAN_METHOD(AudioContext::close) { THIS_AUDIO_CONTEXT; THIS_CHECK;
 	
-	
-	
 	// TODO: do something?
 	
 }
 
 
 NAN_METHOD(AudioContext::getOutputTimestamp) { THIS_AUDIO_CONTEXT; THIS_CHECK;
-	
-	
 	
 	// TODO: do something?
 	
@@ -107,12 +101,9 @@ NAN_METHOD(AudioContext::createMediaStreamSource) { THIS_AUDIO_CONTEXT; THIS_CHE
 
 NAN_METHOD(AudioContext::createMediaStreamDestination) { THIS_AUDIO_CONTEXT; THIS_CHECK;
 	
-	
-	
 	// TODO: do something?
 	
 }
-
 
 
 NAN_GETTER(AudioContext::baseLatencyGetter) { THIS_AUDIO_CONTEXT; THIS_CHECK;
@@ -120,8 +111,6 @@ NAN_GETTER(AudioContext::baseLatencyGetter) { THIS_AUDIO_CONTEXT; THIS_CHECK;
 	RET_VALUE(JS_DOUBLE(audioContext->_baseLatency));
 	
 }
-
-
 
 
 // ------ System methods and props for ObjectWrap

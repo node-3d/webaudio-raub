@@ -17,7 +17,7 @@ public:
 	void _destroy();
 	
 	
-// Methods and props
+// Methods and props, available for children
 protected:
 	
 	StereoPannerNode();
@@ -26,8 +26,12 @@ protected:
 	static Nan::Persistent<v8::FunctionTemplate> _protoStereoPannerNode; // for inheritance
 	static Nan::Persistent<v8::Function> _ctorStereoPannerNode;
 	
+	bool _isDestroyed;
 	
-// System methods and props for ObjectWrap
+	Nan::Persistent<v8::Object> _pan;
+	
+	
+// JS methods and props, available through V8 APIs
 private:
 	
 	static NAN_METHOD(newCtor);
@@ -38,13 +42,6 @@ private:
 	
 	
 	static NAN_GETTER(panGetter);
-	
-	
-private:
-	
-	bool _isDestroyed;
-	
-	Nan::Persistent<v8::Object> _pan;
 	
 };
 

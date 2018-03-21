@@ -17,7 +17,7 @@ public:
 	void _destroy();
 	
 	
-// Methods and props
+// Methods and props, available for children
 protected:
 	
 	IIRFilterNode();
@@ -26,8 +26,12 @@ protected:
 	static Nan::Persistent<v8::FunctionTemplate> _protoIIRFilterNode; // for inheritance
 	static Nan::Persistent<v8::Function> _ctorIIRFilterNode;
 	
+	bool _isDestroyed;
 	
-// System methods and props for ObjectWrap
+	
+	
+	
+// JS methods and props, available through V8 APIs
 private:
 	
 	static NAN_METHOD(newCtor);
@@ -36,13 +40,6 @@ private:
 	static NAN_GETTER(isDestroyedGetter);
 	
 	static NAN_METHOD(getFrequencyResponse);
-	
-	
-private:
-	
-	bool _isDestroyed;
-	
-	
 	
 };
 

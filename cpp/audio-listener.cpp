@@ -76,13 +76,11 @@ NAN_METHOD(AudioListener::setOrientation) { THIS_AUDIO_LISTENER; THIS_CHECK;
 }
 
 
-
 NAN_GETTER(AudioListener::positionXGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(audioListener->_positionX));
 	
 }
-
 
 
 NAN_GETTER(AudioListener::positionYGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
@@ -92,13 +90,11 @@ NAN_GETTER(AudioListener::positionYGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
 }
 
 
-
 NAN_GETTER(AudioListener::positionZGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(audioListener->_positionZ));
 	
 }
-
 
 
 NAN_GETTER(AudioListener::forwardXGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
@@ -108,13 +104,11 @@ NAN_GETTER(AudioListener::forwardXGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
 }
 
 
-
 NAN_GETTER(AudioListener::forwardYGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(audioListener->_forwardY));
 	
 }
-
 
 
 NAN_GETTER(AudioListener::forwardZGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
@@ -124,13 +118,11 @@ NAN_GETTER(AudioListener::forwardZGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
 }
 
 
-
 NAN_GETTER(AudioListener::upXGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(audioListener->_upX));
 	
 }
-
 
 
 NAN_GETTER(AudioListener::upYGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
@@ -140,14 +132,11 @@ NAN_GETTER(AudioListener::upYGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
 }
 
 
-
 NAN_GETTER(AudioListener::upZGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(audioListener->_upZ));
 	
 }
-
-
 
 
 // ------ System methods and props for ObjectWrap

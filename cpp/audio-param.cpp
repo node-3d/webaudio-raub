@@ -121,7 +121,6 @@ NAN_METHOD(AudioParam::cancelAndHoldAtTime) { THIS_AUDIO_PARAM; THIS_CHECK;
 }
 
 
-
 NAN_GETTER(AudioParam::valueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
 	
 	RET_VALUE(JS_FLOAT(audioParam->_value));
@@ -144,7 +143,6 @@ NAN_GETTER(AudioParam::defaultValueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
 }
 
 
-
 NAN_GETTER(AudioParam::minValueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
 	
 	RET_VALUE(JS_FLOAT(audioParam->_minValue));
@@ -152,14 +150,11 @@ NAN_GETTER(AudioParam::minValueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
 }
 
 
-
 NAN_GETTER(AudioParam::maxValueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
 	
 	RET_VALUE(JS_FLOAT(audioParam->_maxValue));
 	
 }
-
-
 
 
 // ------ System methods and props for ObjectWrap

@@ -54,13 +54,11 @@ void DynamicsCompressorNode::_destroy() { DES_CHECK;
 
 
 
-
 NAN_GETTER(DynamicsCompressorNode::thresholdGetter) { THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(dynamicsCompressorNode->_threshold));
 	
 }
-
 
 
 NAN_GETTER(DynamicsCompressorNode::kneeGetter) { THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
@@ -70,13 +68,11 @@ NAN_GETTER(DynamicsCompressorNode::kneeGetter) { THIS_DYNAMICS_COMPRESSOR_NODE; 
 }
 
 
-
 NAN_GETTER(DynamicsCompressorNode::ratioGetter) { THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(dynamicsCompressorNode->_ratio));
 	
 }
-
 
 
 NAN_GETTER(DynamicsCompressorNode::reductionGetter) { THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
@@ -86,7 +82,6 @@ NAN_GETTER(DynamicsCompressorNode::reductionGetter) { THIS_DYNAMICS_COMPRESSOR_N
 }
 
 
-
 NAN_GETTER(DynamicsCompressorNode::attackGetter) { THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(dynamicsCompressorNode->_attack));
@@ -94,14 +89,11 @@ NAN_GETTER(DynamicsCompressorNode::attackGetter) { THIS_DYNAMICS_COMPRESSOR_NODE
 }
 
 
-
 NAN_GETTER(DynamicsCompressorNode::releaseGetter) { THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(dynamicsCompressorNode->_release));
 	
 }
-
-
 
 
 // ------ System methods and props for ObjectWrap

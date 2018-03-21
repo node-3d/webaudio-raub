@@ -15,7 +15,7 @@ public:
 	void _destroy();
 	
 	
-// Methods and props
+// Methods and props, available for children
 protected:
 	
 	AudioTimestamp();
@@ -24,8 +24,13 @@ protected:
 	static Nan::Persistent<v8::FunctionTemplate> _protoAudioTimestamp; // for inheritance
 	static Nan::Persistent<v8::Function> _ctorAudioTimestamp;
 	
+	bool _isDestroyed;
 	
-// System methods and props for ObjectWrap
+	double _contextTime;
+	double _performanceTime;
+	
+	
+// JS methods and props, available through V8 APIs
 private:
 	
 	static NAN_METHOD(newCtor);
@@ -40,14 +45,6 @@ private:
 	
 	static NAN_GETTER(performanceTimeGetter);
 	static NAN_SETTER(performanceTimeSetter);
-	
-	
-private:
-	
-	bool _isDestroyed;
-	
-	double _contextTime;
-	double _performanceTime;
 	
 };
 

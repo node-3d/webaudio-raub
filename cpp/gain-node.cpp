@@ -54,14 +54,11 @@ void GainNode::_destroy() { DES_CHECK;
 
 
 
-
 NAN_GETTER(GainNode::gainGetter) { THIS_GAIN_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(gainNode->_gain));
 	
 }
-
-
 
 
 // ------ System methods and props for ObjectWrap

@@ -54,7 +54,6 @@ void ScriptProcessorNode::_destroy() { DES_CHECK;
 
 
 
-
 NAN_GETTER(ScriptProcessorNode::onaudioprocessGetter) { THIS_SCRIPT_PROCESSOR_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_FUN(scriptProcessorNode->_onaudioprocess));
@@ -70,6 +69,8 @@ NAN_SETTER(ScriptProcessorNode::onaudioprocessSetter) { THIS_SCRIPT_PROCESSOR_NO
 	
 	// TODO: may be additional actions on change?
 	
+	scriptProcessorNode->emit("onaudioprocess", 1, &value);
+	
 }
 
 
@@ -78,8 +79,6 @@ NAN_GETTER(ScriptProcessorNode::bufferSizeGetter) { THIS_SCRIPT_PROCESSOR_NODE; 
 	RET_VALUE(JS_INT32(scriptProcessorNode->_bufferSize));
 	
 }
-
-
 
 
 // ------ System methods and props for ObjectWrap

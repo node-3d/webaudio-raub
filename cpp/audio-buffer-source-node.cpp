@@ -64,7 +64,6 @@ NAN_METHOD(AudioBufferSourceNode::start) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_C
 }
 
 
-
 NAN_GETTER(AudioBufferSourceNode::bufferGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(audioBufferSourceNode->_buffer));
@@ -80,6 +79,8 @@ NAN_SETTER(AudioBufferSourceNode::bufferSetter) { THIS_AUDIO_BUFFER_SOURCE_NODE;
 	
 	// TODO: may be additional actions on change?
 	
+	audioBufferSourceNode->emit("buffer", 1, &value);
+	
 }
 
 
@@ -90,13 +91,11 @@ NAN_GETTER(AudioBufferSourceNode::playbackRateGetter) { THIS_AUDIO_BUFFER_SOURCE
 }
 
 
-
 NAN_GETTER(AudioBufferSourceNode::detuneGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(audioBufferSourceNode->_detune));
 	
 }
-
 
 
 NAN_GETTER(AudioBufferSourceNode::loopGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
@@ -110,6 +109,8 @@ NAN_SETTER(AudioBufferSourceNode::loopSetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; T
 	CACHE_CAS(_loop, v);
 	
 	// TODO: may be additional actions on change?
+	
+	audioBufferSourceNode->emit("loop", 1, &value);
 	
 }
 
@@ -126,6 +127,8 @@ NAN_SETTER(AudioBufferSourceNode::loopStartSetter) { THIS_AUDIO_BUFFER_SOURCE_NO
 	
 	// TODO: may be additional actions on change?
 	
+	audioBufferSourceNode->emit("loopStart", 1, &value);
+	
 }
 
 
@@ -141,8 +144,9 @@ NAN_SETTER(AudioBufferSourceNode::loopEndSetter) { THIS_AUDIO_BUFFER_SOURCE_NODE
 	
 	// TODO: may be additional actions on change?
 	
+	audioBufferSourceNode->emit("loopEnd", 1, &value);
+	
 }
-
 
 
 // ------ System methods and props for ObjectWrap

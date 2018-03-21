@@ -2,6 +2,9 @@
 //#include <iostream> // -> std::cout << "..." << std::endl;
 
 
+#include <LabSound/core/AudioContext.h>
+#include <LabSound/core/DefaultAudioDestinationNode.h>
+
 #include "base-audio-context.hpp"
 
 
@@ -27,9 +30,20 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-BaseAudioContext::BaseAudioContext() {
+BaseAudioContext::BaseAudioContext(bool isOffline, float sampleRate) {
 	
 	_isDestroyed = false;
+	
+	_impl.reset(new lab::AudioContext(isOffline));
+	
+	_impl->setDestinationNode(
+		std::make_shared<lab::DefaultAudioDestinationNode>(
+			_impl.get(), sampleRate
+		)
+	);
+	_impl->lazyInitialize();
+	
+	_state = "running";
 	
 }
 
@@ -43,7 +57,13 @@ BaseAudioContext::~BaseAudioContext() {
 
 void BaseAudioContext::_destroy() { DES_CHECK;
 	
+	if (_state != "closed") {
+		_state = "closed";
+	}
+	
 	_isDestroyed = true;
+	
+	_impl.reset(NULL);
 	
 }
 
@@ -75,8 +95,6 @@ NAN_METHOD(BaseAudioContext::decodeAudioData) { THIS_BASE_AUDIO_CONTEXT; THIS_CH
 
 NAN_METHOD(BaseAudioContext::createBufferSource) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
-	
-	
 	// TODO: do something?
 	
 }
@@ -84,16 +102,12 @@ NAN_METHOD(BaseAudioContext::createBufferSource) { THIS_BASE_AUDIO_CONTEXT; THIS
 
 NAN_METHOD(BaseAudioContext::createConstantSource) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
-	
-	
 	// TODO: do something?
 	
 }
 
 
 NAN_METHOD(BaseAudioContext::createGain) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
-	
-	
 	
 	// TODO: do something?
 	
@@ -110,8 +124,6 @@ NAN_METHOD(BaseAudioContext::createDelay) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 
 
 NAN_METHOD(BaseAudioContext::createBiquadFilter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
-	
-	
 	
 	// TODO: do something?
 	
@@ -130,16 +142,12 @@ NAN_METHOD(BaseAudioContext::createIIRFilter) { THIS_BASE_AUDIO_CONTEXT; THIS_CH
 
 NAN_METHOD(BaseAudioContext::createWaveShaper) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
-	
-	
 	// TODO: do something?
 	
 }
 
 
 NAN_METHOD(BaseAudioContext::createPanner) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
-	
-	
 	
 	// TODO: do something?
 	
@@ -148,8 +156,6 @@ NAN_METHOD(BaseAudioContext::createPanner) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK
 
 NAN_METHOD(BaseAudioContext::createConvolver) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
-	
-	
 	// TODO: do something?
 	
 }
@@ -157,16 +163,12 @@ NAN_METHOD(BaseAudioContext::createConvolver) { THIS_BASE_AUDIO_CONTEXT; THIS_CH
 
 NAN_METHOD(BaseAudioContext::createDynamicsCompressor) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
-	
-	
 	// TODO: do something?
 	
 }
 
 
 NAN_METHOD(BaseAudioContext::createAnalyser) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
-	
-	
 	
 	// TODO: do something?
 	
@@ -186,16 +188,12 @@ NAN_METHOD(BaseAudioContext::createScriptProcessor) { THIS_BASE_AUDIO_CONTEXT; T
 
 NAN_METHOD(BaseAudioContext::createStereoPanner) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
-	
-	
 	// TODO: do something?
 	
 }
 
 
 NAN_METHOD(BaseAudioContext::createOscillator) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
-	
-	
 	
 	// TODO: do something?
 	
@@ -233,8 +231,6 @@ NAN_METHOD(BaseAudioContext::createChannelMerger) { THIS_BASE_AUDIO_CONTEXT; THI
 
 NAN_METHOD(BaseAudioContext::resume) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
-	
-	
 	// TODO: do something?
 	
 }
@@ -260,12 +256,9 @@ NAN_METHOD(BaseAudioContext::createMediaStreamSource) { THIS_BASE_AUDIO_CONTEXT;
 
 NAN_METHOD(BaseAudioContext::createMediaStreamDestination) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
-	
-	
 	// TODO: do something?
 	
 }
-
 
 
 NAN_GETTER(BaseAudioContext::destinationGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
@@ -275,13 +268,11 @@ NAN_GETTER(BaseAudioContext::destinationGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_
 }
 
 
-
 NAN_GETTER(BaseAudioContext::currentTimeGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
 	RET_VALUE(JS_DOUBLE(baseAudioContext->_currentTime));
 	
 }
-
 
 
 NAN_GETTER(BaseAudioContext::sampleRateGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
@@ -291,7 +282,6 @@ NAN_GETTER(BaseAudioContext::sampleRateGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_C
 }
 
 
-
 NAN_GETTER(BaseAudioContext::listenerGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(baseAudioContext->_listener));
@@ -299,14 +289,11 @@ NAN_GETTER(BaseAudioContext::listenerGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHE
 }
 
 
-
 NAN_GETTER(BaseAudioContext::stateGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
 	RET_VALUE(JS_UTF8(baseAudioContext->_state));
 	
 }
-
-
 
 
 // ------ System methods and props for ObjectWrap

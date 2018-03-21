@@ -54,14 +54,11 @@ void StereoPannerNode::_destroy() { DES_CHECK;
 
 
 
-
 NAN_GETTER(StereoPannerNode::panGetter) { THIS_STEREO_PANNER_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(stereoPannerNode->_pan));
 	
 }
-
-
 
 
 // ------ System methods and props for ObjectWrap

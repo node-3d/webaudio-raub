@@ -54,14 +54,11 @@ void ConstantSourceNode::_destroy() { DES_CHECK;
 
 
 
-
 NAN_GETTER(ConstantSourceNode::offsetGetter) { THIS_CONSTANT_SOURCE_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(constantSourceNode->_offset));
 	
 }
-
-
 
 
 // ------ System methods and props for ObjectWrap

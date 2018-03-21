@@ -15,7 +15,7 @@ public:
 	void _destroy();
 	
 	
-// Methods and props
+// Methods and props, available for children
 protected:
 	
 	AudioBuffer();
@@ -24,8 +24,15 @@ protected:
 	static Nan::Persistent<v8::FunctionTemplate> _protoAudioBuffer; // for inheritance
 	static Nan::Persistent<v8::Function> _ctorAudioBuffer;
 	
+	bool _isDestroyed;
 	
-// System methods and props for ObjectWrap
+	int _length;
+	double _duration;
+	float _sampleRate;
+	unsigned int _numberOfChannels;
+	
+	
+// JS methods and props, available through V8 APIs
 private:
 	
 	static NAN_METHOD(newCtor);
@@ -44,16 +51,6 @@ private:
 	static NAN_GETTER(sampleRateGetter);
 	
 	static NAN_GETTER(numberOfChannelsGetter);
-	
-	
-private:
-	
-	bool _isDestroyed;
-	
-	int _length;
-	double _duration;
-	float _sampleRate;
-	unsigned int _numberOfChannels;
 	
 };
 

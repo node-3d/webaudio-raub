@@ -55,8 +55,6 @@ void ChannelMergerNode::_destroy() { DES_CHECK;
 
 
 
-
-
 // ------ System methods and props for ObjectWrap
 
 Nan::Persistent<v8::FunctionTemplate> ChannelMergerNode::_protoChannelMergerNode;

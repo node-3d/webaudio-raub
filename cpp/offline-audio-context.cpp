@@ -55,8 +55,6 @@ void OfflineAudioContext::_destroy() { DES_CHECK;
 
 NAN_METHOD(OfflineAudioContext::startRendering) { THIS_OFFLINE_AUDIO_CONTEXT; THIS_CHECK;
 	
-	
-	
 	// TODO: do something?
 	
 }
@@ -69,7 +67,6 @@ NAN_METHOD(OfflineAudioContext::suspend) { THIS_OFFLINE_AUDIO_CONTEXT; THIS_CHEC
 	// TODO: do something?
 	
 }
-
 
 
 NAN_GETTER(OfflineAudioContext::oncompleteGetter) { THIS_OFFLINE_AUDIO_CONTEXT; THIS_CHECK;
@@ -87,6 +84,8 @@ NAN_SETTER(OfflineAudioContext::oncompleteSetter) { THIS_OFFLINE_AUDIO_CONTEXT; 
 	
 	// TODO: may be additional actions on change?
 	
+	offlineAudioContext->emit("oncomplete", 1, &value);
+	
 }
 
 
@@ -95,8 +94,6 @@ NAN_GETTER(OfflineAudioContext::lengthGetter) { THIS_OFFLINE_AUDIO_CONTEXT; THIS
 	RET_VALUE(JS_UINT32(offlineAudioContext->_length));
 	
 }
-
-
 
 
 // ------ System methods and props for ObjectWrap

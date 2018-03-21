@@ -64,7 +64,6 @@ NAN_METHOD(BiquadFilterNode::getFrequencyResponse) { THIS_BIQUAD_FILTER_NODE; TH
 }
 
 
-
 NAN_GETTER(BiquadFilterNode::typeGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_UTF8(biquadFilterNode->_type));
@@ -80,6 +79,8 @@ NAN_SETTER(BiquadFilterNode::typeSetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK; 
 	
 	// TODO: may be additional actions on change?
 	
+	biquadFilterNode->emit("type", 1, &value);
+	
 }
 
 
@@ -90,13 +91,11 @@ NAN_GETTER(BiquadFilterNode::frequencyGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CH
 }
 
 
-
 NAN_GETTER(BiquadFilterNode::detuneGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(biquadFilterNode->_detune));
 	
 }
-
 
 
 NAN_GETTER(BiquadFilterNode::QGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
@@ -106,14 +105,11 @@ NAN_GETTER(BiquadFilterNode::QGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
 }
 
 
-
 NAN_GETTER(BiquadFilterNode::gainGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(biquadFilterNode->_gain));
 	
 }
-
-
 
 
 // ------ System methods and props for ObjectWrap

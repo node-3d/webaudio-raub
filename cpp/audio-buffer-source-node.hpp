@@ -17,7 +17,7 @@ public:
 	void _destroy();
 	
 	
-// Methods and props
+// Methods and props, available for children
 protected:
 	
 	AudioBufferSourceNode();
@@ -26,8 +26,17 @@ protected:
 	static Nan::Persistent<v8::FunctionTemplate> _protoAudioBufferSourceNode; // for inheritance
 	static Nan::Persistent<v8::Function> _ctorAudioBufferSourceNode;
 	
+	bool _isDestroyed;
 	
-// System methods and props for ObjectWrap
+	Nan::Persistent<v8::Object> _buffer;
+	Nan::Persistent<v8::Object> _playbackRate;
+	Nan::Persistent<v8::Object> _detune;
+	bool _loop;
+	double _loopStart;
+	double _loopEnd;
+	
+	
+// JS methods and props, available through V8 APIs
 private:
 	
 	static NAN_METHOD(newCtor);
@@ -52,18 +61,6 @@ private:
 	
 	static NAN_GETTER(loopEndGetter);
 	static NAN_SETTER(loopEndSetter);
-	
-	
-private:
-	
-	bool _isDestroyed;
-	
-	Nan::Persistent<v8::Object> _buffer;
-	Nan::Persistent<v8::Object> _playbackRate;
-	Nan::Persistent<v8::Object> _detune;
-	bool _loop;
-	double _loopStart;
-	double _loopEnd;
 	
 };
 

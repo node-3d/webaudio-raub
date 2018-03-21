@@ -54,14 +54,11 @@ void AudioDestinationNode::_destroy() { DES_CHECK;
 
 
 
-
 NAN_GETTER(AudioDestinationNode::maxChannelCountGetter) { THIS_AUDIO_DESTINATION_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_UINT32(audioDestinationNode->_maxChannelCount));
 	
 }
-
-
 
 
 // ------ System methods and props for ObjectWrap

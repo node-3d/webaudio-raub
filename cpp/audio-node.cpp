@@ -75,13 +75,11 @@ NAN_METHOD(AudioNode::disconnect) { THIS_AUDIO_NODE; THIS_CHECK;
 }
 
 
-
 NAN_GETTER(AudioNode::contextGetter) { THIS_AUDIO_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(audioNode->_context));
 	
 }
-
 
 
 NAN_GETTER(AudioNode::numberOfInputsGetter) { THIS_AUDIO_NODE; THIS_CHECK;
@@ -91,13 +89,11 @@ NAN_GETTER(AudioNode::numberOfInputsGetter) { THIS_AUDIO_NODE; THIS_CHECK;
 }
 
 
-
 NAN_GETTER(AudioNode::numberOfOutputsGetter) { THIS_AUDIO_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_UINT32(audioNode->_numberOfOutputs));
 	
 }
-
 
 
 NAN_GETTER(AudioNode::channelCountGetter) { THIS_AUDIO_NODE; THIS_CHECK;
@@ -111,6 +107,8 @@ NAN_SETTER(AudioNode::channelCountSetter) { THIS_AUDIO_NODE; THIS_CHECK; SETTER_
 	CACHE_CAS(_channelCount, v);
 	
 	// TODO: may be additional actions on change?
+	
+	audioNode->emit("channelCount", 1, &value);
 	
 }
 
@@ -130,6 +128,8 @@ NAN_SETTER(AudioNode::channelCountModeSetter) { THIS_AUDIO_NODE; THIS_CHECK; SET
 	
 	// TODO: may be additional actions on change?
 	
+	audioNode->emit("channelCountMode", 1, &value);
+	
 }
 
 
@@ -148,8 +148,9 @@ NAN_SETTER(AudioNode::channelInterpretationSetter) { THIS_AUDIO_NODE; THIS_CHECK
 	
 	// TODO: may be additional actions on change?
 	
+	audioNode->emit("channelInterpretation", 1, &value);
+	
 }
-
 
 
 // ------ System methods and props for ObjectWrap

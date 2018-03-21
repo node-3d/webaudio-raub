@@ -17,7 +17,7 @@ public:
 	void _destroy();
 	
 	
-// Methods and props
+// Methods and props, available for children
 protected:
 	
 	GainNode();
@@ -26,8 +26,12 @@ protected:
 	static Nan::Persistent<v8::FunctionTemplate> _protoGainNode; // for inheritance
 	static Nan::Persistent<v8::Function> _ctorGainNode;
 	
+	bool _isDestroyed;
 	
-// System methods and props for ObjectWrap
+	Nan::Persistent<v8::Object> _gain;
+	
+	
+// JS methods and props, available through V8 APIs
 private:
 	
 	static NAN_METHOD(newCtor);
@@ -38,13 +42,6 @@ private:
 	
 	
 	static NAN_GETTER(gainGetter);
-	
-	
-private:
-	
-	bool _isDestroyed;
-	
-	Nan::Persistent<v8::Object> _gain;
 	
 };
 

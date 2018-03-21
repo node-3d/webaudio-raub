@@ -17,7 +17,7 @@ public:
 	void _destroy();
 	
 	
-// Methods and props
+// Methods and props, available for children
 protected:
 	
 	OfflineAudioContext();
@@ -26,8 +26,13 @@ protected:
 	static Nan::Persistent<v8::FunctionTemplate> _protoOfflineAudioContext; // for inheritance
 	static Nan::Persistent<v8::Function> _ctorOfflineAudioContext;
 	
+	bool _isDestroyed;
 	
-// System methods and props for ObjectWrap
+	Nan::Persistent<v8::Function> _oncomplete;
+	unsigned int _length;
+	
+	
+// JS methods and props, available through V8 APIs
 private:
 	
 	static NAN_METHOD(newCtor);
@@ -42,14 +47,6 @@ private:
 	static NAN_SETTER(oncompleteSetter);
 	
 	static NAN_GETTER(lengthGetter);
-	
-	
-private:
-	
-	bool _isDestroyed;
-	
-	Nan::Persistent<v8::Function> _oncomplete;
-	unsigned int _length;
 	
 };
 

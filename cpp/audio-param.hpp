@@ -15,7 +15,7 @@ public:
 	void _destroy();
 	
 	
-// Methods and props
+// Methods and props, available for children
 protected:
 	
 	AudioParam();
@@ -24,8 +24,15 @@ protected:
 	static Nan::Persistent<v8::FunctionTemplate> _protoAudioParam; // for inheritance
 	static Nan::Persistent<v8::Function> _ctorAudioParam;
 	
+	bool _isDestroyed;
 	
-// System methods and props for ObjectWrap
+	float _value;
+	float _defaultValue;
+	float _minValue;
+	float _maxValue;
+	
+	
+// JS methods and props, available through V8 APIs
 private:
 	
 	static NAN_METHOD(newCtor);
@@ -49,16 +56,6 @@ private:
 	static NAN_GETTER(minValueGetter);
 	
 	static NAN_GETTER(maxValueGetter);
-	
-	
-private:
-	
-	bool _isDestroyed;
-	
-	float _value;
-	float _defaultValue;
-	float _minValue;
-	float _maxValue;
 	
 };
 

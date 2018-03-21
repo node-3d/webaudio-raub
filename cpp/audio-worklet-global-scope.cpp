@@ -61,13 +61,11 @@ NAN_METHOD(AudioWorkletGlobalScope::registerProcessor) { THIS_AUDIO_WORKLET_GLOB
 }
 
 
-
 NAN_GETTER(AudioWorkletGlobalScope::currentFrameGetter) { THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK;
 	
 	RET_VALUE(JS_OFFS(audioWorkletGlobalScope->_currentFrame));
 	
 }
-
 
 
 NAN_GETTER(AudioWorkletGlobalScope::currentTimeGetter) { THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK;
@@ -77,14 +75,11 @@ NAN_GETTER(AudioWorkletGlobalScope::currentTimeGetter) { THIS_AUDIO_WORKLET_GLOB
 }
 
 
-
 NAN_GETTER(AudioWorkletGlobalScope::sampleRateGetter) { THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK;
 	
 	RET_VALUE(JS_FLOAT(audioWorkletGlobalScope->_sampleRate));
 	
 }
-
-
 
 
 // ------ System methods and props for ObjectWrap

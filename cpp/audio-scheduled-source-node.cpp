@@ -71,7 +71,6 @@ NAN_METHOD(AudioScheduledSourceNode::stop) { THIS_AUDIO_SCHEDULED_SOURCE_NODE; T
 }
 
 
-
 NAN_GETTER(AudioScheduledSourceNode::onendedGetter) { THIS_AUDIO_SCHEDULED_SOURCE_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_FUN(audioScheduledSourceNode->_onended));
@@ -87,8 +86,9 @@ NAN_SETTER(AudioScheduledSourceNode::onendedSetter) { THIS_AUDIO_SCHEDULED_SOURC
 	
 	// TODO: may be additional actions on change?
 	
+	audioScheduledSourceNode->emit("onended", 1, &value);
+	
 }
-
 
 
 // ------ System methods and props for ObjectWrap

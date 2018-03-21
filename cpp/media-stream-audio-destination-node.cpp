@@ -54,14 +54,11 @@ void MediaStreamAudioDestinationNode::_destroy() { DES_CHECK;
 
 
 
-
 NAN_GETTER(MediaStreamAudioDestinationNode::streamGetter) { THIS_MEDIA_STREAM_AUDIO_DESTINATION_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(mediaStreamAudioDestinationNode->_stream));
 	
 }
-
-
 
 
 // ------ System methods and props for ObjectWrap

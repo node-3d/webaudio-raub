@@ -62,7 +62,6 @@ NAN_METHOD(OscillatorNode::setPeriodicWave) { THIS_OSCILLATOR_NODE; THIS_CHECK;
 }
 
 
-
 NAN_GETTER(OscillatorNode::typeGetter) { THIS_OSCILLATOR_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_UTF8(oscillatorNode->_type));
@@ -78,6 +77,8 @@ NAN_SETTER(OscillatorNode::typeSetter) { THIS_OSCILLATOR_NODE; THIS_CHECK; SETTE
 	
 	// TODO: may be additional actions on change?
 	
+	oscillatorNode->emit("type", 1, &value);
+	
 }
 
 
@@ -88,14 +89,11 @@ NAN_GETTER(OscillatorNode::frequencyGetter) { THIS_OSCILLATOR_NODE; THIS_CHECK;
 }
 
 
-
 NAN_GETTER(OscillatorNode::detuneGetter) { THIS_OSCILLATOR_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(oscillatorNode->_detune));
 	
 }
-
-
 
 
 // ------ System methods and props for ObjectWrap

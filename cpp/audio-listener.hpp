@@ -15,7 +15,7 @@ public:
 	void _destroy();
 	
 	
-// Methods and props
+// Methods and props, available for children
 protected:
 	
 	AudioListener();
@@ -24,8 +24,20 @@ protected:
 	static Nan::Persistent<v8::FunctionTemplate> _protoAudioListener; // for inheritance
 	static Nan::Persistent<v8::Function> _ctorAudioListener;
 	
+	bool _isDestroyed;
 	
-// System methods and props for ObjectWrap
+	Nan::Persistent<v8::Object> _positionX;
+	Nan::Persistent<v8::Object> _positionY;
+	Nan::Persistent<v8::Object> _positionZ;
+	Nan::Persistent<v8::Object> _forwardX;
+	Nan::Persistent<v8::Object> _forwardY;
+	Nan::Persistent<v8::Object> _forwardZ;
+	Nan::Persistent<v8::Object> _upX;
+	Nan::Persistent<v8::Object> _upY;
+	Nan::Persistent<v8::Object> _upZ;
+	
+	
+// JS methods and props, available through V8 APIs
 private:
 	
 	static NAN_METHOD(newCtor);
@@ -53,21 +65,6 @@ private:
 	static NAN_GETTER(upYGetter);
 	
 	static NAN_GETTER(upZGetter);
-	
-	
-private:
-	
-	bool _isDestroyed;
-	
-	Nan::Persistent<v8::Object> _positionX;
-	Nan::Persistent<v8::Object> _positionY;
-	Nan::Persistent<v8::Object> _positionZ;
-	Nan::Persistent<v8::Object> _forwardX;
-	Nan::Persistent<v8::Object> _forwardY;
-	Nan::Persistent<v8::Object> _forwardZ;
-	Nan::Persistent<v8::Object> _upX;
-	Nan::Persistent<v8::Object> _upY;
-	Nan::Persistent<v8::Object> _upZ;
 	
 };
 

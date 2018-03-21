@@ -52,7 +52,6 @@ void AudioWorkletNode::_destroy() { DES_CHECK;
 
 
 
-
 NAN_GETTER(AudioWorkletNode::parametersGetter) { THIS_AUDIO_WORKLET_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(audioWorkletNode->_parameters));
@@ -60,13 +59,11 @@ NAN_GETTER(AudioWorkletNode::parametersGetter) { THIS_AUDIO_WORKLET_NODE; THIS_C
 }
 
 
-
 NAN_GETTER(AudioWorkletNode::portGetter) { THIS_AUDIO_WORKLET_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(audioWorkletNode->_port));
 	
 }
-
 
 
 NAN_GETTER(AudioWorkletNode::onprocessorerrorGetter) { THIS_AUDIO_WORKLET_NODE; THIS_CHECK;
@@ -85,7 +82,6 @@ NAN_SETTER(AudioWorkletNode::onprocessorerrorSetter) { THIS_AUDIO_WORKLET_NODE; 
 	// TODO: may be additional actions on change?
 	
 }
-
 
 
 // ------ System methods and props for ObjectWrap

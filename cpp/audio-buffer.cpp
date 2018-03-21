@@ -82,13 +82,11 @@ NAN_METHOD(AudioBuffer::copyToChannel) { THIS_AUDIO_BUFFER; THIS_CHECK;
 }
 
 
-
 NAN_GETTER(AudioBuffer::lengthGetter) { THIS_AUDIO_BUFFER; THIS_CHECK;
 	
 	RET_VALUE(JS_INT32(audioBuffer->_length));
 	
 }
-
 
 
 NAN_GETTER(AudioBuffer::durationGetter) { THIS_AUDIO_BUFFER; THIS_CHECK;
@@ -98,7 +96,6 @@ NAN_GETTER(AudioBuffer::durationGetter) { THIS_AUDIO_BUFFER; THIS_CHECK;
 }
 
 
-
 NAN_GETTER(AudioBuffer::sampleRateGetter) { THIS_AUDIO_BUFFER; THIS_CHECK;
 	
 	RET_VALUE(JS_FLOAT(audioBuffer->_sampleRate));
@@ -106,14 +103,11 @@ NAN_GETTER(AudioBuffer::sampleRateGetter) { THIS_AUDIO_BUFFER; THIS_CHECK;
 }
 
 
-
 NAN_GETTER(AudioBuffer::numberOfChannelsGetter) { THIS_AUDIO_BUFFER; THIS_CHECK;
 	
 	RET_VALUE(JS_UINT32(audioBuffer->_numberOfChannels));
 	
 }
-
-
 
 
 // ------ System methods and props for ObjectWrap

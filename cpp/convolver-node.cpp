@@ -54,7 +54,6 @@ void ConvolverNode::_destroy() { DES_CHECK;
 
 
 
-
 NAN_GETTER(ConvolverNode::bufferGetter) { THIS_CONVOLVER_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(convolverNode->_buffer));
@@ -69,6 +68,8 @@ NAN_SETTER(ConvolverNode::bufferSetter) { THIS_CONVOLVER_NODE; THIS_CHECK; SETTE
 	convolverNode->_buffer.Reset(v);
 	
 	// TODO: may be additional actions on change?
+	
+	convolverNode->emit("buffer", 1, &value);
 	
 }
 
@@ -85,8 +86,9 @@ NAN_SETTER(ConvolverNode::normalizeSetter) { THIS_CONVOLVER_NODE; THIS_CHECK; SE
 	
 	// TODO: may be additional actions on change?
 	
+	convolverNode->emit("normalize", 1, &value);
+	
 }
-
 
 
 // ------ System methods and props for ObjectWrap

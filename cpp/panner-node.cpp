@@ -75,7 +75,6 @@ NAN_METHOD(PannerNode::setOrientation) { THIS_PANNER_NODE; THIS_CHECK;
 }
 
 
-
 NAN_GETTER(PannerNode::panningModelGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_UTF8(pannerNode->_panningModel));
@@ -91,6 +90,8 @@ NAN_SETTER(PannerNode::panningModelSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTE
 	
 	// TODO: may be additional actions on change?
 	
+	pannerNode->emit("panningModel", 1, &value);
+	
 }
 
 
@@ -101,13 +102,11 @@ NAN_GETTER(PannerNode::positionXGetter) { THIS_PANNER_NODE; THIS_CHECK;
 }
 
 
-
 NAN_GETTER(PannerNode::positionYGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(pannerNode->_positionY));
 	
 }
-
 
 
 NAN_GETTER(PannerNode::positionZGetter) { THIS_PANNER_NODE; THIS_CHECK;
@@ -117,13 +116,11 @@ NAN_GETTER(PannerNode::positionZGetter) { THIS_PANNER_NODE; THIS_CHECK;
 }
 
 
-
 NAN_GETTER(PannerNode::orientationXGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(pannerNode->_orientationX));
 	
 }
-
 
 
 NAN_GETTER(PannerNode::orientationYGetter) { THIS_PANNER_NODE; THIS_CHECK;
@@ -133,13 +130,11 @@ NAN_GETTER(PannerNode::orientationYGetter) { THIS_PANNER_NODE; THIS_CHECK;
 }
 
 
-
 NAN_GETTER(PannerNode::orientationZGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(pannerNode->_orientationZ));
 	
 }
-
 
 
 NAN_GETTER(PannerNode::distanceModelGetter) { THIS_PANNER_NODE; THIS_CHECK;
@@ -157,6 +152,8 @@ NAN_SETTER(PannerNode::distanceModelSetter) { THIS_PANNER_NODE; THIS_CHECK; SETT
 	
 	// TODO: may be additional actions on change?
 	
+	pannerNode->emit("distanceModel", 1, &value);
+	
 }
 
 
@@ -171,6 +168,8 @@ NAN_SETTER(PannerNode::refDistanceSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER
 	CACHE_CAS(_refDistance, v);
 	
 	// TODO: may be additional actions on change?
+	
+	pannerNode->emit("refDistance", 1, &value);
 	
 }
 
@@ -187,6 +186,8 @@ NAN_SETTER(PannerNode::maxDistanceSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER
 	
 	// TODO: may be additional actions on change?
 	
+	pannerNode->emit("maxDistance", 1, &value);
+	
 }
 
 
@@ -201,6 +202,8 @@ NAN_SETTER(PannerNode::rolloffFactorSetter) { THIS_PANNER_NODE; THIS_CHECK; SETT
 	CACHE_CAS(_rolloffFactor, v);
 	
 	// TODO: may be additional actions on change?
+	
+	pannerNode->emit("rolloffFactor", 1, &value);
 	
 }
 
@@ -217,6 +220,8 @@ NAN_SETTER(PannerNode::coneInnerAngleSetter) { THIS_PANNER_NODE; THIS_CHECK; SET
 	
 	// TODO: may be additional actions on change?
 	
+	pannerNode->emit("coneInnerAngle", 1, &value);
+	
 }
 
 
@@ -231,6 +236,8 @@ NAN_SETTER(PannerNode::coneOuterAngleSetter) { THIS_PANNER_NODE; THIS_CHECK; SET
 	CACHE_CAS(_coneOuterAngle, v);
 	
 	// TODO: may be additional actions on change?
+	
+	pannerNode->emit("coneOuterAngle", 1, &value);
 	
 }
 
@@ -247,8 +254,9 @@ NAN_SETTER(PannerNode::coneOuterGainSetter) { THIS_PANNER_NODE; THIS_CHECK; SETT
 	
 	// TODO: may be additional actions on change?
 	
+	pannerNode->emit("coneOuterGain", 1, &value);
+	
 }
-
 
 
 // ------ System methods and props for ObjectWrap

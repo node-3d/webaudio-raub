@@ -17,7 +17,7 @@ public:
 	void _destroy();
 	
 	
-// Methods and props
+// Methods and props, available for children
 protected:
 	
 	PannerNode();
@@ -26,8 +26,25 @@ protected:
 	static Nan::Persistent<v8::FunctionTemplate> _protoPannerNode; // for inheritance
 	static Nan::Persistent<v8::Function> _ctorPannerNode;
 	
+	bool _isDestroyed;
 	
-// System methods and props for ObjectWrap
+	std::string _panningModel;
+	Nan::Persistent<v8::Object> _positionX;
+	Nan::Persistent<v8::Object> _positionY;
+	Nan::Persistent<v8::Object> _positionZ;
+	Nan::Persistent<v8::Object> _orientationX;
+	Nan::Persistent<v8::Object> _orientationY;
+	Nan::Persistent<v8::Object> _orientationZ;
+	std::string _distanceModel;
+	double _refDistance;
+	double _maxDistance;
+	double _rolloffFactor;
+	double _coneInnerAngle;
+	double _coneOuterAngle;
+	double _coneOuterGain;
+	
+	
+// JS methods and props, available through V8 APIs
 private:
 	
 	static NAN_METHOD(newCtor);
@@ -73,26 +90,6 @@ private:
 	
 	static NAN_GETTER(coneOuterGainGetter);
 	static NAN_SETTER(coneOuterGainSetter);
-	
-	
-private:
-	
-	bool _isDestroyed;
-	
-	std::string _panningModel;
-	Nan::Persistent<v8::Object> _positionX;
-	Nan::Persistent<v8::Object> _positionY;
-	Nan::Persistent<v8::Object> _positionZ;
-	Nan::Persistent<v8::Object> _orientationX;
-	Nan::Persistent<v8::Object> _orientationY;
-	Nan::Persistent<v8::Object> _orientationZ;
-	std::string _distanceModel;
-	double _refDistance;
-	double _maxDistance;
-	double _rolloffFactor;
-	double _coneInnerAngle;
-	double _coneOuterAngle;
-	double _coneOuterGain;
 	
 };
 

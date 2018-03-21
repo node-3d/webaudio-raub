@@ -89,13 +89,11 @@ NAN_METHOD(AnalyserNode::getByteTimeDomainData) { THIS_ANALYSER_NODE; THIS_CHECK
 }
 
 
-
 NAN_GETTER(AnalyserNode::frequencyBinCountGetter) { THIS_ANALYSER_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_UINT32(analyserNode->_frequencyBinCount));
 	
 }
-
 
 
 NAN_GETTER(AnalyserNode::fftSizeGetter) { THIS_ANALYSER_NODE; THIS_CHECK;
@@ -109,6 +107,8 @@ NAN_SETTER(AnalyserNode::fftSizeSetter) { THIS_ANALYSER_NODE; THIS_CHECK; SETTER
 	CACHE_CAS(_fftSize, v);
 	
 	// TODO: may be additional actions on change?
+	
+	analyserNode->emit("fftSize", 1, &value);
 	
 }
 
@@ -125,6 +125,8 @@ NAN_SETTER(AnalyserNode::minDecibelsSetter) { THIS_ANALYSER_NODE; THIS_CHECK; SE
 	
 	// TODO: may be additional actions on change?
 	
+	analyserNode->emit("minDecibels", 1, &value);
+	
 }
 
 
@@ -139,6 +141,8 @@ NAN_SETTER(AnalyserNode::maxDecibelsSetter) { THIS_ANALYSER_NODE; THIS_CHECK; SE
 	CACHE_CAS(_maxDecibels, v);
 	
 	// TODO: may be additional actions on change?
+	
+	analyserNode->emit("maxDecibels", 1, &value);
 	
 }
 
@@ -155,8 +159,9 @@ NAN_SETTER(AnalyserNode::smoothingTimeConstantSetter) { THIS_ANALYSER_NODE; THIS
 	
 	// TODO: may be additional actions on change?
 	
+	analyserNode->emit("smoothingTimeConstant", 1, &value);
+	
 }
-
 
 
 // ------ System methods and props for ObjectWrap

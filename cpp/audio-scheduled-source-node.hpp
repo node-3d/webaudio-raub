@@ -17,7 +17,7 @@ public:
 	void _destroy();
 	
 	
-// Methods and props
+// Methods and props, available for children
 protected:
 	
 	AudioScheduledSourceNode();
@@ -26,8 +26,12 @@ protected:
 	static Nan::Persistent<v8::FunctionTemplate> _protoAudioScheduledSourceNode; // for inheritance
 	static Nan::Persistent<v8::Function> _ctorAudioScheduledSourceNode;
 	
+	bool _isDestroyed;
 	
-// System methods and props for ObjectWrap
+	Nan::Persistent<v8::Function> _onended;
+	
+	
+// JS methods and props, available through V8 APIs
 private:
 	
 	static NAN_METHOD(newCtor);
@@ -40,13 +44,6 @@ private:
 	
 	static NAN_GETTER(onendedGetter);
 	static NAN_SETTER(onendedSetter);
-	
-	
-private:
-	
-	bool _isDestroyed;
-	
-	Nan::Persistent<v8::Function> _onended;
 	
 };
 

@@ -54,7 +54,6 @@ void WaveShaperNode::_destroy() { DES_CHECK;
 
 
 
-
 NAN_GETTER(WaveShaperNode::curveGetter) { THIS_WAVE_SHAPER_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(waveShaperNode->_curve));
@@ -69,6 +68,8 @@ NAN_SETTER(WaveShaperNode::curveSetter) { THIS_WAVE_SHAPER_NODE; THIS_CHECK; SET
 	waveShaperNode->_curve.Reset(v);
 	
 	// TODO: may be additional actions on change?
+	
+	waveShaperNode->emit("curve", 1, &value);
 	
 }
 
@@ -88,8 +89,9 @@ NAN_SETTER(WaveShaperNode::oversampleSetter) { THIS_WAVE_SHAPER_NODE; THIS_CHECK
 	
 	// TODO: may be additional actions on change?
 	
+	waveShaperNode->emit("oversample", 1, &value);
+	
 }
-
 
 
 // ------ System methods and props for ObjectWrap

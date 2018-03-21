@@ -17,7 +17,7 @@ public:
 	void _destroy();
 	
 	
-// Methods and props
+// Methods and props, available for children
 protected:
 	
 	ChannelMergerNode();
@@ -26,21 +26,18 @@ protected:
 	static Nan::Persistent<v8::FunctionTemplate> _protoChannelMergerNode; // for inheritance
 	static Nan::Persistent<v8::Function> _ctorChannelMergerNode;
 	
+	bool _isDestroyed;
 	
-// System methods and props for ObjectWrap
+	
+	
+	
+// JS methods and props, available through V8 APIs
 private:
 	
 	static NAN_METHOD(newCtor);
 	
 	static NAN_METHOD(destroy);
 	static NAN_GETTER(isDestroyedGetter);
-	
-	
-	
-	
-private:
-	
-	bool _isDestroyed;
 	
 	
 	

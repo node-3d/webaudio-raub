@@ -17,7 +17,7 @@ public:
 	void _destroy();
 	
 	
-// Methods and props
+// Methods and props, available for children
 protected:
 	
 	AudioDestinationNode();
@@ -26,8 +26,12 @@ protected:
 	static Nan::Persistent<v8::FunctionTemplate> _protoAudioDestinationNode; // for inheritance
 	static Nan::Persistent<v8::Function> _ctorAudioDestinationNode;
 	
+	bool _isDestroyed;
 	
-// System methods and props for ObjectWrap
+	unsigned int _maxChannelCount;
+	
+	
+// JS methods and props, available through V8 APIs
 private:
 	
 	static NAN_METHOD(newCtor);
@@ -38,13 +42,6 @@ private:
 	
 	
 	static NAN_GETTER(maxChannelCountGetter);
-	
-	
-private:
-	
-	bool _isDestroyed;
-	
-	unsigned int _maxChannelCount;
 	
 };
 

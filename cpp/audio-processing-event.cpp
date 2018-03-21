@@ -52,13 +52,11 @@ void AudioProcessingEvent::_destroy() { DES_CHECK;
 
 
 
-
 NAN_GETTER(AudioProcessingEvent::playbackTimeGetter) { THIS_AUDIO_PROCESSING_EVENT; THIS_CHECK;
 	
 	RET_VALUE(JS_DOUBLE(audioProcessingEvent->_playbackTime));
 	
 }
-
 
 
 NAN_GETTER(AudioProcessingEvent::inputBufferGetter) { THIS_AUDIO_PROCESSING_EVENT; THIS_CHECK;
@@ -68,14 +66,11 @@ NAN_GETTER(AudioProcessingEvent::inputBufferGetter) { THIS_AUDIO_PROCESSING_EVEN
 }
 
 
-
 NAN_GETTER(AudioProcessingEvent::outputBufferGetter) { THIS_AUDIO_PROCESSING_EVENT; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(audioProcessingEvent->_outputBuffer));
 	
 }
-
-
 
 
 // ------ System methods and props for ObjectWrap

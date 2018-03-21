@@ -17,7 +17,7 @@ public:
 	void _destroy();
 	
 	
-// Methods and props
+// Methods and props, available for children
 protected:
 	
 	ConvolverNode();
@@ -26,8 +26,13 @@ protected:
 	static Nan::Persistent<v8::FunctionTemplate> _protoConvolverNode; // for inheritance
 	static Nan::Persistent<v8::Function> _ctorConvolverNode;
 	
+	bool _isDestroyed;
 	
-// System methods and props for ObjectWrap
+	Nan::Persistent<v8::Object> _buffer;
+	bool _normalize;
+	
+	
+// JS methods and props, available through V8 APIs
 private:
 	
 	static NAN_METHOD(newCtor);
@@ -42,14 +47,6 @@ private:
 	
 	static NAN_GETTER(normalizeGetter);
 	static NAN_SETTER(normalizeSetter);
-	
-	
-private:
-	
-	bool _isDestroyed;
-	
-	Nan::Persistent<v8::Object> _buffer;
-	bool _normalize;
 	
 };
 

@@ -27,6 +27,10 @@ protected:
 	static Nan::Persistent<v8::FunctionTemplate> _protoAudioContext; // for inheritance
 	static Nan::Persistent<v8::Function> _ctorAudioContext;
 	
+	bool _isDestroyed;
+	
+	double _baseLatency;
+	
 	
 // System methods and props for ObjectWrap
 private:
@@ -44,13 +48,6 @@ private:
 	static NAN_METHOD(createMediaStreamDestination);
 	
 	static NAN_GETTER(baseLatencyGetter);
-	
-	
-private:
-	
-	bool _isDestroyed;
-	
-	double _baseLatency;
 	
 };
 

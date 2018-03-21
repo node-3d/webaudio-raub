@@ -52,14 +52,11 @@ void OfflineAudioCompletionEvent::_destroy() { DES_CHECK;
 
 
 
-
 NAN_GETTER(OfflineAudioCompletionEvent::renderedBufferGetter) { THIS_OFFLINE_AUDIO_COMPLETION_EVENT; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(offlineAudioCompletionEvent->_renderedBuffer));
 	
 }
-
-
 
 
 // ------ System methods and props for ObjectWrap

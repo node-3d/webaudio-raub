@@ -17,7 +17,7 @@ public:
 	void _destroy();
 	
 	
-// Methods and props
+// Methods and props, available for children
 protected:
 	
 	MediaElementAudioSourceNode();
@@ -26,8 +26,12 @@ protected:
 	static Nan::Persistent<v8::FunctionTemplate> _protoMediaElementAudioSourceNode; // for inheritance
 	static Nan::Persistent<v8::Function> _ctorMediaElementAudioSourceNode;
 	
+	bool _isDestroyed;
 	
-// System methods and props for ObjectWrap
+	Nan::Persistent<v8::Object> _mediaElement;
+	
+	
+// JS methods and props, available through V8 APIs
 private:
 	
 	static NAN_METHOD(newCtor);
@@ -38,13 +42,6 @@ private:
 	
 	
 	static NAN_GETTER(mediaElementGetter);
-	
-	
-private:
-	
-	bool _isDestroyed;
-	
-	Nan::Persistent<v8::Object> _mediaElement;
 	
 };
 
