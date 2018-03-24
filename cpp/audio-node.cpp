@@ -28,55 +28,55 @@ using namespace std;
 	audioNode->CACHE = V;
 
 
-inline std::string fromChannelCountMode(ChannelCountMode mode) {
-	if (mode == ClampedMax) {
+inline std::string fromChannelCountMode(lab::ChannelCountMode mode) {
+	if (mode == lab::ChannelCountMode::ClampedMax) {
 		return "clamped-max";
-	} else if (mode == Explicit) {
+	} else if (mode == lab::ChannelCountMode::Explicit) {
 		return "explicit";
 	} else {
 		return "max";
 	}
 }
 
-inline std::string toChannelCountMode(const std::string &mode) {
+inline lab::ChannelCountMode toChannelCountMode(const std::string &mode) {
 	if (mode == "clamped-max") {
-		return ClampedMax;
+		return lab::ChannelCountMode::ClampedMax;
 	} else if (mode == "explicit") {
-		return Explicit;
+		return lab::ChannelCountMode::Explicit;
 	} else {
-		return Max;
+		return lab::ChannelCountMode::Max;
 	}
 }
 
-inline std::string fromChannelInterpretation(ChannelInterpretation io) {
-	if (io == Discrete) {
+inline std::string fromChannelInterpretation(lab::ChannelInterpretation io) {
+	if (io == lab::ChannelInterpretation::Discrete) {
 		return "discrete";
 	} else {
 		return "speakers";
 	}
 }
 
-inline std::string toChannelInterpretation(const std::string &io) {
+inline lab::ChannelInterpretation toChannelInterpretation(const std::string &io) {
 	if (io == "discrete") {
-		return Discrete;
+		return lab::ChannelInterpretation::Discrete;
 	} else {
-		return Speakers;
+		return lab::ChannelInterpretation::Speakers;
 	}
 }
 
 
 // ------ Constructor and Destructor
 
-AudioNode::AudioNode(<v8::Object> context, lab::AudioNode *node) : EventEmitter() {
+AudioNode::AudioNode(Local<Object> context, lab::AudioNode *node) : EventEmitter() {
 	
 	_isDestroyed = false;
 	
-	_context.reset(context);
+	_context.Reset(context);
 	_impl.reset(node);
 	
-	_channelCount = node.channelCount()
-	_channelCountMode = node.channelCountMode()
-	_channelInterpretation = node.channelInterpretation()
+	_channelCount = node->channelCount();
+	_channelCountMode = fromChannelCountMode(node->channelCountMode());
+	_channelInterpretation = fromChannelInterpretation(node->channelInterpretation());
 	
 }
 
@@ -145,7 +145,7 @@ NAN_GETTER(AudioNode::numberOfOutputsGetter) { THIS_AUDIO_NODE; THIS_CHECK;
 
 NAN_GETTER(AudioNode::channelCountGetter) { THIS_AUDIO_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_UINT32(audioNode->_impl->channelCount()));
+	RET_VALUE(JS_UINT32(static_cast<uint32_t>(audioNode->_impl->channelCount())));
 	
 }
 

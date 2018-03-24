@@ -7,6 +7,7 @@
 #include <event-emitter.hpp>
 
 namespace lab { class AudioNode; };
+#include <LabSound/core/AudioNode.h>
 
 
 class AudioNode : public EventEmitter {
@@ -22,7 +23,8 @@ public:
 // Methods and props, available for children
 protected:
 	
-	AudioNode();
+	AudioNode() {}
+	AudioNode(v8::Local<v8::Object> context, lab::AudioNode *node);
 	virtual ~AudioNode();
 	
 	static Nan::Persistent<v8::FunctionTemplate> _protoAudioNode; // for inheritance
