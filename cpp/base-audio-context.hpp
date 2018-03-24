@@ -16,6 +16,8 @@ public:
 	// Public V8 init
 	static void init(v8::Local<v8::Object> target);
 	
+	lab::AudioContext *getContext() const;
+	
 	void _destroy();
 	
 	

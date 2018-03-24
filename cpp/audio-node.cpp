@@ -1,11 +1,13 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+// #include <iostream> // -> std::cout << "..." << std::endl;
 
 
 #include <LabSound/core/AudioContext.h>
 #include <LabSound/core/AudioNode.h>
+#include <LabSound/extended/AudioContextLock.h>
 
 #include "audio-node.hpp"
+#include "audio-context.hpp"
 
 
 using namespace v8;
@@ -154,6 +156,11 @@ NAN_SETTER(AudioNode::channelCountSetter) { THIS_AUDIO_NODE; THIS_CHECK; SETTER_
 	CACHE_CAS(_channelCount, v);
 	
 	// TODO: may be additional actions on change?
+	Local<Object> context = JS_OBJ(audioNode->_context);
+	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
+	
+	lab::ContextGraphLock graphLock(audioContext->getContext(), "AudioNode::channelCountSetter");
+	audioNode->_impl->setChannelCount(graphLock, audioNode->_channelCount);
 	
 	audioNode->emit("channelCount", 1, &value);
 	

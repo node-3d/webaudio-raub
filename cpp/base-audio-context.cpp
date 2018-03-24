@@ -55,6 +55,11 @@ BaseAudioContext::~BaseAudioContext() {
 }
 
 
+lab::AudioContext *BaseAudioContext::getContext() const {
+	return _impl.get();
+}
+
+
 void BaseAudioContext::_destroy() { DES_CHECK;
 	
 	if (_state != "closed") {
