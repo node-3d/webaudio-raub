@@ -28,6 +28,16 @@ protected:
 	static Nan::Persistent<v8::FunctionTemplate> _protoBaseAudioContext; // for inheritance
 	static Nan::Persistent<v8::Function> _ctorBaseAudioContext;
 	
+	bool _isDestroyed;
+	
+	Nan::Persistent<v8::Object> _destination;
+	double _currentTime;
+	float _sampleRate;
+	Nan::Persistent<v8::Object> _listener;
+	std::string _state;
+	
+	std::unique_ptr<lab::AudioContext> _impl;
+	
 	
 // System methods and props for ObjectWrap
 private:
@@ -70,19 +80,6 @@ private:
 	static NAN_GETTER(listenerGetter);
 	
 	static NAN_GETTER(stateGetter);
-	
-	
-private:
-	
-	bool _isDestroyed;
-	
-	Nan::Persistent<v8::Object> _destination;
-	double _currentTime;
-	float _sampleRate;
-	Nan::Persistent<v8::Object> _listener;
-	std::string _state;
-	
-	std::unique_ptr<lab::AudioContext> _impl;
 	
 };
 

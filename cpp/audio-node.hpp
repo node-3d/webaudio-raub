@@ -2,7 +2,11 @@
 #define _AUDIO_NODE_HPP_
 
 
+#include <memory>
+
 #include <event-emitter.hpp>
+
+namespace lab { class AudioNode; };
 
 
 class AudioNode : public EventEmitter {
@@ -27,11 +31,12 @@ protected:
 	bool _isDestroyed;
 	
 	Nan::Persistent<v8::Object> _context;
-	unsigned int _numberOfInputs;
-	unsigned int _numberOfOutputs;
+	
 	unsigned int _channelCount;
 	std::string _channelCountMode;
 	std::string _channelInterpretation;
+	
+	std::unique_ptr<lab::AudioNode> _impl;
 	
 	
 // JS methods and props, available through V8 APIs

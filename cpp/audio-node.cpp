@@ -2,6 +2,9 @@
 //#include <iostream> // -> std::cout << "..." << std::endl;
 
 
+#include <LabSound/core/AudioContext.h>
+#include <LabSound/core/AudioNode.h>
+
 #include "audio-node.hpp"
 
 
@@ -25,11 +28,55 @@ using namespace std;
 	audioNode->CACHE = V;
 
 
+inline std::string fromChannelCountMode(ChannelCountMode mode) {
+	if (mode == ClampedMax) {
+		return "clamped-max";
+	} else if (mode == Explicit) {
+		return "explicit";
+	} else {
+		return "max";
+	}
+}
+
+inline std::string toChannelCountMode(const std::string &mode) {
+	if (mode == "clamped-max") {
+		return ClampedMax;
+	} else if (mode == "explicit") {
+		return Explicit;
+	} else {
+		return Max;
+	}
+}
+
+inline std::string fromChannelInterpretation(ChannelInterpretation io) {
+	if (io == Discrete) {
+		return "discrete";
+	} else {
+		return "speakers";
+	}
+}
+
+inline std::string toChannelInterpretation(const std::string &io) {
+	if (io == "discrete") {
+		return Discrete;
+	} else {
+		return Speakers;
+	}
+}
+
+
 // ------ Constructor and Destructor
 
-AudioNode::AudioNode() : EventEmitter() {
+AudioNode::AudioNode(<v8::Object> context, lab::AudioNode *node) : EventEmitter() {
 	
 	_isDestroyed = false;
+	
+	_context.reset(context);
+	_impl.reset(node);
+	
+	_channelCount = node.channelCount()
+	_channelCountMode = node.channelCountMode()
+	_channelInterpretation = node.channelInterpretation()
 	
 }
 
@@ -84,21 +131,21 @@ NAN_GETTER(AudioNode::contextGetter) { THIS_AUDIO_NODE; THIS_CHECK;
 
 NAN_GETTER(AudioNode::numberOfInputsGetter) { THIS_AUDIO_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_UINT32(audioNode->_numberOfInputs));
+	RET_VALUE(JS_UINT32(audioNode->_impl->numberOfInputs()));
 	
 }
 
 
 NAN_GETTER(AudioNode::numberOfOutputsGetter) { THIS_AUDIO_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_UINT32(audioNode->_numberOfOutputs));
+	RET_VALUE(JS_UINT32(audioNode->_impl->numberOfOutputs()));
 	
 }
 
 
 NAN_GETTER(AudioNode::channelCountGetter) { THIS_AUDIO_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_UINT32(audioNode->_channelCount));
+	RET_VALUE(JS_UINT32(audioNode->_impl->channelCount()));
 	
 }
 
@@ -204,12 +251,7 @@ void AudioNode::init(Local<Object> target) {
 
 NAN_METHOD(AudioNode::newCtor) {
 	
-	CTOR_CHECK("AudioNode");
-	
-	AudioNode *audioNode = new AudioNode();
-	audioNode->Wrap(info.This());
-	
-	RET_VALUE(info.This());
+	Nan::ThrowTypeError("'AudioNode' is abstract, use a specific node class.");
 	
 }
 
