@@ -12,3 +12,4 @@ binary
 examples
 .gitignore
 test
+.eslintrc

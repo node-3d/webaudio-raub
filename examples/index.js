@@ -1,6 +1,6 @@
 'use strict';
 
-const { AudioContext, GainNode } = require('..');
+const { AudioContext } = require('..');
 
 
 (async () => { try {
@@ -50,7 +50,7 @@ const { AudioContext, GainNode } = require('..');
 	
 	context.reset();
 	
-	console.log("DONE");
+	console.log('DONE');
 	
 } catch (e) { console.error(e); } })();
 
