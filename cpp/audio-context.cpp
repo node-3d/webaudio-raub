@@ -13,7 +13,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_AUDIO_CONTEXT                                                    \
-	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(info.This());
+	AudioContext *audioContext = Nan::ObjectWrap::Unwrap<AudioContext>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (audioContext->_isDestroyed) return;
@@ -35,7 +35,7 @@ AudioContext::AudioContext() : BaseAudioContext() {
 
 
 AudioContext::AudioContext(float sampleRate) : BaseAudioContext(sampleRate) {
-	cout<<"10"<<endl;
+	
 	_isDestroyed = false;
 	
 }
@@ -166,9 +166,9 @@ NAN_METHOD(AudioContext::newCtor) {
 	CTOR_CHECK("AudioContext");
 	
 	AudioContext *audioContext = nullptr;
-	cout<<"ci"<<endl;
+	
 	if (info.Length() > 0) {
-		cout<<"c+"<<endl;
+		
 		REQ_OBJ_ARG(0, opts);
 		
 		if (opts->Has(JS_STR("sampleRate"))) {
@@ -184,7 +184,7 @@ NAN_METHOD(AudioContext::newCtor) {
 		
 	}
 	
-	if ( ! audioContext ) {cout<<"c-"<<endl;
+	if ( ! audioContext ) {
 		audioContext = new AudioContext();
 	}
 	

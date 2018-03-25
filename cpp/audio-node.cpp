@@ -18,7 +18,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_AUDIO_NODE                                                    \
-	AudioNode *audioNode = ObjectWrap::Unwrap<AudioNode>(info.This());
+	AudioNode *audioNode = Nan::ObjectWrap::Unwrap<AudioNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (audioNode->_isDestroyed) return;

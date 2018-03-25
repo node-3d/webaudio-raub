@@ -2,7 +2,10 @@
 //#include <iostream> // -> cout << "..." << endl;
 
 
+#include <LabSound/core/OscillatorNode.h>
+
 #include "oscillator-node.hpp"
+#include "audio-context.hpp"
 
 
 using namespace v8;
@@ -27,7 +30,8 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-OscillatorNode::OscillatorNode() : AudioNode() {
+OscillatorNode::OscillatorNode(v8::Local<v8::Object> context, float sampleRate) :
+AudioNode(context, new lab::OscillatorNode(sampleRate)) {
 	
 	_isDestroyed = false;
 	
@@ -154,7 +158,11 @@ NAN_METHOD(OscillatorNode::newCtor) {
 	
 	CTOR_CHECK("OscillatorNode");
 	
-	OscillatorNode *oscillatorNode = new OscillatorNode();
+	REQ_OBJ_ARG(0, context);
+	
+	AudioContext *audioContext = Nan::ObjectWrap::Unwrap<AudioContext>(context);
+	
+	OscillatorNode *oscillatorNode = new OscillatorNode(context, audioContext->getContext()->sampleRate());
 	oscillatorNode->Wrap(info.This());
 	
 	RET_VALUE(info.This());

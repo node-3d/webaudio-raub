@@ -18,7 +18,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_BASE_AUDIO_CONTEXT                                                    \
-	BaseAudioContext *baseAudioContext = ObjectWrap::Unwrap<BaseAudioContext>(info.This());
+	BaseAudioContext *baseAudioContext = Nan::ObjectWrap::Unwrap<BaseAudioContext>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (baseAudioContext->_isDestroyed) return;

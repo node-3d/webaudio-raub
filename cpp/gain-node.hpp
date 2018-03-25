@@ -15,7 +15,7 @@ public:
 	static void init(v8::Local<v8::Object> target);
 	
 	// Make a new instance from C++ land
-	static v8::Local<v8::Object> getNew();
+	static v8::Local<v8::Object> getNew(v8::Local<v8::Object> context);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -24,7 +24,7 @@ public:
 // Methods and props, available for children
 protected:
 	
-	GainNode();
+	GainNode(v8::Local<v8::Object> context);
 	virtual ~GainNode();
 	
 	static Nan::Persistent<v8::FunctionTemplate> _protoGainNode;

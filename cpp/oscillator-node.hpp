@@ -24,7 +24,7 @@ public:
 // Methods and props, available for children
 protected:
 	
-	OscillatorNode();
+	OscillatorNode(v8::Local<v8::Object> context, float sampleRate);
 	virtual ~OscillatorNode();
 	
 	static Nan::Persistent<v8::FunctionTemplate> _protoOscillatorNode;

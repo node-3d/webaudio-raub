@@ -77,7 +77,7 @@
 							'VCCLCompilerTool' : {
 								'AdditionalOptions' : [
 									'/O2','/Oy','/GL','/GF','/Gm-', '/Fm-',
-									'/EHsc','/MT','/GS','/Gy','/GR-','/Gd',
+									'/EHsc','/MT','/GS','/Gy','/GR','/Gd',
 								]
 							},
 							'VCLinkerTool' : {

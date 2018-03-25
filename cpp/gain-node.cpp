@@ -2,7 +2,10 @@
 //#include <iostream> // -> cout << "..." << endl;
 
 
+#include <LabSound/core/GainNode.h>
+
 #include "gain-node.hpp"
+#include "audio-param.hpp"
 
 
 using namespace v8;
@@ -27,7 +30,11 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-GainNode::GainNode() : AudioNode() {
+GainNode::GainNode(Local<Object> context) : AudioNode(context, new lab::GainNode()) {
+	
+	lab::GainNode *node = dynamic_cast<lab::GainNode*>(_impl.get());
+	
+	_gain = AudioParam::getNew(context, node->gain());
 	
 	_isDestroyed = false;
 	
@@ -104,11 +111,11 @@ void GainNode::init(Local<Object> target) {
 }
 
 
-Local<Object> GainNode::getNew() {
+Local<Object> GainNode::getNew(v8::Local<v8::Object> context) {
 	
 	Local<Function> ctor = Nan::New(_ctorGainNode);
-	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
-	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
+	Local<Value> argv[] = { context };
+	return Nan::NewInstance(ctor, 1, argv).ToLocalChecked();
 	
 }
 
@@ -117,7 +124,9 @@ NAN_METHOD(GainNode::newCtor) {
 	
 	CTOR_CHECK("GainNode");
 	
-	GainNode *gainNode = new GainNode();
+	REQ_OBJ_ARG(0, context);
+	
+	GainNode *gainNode = new GainNode(context);
 	gainNode->Wrap(info.This());
 	
 	RET_VALUE(info.This());

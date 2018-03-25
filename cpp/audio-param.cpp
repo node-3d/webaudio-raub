@@ -2,7 +2,12 @@
 //#include <iostream> // -> cout << "..." << endl;
 
 
+#include <LabSound/core/AudioContext.h>
+#include <LabSound/core/AudioParam.h>
+#include <LabSound/extended/AudioContextLock.h>
+
 #include "audio-param.hpp"
+#include "audio-context.hpp"
 
 
 using namespace v8;
@@ -122,7 +127,8 @@ NAN_METHOD(AudioParam::cancelAndHoldAtTime) { THIS_AUDIO_PARAM; THIS_CHECK;
 	
 	REQ_FLOAT_ARG(0, startTime);
 	
-	audioParam->_impl->cancelAndHoldAtTime(startTime);
+	// TODO: implement
+	// audioParam->_impl->cancelAndHoldAtTime(startTime);
 	
 }
 
@@ -231,7 +237,7 @@ NAN_METHOD(AudioParam::newCtor) {
 	REQ_OBJ_ARG(0, context);
 	REQ_EXT_ARG(1, extParam);
 	
-	ParamPtr *param = reinterpret_cast<ParamPtr *>(extParam);
+	ParamPtr *param = reinterpret_cast<ParamPtr *>(extParam->Value());
 	
 	AudioParam *audioParam = new AudioParam(context, *param);
 	audioParam->Wrap(info.This());
