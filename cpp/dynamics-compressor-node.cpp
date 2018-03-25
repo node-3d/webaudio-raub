@@ -1,5 +1,5 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "dynamics-compressor-node.hpp"
@@ -13,7 +13,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_DYNAMICS_COMPRESSOR_NODE                                                    \
-	DynamicsCompressorNode *dynamicsCompressorNode = ObjectWrap::Unwrap<DynamicsCompressorNode>(info.This());
+	DynamicsCompressorNode *dynamicsCompressorNode = Nan::ObjectWrap::Unwrap<DynamicsCompressorNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (dynamicsCompressorNode->_isDestroyed) return;
@@ -98,8 +98,8 @@ NAN_GETTER(DynamicsCompressorNode::releaseGetter) { THIS_DYNAMICS_COMPRESSOR_NOD
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> DynamicsCompressorNode::_protoDynamicsCompressorNode;
-Nan::Persistent<v8::Function> DynamicsCompressorNode::_ctorDynamicsCompressorNode;
+Nan::Persistent<FunctionTemplate> DynamicsCompressorNode::_protoDynamicsCompressorNode;
+Nan::Persistent<Function> DynamicsCompressorNode::_ctorDynamicsCompressorNode;
 
 
 void DynamicsCompressorNode::init(Local<Object> target) {
@@ -140,6 +140,15 @@ void DynamicsCompressorNode::init(Local<Object> target) {
 	
 	Nan::Set(target, JS_STR("DynamicsCompressorNode"), ctor);
 	
+	
+}
+
+
+Local<Object> DynamicsCompressorNode::getNew() {
+	
+	Local<Function> ctor = Nan::New(_ctorDynamicsCompressorNode);
+	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
 

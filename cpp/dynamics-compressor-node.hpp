@@ -14,6 +14,10 @@ public:
 	// Public V8 init
 	static void init(v8::Local<v8::Object> target);
 	
+	// Make a new instance from C++ land
+	static v8::Local<v8::Object> getNew();
+	
+	// Destroy an instance from C++ land
 	void _destroy();
 	
 	
@@ -23,7 +27,7 @@ protected:
 	DynamicsCompressorNode();
 	virtual ~DynamicsCompressorNode();
 	
-	static Nan::Persistent<v8::FunctionTemplate> _protoDynamicsCompressorNode; // for inheritance
+	static Nan::Persistent<v8::FunctionTemplate> _protoDynamicsCompressorNode;
 	static Nan::Persistent<v8::Function> _ctorDynamicsCompressorNode;
 	
 	bool _isDestroyed;

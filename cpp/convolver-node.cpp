@@ -1,5 +1,5 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "convolver-node.hpp"
@@ -13,7 +13,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_CONVOLVER_NODE                                                    \
-	ConvolverNode *convolverNode = ObjectWrap::Unwrap<ConvolverNode>(info.This());
+	ConvolverNode *convolverNode = Nan::ObjectWrap::Unwrap<ConvolverNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (convolverNode->_isDestroyed) return;
@@ -93,8 +93,8 @@ NAN_SETTER(ConvolverNode::normalizeSetter) { THIS_CONVOLVER_NODE; THIS_CHECK; SE
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> ConvolverNode::_protoConvolverNode;
-Nan::Persistent<v8::Function> ConvolverNode::_ctorConvolverNode;
+Nan::Persistent<FunctionTemplate> ConvolverNode::_protoConvolverNode;
+Nan::Persistent<Function> ConvolverNode::_ctorConvolverNode;
 
 
 void ConvolverNode::init(Local<Object> target) {
@@ -131,6 +131,15 @@ void ConvolverNode::init(Local<Object> target) {
 	
 	Nan::Set(target, JS_STR("ConvolverNode"), ctor);
 	
+	
+}
+
+
+Local<Object> ConvolverNode::getNew() {
+	
+	Local<Function> ctor = Nan::New(_ctorConvolverNode);
+	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
 

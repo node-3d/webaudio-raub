@@ -1,5 +1,5 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "audio-destination-node.hpp"
@@ -13,7 +13,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_AUDIO_DESTINATION_NODE                                                    \
-	AudioDestinationNode *audioDestinationNode = ObjectWrap::Unwrap<AudioDestinationNode>(info.This());
+	AudioDestinationNode *audioDestinationNode = Nan::ObjectWrap::Unwrap<AudioDestinationNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (audioDestinationNode->_isDestroyed) return;
@@ -63,8 +63,8 @@ NAN_GETTER(AudioDestinationNode::maxChannelCountGetter) { THIS_AUDIO_DESTINATION
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> AudioDestinationNode::_protoAudioDestinationNode;
-Nan::Persistent<v8::Function> AudioDestinationNode::_ctorAudioDestinationNode;
+Nan::Persistent<FunctionTemplate> AudioDestinationNode::_protoAudioDestinationNode;
+Nan::Persistent<Function> AudioDestinationNode::_ctorAudioDestinationNode;
 
 
 void AudioDestinationNode::init(Local<Object> target) {
@@ -100,6 +100,15 @@ void AudioDestinationNode::init(Local<Object> target) {
 	
 	Nan::Set(target, JS_STR("AudioDestinationNode"), ctor);
 	
+	
+}
+
+
+Local<Object> AudioDestinationNode::getNew() {
+	
+	Local<Function> ctor = Nan::New(_ctorAudioDestinationNode);
+	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
 

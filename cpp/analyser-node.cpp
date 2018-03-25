@@ -1,5 +1,5 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "analyser-node.hpp"
@@ -13,7 +13,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_ANALYSER_NODE                                                    \
-	AnalyserNode *analyserNode = ObjectWrap::Unwrap<AnalyserNode>(info.This());
+	AnalyserNode *analyserNode = Nan::ObjectWrap::Unwrap<AnalyserNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (analyserNode->_isDestroyed) return;
@@ -166,8 +166,8 @@ NAN_SETTER(AnalyserNode::smoothingTimeConstantSetter) { THIS_ANALYSER_NODE; THIS
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> AnalyserNode::_protoAnalyserNode;
-Nan::Persistent<v8::Function> AnalyserNode::_ctorAnalyserNode;
+Nan::Persistent<FunctionTemplate> AnalyserNode::_protoAnalyserNode;
+Nan::Persistent<Function> AnalyserNode::_ctorAnalyserNode;
 
 
 void AnalyserNode::init(Local<Object> target) {
@@ -210,6 +210,15 @@ void AnalyserNode::init(Local<Object> target) {
 	
 	Nan::Set(target, JS_STR("AnalyserNode"), ctor);
 	
+	
+}
+
+
+Local<Object> AnalyserNode::getNew() {
+	
+	Local<Function> ctor = Nan::New(_ctorAnalyserNode);
+	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
 

@@ -1,5 +1,5 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "audio-worklet-global-scope.hpp"
@@ -13,7 +13,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_AUDIO_WORKLET_GLOBAL_SCOPE                                                    \
-	AudioWorkletGlobalScope *audioWorkletGlobalScope = ObjectWrap::Unwrap<AudioWorkletGlobalScope>(info.This());
+	AudioWorkletGlobalScope *audioWorkletGlobalScope = Nan::ObjectWrap::Unwrap<AudioWorkletGlobalScope>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (audioWorkletGlobalScope->_isDestroyed) return;
@@ -84,8 +84,8 @@ NAN_GETTER(AudioWorkletGlobalScope::sampleRateGetter) { THIS_AUDIO_WORKLET_GLOBA
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> AudioWorkletGlobalScope::_protoAudioWorkletGlobalScope;
-Nan::Persistent<v8::Function> AudioWorkletGlobalScope::_ctorAudioWorkletGlobalScope;
+Nan::Persistent<FunctionTemplate> AudioWorkletGlobalScope::_protoAudioWorkletGlobalScope;
+Nan::Persistent<Function> AudioWorkletGlobalScope::_ctorAudioWorkletGlobalScope;
 
 
 void AudioWorkletGlobalScope::init(Local<Object> target) {
@@ -119,6 +119,15 @@ void AudioWorkletGlobalScope::init(Local<Object> target) {
 	
 	Nan::Set(target, JS_STR("AudioWorkletGlobalScope"), ctor);
 	
+	
+}
+
+
+Local<Object> AudioWorkletGlobalScope::getNew() {
+	
+	Local<Function> ctor = Nan::New(_ctorAudioWorkletGlobalScope);
+	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
 

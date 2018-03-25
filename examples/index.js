@@ -1,6 +1,6 @@
 'use strict';
 
-const { AudioContext } = require('..');
+const { AudioContext, OscillatorNode } = require('..');
 
 
 (async () => { try {
@@ -15,10 +15,10 @@ const { AudioContext } = require('..');
 	
 	const oscillator1 = context.createOscillator();
 	const oscillator2 = context.createOscillator();
-	
-	// const gain = context.createGain();
+	console.log('index.js', 'OSC', oscillator1, oscillator1 instanceof OscillatorNode);
+	const gain = context.createGain();
 	// console.log('gain', context.createGain);
-	// gain.gain.value = 0.5;
+	gain.gain.value = 0.5;
 	
 	// // osc . gain . destination
 	// context.connect(gain, oscillator1, 0, 0);

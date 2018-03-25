@@ -155,7 +155,6 @@ NAN_SETTER(AudioNode::channelCountSetter) { THIS_AUDIO_NODE; THIS_CHECK; SETTER_
 	
 	CACHE_CAS(_channelCount, v);
 	
-	// TODO: may be additional actions on change?
 	Local<Object> context = JS_OBJ(audioNode->_context);
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	

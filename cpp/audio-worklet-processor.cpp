@@ -1,5 +1,5 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "audio-worklet-processor.hpp"
@@ -13,7 +13,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_AUDIO_WORKLET_PROCESSOR                                                    \
-	AudioWorkletProcessor *audioWorkletProcessor = ObjectWrap::Unwrap<AudioWorkletProcessor>(info.This());
+	AudioWorkletProcessor *audioWorkletProcessor = Nan::ObjectWrap::Unwrap<AudioWorkletProcessor>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (audioWorkletProcessor->_isDestroyed) return;
@@ -61,8 +61,8 @@ NAN_GETTER(AudioWorkletProcessor::portGetter) { THIS_AUDIO_WORKLET_PROCESSOR; TH
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> AudioWorkletProcessor::_protoAudioWorkletProcessor;
-Nan::Persistent<v8::Function> AudioWorkletProcessor::_ctorAudioWorkletProcessor;
+Nan::Persistent<FunctionTemplate> AudioWorkletProcessor::_protoAudioWorkletProcessor;
+Nan::Persistent<Function> AudioWorkletProcessor::_ctorAudioWorkletProcessor;
 
 
 void AudioWorkletProcessor::init(Local<Object> target) {
@@ -94,6 +94,15 @@ void AudioWorkletProcessor::init(Local<Object> target) {
 	
 	Nan::Set(target, JS_STR("AudioWorkletProcessor"), ctor);
 	
+	
+}
+
+
+Local<Object> AudioWorkletProcessor::getNew() {
+	
+	Local<Function> ctor = Nan::New(_ctorAudioWorkletProcessor);
+	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
 

@@ -1,5 +1,5 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "audio-timestamp.hpp"
@@ -13,7 +13,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_AUDIO_TIMESTAMP                                                    \
-	AudioTimestamp *audioTimestamp = ObjectWrap::Unwrap<AudioTimestamp>(info.This());
+	AudioTimestamp *audioTimestamp = Nan::ObjectWrap::Unwrap<AudioTimestamp>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (audioTimestamp->_isDestroyed) return;
@@ -84,8 +84,8 @@ NAN_SETTER(AudioTimestamp::performanceTimeSetter) { THIS_AUDIO_TIMESTAMP; THIS_C
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> AudioTimestamp::_protoAudioTimestamp;
-Nan::Persistent<v8::Function> AudioTimestamp::_ctorAudioTimestamp;
+Nan::Persistent<FunctionTemplate> AudioTimestamp::_protoAudioTimestamp;
+Nan::Persistent<Function> AudioTimestamp::_ctorAudioTimestamp;
 
 
 void AudioTimestamp::init(Local<Object> target) {
@@ -118,6 +118,15 @@ void AudioTimestamp::init(Local<Object> target) {
 	
 	Nan::Set(target, JS_STR("AudioTimestamp"), ctor);
 	
+	
+}
+
+
+Local<Object> AudioTimestamp::getNew() {
+	
+	Local<Function> ctor = Nan::New(_ctorAudioTimestamp);
+	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
 

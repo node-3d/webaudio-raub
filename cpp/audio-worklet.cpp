@@ -1,5 +1,5 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "audio-worklet.hpp"
@@ -13,7 +13,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_AUDIO_WORKLET                                                    \
-	AudioWorklet *audioWorklet = ObjectWrap::Unwrap<AudioWorklet>(info.This());
+	AudioWorklet *audioWorklet = Nan::ObjectWrap::Unwrap<AudioWorklet>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (audioWorklet->_isDestroyed) return;
@@ -55,8 +55,8 @@ void AudioWorklet::_destroy() { DES_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> AudioWorklet::_protoAudioWorklet;
-Nan::Persistent<v8::Function> AudioWorklet::_ctorAudioWorklet;
+Nan::Persistent<FunctionTemplate> AudioWorklet::_protoAudioWorklet;
+Nan::Persistent<Function> AudioWorklet::_ctorAudioWorklet;
 
 
 void AudioWorklet::init(Local<Object> target) {
@@ -88,6 +88,15 @@ void AudioWorklet::init(Local<Object> target) {
 	
 	Nan::Set(target, JS_STR("AudioWorklet"), ctor);
 	
+	
+}
+
+
+Local<Object> AudioWorklet::getNew() {
+	
+	Local<Function> ctor = Nan::New(_ctorAudioWorklet);
+	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
 

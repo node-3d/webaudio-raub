@@ -1,5 +1,5 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "offline-audio-context.hpp"
@@ -13,7 +13,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_OFFLINE_AUDIO_CONTEXT                                                    \
-	OfflineAudioContext *offlineAudioContext = ObjectWrap::Unwrap<OfflineAudioContext>(info.This());
+	OfflineAudioContext *offlineAudioContext = Nan::ObjectWrap::Unwrap<OfflineAudioContext>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (offlineAudioContext->_isDestroyed) return;
@@ -98,8 +98,8 @@ NAN_GETTER(OfflineAudioContext::lengthGetter) { THIS_OFFLINE_AUDIO_CONTEXT; THIS
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> OfflineAudioContext::_protoOfflineAudioContext;
-Nan::Persistent<v8::Function> OfflineAudioContext::_ctorOfflineAudioContext;
+Nan::Persistent<FunctionTemplate> OfflineAudioContext::_protoOfflineAudioContext;
+Nan::Persistent<Function> OfflineAudioContext::_ctorOfflineAudioContext;
 
 
 void OfflineAudioContext::init(Local<Object> target) {
@@ -137,6 +137,15 @@ void OfflineAudioContext::init(Local<Object> target) {
 	
 	Nan::Set(target, JS_STR("OfflineAudioContext"), ctor);
 	
+	
+}
+
+
+Local<Object> OfflineAudioContext::getNew() {
+	
+	Local<Function> ctor = Nan::New(_ctorOfflineAudioContext);
+	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
 

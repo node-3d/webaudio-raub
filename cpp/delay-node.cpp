@@ -1,5 +1,5 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "delay-node.hpp"
@@ -13,7 +13,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_DELAY_NODE                                                    \
-	DelayNode *delayNode = ObjectWrap::Unwrap<DelayNode>(info.This());
+	DelayNode *delayNode = Nan::ObjectWrap::Unwrap<DelayNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (delayNode->_isDestroyed) return;
@@ -63,8 +63,8 @@ NAN_GETTER(DelayNode::delayTimeGetter) { THIS_DELAY_NODE; THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> DelayNode::_protoDelayNode;
-Nan::Persistent<v8::Function> DelayNode::_ctorDelayNode;
+Nan::Persistent<FunctionTemplate> DelayNode::_protoDelayNode;
+Nan::Persistent<Function> DelayNode::_ctorDelayNode;
 
 
 void DelayNode::init(Local<Object> target) {
@@ -100,6 +100,15 @@ void DelayNode::init(Local<Object> target) {
 	
 	Nan::Set(target, JS_STR("DelayNode"), ctor);
 	
+	
+}
+
+
+Local<Object> DelayNode::getNew() {
+	
+	Local<Function> ctor = Nan::New(_ctorDelayNode);
+	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
 

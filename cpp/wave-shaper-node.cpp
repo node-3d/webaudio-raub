@@ -1,5 +1,5 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "wave-shaper-node.hpp"
@@ -13,7 +13,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_WAVE_SHAPER_NODE                                                    \
-	WaveShaperNode *waveShaperNode = ObjectWrap::Unwrap<WaveShaperNode>(info.This());
+	WaveShaperNode *waveShaperNode = Nan::ObjectWrap::Unwrap<WaveShaperNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (waveShaperNode->_isDestroyed) return;
@@ -96,8 +96,8 @@ NAN_SETTER(WaveShaperNode::oversampleSetter) { THIS_WAVE_SHAPER_NODE; THIS_CHECK
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> WaveShaperNode::_protoWaveShaperNode;
-Nan::Persistent<v8::Function> WaveShaperNode::_ctorWaveShaperNode;
+Nan::Persistent<FunctionTemplate> WaveShaperNode::_protoWaveShaperNode;
+Nan::Persistent<Function> WaveShaperNode::_ctorWaveShaperNode;
 
 
 void WaveShaperNode::init(Local<Object> target) {
@@ -134,6 +134,15 @@ void WaveShaperNode::init(Local<Object> target) {
 	
 	Nan::Set(target, JS_STR("WaveShaperNode"), ctor);
 	
+	
+}
+
+
+Local<Object> WaveShaperNode::getNew() {
+	
+	Local<Function> ctor = Nan::New(_ctorWaveShaperNode);
+	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
 

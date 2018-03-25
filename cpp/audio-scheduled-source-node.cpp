@@ -1,5 +1,5 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "audio-scheduled-source-node.hpp"
@@ -13,7 +13,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_AUDIO_SCHEDULED_SOURCE_NODE                                                    \
-	AudioScheduledSourceNode *audioScheduledSourceNode = ObjectWrap::Unwrap<AudioScheduledSourceNode>(info.This());
+	AudioScheduledSourceNode *audioScheduledSourceNode = Nan::ObjectWrap::Unwrap<AudioScheduledSourceNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (audioScheduledSourceNode->_isDestroyed) return;
@@ -93,8 +93,8 @@ NAN_SETTER(AudioScheduledSourceNode::onendedSetter) { THIS_AUDIO_SCHEDULED_SOURC
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> AudioScheduledSourceNode::_protoAudioScheduledSourceNode;
-Nan::Persistent<v8::Function> AudioScheduledSourceNode::_ctorAudioScheduledSourceNode;
+Nan::Persistent<FunctionTemplate> AudioScheduledSourceNode::_protoAudioScheduledSourceNode;
+Nan::Persistent<Function> AudioScheduledSourceNode::_ctorAudioScheduledSourceNode;
 
 
 void AudioScheduledSourceNode::init(Local<Object> target) {
@@ -131,6 +131,15 @@ void AudioScheduledSourceNode::init(Local<Object> target) {
 	
 	Nan::Set(target, JS_STR("AudioScheduledSourceNode"), ctor);
 	
+	
+}
+
+
+Local<Object> AudioScheduledSourceNode::getNew() {
+	
+	Local<Function> ctor = Nan::New(_ctorAudioScheduledSourceNode);
+	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
 

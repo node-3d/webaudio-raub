@@ -2,26 +2,36 @@
 #define _AUDIO_PARAM_HPP_
 
 
+#include <memory>
+
 #include <addon-tools.hpp>
+
+namespace lab { class AudioParam; };
 
 
 class AudioParam : public Nan::ObjectWrap {
+	
+	typedef std::shared_ptr<lab::AudioParam> ParamPtr;
 	
 public:
 	
 	// Public V8 init
 	static void init(v8::Local<v8::Object> target);
 	
+	// Make a new instance from C++ land
+	static v8::Local<v8::Object> getNew(v8::Local<v8::Object> context, ParamPtr param);
+	
+	// Destroy an instance from C++ land
 	void _destroy();
 	
 	
 // Methods and props, available for children
 protected:
 	
-	AudioParam();
+	explicit AudioParam(v8::Local<v8::Object> context, ParamPtr param);
 	virtual ~AudioParam();
 	
-	static Nan::Persistent<v8::FunctionTemplate> _protoAudioParam; // for inheritance
+	static Nan::Persistent<v8::FunctionTemplate> _protoAudioParam;
 	static Nan::Persistent<v8::Function> _ctorAudioParam;
 	
 	bool _isDestroyed;
@@ -30,6 +40,9 @@ protected:
 	float _defaultValue;
 	float _minValue;
 	float _maxValue;
+	
+	ParamPtr _impl;
+	Nan::Persistent<v8::Object> _context;
 	
 	
 // JS methods and props, available through V8 APIs

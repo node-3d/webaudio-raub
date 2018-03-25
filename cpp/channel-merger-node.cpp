@@ -1,5 +1,5 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "channel-merger-node.hpp"
@@ -13,7 +13,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_CHANNEL_MERGER_NODE                                                    \
-	ChannelMergerNode *channelMergerNode = ObjectWrap::Unwrap<ChannelMergerNode>(info.This());
+	ChannelMergerNode *channelMergerNode = Nan::ObjectWrap::Unwrap<ChannelMergerNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (channelMergerNode->_isDestroyed) return;
@@ -57,8 +57,8 @@ void ChannelMergerNode::_destroy() { DES_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> ChannelMergerNode::_protoChannelMergerNode;
-Nan::Persistent<v8::Function> ChannelMergerNode::_ctorChannelMergerNode;
+Nan::Persistent<FunctionTemplate> ChannelMergerNode::_protoChannelMergerNode;
+Nan::Persistent<Function> ChannelMergerNode::_ctorChannelMergerNode;
 
 
 void ChannelMergerNode::init(Local<Object> target) {
@@ -94,6 +94,15 @@ void ChannelMergerNode::init(Local<Object> target) {
 	
 	Nan::Set(target, JS_STR("ChannelMergerNode"), ctor);
 	
+	
+}
+
+
+Local<Object> ChannelMergerNode::getNew() {
+	
+	Local<Function> ctor = Nan::New(_ctorChannelMergerNode);
+	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
 

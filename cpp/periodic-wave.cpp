@@ -1,5 +1,5 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "periodic-wave.hpp"
@@ -13,7 +13,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_PERIODIC_WAVE                                                    \
-	PeriodicWave *periodicWave = ObjectWrap::Unwrap<PeriodicWave>(info.This());
+	PeriodicWave *periodicWave = Nan::ObjectWrap::Unwrap<PeriodicWave>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (periodicWave->_isDestroyed) return;
@@ -55,8 +55,8 @@ void PeriodicWave::_destroy() { DES_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> PeriodicWave::_protoPeriodicWave;
-Nan::Persistent<v8::Function> PeriodicWave::_ctorPeriodicWave;
+Nan::Persistent<FunctionTemplate> PeriodicWave::_protoPeriodicWave;
+Nan::Persistent<Function> PeriodicWave::_ctorPeriodicWave;
 
 
 void PeriodicWave::init(Local<Object> target) {
@@ -88,6 +88,15 @@ void PeriodicWave::init(Local<Object> target) {
 	
 	Nan::Set(target, JS_STR("PeriodicWave"), ctor);
 	
+	
+}
+
+
+Local<Object> PeriodicWave::getNew() {
+	
+	Local<Function> ctor = Nan::New(_ctorPeriodicWave);
+	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
 

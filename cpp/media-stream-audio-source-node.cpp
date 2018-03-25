@@ -1,5 +1,5 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "media-stream-audio-source-node.hpp"
@@ -13,7 +13,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_MEDIA_STREAM_AUDIO_SOURCE_NODE                                                    \
-	MediaStreamAudioSourceNode *mediaStreamAudioSourceNode = ObjectWrap::Unwrap<MediaStreamAudioSourceNode>(info.This());
+	MediaStreamAudioSourceNode *mediaStreamAudioSourceNode = Nan::ObjectWrap::Unwrap<MediaStreamAudioSourceNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (mediaStreamAudioSourceNode->_isDestroyed) return;
@@ -63,8 +63,8 @@ NAN_GETTER(MediaStreamAudioSourceNode::mediaStreamGetter) { THIS_MEDIA_STREAM_AU
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> MediaStreamAudioSourceNode::_protoMediaStreamAudioSourceNode;
-Nan::Persistent<v8::Function> MediaStreamAudioSourceNode::_ctorMediaStreamAudioSourceNode;
+Nan::Persistent<FunctionTemplate> MediaStreamAudioSourceNode::_protoMediaStreamAudioSourceNode;
+Nan::Persistent<Function> MediaStreamAudioSourceNode::_ctorMediaStreamAudioSourceNode;
 
 
 void MediaStreamAudioSourceNode::init(Local<Object> target) {
@@ -100,6 +100,15 @@ void MediaStreamAudioSourceNode::init(Local<Object> target) {
 	
 	Nan::Set(target, JS_STR("MediaStreamAudioSourceNode"), ctor);
 	
+	
+}
+
+
+Local<Object> MediaStreamAudioSourceNode::getNew() {
+	
+	Local<Function> ctor = Nan::New(_ctorMediaStreamAudioSourceNode);
+	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
 

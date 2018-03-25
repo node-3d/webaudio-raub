@@ -1,5 +1,5 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "oscillator-node.hpp"
@@ -13,7 +13,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_OSCILLATOR_NODE                                                    \
-	OscillatorNode *oscillatorNode = ObjectWrap::Unwrap<OscillatorNode>(info.This());
+	OscillatorNode *oscillatorNode = Nan::ObjectWrap::Unwrap<OscillatorNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (oscillatorNode->_isDestroyed) return;
@@ -37,15 +37,6 @@ OscillatorNode::OscillatorNode() : AudioNode() {
 OscillatorNode::~OscillatorNode() {
 	
 	_destroy();
-	
-}
-
-
-v8::Local<v8::Object> OscillatorNode::getNew(v8::Local<v8::Object> context) {
-	
-	Local<Function> ctor = Nan::New(OscillatorNode::_ctorOscillatorNode);
-	v8::Local<v8::Value> argv = context;
-	return Nan::NewInstance(ctor, 1, &argv).ToLocalChecked();
 	
 }
 
@@ -107,8 +98,8 @@ NAN_GETTER(OscillatorNode::detuneGetter) { THIS_OSCILLATOR_NODE; THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> OscillatorNode::_protoOscillatorNode;
-Nan::Persistent<v8::Function> OscillatorNode::_ctorOscillatorNode;
+Nan::Persistent<FunctionTemplate> OscillatorNode::_protoOscillatorNode;
+Nan::Persistent<Function> OscillatorNode::_ctorOscillatorNode;
 
 
 void OscillatorNode::init(Local<Object> target) {
@@ -146,6 +137,15 @@ void OscillatorNode::init(Local<Object> target) {
 	
 	Nan::Set(target, JS_STR("OscillatorNode"), ctor);
 	
+	
+}
+
+
+Local<Object> OscillatorNode::getNew(Local<Object> context) {
+	
+	Local<Function> ctor = Nan::New(_ctorOscillatorNode);
+	Local<Value> argv[] = { context };
+	return Nan::NewInstance(ctor, 1, argv).ToLocalChecked();
 	
 }
 

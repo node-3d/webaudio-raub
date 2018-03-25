@@ -1,5 +1,5 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "panner-node.hpp"
@@ -13,7 +13,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_PANNER_NODE                                                    \
-	PannerNode *pannerNode = ObjectWrap::Unwrap<PannerNode>(info.This());
+	PannerNode *pannerNode = Nan::ObjectWrap::Unwrap<PannerNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (pannerNode->_isDestroyed) return;
@@ -261,8 +261,8 @@ NAN_SETTER(PannerNode::coneOuterGainSetter) { THIS_PANNER_NODE; THIS_CHECK; SETT
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> PannerNode::_protoPannerNode;
-Nan::Persistent<v8::Function> PannerNode::_ctorPannerNode;
+Nan::Persistent<FunctionTemplate> PannerNode::_protoPannerNode;
+Nan::Persistent<Function> PannerNode::_ctorPannerNode;
 
 
 void PannerNode::init(Local<Object> target) {
@@ -312,6 +312,15 @@ void PannerNode::init(Local<Object> target) {
 	
 	Nan::Set(target, JS_STR("PannerNode"), ctor);
 	
+	
+}
+
+
+Local<Object> PannerNode::getNew() {
+	
+	Local<Function> ctor = Nan::New(_ctorPannerNode);
+	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
 

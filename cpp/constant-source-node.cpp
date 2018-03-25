@@ -1,5 +1,5 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "constant-source-node.hpp"
@@ -13,7 +13,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_CONSTANT_SOURCE_NODE                                                    \
-	ConstantSourceNode *constantSourceNode = ObjectWrap::Unwrap<ConstantSourceNode>(info.This());
+	ConstantSourceNode *constantSourceNode = Nan::ObjectWrap::Unwrap<ConstantSourceNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (constantSourceNode->_isDestroyed) return;
@@ -63,8 +63,8 @@ NAN_GETTER(ConstantSourceNode::offsetGetter) { THIS_CONSTANT_SOURCE_NODE; THIS_C
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> ConstantSourceNode::_protoConstantSourceNode;
-Nan::Persistent<v8::Function> ConstantSourceNode::_ctorConstantSourceNode;
+Nan::Persistent<FunctionTemplate> ConstantSourceNode::_protoConstantSourceNode;
+Nan::Persistent<Function> ConstantSourceNode::_ctorConstantSourceNode;
 
 
 void ConstantSourceNode::init(Local<Object> target) {
@@ -100,6 +100,15 @@ void ConstantSourceNode::init(Local<Object> target) {
 	
 	Nan::Set(target, JS_STR("ConstantSourceNode"), ctor);
 	
+	
+}
+
+
+Local<Object> ConstantSourceNode::getNew() {
+	
+	Local<Function> ctor = Nan::New(_ctorConstantSourceNode);
+	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
 

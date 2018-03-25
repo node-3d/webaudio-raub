@@ -6,6 +6,7 @@
 #include <LabSound/core/DefaultAudioDestinationNode.h>
 
 #include "base-audio-context.hpp"
+#include "gain-node.hpp"
 #include "oscillator-node.hpp"
 
 
@@ -115,7 +116,7 @@ NAN_METHOD(BaseAudioContext::createConstantSource) { THIS_BASE_AUDIO_CONTEXT; TH
 
 NAN_METHOD(BaseAudioContext::createGain) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
-	// TODO: do something?
+	info.GetReturnValue().Set(GainNode::getNew(info.This()));
 	
 }
 

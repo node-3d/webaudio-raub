@@ -1,5 +1,5 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "audio-processing-event.hpp"
@@ -13,7 +13,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_AUDIO_PROCESSING_EVENT                                                    \
-	AudioProcessingEvent *audioProcessingEvent = ObjectWrap::Unwrap<AudioProcessingEvent>(info.This());
+	AudioProcessingEvent *audioProcessingEvent = Nan::ObjectWrap::Unwrap<AudioProcessingEvent>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (audioProcessingEvent->_isDestroyed) return;
@@ -75,8 +75,8 @@ NAN_GETTER(AudioProcessingEvent::outputBufferGetter) { THIS_AUDIO_PROCESSING_EVE
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> AudioProcessingEvent::_protoAudioProcessingEvent;
-Nan::Persistent<v8::Function> AudioProcessingEvent::_ctorAudioProcessingEvent;
+Nan::Persistent<FunctionTemplate> AudioProcessingEvent::_protoAudioProcessingEvent;
+Nan::Persistent<Function> AudioProcessingEvent::_ctorAudioProcessingEvent;
 
 
 void AudioProcessingEvent::init(Local<Object> target) {
@@ -110,6 +110,15 @@ void AudioProcessingEvent::init(Local<Object> target) {
 	
 	Nan::Set(target, JS_STR("AudioProcessingEvent"), ctor);
 	
+	
+}
+
+
+Local<Object> AudioProcessingEvent::getNew() {
+	
+	Local<Function> ctor = Nan::New(_ctorAudioProcessingEvent);
+	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
 

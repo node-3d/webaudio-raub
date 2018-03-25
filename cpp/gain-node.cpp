@@ -1,5 +1,5 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "gain-node.hpp"
@@ -13,7 +13,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_GAIN_NODE                                                    \
-	GainNode *gainNode = ObjectWrap::Unwrap<GainNode>(info.This());
+	GainNode *gainNode = Nan::ObjectWrap::Unwrap<GainNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (gainNode->_isDestroyed) return;
@@ -63,8 +63,8 @@ NAN_GETTER(GainNode::gainGetter) { THIS_GAIN_NODE; THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> GainNode::_protoGainNode;
-Nan::Persistent<v8::Function> GainNode::_ctorGainNode;
+Nan::Persistent<FunctionTemplate> GainNode::_protoGainNode;
+Nan::Persistent<Function> GainNode::_ctorGainNode;
 
 
 void GainNode::init(Local<Object> target) {
@@ -100,6 +100,15 @@ void GainNode::init(Local<Object> target) {
 	
 	Nan::Set(target, JS_STR("GainNode"), ctor);
 	
+	
+}
+
+
+Local<Object> GainNode::getNew() {
+	
+	Local<Function> ctor = Nan::New(_ctorGainNode);
+	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
 

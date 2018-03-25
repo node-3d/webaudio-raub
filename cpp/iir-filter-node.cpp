@@ -1,5 +1,5 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "iir-filter-node.hpp"
@@ -13,7 +13,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_IIR_FILTER_NODE                                                    \
-	IIRFilterNode *iIRFilterNode = ObjectWrap::Unwrap<IIRFilterNode>(info.This());
+	IIRFilterNode *iIRFilterNode = Nan::ObjectWrap::Unwrap<IIRFilterNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (iIRFilterNode->_isDestroyed) return;
@@ -67,8 +67,8 @@ NAN_METHOD(IIRFilterNode::getFrequencyResponse) { THIS_IIR_FILTER_NODE; THIS_CHE
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> IIRFilterNode::_protoIIRFilterNode;
-Nan::Persistent<v8::Function> IIRFilterNode::_ctorIIRFilterNode;
+Nan::Persistent<FunctionTemplate> IIRFilterNode::_protoIIRFilterNode;
+Nan::Persistent<Function> IIRFilterNode::_ctorIIRFilterNode;
 
 
 void IIRFilterNode::init(Local<Object> target) {
@@ -104,6 +104,15 @@ void IIRFilterNode::init(Local<Object> target) {
 	
 	Nan::Set(target, JS_STR("IIRFilterNode"), ctor);
 	
+	
+}
+
+
+Local<Object> IIRFilterNode::getNew() {
+	
+	Local<Function> ctor = Nan::New(_ctorIIRFilterNode);
+	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
 

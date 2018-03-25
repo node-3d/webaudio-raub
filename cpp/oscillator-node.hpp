@@ -14,8 +14,10 @@ public:
 	// Public V8 init
 	static void init(v8::Local<v8::Object> target);
 	
+	// Make a new instance from C++ land
 	static v8::Local<v8::Object> getNew(v8::Local<v8::Object> context);
 	
+	// Destroy an instance from C++ land
 	void _destroy();
 	
 	
@@ -25,7 +27,7 @@ protected:
 	OscillatorNode();
 	virtual ~OscillatorNode();
 	
-	static Nan::Persistent<v8::FunctionTemplate> _protoOscillatorNode; // for inheritance
+	static Nan::Persistent<v8::FunctionTemplate> _protoOscillatorNode;
 	static Nan::Persistent<v8::Function> _ctorOscillatorNode;
 	
 	bool _isDestroyed;

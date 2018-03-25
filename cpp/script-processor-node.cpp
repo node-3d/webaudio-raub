@@ -1,5 +1,5 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "script-processor-node.hpp"
@@ -13,7 +13,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_SCRIPT_PROCESSOR_NODE                                                    \
-	ScriptProcessorNode *scriptProcessorNode = ObjectWrap::Unwrap<ScriptProcessorNode>(info.This());
+	ScriptProcessorNode *scriptProcessorNode = Nan::ObjectWrap::Unwrap<ScriptProcessorNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (scriptProcessorNode->_isDestroyed) return;
@@ -83,8 +83,8 @@ NAN_GETTER(ScriptProcessorNode::bufferSizeGetter) { THIS_SCRIPT_PROCESSOR_NODE; 
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> ScriptProcessorNode::_protoScriptProcessorNode;
-Nan::Persistent<v8::Function> ScriptProcessorNode::_ctorScriptProcessorNode;
+Nan::Persistent<FunctionTemplate> ScriptProcessorNode::_protoScriptProcessorNode;
+Nan::Persistent<Function> ScriptProcessorNode::_ctorScriptProcessorNode;
 
 
 void ScriptProcessorNode::init(Local<Object> target) {
@@ -121,6 +121,15 @@ void ScriptProcessorNode::init(Local<Object> target) {
 	
 	Nan::Set(target, JS_STR("ScriptProcessorNode"), ctor);
 	
+	
+}
+
+
+Local<Object> ScriptProcessorNode::getNew() {
+	
+	Local<Function> ctor = Nan::New(_ctorScriptProcessorNode);
+	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
 

@@ -1,5 +1,5 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "audio-buffer-source-node.hpp"
@@ -13,7 +13,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_AUDIO_BUFFER_SOURCE_NODE                                                    \
-	AudioBufferSourceNode *audioBufferSourceNode = ObjectWrap::Unwrap<AudioBufferSourceNode>(info.This());
+	AudioBufferSourceNode *audioBufferSourceNode = Nan::ObjectWrap::Unwrap<AudioBufferSourceNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (audioBufferSourceNode->_isDestroyed) return;
@@ -151,8 +151,8 @@ NAN_SETTER(AudioBufferSourceNode::loopEndSetter) { THIS_AUDIO_BUFFER_SOURCE_NODE
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> AudioBufferSourceNode::_protoAudioBufferSourceNode;
-Nan::Persistent<v8::Function> AudioBufferSourceNode::_ctorAudioBufferSourceNode;
+Nan::Persistent<FunctionTemplate> AudioBufferSourceNode::_protoAudioBufferSourceNode;
+Nan::Persistent<Function> AudioBufferSourceNode::_ctorAudioBufferSourceNode;
 
 
 void AudioBufferSourceNode::init(Local<Object> target) {
@@ -193,6 +193,15 @@ void AudioBufferSourceNode::init(Local<Object> target) {
 	
 	Nan::Set(target, JS_STR("AudioBufferSourceNode"), ctor);
 	
+	
+}
+
+
+Local<Object> AudioBufferSourceNode::getNew() {
+	
+	Local<Function> ctor = Nan::New(_ctorAudioBufferSourceNode);
+	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
 

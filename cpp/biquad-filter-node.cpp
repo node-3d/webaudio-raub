@@ -1,5 +1,5 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "biquad-filter-node.hpp"
@@ -13,7 +13,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_BIQUAD_FILTER_NODE                                                    \
-	BiquadFilterNode *biquadFilterNode = ObjectWrap::Unwrap<BiquadFilterNode>(info.This());
+	BiquadFilterNode *biquadFilterNode = Nan::ObjectWrap::Unwrap<BiquadFilterNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (biquadFilterNode->_isDestroyed) return;
@@ -114,8 +114,8 @@ NAN_GETTER(BiquadFilterNode::gainGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> BiquadFilterNode::_protoBiquadFilterNode;
-Nan::Persistent<v8::Function> BiquadFilterNode::_ctorBiquadFilterNode;
+Nan::Persistent<FunctionTemplate> BiquadFilterNode::_protoBiquadFilterNode;
+Nan::Persistent<Function> BiquadFilterNode::_ctorBiquadFilterNode;
 
 
 void BiquadFilterNode::init(Local<Object> target) {
@@ -155,6 +155,15 @@ void BiquadFilterNode::init(Local<Object> target) {
 	
 	Nan::Set(target, JS_STR("BiquadFilterNode"), ctor);
 	
+	
+}
+
+
+Local<Object> BiquadFilterNode::getNew() {
+	
+	Local<Function> ctor = Nan::New(_ctorBiquadFilterNode);
+	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
 

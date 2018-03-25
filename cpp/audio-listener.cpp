@@ -1,5 +1,5 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "audio-listener.hpp"
@@ -13,7 +13,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_AUDIO_LISTENER                                                    \
-	AudioListener *audioListener = ObjectWrap::Unwrap<AudioListener>(info.This());
+	AudioListener *audioListener = Nan::ObjectWrap::Unwrap<AudioListener>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (audioListener->_isDestroyed) return;
@@ -141,8 +141,8 @@ NAN_GETTER(AudioListener::upZGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> AudioListener::_protoAudioListener;
-Nan::Persistent<v8::Function> AudioListener::_ctorAudioListener;
+Nan::Persistent<FunctionTemplate> AudioListener::_protoAudioListener;
+Nan::Persistent<Function> AudioListener::_ctorAudioListener;
 
 
 void AudioListener::init(Local<Object> target) {
@@ -183,6 +183,15 @@ void AudioListener::init(Local<Object> target) {
 	
 	Nan::Set(target, JS_STR("AudioListener"), ctor);
 	
+	
+}
+
+
+Local<Object> AudioListener::getNew() {
+	
+	Local<Function> ctor = Nan::New(_ctorAudioListener);
+	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
 

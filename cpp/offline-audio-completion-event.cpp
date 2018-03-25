@@ -1,5 +1,5 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "offline-audio-completion-event.hpp"
@@ -13,7 +13,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_OFFLINE_AUDIO_COMPLETION_EVENT                                                    \
-	OfflineAudioCompletionEvent *offlineAudioCompletionEvent = ObjectWrap::Unwrap<OfflineAudioCompletionEvent>(info.This());
+	OfflineAudioCompletionEvent *offlineAudioCompletionEvent = Nan::ObjectWrap::Unwrap<OfflineAudioCompletionEvent>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (offlineAudioCompletionEvent->_isDestroyed) return;
@@ -61,8 +61,8 @@ NAN_GETTER(OfflineAudioCompletionEvent::renderedBufferGetter) { THIS_OFFLINE_AUD
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> OfflineAudioCompletionEvent::_protoOfflineAudioCompletionEvent;
-Nan::Persistent<v8::Function> OfflineAudioCompletionEvent::_ctorOfflineAudioCompletionEvent;
+Nan::Persistent<FunctionTemplate> OfflineAudioCompletionEvent::_protoOfflineAudioCompletionEvent;
+Nan::Persistent<Function> OfflineAudioCompletionEvent::_ctorOfflineAudioCompletionEvent;
 
 
 void OfflineAudioCompletionEvent::init(Local<Object> target) {
@@ -94,6 +94,15 @@ void OfflineAudioCompletionEvent::init(Local<Object> target) {
 	
 	Nan::Set(target, JS_STR("OfflineAudioCompletionEvent"), ctor);
 	
+	
+}
+
+
+Local<Object> OfflineAudioCompletionEvent::getNew() {
+	
+	Local<Function> ctor = Nan::New(_ctorOfflineAudioCompletionEvent);
+	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
 

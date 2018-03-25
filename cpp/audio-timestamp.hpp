@@ -12,6 +12,10 @@ public:
 	// Public V8 init
 	static void init(v8::Local<v8::Object> target);
 	
+	// Make a new instance from C++ land
+	static v8::Local<v8::Object> getNew();
+	
+	// Destroy an instance from C++ land
 	void _destroy();
 	
 	
@@ -21,7 +25,7 @@ protected:
 	AudioTimestamp();
 	virtual ~AudioTimestamp();
 	
-	static Nan::Persistent<v8::FunctionTemplate> _protoAudioTimestamp; // for inheritance
+	static Nan::Persistent<v8::FunctionTemplate> _protoAudioTimestamp;
 	static Nan::Persistent<v8::Function> _ctorAudioTimestamp;
 	
 	bool _isDestroyed;

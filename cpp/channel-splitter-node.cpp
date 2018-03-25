@@ -1,5 +1,5 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "channel-splitter-node.hpp"
@@ -13,7 +13,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_CHANNEL_SPLITTER_NODE                                                    \
-	ChannelSplitterNode *channelSplitterNode = ObjectWrap::Unwrap<ChannelSplitterNode>(info.This());
+	ChannelSplitterNode *channelSplitterNode = Nan::ObjectWrap::Unwrap<ChannelSplitterNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (channelSplitterNode->_isDestroyed) return;
@@ -57,8 +57,8 @@ void ChannelSplitterNode::_destroy() { DES_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> ChannelSplitterNode::_protoChannelSplitterNode;
-Nan::Persistent<v8::Function> ChannelSplitterNode::_ctorChannelSplitterNode;
+Nan::Persistent<FunctionTemplate> ChannelSplitterNode::_protoChannelSplitterNode;
+Nan::Persistent<Function> ChannelSplitterNode::_ctorChannelSplitterNode;
 
 
 void ChannelSplitterNode::init(Local<Object> target) {
@@ -94,6 +94,15 @@ void ChannelSplitterNode::init(Local<Object> target) {
 	
 	Nan::Set(target, JS_STR("ChannelSplitterNode"), ctor);
 	
+	
+}
+
+
+Local<Object> ChannelSplitterNode::getNew() {
+	
+	Local<Function> ctor = Nan::New(_ctorChannelSplitterNode);
+	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
 

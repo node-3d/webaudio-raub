@@ -17,13 +17,14 @@ public:
 	// Public V8 init
 	static void init(v8::Local<v8::Object> target);
 	
+	// Destroy an instance from C++ land
 	void _destroy();
 	
 	
 // Methods and props, available for children
 protected:
 	
-	AudioNode() {}
+	AudioNode() {} // fake, TODO: remove
 	AudioNode(v8::Local<v8::Object> context, lab::AudioNode *node);
 	virtual ~AudioNode();
 	
@@ -32,14 +33,12 @@ protected:
 	
 	bool _isDestroyed;
 	
-	Nan::Persistent<v8::Object> _context;
-	
 	unsigned int _channelCount;
 	std::string _channelCountMode;
 	std::string _channelInterpretation;
 	
 	std::unique_ptr<lab::AudioNode> _impl;
-	
+	Nan::Persistent<v8::Object> _context;
 	
 // JS methods and props, available through V8 APIs
 private:
