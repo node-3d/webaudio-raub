@@ -6,6 +6,7 @@
 #include <LabSound/core/DefaultAudioDestinationNode.h>
 
 #include "base-audio-context.hpp"
+#include "oscillator-node.hpp"
 
 
 using namespace v8;
@@ -31,18 +32,18 @@ using namespace std;
 // ------ Constructor and Destructor
 
 BaseAudioContext::BaseAudioContext(bool isOffline, float sampleRate) {
-	
+	cout<<"01 "<<isOffline<<" "<<sampleRate<<endl;
 	_isDestroyed = false;
 	
 	_impl.reset(new lab::AudioContext(isOffline));
-	
+	cout<<"02"<<endl;
 	_impl->setDestinationNode(
 		std::make_shared<lab::DefaultAudioDestinationNode>(
 			_impl.get(), sampleRate
 		)
 	);
 	_impl->lazyInitialize();
-	
+	cout<<"03"<<endl;
 	_state = "running";
 	
 }
@@ -200,7 +201,7 @@ NAN_METHOD(BaseAudioContext::createStereoPanner) { THIS_BASE_AUDIO_CONTEXT; THIS
 
 NAN_METHOD(BaseAudioContext::createOscillator) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
-	// TODO: do something?
+	info.GetReturnValue().Set(OscillatorNode::getNew(info.This()));
 	
 }
 

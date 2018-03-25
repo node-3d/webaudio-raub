@@ -1,5 +1,7 @@
 #include <cstdlib>
 
+#include <event-emitter.hpp>
+
 #include "analyser-node.hpp"
 #include "audio-buffer.hpp"
 #include "audio-buffer-source-node.hpp"
@@ -48,42 +50,47 @@ extern "C" {
 
 void init(Local<Object> target) {
 	
-	AnalyserNode::init(target);
-	AudioBuffer::init(target);
-	AudioBufferSourceNode::init(target);
-	AudioContext::init(target);
-	AudioDestinationNode::init(target);
-	AudioListener::init(target);
-	AudioNode::init(target);
-	AudioParam::init(target);
-	AudioProcessingEvent::init(target);
-	AudioScheduledSourceNode::init(target);
-	AudioTimestamp::init(target);
-	AudioWorklet::init(target);
-	AudioWorkletGlobalScope::init(target);
-	AudioWorkletNode::init(target);
-	AudioWorkletProcessor::init(target);
+	EventEmitter::init(target);
+	
 	BaseAudioContext::init(target);
-	BiquadFilterNode::init(target);
-	ChannelMergerNode::init(target);
-	ChannelSplitterNode::init(target);
-	ConstantSourceNode::init(target);
-	ConvolverNode::init(target);
-	DelayNode::init(target);
-	DynamicsCompressorNode::init(target);
+	AudioContext::init(target);
+	// OfflineAudioContext::init(target);
+	
+	// AudioBuffer::init(target);
+	// AudioListener::init(target);
+	// AudioParam::init(target);
+	// AudioProcessingEvent::init(target);
+	// AudioTimestamp::init(target);
+	// AudioWorklet::init(target);
+	// AudioWorkletGlobalScope::init(target);
+	// AudioWorkletProcessor::init(target);
+	// PeriodicWave::init(target);
+	// OfflineAudioCompletionEvent::init(target);
+	
+	AudioNode::init(target);
+	
+	// AnalyserNode::init(target);
+	// AudioBufferSourceNode::init(target);
+	// AudioDestinationNode::init(target);
+	// AudioScheduledSourceNode::init(target);
+	// AudioWorkletNode::init(target);
+	// BiquadFilterNode::init(target);
+	// ChannelMergerNode::init(target);
+	// ChannelSplitterNode::init(target);
+	// ConstantSourceNode::init(target);
+	// ConvolverNode::init(target);
+	// DelayNode::init(target);
+	// DynamicsCompressorNode::init(target);
 	GainNode::init(target);
-	IIRFilterNode::init(target);
-	MediaElementAudioSourceNode::init(target);
-	MediaStreamAudioDestinationNode::init(target);
-	MediaStreamAudioSourceNode::init(target);
-	OfflineAudioCompletionEvent::init(target);
-	OfflineAudioContext::init(target);
+	// IIRFilterNode::init(target);
+	// MediaElementAudioSourceNode::init(target);
+	// MediaStreamAudioDestinationNode::init(target);
+	// MediaStreamAudioSourceNode::init(target);
 	OscillatorNode::init(target);
-	PannerNode::init(target);
-	PeriodicWave::init(target);
-	ScriptProcessorNode::init(target);
-	StereoPannerNode::init(target);
-	WaveShaperNode::init(target);
+	// PannerNode::init(target);
+	// ScriptProcessorNode::init(target);
+	// StereoPannerNode::init(target);
+	// WaveShaperNode::init(target);
 	
 }
 

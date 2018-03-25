@@ -41,6 +41,15 @@ OscillatorNode::~OscillatorNode() {
 }
 
 
+v8::Local<v8::Object> OscillatorNode::getNew(v8::Local<v8::Object> context) {
+	
+	Local<Function> ctor = Nan::New(OscillatorNode::_ctorOscillatorNode);
+	v8::Local<v8::Value> argv = context;
+	return Nan::NewInstance(ctor, 1, &argv).ToLocalChecked();
+	
+}
+
+
 void OscillatorNode::_destroy() { DES_CHECK;
 	
 	_isDestroyed = true;

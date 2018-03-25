@@ -35,7 +35,7 @@ AudioContext::AudioContext() : BaseAudioContext() {
 
 
 AudioContext::AudioContext(float sampleRate) : BaseAudioContext(sampleRate) {
-	
+	cout<<"10"<<endl;
 	_isDestroyed = false;
 	
 }
@@ -165,10 +165,10 @@ NAN_METHOD(AudioContext::newCtor) {
 	
 	CTOR_CHECK("AudioContext");
 	
-	AudioContext *audioContext;
-	
+	AudioContext *audioContext = nullptr;
+	cout<<"ci"<<endl;
 	if (info.Length() > 0) {
-		
+		cout<<"c+"<<endl;
 		REQ_OBJ_ARG(0, opts);
 		
 		if (opts->Has(JS_STR("sampleRate"))) {
@@ -184,7 +184,7 @@ NAN_METHOD(AudioContext::newCtor) {
 		
 	}
 	
-	if ( ! audioContext ) {
+	if ( ! audioContext ) {cout<<"c-"<<endl;
 		audioContext = new AudioContext();
 	}
 	
