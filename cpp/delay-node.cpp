@@ -63,16 +63,16 @@ NAN_GETTER(DelayNode::delayTimeGetter) { THIS_DELAY_NODE; THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<FunctionTemplate> DelayNode::_protoDelayNode;
-Nan::Persistent<Function> DelayNode::_ctorDelayNode;
+V8_STORE_FT DelayNode::_protoDelayNode;
+V8_STORE_FUNC DelayNode::_ctorDelayNode;
 
 
-void DelayNode::init(Local<Object> target) {
+void DelayNode::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
-	
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
+
 	// class DelayNode inherits AudioNode
-	Local<FunctionTemplate> parent = Nan::New(AudioNode::_protoAudioNode);
+	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
 	proto->Inherit(parent);
 	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
@@ -80,7 +80,7 @@ void DelayNode::init(Local<Object> target) {
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, delayTime);
@@ -93,7 +93,7 @@ void DelayNode::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoDelayNode.Reset(proto);
 	_ctorDelayNode.Reset(ctor);
@@ -104,10 +104,10 @@ void DelayNode::init(Local<Object> target) {
 }
 
 
-Local<Object> DelayNode::getNew() {
+V8_VAR_OBJ DelayNode::getNew() {
 	
-	Local<Function> ctor = Nan::New(_ctorDelayNode);
-	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	V8_VAR_FUNC ctor = Nan::New(_ctorDelayNode);
+	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }

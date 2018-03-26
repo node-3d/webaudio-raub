@@ -83,16 +83,16 @@ NAN_GETTER(ScriptProcessorNode::bufferSizeGetter) { THIS_SCRIPT_PROCESSOR_NODE; 
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<FunctionTemplate> ScriptProcessorNode::_protoScriptProcessorNode;
-Nan::Persistent<Function> ScriptProcessorNode::_ctorScriptProcessorNode;
+V8_STORE_FT ScriptProcessorNode::_protoScriptProcessorNode;
+V8_STORE_FUNC ScriptProcessorNode::_ctorScriptProcessorNode;
 
 
-void ScriptProcessorNode::init(Local<Object> target) {
+void ScriptProcessorNode::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
-	
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
+
 	// class ScriptProcessorNode inherits AudioNode
-	Local<FunctionTemplate> parent = Nan::New(AudioNode::_protoAudioNode);
+	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
 	proto->Inherit(parent);
 	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
@@ -100,7 +100,7 @@ void ScriptProcessorNode::init(Local<Object> target) {
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_RW(obj, onaudioprocess);
@@ -114,7 +114,7 @@ void ScriptProcessorNode::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoScriptProcessorNode.Reset(proto);
 	_ctorScriptProcessorNode.Reset(ctor);
@@ -125,10 +125,10 @@ void ScriptProcessorNode::init(Local<Object> target) {
 }
 
 
-Local<Object> ScriptProcessorNode::getNew() {
+V8_VAR_OBJ ScriptProcessorNode::getNew() {
 	
-	Local<Function> ctor = Nan::New(_ctorScriptProcessorNode);
-	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	V8_VAR_FUNC ctor = Nan::New(_ctorScriptProcessorNode);
+	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }

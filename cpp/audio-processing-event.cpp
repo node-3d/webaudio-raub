@@ -75,20 +75,20 @@ NAN_GETTER(AudioProcessingEvent::outputBufferGetter) { THIS_AUDIO_PROCESSING_EVE
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<FunctionTemplate> AudioProcessingEvent::_protoAudioProcessingEvent;
-Nan::Persistent<Function> AudioProcessingEvent::_ctorAudioProcessingEvent;
+V8_STORE_FT AudioProcessingEvent::_protoAudioProcessingEvent;
+V8_STORE_FUNC AudioProcessingEvent::_ctorAudioProcessingEvent;
 
 
-void AudioProcessingEvent::init(Local<Object> target) {
+void AudioProcessingEvent::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
-	
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
+
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
 	proto->SetClassName(JS_STR("AudioProcessingEvent"));
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, playbackTime);
@@ -103,7 +103,7 @@ void AudioProcessingEvent::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoAudioProcessingEvent.Reset(proto);
 	_ctorAudioProcessingEvent.Reset(ctor);
@@ -114,10 +114,10 @@ void AudioProcessingEvent::init(Local<Object> target) {
 }
 
 
-Local<Object> AudioProcessingEvent::getNew() {
+V8_VAR_OBJ AudioProcessingEvent::getNew() {
 	
-	Local<Function> ctor = Nan::New(_ctorAudioProcessingEvent);
-	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	V8_VAR_FUNC ctor = Nan::New(_ctorAudioProcessingEvent);
+	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }

@@ -4,18 +4,18 @@
 
 #include <addon-tools.hpp>
 
-#include "audio-node.hpp"
+#include "audio-scheduled-source-node.hpp"
 
 
-class AudioBufferSourceNode : public AudioNode {
+class AudioBufferSourceNode : public AudioScheduledSourceNode {
 	
 public:
 	
 	// Public V8 init
-	static void init(v8::Local<v8::Object> target);
+	static void init(V8_VAR_OBJ target);
 	
 	// Make a new instance from C++ land
-	static v8::Local<v8::Object> getNew();
+	static V8_VAR_OBJ getNew();
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -27,14 +27,14 @@ protected:
 	AudioBufferSourceNode();
 	virtual ~AudioBufferSourceNode();
 	
-	static Nan::Persistent<v8::FunctionTemplate> _protoAudioBufferSourceNode;
-	static Nan::Persistent<v8::Function> _ctorAudioBufferSourceNode;
+	static V8_STORE_FT _protoAudioBufferSourceNode;
+	static V8_STORE_FUNC _ctorAudioBufferSourceNode;
 	
 	bool _isDestroyed;
 	
-	Nan::Persistent<v8::Object> _buffer;
-	Nan::Persistent<v8::Object> _playbackRate;
-	Nan::Persistent<v8::Object> _detune;
+	V8_STORE_OBJ _buffer;
+	V8_STORE_OBJ _playbackRate;
+	V8_STORE_OBJ _detune;
 	bool _loop;
 	double _loopStart;
 	double _loopEnd;

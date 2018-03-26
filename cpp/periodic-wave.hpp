@@ -10,10 +10,10 @@ class PeriodicWave : public Nan::ObjectWrap {
 public:
 	
 	// Public V8 init
-	static void init(v8::Local<v8::Object> target);
+	static void init(V8_VAR_OBJ target);
 	
 	// Make a new instance from C++ land
-	static v8::Local<v8::Object> getNew();
+	static V8_VAR_OBJ getNew();
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -25,8 +25,8 @@ protected:
 	PeriodicWave();
 	virtual ~PeriodicWave();
 	
-	static Nan::Persistent<v8::FunctionTemplate> _protoPeriodicWave;
-	static Nan::Persistent<v8::Function> _ctorPeriodicWave;
+	static V8_STORE_FT _protoPeriodicWave;
+	static V8_STORE_FUNC _ctorPeriodicWave;
 	
 	bool _isDestroyed;
 	

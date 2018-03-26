@@ -27,7 +27,7 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-ConstantSourceNode::ConstantSourceNode() : AudioNode() {
+ConstantSourceNode::ConstantSourceNode() : AudioScheduledSourceNode() {
 	
 	_isDestroyed = false;
 	
@@ -45,7 +45,7 @@ void ConstantSourceNode::_destroy() { DES_CHECK;
 	
 	_isDestroyed = true;
 	
-	AudioNode::_destroy();
+	AudioScheduledSourceNode::_destroy();
 	
 }
 
@@ -63,16 +63,16 @@ NAN_GETTER(ConstantSourceNode::offsetGetter) { THIS_CONSTANT_SOURCE_NODE; THIS_C
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<FunctionTemplate> ConstantSourceNode::_protoConstantSourceNode;
-Nan::Persistent<Function> ConstantSourceNode::_ctorConstantSourceNode;
+V8_STORE_FT ConstantSourceNode::_protoConstantSourceNode;
+V8_STORE_FUNC ConstantSourceNode::_ctorConstantSourceNode;
 
 
-void ConstantSourceNode::init(Local<Object> target) {
+void ConstantSourceNode::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
-	
-	// class ConstantSourceNode inherits AudioNode
-	Local<FunctionTemplate> parent = Nan::New(AudioNode::_protoAudioNode);
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
+
+	// class ConstantSourceNode inherits AudioScheduledSourceNode
+	V8_VAR_FT parent = Nan::New(AudioScheduledSourceNode::_protoAudioScheduledSourceNode);
 	proto->Inherit(parent);
 	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
@@ -80,7 +80,7 @@ void ConstantSourceNode::init(Local<Object> target) {
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, offset);
@@ -93,7 +93,7 @@ void ConstantSourceNode::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoConstantSourceNode.Reset(proto);
 	_ctorConstantSourceNode.Reset(ctor);
@@ -104,10 +104,10 @@ void ConstantSourceNode::init(Local<Object> target) {
 }
 
 
-Local<Object> ConstantSourceNode::getNew() {
+V8_VAR_OBJ ConstantSourceNode::getNew() {
 	
-	Local<Function> ctor = Nan::New(_ctorConstantSourceNode);
-	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	V8_VAR_FUNC ctor = Nan::New(_ctorConstantSourceNode);
+	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }

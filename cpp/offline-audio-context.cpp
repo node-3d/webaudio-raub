@@ -98,16 +98,16 @@ NAN_GETTER(OfflineAudioContext::lengthGetter) { THIS_OFFLINE_AUDIO_CONTEXT; THIS
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<FunctionTemplate> OfflineAudioContext::_protoOfflineAudioContext;
-Nan::Persistent<Function> OfflineAudioContext::_ctorOfflineAudioContext;
+V8_STORE_FT OfflineAudioContext::_protoOfflineAudioContext;
+V8_STORE_FUNC OfflineAudioContext::_ctorOfflineAudioContext;
 
 
-void OfflineAudioContext::init(Local<Object> target) {
+void OfflineAudioContext::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
-	
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
+
 	// class OfflineAudioContext inherits BaseAudioContext
-	Local<FunctionTemplate> parent = Nan::New(BaseAudioContext::_protoBaseAudioContext);
+	V8_VAR_FT parent = Nan::New(BaseAudioContext::_protoBaseAudioContext);
 	proto->Inherit(parent);
 	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
@@ -115,7 +115,7 @@ void OfflineAudioContext::init(Local<Object> target) {
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_RW(obj, oncomplete);
@@ -130,7 +130,7 @@ void OfflineAudioContext::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoOfflineAudioContext.Reset(proto);
 	_ctorOfflineAudioContext.Reset(ctor);
@@ -141,10 +141,10 @@ void OfflineAudioContext::init(Local<Object> target) {
 }
 
 
-Local<Object> OfflineAudioContext::getNew() {
+V8_VAR_OBJ OfflineAudioContext::getNew() {
 	
-	Local<Function> ctor = Nan::New(_ctorOfflineAudioContext);
-	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	V8_VAR_FUNC ctor = Nan::New(_ctorOfflineAudioContext);
+	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }

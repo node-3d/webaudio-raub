@@ -141,20 +141,20 @@ NAN_GETTER(AudioListener::upZGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<FunctionTemplate> AudioListener::_protoAudioListener;
-Nan::Persistent<Function> AudioListener::_ctorAudioListener;
+V8_STORE_FT AudioListener::_protoAudioListener;
+V8_STORE_FUNC AudioListener::_ctorAudioListener;
 
 
-void AudioListener::init(Local<Object> target) {
+void AudioListener::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
-	
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
+
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
 	proto->SetClassName(JS_STR("AudioListener"));
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, positionX);
@@ -176,7 +176,7 @@ void AudioListener::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoAudioListener.Reset(proto);
 	_ctorAudioListener.Reset(ctor);
@@ -187,10 +187,10 @@ void AudioListener::init(Local<Object> target) {
 }
 
 
-Local<Object> AudioListener::getNew() {
+V8_VAR_OBJ AudioListener::getNew() {
 	
-	Local<Function> ctor = Nan::New(_ctorAudioListener);
-	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	V8_VAR_FUNC ctor = Nan::New(_ctorAudioListener);
+	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }

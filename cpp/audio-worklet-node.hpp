@@ -10,10 +10,10 @@ class AudioWorkletNode : public Nan::ObjectWrap {
 public:
 	
 	// Public V8 init
-	static void init(v8::Local<v8::Object> target);
+	static void init(V8_VAR_OBJ target);
 	
 	// Make a new instance from C++ land
-	static v8::Local<v8::Object> getNew();
+	static V8_VAR_OBJ getNew();
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -25,14 +25,14 @@ protected:
 	AudioWorkletNode();
 	virtual ~AudioWorkletNode();
 	
-	static Nan::Persistent<v8::FunctionTemplate> _protoAudioWorkletNode;
-	static Nan::Persistent<v8::Function> _ctorAudioWorkletNode;
+	static V8_STORE_FT _protoAudioWorkletNode;
+	static V8_STORE_FUNC _ctorAudioWorkletNode;
 	
 	bool _isDestroyed;
 	
-	Nan::Persistent<v8::Object> _parameters;
-	Nan::Persistent<v8::Object> _port;
-	Nan::Persistent<v8::Function> _onprocessorerror;
+	V8_STORE_OBJ _parameters;
+	V8_STORE_OBJ _port;
+	V8_STORE_FUNC _onprocessorerror;
 	
 	
 // JS methods and props, available through V8 APIs

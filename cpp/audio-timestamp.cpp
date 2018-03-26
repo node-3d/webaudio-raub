@@ -84,20 +84,20 @@ NAN_SETTER(AudioTimestamp::performanceTimeSetter) { THIS_AUDIO_TIMESTAMP; THIS_C
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<FunctionTemplate> AudioTimestamp::_protoAudioTimestamp;
-Nan::Persistent<Function> AudioTimestamp::_ctorAudioTimestamp;
+V8_STORE_FT AudioTimestamp::_protoAudioTimestamp;
+V8_STORE_FUNC AudioTimestamp::_ctorAudioTimestamp;
 
 
-void AudioTimestamp::init(Local<Object> target) {
+void AudioTimestamp::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
-	
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
+
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
 	proto->SetClassName(JS_STR("AudioTimestamp"));
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_RW(obj, contextTime);
@@ -111,7 +111,7 @@ void AudioTimestamp::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoAudioTimestamp.Reset(proto);
 	_ctorAudioTimestamp.Reset(ctor);
@@ -122,10 +122,10 @@ void AudioTimestamp::init(Local<Object> target) {
 }
 
 
-Local<Object> AudioTimestamp::getNew() {
+V8_VAR_OBJ AudioTimestamp::getNew() {
 	
-	Local<Function> ctor = Nan::New(_ctorAudioTimestamp);
-	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	V8_VAR_FUNC ctor = Nan::New(_ctorAudioTimestamp);
+	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }

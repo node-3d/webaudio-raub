@@ -57,16 +57,16 @@ void ChannelMergerNode::_destroy() { DES_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<FunctionTemplate> ChannelMergerNode::_protoChannelMergerNode;
-Nan::Persistent<Function> ChannelMergerNode::_ctorChannelMergerNode;
+V8_STORE_FT ChannelMergerNode::_protoChannelMergerNode;
+V8_STORE_FUNC ChannelMergerNode::_ctorChannelMergerNode;
 
 
-void ChannelMergerNode::init(Local<Object> target) {
+void ChannelMergerNode::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
-	
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
+
 	// class ChannelMergerNode inherits AudioNode
-	Local<FunctionTemplate> parent = Nan::New(AudioNode::_protoAudioNode);
+	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
 	proto->Inherit(parent);
 	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
@@ -74,7 +74,7 @@ void ChannelMergerNode::init(Local<Object> target) {
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	
@@ -87,7 +87,7 @@ void ChannelMergerNode::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoChannelMergerNode.Reset(proto);
 	_ctorChannelMergerNode.Reset(ctor);
@@ -98,10 +98,10 @@ void ChannelMergerNode::init(Local<Object> target) {
 }
 
 
-Local<Object> ChannelMergerNode::getNew() {
+V8_VAR_OBJ ChannelMergerNode::getNew() {
 	
-	Local<Function> ctor = Nan::New(_ctorChannelMergerNode);
-	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	V8_VAR_FUNC ctor = Nan::New(_ctorChannelMergerNode);
+	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }

@@ -55,20 +55,20 @@ void PeriodicWave::_destroy() { DES_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<FunctionTemplate> PeriodicWave::_protoPeriodicWave;
-Nan::Persistent<Function> PeriodicWave::_ctorPeriodicWave;
+V8_STORE_FT PeriodicWave::_protoPeriodicWave;
+V8_STORE_FUNC PeriodicWave::_ctorPeriodicWave;
 
 
-void PeriodicWave::init(Local<Object> target) {
+void PeriodicWave::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
-	
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
+
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
 	proto->SetClassName(JS_STR("PeriodicWave"));
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	
@@ -81,7 +81,7 @@ void PeriodicWave::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoPeriodicWave.Reset(proto);
 	_ctorPeriodicWave.Reset(ctor);
@@ -92,10 +92,10 @@ void PeriodicWave::init(Local<Object> target) {
 }
 
 
-Local<Object> PeriodicWave::getNew() {
+V8_VAR_OBJ PeriodicWave::getNew() {
 	
-	Local<Function> ctor = Nan::New(_ctorPeriodicWave);
-	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	V8_VAR_FUNC ctor = Nan::New(_ctorPeriodicWave);
+	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }

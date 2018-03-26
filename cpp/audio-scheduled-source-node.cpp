@@ -93,16 +93,16 @@ NAN_SETTER(AudioScheduledSourceNode::onendedSetter) { THIS_AUDIO_SCHEDULED_SOURC
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<FunctionTemplate> AudioScheduledSourceNode::_protoAudioScheduledSourceNode;
-Nan::Persistent<Function> AudioScheduledSourceNode::_ctorAudioScheduledSourceNode;
+V8_STORE_FT AudioScheduledSourceNode::_protoAudioScheduledSourceNode;
+V8_STORE_FUNC AudioScheduledSourceNode::_ctorAudioScheduledSourceNode;
 
 
-void AudioScheduledSourceNode::init(Local<Object> target) {
+void AudioScheduledSourceNode::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
-	
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
+
 	// class AudioScheduledSourceNode inherits AudioNode
-	Local<FunctionTemplate> parent = Nan::New(AudioNode::_protoAudioNode);
+	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
 	proto->Inherit(parent);
 	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
@@ -110,7 +110,7 @@ void AudioScheduledSourceNode::init(Local<Object> target) {
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_RW(obj, onended);
@@ -124,7 +124,7 @@ void AudioScheduledSourceNode::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoAudioScheduledSourceNode.Reset(proto);
 	_ctorAudioScheduledSourceNode.Reset(ctor);
@@ -135,10 +135,10 @@ void AudioScheduledSourceNode::init(Local<Object> target) {
 }
 
 
-Local<Object> AudioScheduledSourceNode::getNew() {
+V8_VAR_OBJ AudioScheduledSourceNode::getNew() {
 	
-	Local<Function> ctor = Nan::New(_ctorAudioScheduledSourceNode);
-	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	V8_VAR_FUNC ctor = Nan::New(_ctorAudioScheduledSourceNode);
+	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }

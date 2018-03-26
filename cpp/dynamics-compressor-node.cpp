@@ -98,16 +98,16 @@ NAN_GETTER(DynamicsCompressorNode::releaseGetter) { THIS_DYNAMICS_COMPRESSOR_NOD
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<FunctionTemplate> DynamicsCompressorNode::_protoDynamicsCompressorNode;
-Nan::Persistent<Function> DynamicsCompressorNode::_ctorDynamicsCompressorNode;
+V8_STORE_FT DynamicsCompressorNode::_protoDynamicsCompressorNode;
+V8_STORE_FUNC DynamicsCompressorNode::_ctorDynamicsCompressorNode;
 
 
-void DynamicsCompressorNode::init(Local<Object> target) {
+void DynamicsCompressorNode::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
-	
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
+
 	// class DynamicsCompressorNode inherits AudioNode
-	Local<FunctionTemplate> parent = Nan::New(AudioNode::_protoAudioNode);
+	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
 	proto->Inherit(parent);
 	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
@@ -115,7 +115,7 @@ void DynamicsCompressorNode::init(Local<Object> target) {
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, threshold);
@@ -133,7 +133,7 @@ void DynamicsCompressorNode::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoDynamicsCompressorNode.Reset(proto);
 	_ctorDynamicsCompressorNode.Reset(ctor);
@@ -144,10 +144,10 @@ void DynamicsCompressorNode::init(Local<Object> target) {
 }
 
 
-Local<Object> DynamicsCompressorNode::getNew() {
+V8_VAR_OBJ DynamicsCompressorNode::getNew() {
 	
-	Local<Function> ctor = Nan::New(_ctorDynamicsCompressorNode);
-	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	V8_VAR_FUNC ctor = Nan::New(_ctorDynamicsCompressorNode);
+	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }

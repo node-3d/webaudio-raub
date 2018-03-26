@@ -10,10 +10,10 @@ class AudioProcessingEvent : public Nan::ObjectWrap {
 public:
 	
 	// Public V8 init
-	static void init(v8::Local<v8::Object> target);
+	static void init(V8_VAR_OBJ target);
 	
 	// Make a new instance from C++ land
-	static v8::Local<v8::Object> getNew();
+	static V8_VAR_OBJ getNew();
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -25,14 +25,14 @@ protected:
 	AudioProcessingEvent();
 	virtual ~AudioProcessingEvent();
 	
-	static Nan::Persistent<v8::FunctionTemplate> _protoAudioProcessingEvent;
-	static Nan::Persistent<v8::Function> _ctorAudioProcessingEvent;
+	static V8_STORE_FT _protoAudioProcessingEvent;
+	static V8_STORE_FUNC _ctorAudioProcessingEvent;
 	
 	bool _isDestroyed;
 	
 	double _playbackTime;
-	Nan::Persistent<v8::Object> _inputBuffer;
-	Nan::Persistent<v8::Object> _outputBuffer;
+	V8_STORE_OBJ _inputBuffer;
+	V8_STORE_OBJ _outputBuffer;
 	
 	
 // JS methods and props, available through V8 APIs

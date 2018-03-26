@@ -63,16 +63,16 @@ NAN_GETTER(MediaElementAudioSourceNode::mediaElementGetter) { THIS_MEDIA_ELEMENT
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<FunctionTemplate> MediaElementAudioSourceNode::_protoMediaElementAudioSourceNode;
-Nan::Persistent<Function> MediaElementAudioSourceNode::_ctorMediaElementAudioSourceNode;
+V8_STORE_FT MediaElementAudioSourceNode::_protoMediaElementAudioSourceNode;
+V8_STORE_FUNC MediaElementAudioSourceNode::_ctorMediaElementAudioSourceNode;
 
 
-void MediaElementAudioSourceNode::init(Local<Object> target) {
+void MediaElementAudioSourceNode::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
-	
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
+
 	// class MediaElementAudioSourceNode inherits AudioNode
-	Local<FunctionTemplate> parent = Nan::New(AudioNode::_protoAudioNode);
+	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
 	proto->Inherit(parent);
 	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
@@ -80,7 +80,7 @@ void MediaElementAudioSourceNode::init(Local<Object> target) {
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, mediaElement);
@@ -93,7 +93,7 @@ void MediaElementAudioSourceNode::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoMediaElementAudioSourceNode.Reset(proto);
 	_ctorMediaElementAudioSourceNode.Reset(ctor);
@@ -104,10 +104,10 @@ void MediaElementAudioSourceNode::init(Local<Object> target) {
 }
 
 
-Local<Object> MediaElementAudioSourceNode::getNew() {
+V8_VAR_OBJ MediaElementAudioSourceNode::getNew() {
 	
-	Local<Function> ctor = Nan::New(_ctorMediaElementAudioSourceNode);
-	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	V8_VAR_FUNC ctor = Nan::New(_ctorMediaElementAudioSourceNode);
+	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }

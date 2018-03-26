@@ -12,10 +12,10 @@ class OfflineAudioContext : public BaseAudioContext {
 public:
 	
 	// Public V8 init
-	static void init(v8::Local<v8::Object> target);
+	static void init(V8_VAR_OBJ target);
 	
 	// Make a new instance from C++ land
-	static v8::Local<v8::Object> getNew();
+	static V8_VAR_OBJ getNew();
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -27,12 +27,12 @@ protected:
 	OfflineAudioContext();
 	virtual ~OfflineAudioContext();
 	
-	static Nan::Persistent<v8::FunctionTemplate> _protoOfflineAudioContext;
-	static Nan::Persistent<v8::Function> _ctorOfflineAudioContext;
+	static V8_STORE_FT _protoOfflineAudioContext;
+	static V8_STORE_FUNC _ctorOfflineAudioContext;
 	
 	bool _isDestroyed;
 	
-	Nan::Persistent<v8::Function> _oncomplete;
+	V8_STORE_FUNC _oncomplete;
 	unsigned int _length;
 	
 	

@@ -114,16 +114,16 @@ NAN_GETTER(BiquadFilterNode::gainGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<FunctionTemplate> BiquadFilterNode::_protoBiquadFilterNode;
-Nan::Persistent<Function> BiquadFilterNode::_ctorBiquadFilterNode;
+V8_STORE_FT BiquadFilterNode::_protoBiquadFilterNode;
+V8_STORE_FUNC BiquadFilterNode::_ctorBiquadFilterNode;
 
 
-void BiquadFilterNode::init(Local<Object> target) {
+void BiquadFilterNode::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
-	
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
+
 	// class BiquadFilterNode inherits AudioNode
-	Local<FunctionTemplate> parent = Nan::New(AudioNode::_protoAudioNode);
+	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
 	proto->Inherit(parent);
 	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
@@ -131,7 +131,7 @@ void BiquadFilterNode::init(Local<Object> target) {
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_RW(obj, type);
@@ -148,7 +148,7 @@ void BiquadFilterNode::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoBiquadFilterNode.Reset(proto);
 	_ctorBiquadFilterNode.Reset(ctor);
@@ -159,10 +159,10 @@ void BiquadFilterNode::init(Local<Object> target) {
 }
 
 
-Local<Object> BiquadFilterNode::getNew() {
+V8_VAR_OBJ BiquadFilterNode::getNew() {
 	
-	Local<Function> ctor = Nan::New(_ctorBiquadFilterNode);
-	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	V8_VAR_FUNC ctor = Nan::New(_ctorBiquadFilterNode);
+	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }

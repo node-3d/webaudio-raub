@@ -84,20 +84,20 @@ NAN_GETTER(AudioWorkletGlobalScope::sampleRateGetter) { THIS_AUDIO_WORKLET_GLOBA
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<FunctionTemplate> AudioWorkletGlobalScope::_protoAudioWorkletGlobalScope;
-Nan::Persistent<Function> AudioWorkletGlobalScope::_ctorAudioWorkletGlobalScope;
+V8_STORE_FT AudioWorkletGlobalScope::_protoAudioWorkletGlobalScope;
+V8_STORE_FUNC AudioWorkletGlobalScope::_ctorAudioWorkletGlobalScope;
 
 
-void AudioWorkletGlobalScope::init(Local<Object> target) {
+void AudioWorkletGlobalScope::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
-	
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
+
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
 	proto->SetClassName(JS_STR("AudioWorkletGlobalScope"));
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, currentFrame);
@@ -112,7 +112,7 @@ void AudioWorkletGlobalScope::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoAudioWorkletGlobalScope.Reset(proto);
 	_ctorAudioWorkletGlobalScope.Reset(ctor);
@@ -123,10 +123,10 @@ void AudioWorkletGlobalScope::init(Local<Object> target) {
 }
 
 
-Local<Object> AudioWorkletGlobalScope::getNew() {
+V8_VAR_OBJ AudioWorkletGlobalScope::getNew() {
 	
-	Local<Function> ctor = Nan::New(_ctorAudioWorkletGlobalScope);
-	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	V8_VAR_FUNC ctor = Nan::New(_ctorAudioWorkletGlobalScope);
+	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }

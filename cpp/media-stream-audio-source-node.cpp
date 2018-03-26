@@ -63,16 +63,16 @@ NAN_GETTER(MediaStreamAudioSourceNode::mediaStreamGetter) { THIS_MEDIA_STREAM_AU
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<FunctionTemplate> MediaStreamAudioSourceNode::_protoMediaStreamAudioSourceNode;
-Nan::Persistent<Function> MediaStreamAudioSourceNode::_ctorMediaStreamAudioSourceNode;
+V8_STORE_FT MediaStreamAudioSourceNode::_protoMediaStreamAudioSourceNode;
+V8_STORE_FUNC MediaStreamAudioSourceNode::_ctorMediaStreamAudioSourceNode;
 
 
-void MediaStreamAudioSourceNode::init(Local<Object> target) {
+void MediaStreamAudioSourceNode::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
-	
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
+
 	// class MediaStreamAudioSourceNode inherits AudioNode
-	Local<FunctionTemplate> parent = Nan::New(AudioNode::_protoAudioNode);
+	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
 	proto->Inherit(parent);
 	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
@@ -80,7 +80,7 @@ void MediaStreamAudioSourceNode::init(Local<Object> target) {
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, mediaStream);
@@ -93,7 +93,7 @@ void MediaStreamAudioSourceNode::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoMediaStreamAudioSourceNode.Reset(proto);
 	_ctorMediaStreamAudioSourceNode.Reset(ctor);
@@ -104,10 +104,10 @@ void MediaStreamAudioSourceNode::init(Local<Object> target) {
 }
 
 
-Local<Object> MediaStreamAudioSourceNode::getNew() {
+V8_VAR_OBJ MediaStreamAudioSourceNode::getNew() {
 	
-	Local<Function> ctor = Nan::New(_ctorMediaStreamAudioSourceNode);
-	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	V8_VAR_FUNC ctor = Nan::New(_ctorMediaStreamAudioSourceNode);
+	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }

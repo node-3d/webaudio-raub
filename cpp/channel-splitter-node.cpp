@@ -57,16 +57,16 @@ void ChannelSplitterNode::_destroy() { DES_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<FunctionTemplate> ChannelSplitterNode::_protoChannelSplitterNode;
-Nan::Persistent<Function> ChannelSplitterNode::_ctorChannelSplitterNode;
+V8_STORE_FT ChannelSplitterNode::_protoChannelSplitterNode;
+V8_STORE_FUNC ChannelSplitterNode::_ctorChannelSplitterNode;
 
 
-void ChannelSplitterNode::init(Local<Object> target) {
+void ChannelSplitterNode::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
-	
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
+
 	// class ChannelSplitterNode inherits AudioNode
-	Local<FunctionTemplate> parent = Nan::New(AudioNode::_protoAudioNode);
+	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
 	proto->Inherit(parent);
 	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
@@ -74,7 +74,7 @@ void ChannelSplitterNode::init(Local<Object> target) {
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	
@@ -87,7 +87,7 @@ void ChannelSplitterNode::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoChannelSplitterNode.Reset(proto);
 	_ctorChannelSplitterNode.Reset(ctor);
@@ -98,10 +98,10 @@ void ChannelSplitterNode::init(Local<Object> target) {
 }
 
 
-Local<Object> ChannelSplitterNode::getNew() {
+V8_VAR_OBJ ChannelSplitterNode::getNew() {
 	
-	Local<Function> ctor = Nan::New(_ctorChannelSplitterNode);
-	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	V8_VAR_FUNC ctor = Nan::New(_ctorChannelSplitterNode);
+	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }

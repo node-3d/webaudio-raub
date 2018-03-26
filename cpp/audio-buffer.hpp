@@ -10,10 +10,10 @@ class AudioBuffer : public Nan::ObjectWrap {
 public:
 	
 	// Public V8 init
-	static void init(v8::Local<v8::Object> target);
+	static void init(V8_VAR_OBJ target);
 	
 	// Make a new instance from C++ land
-	static v8::Local<v8::Object> getNew();
+	static V8_VAR_OBJ getNew();
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -25,8 +25,8 @@ protected:
 	AudioBuffer();
 	virtual ~AudioBuffer();
 	
-	static Nan::Persistent<v8::FunctionTemplate> _protoAudioBuffer;
-	static Nan::Persistent<v8::Function> _ctorAudioBuffer;
+	static V8_STORE_FT _protoAudioBuffer;
+	static V8_STORE_FUNC _ctorAudioBuffer;
 	
 	bool _isDestroyed;
 	

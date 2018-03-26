@@ -27,7 +27,7 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-AudioBufferSourceNode::AudioBufferSourceNode() : AudioNode() {
+AudioBufferSourceNode::AudioBufferSourceNode() : AudioScheduledSourceNode() {
 	
 	_isDestroyed = false;
 	
@@ -45,7 +45,7 @@ void AudioBufferSourceNode::_destroy() { DES_CHECK;
 	
 	_isDestroyed = true;
 	
-	AudioNode::_destroy();
+	AudioScheduledSourceNode::_destroy();
 	
 }
 
@@ -151,16 +151,16 @@ NAN_SETTER(AudioBufferSourceNode::loopEndSetter) { THIS_AUDIO_BUFFER_SOURCE_NODE
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<FunctionTemplate> AudioBufferSourceNode::_protoAudioBufferSourceNode;
-Nan::Persistent<Function> AudioBufferSourceNode::_ctorAudioBufferSourceNode;
+V8_STORE_FT AudioBufferSourceNode::_protoAudioBufferSourceNode;
+V8_STORE_FUNC AudioBufferSourceNode::_ctorAudioBufferSourceNode;
 
 
-void AudioBufferSourceNode::init(Local<Object> target) {
+void AudioBufferSourceNode::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
-	
-	// class AudioBufferSourceNode inherits AudioNode
-	Local<FunctionTemplate> parent = Nan::New(AudioNode::_protoAudioNode);
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
+
+	// class AudioBufferSourceNode inherits AudioScheduledSourceNode
+	V8_VAR_FT parent = Nan::New(AudioScheduledSourceNode::_protoAudioScheduledSourceNode);
 	proto->Inherit(parent);
 	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
@@ -168,7 +168,7 @@ void AudioBufferSourceNode::init(Local<Object> target) {
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_RW(obj, buffer);
@@ -186,7 +186,7 @@ void AudioBufferSourceNode::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoAudioBufferSourceNode.Reset(proto);
 	_ctorAudioBufferSourceNode.Reset(ctor);
@@ -197,10 +197,10 @@ void AudioBufferSourceNode::init(Local<Object> target) {
 }
 
 
-Local<Object> AudioBufferSourceNode::getNew() {
+V8_VAR_OBJ AudioBufferSourceNode::getNew() {
 	
-	Local<Function> ctor = Nan::New(_ctorAudioBufferSourceNode);
-	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	V8_VAR_FUNC ctor = Nan::New(_ctorAudioBufferSourceNode);
+	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }

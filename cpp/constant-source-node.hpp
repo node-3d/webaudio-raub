@@ -4,18 +4,18 @@
 
 #include <addon-tools.hpp>
 
-#include "audio-node.hpp"
+#include "audio-scheduled-source-node.hpp"
 
 
-class ConstantSourceNode : public AudioNode {
+class ConstantSourceNode : public AudioScheduledSourceNode {
 	
 public:
 	
 	// Public V8 init
-	static void init(v8::Local<v8::Object> target);
+	static void init(V8_VAR_OBJ target);
 	
 	// Make a new instance from C++ land
-	static v8::Local<v8::Object> getNew();
+	static V8_VAR_OBJ getNew();
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -27,12 +27,12 @@ protected:
 	ConstantSourceNode();
 	virtual ~ConstantSourceNode();
 	
-	static Nan::Persistent<v8::FunctionTemplate> _protoConstantSourceNode;
-	static Nan::Persistent<v8::Function> _ctorConstantSourceNode;
+	static V8_STORE_FT _protoConstantSourceNode;
+	static V8_STORE_FUNC _ctorConstantSourceNode;
 	
 	bool _isDestroyed;
 	
-	Nan::Persistent<v8::Object> _offset;
+	V8_STORE_OBJ _offset;
 	
 	
 // JS methods and props, available through V8 APIs

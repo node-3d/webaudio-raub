@@ -93,16 +93,16 @@ NAN_SETTER(ConvolverNode::normalizeSetter) { THIS_CONVOLVER_NODE; THIS_CHECK; SE
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<FunctionTemplate> ConvolverNode::_protoConvolverNode;
-Nan::Persistent<Function> ConvolverNode::_ctorConvolverNode;
+V8_STORE_FT ConvolverNode::_protoConvolverNode;
+V8_STORE_FUNC ConvolverNode::_ctorConvolverNode;
 
 
-void ConvolverNode::init(Local<Object> target) {
+void ConvolverNode::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
-	
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
+
 	// class ConvolverNode inherits AudioNode
-	Local<FunctionTemplate> parent = Nan::New(AudioNode::_protoAudioNode);
+	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
 	proto->Inherit(parent);
 	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
@@ -110,7 +110,7 @@ void ConvolverNode::init(Local<Object> target) {
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_RW(obj, buffer);
@@ -124,7 +124,7 @@ void ConvolverNode::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoConvolverNode.Reset(proto);
 	_ctorConvolverNode.Reset(ctor);
@@ -135,10 +135,10 @@ void ConvolverNode::init(Local<Object> target) {
 }
 
 
-Local<Object> ConvolverNode::getNew() {
+V8_VAR_OBJ ConvolverNode::getNew() {
 	
-	Local<Function> ctor = Nan::New(_ctorConvolverNode);
-	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	V8_VAR_FUNC ctor = Nan::New(_ctorConvolverNode);
+	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }

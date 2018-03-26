@@ -12,10 +12,10 @@ class ChannelMergerNode : public AudioNode {
 public:
 	
 	// Public V8 init
-	static void init(v8::Local<v8::Object> target);
+	static void init(V8_VAR_OBJ target);
 	
 	// Make a new instance from C++ land
-	static v8::Local<v8::Object> getNew();
+	static V8_VAR_OBJ getNew();
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -27,8 +27,8 @@ protected:
 	ChannelMergerNode();
 	virtual ~ChannelMergerNode();
 	
-	static Nan::Persistent<v8::FunctionTemplate> _protoChannelMergerNode;
-	static Nan::Persistent<v8::Function> _ctorChannelMergerNode;
+	static V8_STORE_FT _protoChannelMergerNode;
+	static V8_STORE_FUNC _ctorChannelMergerNode;
 	
 	bool _isDestroyed;
 	

@@ -12,10 +12,10 @@ class DynamicsCompressorNode : public AudioNode {
 public:
 	
 	// Public V8 init
-	static void init(v8::Local<v8::Object> target);
+	static void init(V8_VAR_OBJ target);
 	
 	// Make a new instance from C++ land
-	static v8::Local<v8::Object> getNew();
+	static V8_VAR_OBJ getNew();
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -27,17 +27,17 @@ protected:
 	DynamicsCompressorNode();
 	virtual ~DynamicsCompressorNode();
 	
-	static Nan::Persistent<v8::FunctionTemplate> _protoDynamicsCompressorNode;
-	static Nan::Persistent<v8::Function> _ctorDynamicsCompressorNode;
+	static V8_STORE_FT _protoDynamicsCompressorNode;
+	static V8_STORE_FUNC _ctorDynamicsCompressorNode;
 	
 	bool _isDestroyed;
 	
-	Nan::Persistent<v8::Object> _threshold;
-	Nan::Persistent<v8::Object> _knee;
-	Nan::Persistent<v8::Object> _ratio;
+	V8_STORE_OBJ _threshold;
+	V8_STORE_OBJ _knee;
+	V8_STORE_OBJ _ratio;
 	float _reduction;
-	Nan::Persistent<v8::Object> _attack;
-	Nan::Persistent<v8::Object> _release;
+	V8_STORE_OBJ _attack;
+	V8_STORE_OBJ _release;
 	
 	
 // JS methods and props, available through V8 APIs

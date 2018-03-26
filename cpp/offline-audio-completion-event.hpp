@@ -10,10 +10,10 @@ class OfflineAudioCompletionEvent : public Nan::ObjectWrap {
 public:
 	
 	// Public V8 init
-	static void init(v8::Local<v8::Object> target);
+	static void init(V8_VAR_OBJ target);
 	
 	// Make a new instance from C++ land
-	static v8::Local<v8::Object> getNew();
+	static V8_VAR_OBJ getNew();
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -25,12 +25,12 @@ protected:
 	OfflineAudioCompletionEvent();
 	virtual ~OfflineAudioCompletionEvent();
 	
-	static Nan::Persistent<v8::FunctionTemplate> _protoOfflineAudioCompletionEvent;
-	static Nan::Persistent<v8::Function> _ctorOfflineAudioCompletionEvent;
+	static V8_STORE_FT _protoOfflineAudioCompletionEvent;
+	static V8_STORE_FUNC _ctorOfflineAudioCompletionEvent;
 	
 	bool _isDestroyed;
 	
-	Nan::Persistent<v8::Object> _renderedBuffer;
+	V8_STORE_OBJ _renderedBuffer;
 	
 	
 // JS methods and props, available through V8 APIs

@@ -10,10 +10,10 @@ class AudioListener : public Nan::ObjectWrap {
 public:
 	
 	// Public V8 init
-	static void init(v8::Local<v8::Object> target);
+	static void init(V8_VAR_OBJ target);
 	
 	// Make a new instance from C++ land
-	static v8::Local<v8::Object> getNew();
+	static V8_VAR_OBJ getNew();
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -25,20 +25,20 @@ protected:
 	AudioListener();
 	virtual ~AudioListener();
 	
-	static Nan::Persistent<v8::FunctionTemplate> _protoAudioListener;
-	static Nan::Persistent<v8::Function> _ctorAudioListener;
+	static V8_STORE_FT _protoAudioListener;
+	static V8_STORE_FUNC _ctorAudioListener;
 	
 	bool _isDestroyed;
 	
-	Nan::Persistent<v8::Object> _positionX;
-	Nan::Persistent<v8::Object> _positionY;
-	Nan::Persistent<v8::Object> _positionZ;
-	Nan::Persistent<v8::Object> _forwardX;
-	Nan::Persistent<v8::Object> _forwardY;
-	Nan::Persistent<v8::Object> _forwardZ;
-	Nan::Persistent<v8::Object> _upX;
-	Nan::Persistent<v8::Object> _upY;
-	Nan::Persistent<v8::Object> _upZ;
+	V8_STORE_OBJ _positionX;
+	V8_STORE_OBJ _positionY;
+	V8_STORE_OBJ _positionZ;
+	V8_STORE_OBJ _forwardX;
+	V8_STORE_OBJ _forwardY;
+	V8_STORE_OBJ _forwardZ;
+	V8_STORE_OBJ _upX;
+	V8_STORE_OBJ _upY;
+	V8_STORE_OBJ _upZ;
 	
 	
 // JS methods and props, available through V8 APIs

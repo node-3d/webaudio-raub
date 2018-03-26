@@ -261,16 +261,16 @@ NAN_SETTER(PannerNode::coneOuterGainSetter) { THIS_PANNER_NODE; THIS_CHECK; SETT
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<FunctionTemplate> PannerNode::_protoPannerNode;
-Nan::Persistent<Function> PannerNode::_ctorPannerNode;
+V8_STORE_FT PannerNode::_protoPannerNode;
+V8_STORE_FUNC PannerNode::_ctorPannerNode;
 
 
-void PannerNode::init(Local<Object> target) {
+void PannerNode::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
-	
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
+
 	// class PannerNode inherits AudioNode
-	Local<FunctionTemplate> parent = Nan::New(AudioNode::_protoAudioNode);
+	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
 	proto->Inherit(parent);
 	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
@@ -278,7 +278,7 @@ void PannerNode::init(Local<Object> target) {
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_RW(obj, panningModel);
@@ -305,7 +305,7 @@ void PannerNode::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoPannerNode.Reset(proto);
 	_ctorPannerNode.Reset(ctor);
@@ -316,10 +316,10 @@ void PannerNode::init(Local<Object> target) {
 }
 
 
-Local<Object> PannerNode::getNew() {
+V8_VAR_OBJ PannerNode::getNew() {
 	
-	Local<Function> ctor = Nan::New(_ctorPannerNode);
-	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	V8_VAR_FUNC ctor = Nan::New(_ctorPannerNode);
+	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }

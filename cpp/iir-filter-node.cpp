@@ -67,16 +67,16 @@ NAN_METHOD(IIRFilterNode::getFrequencyResponse) { THIS_IIR_FILTER_NODE; THIS_CHE
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<FunctionTemplate> IIRFilterNode::_protoIIRFilterNode;
-Nan::Persistent<Function> IIRFilterNode::_ctorIIRFilterNode;
+V8_STORE_FT IIRFilterNode::_protoIIRFilterNode;
+V8_STORE_FUNC IIRFilterNode::_ctorIIRFilterNode;
 
 
-void IIRFilterNode::init(Local<Object> target) {
+void IIRFilterNode::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
-	
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
+
 	// class IIRFilterNode inherits AudioNode
-	Local<FunctionTemplate> parent = Nan::New(AudioNode::_protoAudioNode);
+	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
 	proto->Inherit(parent);
 	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
@@ -84,7 +84,7 @@ void IIRFilterNode::init(Local<Object> target) {
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	
@@ -97,7 +97,7 @@ void IIRFilterNode::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoIIRFilterNode.Reset(proto);
 	_ctorIIRFilterNode.Reset(ctor);
@@ -108,10 +108,10 @@ void IIRFilterNode::init(Local<Object> target) {
 }
 
 
-Local<Object> IIRFilterNode::getNew() {
+V8_VAR_OBJ IIRFilterNode::getNew() {
 	
-	Local<Function> ctor = Nan::New(_ctorIIRFilterNode);
-	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	V8_VAR_FUNC ctor = Nan::New(_ctorIIRFilterNode);
+	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }

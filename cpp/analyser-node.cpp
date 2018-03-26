@@ -166,16 +166,16 @@ NAN_SETTER(AnalyserNode::smoothingTimeConstantSetter) { THIS_ANALYSER_NODE; THIS
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<FunctionTemplate> AnalyserNode::_protoAnalyserNode;
-Nan::Persistent<Function> AnalyserNode::_ctorAnalyserNode;
+V8_STORE_FT AnalyserNode::_protoAnalyserNode;
+V8_STORE_FUNC AnalyserNode::_ctorAnalyserNode;
 
 
-void AnalyserNode::init(Local<Object> target) {
+void AnalyserNode::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
-	
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
+
 	// class AnalyserNode inherits AudioNode
-	Local<FunctionTemplate> parent = Nan::New(AudioNode::_protoAudioNode);
+	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
 	proto->Inherit(parent);
 	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
@@ -183,7 +183,7 @@ void AnalyserNode::init(Local<Object> target) {
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, frequencyBinCount);
@@ -203,7 +203,7 @@ void AnalyserNode::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoAnalyserNode.Reset(proto);
 	_ctorAnalyserNode.Reset(ctor);
@@ -214,10 +214,10 @@ void AnalyserNode::init(Local<Object> target) {
 }
 
 
-Local<Object> AnalyserNode::getNew() {
+V8_VAR_OBJ AnalyserNode::getNew() {
 	
-	Local<Function> ctor = Nan::New(_ctorAnalyserNode);
-	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	V8_VAR_FUNC ctor = Nan::New(_ctorAnalyserNode);
+	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }

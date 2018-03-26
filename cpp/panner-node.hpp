@@ -12,10 +12,10 @@ class PannerNode : public AudioNode {
 public:
 	
 	// Public V8 init
-	static void init(v8::Local<v8::Object> target);
+	static void init(V8_VAR_OBJ target);
 	
 	// Make a new instance from C++ land
-	static v8::Local<v8::Object> getNew();
+	static V8_VAR_OBJ getNew();
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -27,18 +27,18 @@ protected:
 	PannerNode();
 	virtual ~PannerNode();
 	
-	static Nan::Persistent<v8::FunctionTemplate> _protoPannerNode;
-	static Nan::Persistent<v8::Function> _ctorPannerNode;
+	static V8_STORE_FT _protoPannerNode;
+	static V8_STORE_FUNC _ctorPannerNode;
 	
 	bool _isDestroyed;
 	
 	std::string _panningModel;
-	Nan::Persistent<v8::Object> _positionX;
-	Nan::Persistent<v8::Object> _positionY;
-	Nan::Persistent<v8::Object> _positionZ;
-	Nan::Persistent<v8::Object> _orientationX;
-	Nan::Persistent<v8::Object> _orientationY;
-	Nan::Persistent<v8::Object> _orientationZ;
+	V8_STORE_OBJ _positionX;
+	V8_STORE_OBJ _positionY;
+	V8_STORE_OBJ _positionZ;
+	V8_STORE_OBJ _orientationX;
+	V8_STORE_OBJ _orientationY;
+	V8_STORE_OBJ _orientationZ;
 	std::string _distanceModel;
 	double _refDistance;
 	double _maxDistance;

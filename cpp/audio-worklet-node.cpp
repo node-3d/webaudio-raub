@@ -86,20 +86,20 @@ NAN_SETTER(AudioWorkletNode::onprocessorerrorSetter) { THIS_AUDIO_WORKLET_NODE; 
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<FunctionTemplate> AudioWorkletNode::_protoAudioWorkletNode;
-Nan::Persistent<Function> AudioWorkletNode::_ctorAudioWorkletNode;
+V8_STORE_FT AudioWorkletNode::_protoAudioWorkletNode;
+V8_STORE_FUNC AudioWorkletNode::_ctorAudioWorkletNode;
 
 
-void AudioWorkletNode::init(Local<Object> target) {
+void AudioWorkletNode::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
-	
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
+
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
 	proto->SetClassName(JS_STR("AudioWorkletNode"));
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, parameters);
@@ -114,7 +114,7 @@ void AudioWorkletNode::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoAudioWorkletNode.Reset(proto);
 	_ctorAudioWorkletNode.Reset(ctor);
@@ -125,10 +125,10 @@ void AudioWorkletNode::init(Local<Object> target) {
 }
 
 
-Local<Object> AudioWorkletNode::getNew() {
+V8_VAR_OBJ AudioWorkletNode::getNew() {
 	
-	Local<Function> ctor = Nan::New(_ctorAudioWorkletNode);
-	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
+	V8_VAR_FUNC ctor = Nan::New(_ctorAudioWorkletNode);
+	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
