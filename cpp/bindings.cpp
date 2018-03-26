@@ -58,7 +58,7 @@ void init(Local<Object> target) {
 	
 	// AudioBuffer::init(target);
 	// AudioListener::init(target);
-	// AudioParam::init(target);
+	AudioParam::init(target);
 	// AudioProcessingEvent::init(target);
 	// AudioTimestamp::init(target);
 	// AudioWorklet::init(target);
@@ -69,10 +69,12 @@ void init(Local<Object> target) {
 	
 	AudioNode::init(target);
 	
+	AudioDestinationNode::init(target);
+	AudioScheduledSourceNode::init(target);
+	
 	// AnalyserNode::init(target);
 	// AudioBufferSourceNode::init(target);
-	// AudioDestinationNode::init(target);
-	// AudioScheduledSourceNode::init(target);
+	
 	// AudioWorkletNode::init(target);
 	// BiquadFilterNode::init(target);
 	// ChannelMergerNode::init(target);

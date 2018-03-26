@@ -8,6 +8,7 @@
 #include "base-audio-context.hpp"
 #include "gain-node.hpp"
 #include "oscillator-node.hpp"
+#include "audio-destination-node.hpp"
 
 
 using namespace v8;
@@ -45,6 +46,14 @@ BaseAudioContext::BaseAudioContext(bool isOffline, float sampleRate) {
 	);
 	_impl->lazyInitialize();
 	cout<<"03"<<endl;
+	V8_VAR_OBJ context;
+	cout<<"04"<<endl;
+	// this->Wrap(context);
+	cout<<"05"<<endl;
+	// _destination.Reset(AudioDestinationNode::getNew(context, _impl->destination()));
+	
+	
+	cout<<"06"<<endl;
 	_state = "running";
 	
 }
@@ -59,6 +68,15 @@ BaseAudioContext::~BaseAudioContext() {
 
 lab::AudioContext *BaseAudioContext::getContext() const {
 	return _impl.get();
+}
+
+
+void BaseAudioContext::storeDestination(Local<Object> context) {
+	cout<<"store1"<<endl;
+	V8_VAR_OBJ node = AudioDestinationNode::getNew(context, _impl->destination());
+	cout<<"store2"<<endl;
+	_destination.Reset(node);
+	cout<<"store3"<<endl;
 }
 
 

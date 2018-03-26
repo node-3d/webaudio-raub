@@ -69,12 +69,12 @@ inline lab::ChannelInterpretation toChannelInterpretation(const std::string &io)
 
 // ------ Constructor and Destructor
 
-AudioNode::AudioNode(Local<Object> context, lab::AudioNode *node) : EventEmitter() {
+AudioNode::AudioNode(Local<Object> context, NodePtr node) : EventEmitter() {
 	
 	_isDestroyed = false;
 	
 	_context.Reset(context);
-	_impl.reset(node);
+	_impl = node;
 	
 	_channelCount = node->channelCount();
 	_channelCountMode = fromChannelCountMode(node->channelCountMode());
@@ -105,10 +105,17 @@ void AudioNode::_destroy() { DES_CHECK;
 NAN_METHOD(AudioNode::connect) { THIS_AUDIO_NODE; THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, destination);
-	REQ_INT32_ARG(1, output);
-	REQ_INT32_ARG(2, input);
+	LET_INT32_ARG(1, output);
+	LET_INT32_ARG(2, input);
 	
-	// TODO: do something?
+	Local<Object> context = JS_OBJ(audioNode->_context);
+	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
+	
+	lab::AudioContext *ctx = audioContext->getContext();
+	
+	AudioNode *destNode = ObjectWrap::Unwrap<AudioNode>(destination);
+	
+	ctx->connect(destNode->_impl, audioNode->_impl, input, output);
 	
 }
 
@@ -116,10 +123,17 @@ NAN_METHOD(AudioNode::connect) { THIS_AUDIO_NODE; THIS_CHECK;
 NAN_METHOD(AudioNode::disconnect) { THIS_AUDIO_NODE; THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, destination);
-	REQ_INT32_ARG(1, output);
-	REQ_INT32_ARG(2, input);
+	LET_INT32_ARG(1, output);
+	LET_INT32_ARG(2, input);
 	
-	// TODO: do something?
+	Local<Object> context = JS_OBJ(audioNode->_context);
+	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
+	
+	lab::AudioContext *ctx = audioContext->getContext();
+	
+	AudioNode *destNode = ObjectWrap::Unwrap<AudioNode>(destination);
+	
+	ctx->disconnect(destNode->_impl, audioNode->_impl, input, output);
 	
 }
 

@@ -190,6 +190,8 @@ NAN_METHOD(AudioContext::newCtor) {
 	
 	audioContext->Wrap(info.This());
 	
+	audioContext->storeDestination(info.This());
+	
 	RET_VALUE(info.This());
 	
 }

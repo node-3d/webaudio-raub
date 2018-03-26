@@ -2,6 +2,9 @@
 //#include <iostream> // -> cout << "..." << endl;
 
 
+#include <LabSound/core/AudioNode.h>
+#include <LabSound/core/AudioDestinationNode.h>
+
 #include "audio-destination-node.hpp"
 
 
@@ -12,14 +15,14 @@ using namespace std;
 
 // ------ Aux macros
 
-#define THIS_AUDIO_DESTINATION_NODE                                                    \
+#define THIS_AUDIO_DESTINATION_NODE                                           \
 	AudioDestinationNode *audioDestinationNode = Nan::ObjectWrap::Unwrap<AudioDestinationNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (audioDestinationNode->_isDestroyed) return;
 
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (audioDestinationNode->CACHE == V) {                                           \
+	if (audioDestinationNode->CACHE == V) {                                   \
 		return;                                                               \
 	}                                                                         \
 	audioDestinationNode->CACHE = V;
@@ -27,10 +30,11 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-AudioDestinationNode::AudioDestinationNode() : AudioNode() {
-	
+AudioDestinationNode::AudioDestinationNode(V8_VAR_OBJ context, DestPtr node) :
+AudioNode(context, node) {
+	cout<<"adn1"<<endl;
 	_isDestroyed = false;
-	
+	cout<<"adn2"<<endl;
 }
 
 
@@ -67,12 +71,12 @@ Nan::Persistent<FunctionTemplate> AudioDestinationNode::_protoAudioDestinationNo
 Nan::Persistent<Function> AudioDestinationNode::_ctorAudioDestinationNode;
 
 
-void AudioDestinationNode::init(Local<Object> target) {
+void AudioDestinationNode::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 	
 	// class AudioDestinationNode inherits AudioNode
-	Local<FunctionTemplate> parent = Nan::New(AudioNode::_protoAudioNode);
+	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
 	proto->Inherit(parent);
 	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
@@ -80,7 +84,7 @@ void AudioDestinationNode::init(Local<Object> target) {
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, maxChannelCount);
@@ -93,7 +97,7 @@ void AudioDestinationNode::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoAudioDestinationNode.Reset(proto);
 	_ctorAudioDestinationNode.Reset(ctor);
@@ -104,11 +108,14 @@ void AudioDestinationNode::init(Local<Object> target) {
 }
 
 
-Local<Object> AudioDestinationNode::getNew() {
+V8_VAR_OBJ AudioDestinationNode::getNew(V8_VAR_OBJ context, DestPtr node) {
 	
-	Local<Function> ctor = Nan::New(_ctorAudioDestinationNode);
-	// Local<Value> argv[] = { /* arg1, arg2, ... */ };
-	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
+	cout<<"adn gn1"<<endl;
+	
+	V8_VAR_FUNC ctor = Nan::New(_ctorAudioDestinationNode);
+	Local<External> extNode = JS_EXT(&node);
+	V8_VAR_VAL argv[] = { context, extNode };
+	return Nan::NewInstance(ctor, 2, argv).ToLocalChecked();
 	
 }
 
@@ -117,10 +124,16 @@ NAN_METHOD(AudioDestinationNode::newCtor) {
 	
 	CTOR_CHECK("AudioDestinationNode");
 	
-	AudioDestinationNode *audioDestinationNode = new AudioDestinationNode();
+	REQ_OBJ_ARG(0, context);
+	REQ_EXT_ARG(1, extNode);
+	
+	DestPtr *node = reinterpret_cast<DestPtr *>(extNode->Value());
+	
+	AudioDestinationNode *audioDestinationNode = new AudioDestinationNode(context, *node);
 	audioDestinationNode->Wrap(info.This());
 	
 	RET_VALUE(info.This());
+	
 	
 }
 

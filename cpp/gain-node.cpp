@@ -5,6 +5,7 @@
 #include <LabSound/core/GainNode.h>
 
 #include "gain-node.hpp"
+#include "audio-context.hpp"
 #include "audio-param.hpp"
 
 
@@ -30,11 +31,12 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-GainNode::GainNode(Local<Object> context) : AudioNode(context, new lab::GainNode()) {
+GainNode::GainNode(Local<Object> context) :
+AudioNode(context, shared_ptr<lab::AudioNode>(new lab::GainNode())) {
 	
-	lab::GainNode *node = dynamic_cast<lab::GainNode*>(_impl.get());
+	lab::GainNode *node = static_cast<lab::GainNode*>(_impl.get());
 	
-	_gain = AudioParam::getNew(context, node->gain());
+	_gain.Reset(AudioParam::getNew(context, node->gain()));
 	
 	_isDestroyed = false;
 	

@@ -6,6 +6,7 @@
 
 #include "oscillator-node.hpp"
 #include "audio-context.hpp"
+#include "audio-param.hpp"
 
 
 using namespace v8;
@@ -31,7 +32,12 @@ using namespace std;
 // ------ Constructor and Destructor
 
 OscillatorNode::OscillatorNode(v8::Local<v8::Object> context, float sampleRate) :
-AudioNode(context, new lab::OscillatorNode(sampleRate)) {
+AudioNode(context, shared_ptr<lab::AudioNode>(new lab::OscillatorNode(sampleRate))) {
+	
+	lab::OscillatorNode *node = static_cast<lab::OscillatorNode*>(_impl.get());
+	
+	_frequency.Reset(AudioParam::getNew(context, node->frequency()));
+	_detune.Reset(AudioParam::getNew(context, node->detune()));
 	
 	_isDestroyed = false;
 	

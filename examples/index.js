@@ -17,21 +17,22 @@ const { AudioContext, OscillatorNode } = require('..');
 	const oscillator2 = context.createOscillator();
 	console.log('index.js', 'OSC', oscillator1, oscillator1 instanceof OscillatorNode);
 	const gain = context.createGain();
+	console.log('index.js', 'GAIN1');
 	// console.log('gain', context.createGain);
 	gain.gain.value = 0.5;
+	console.log('index.js', 'GAIN2');
+	// osc . gain . destination
+	oscillator1.connect(gain);
+	oscillator2.connect(gain);
+	gain.connect(context.destination);
 	
-	// // osc . gain . destination
-	// context.connect(gain, oscillator1, 0, 0);
-	// context.connect(gain, oscillator2, 0, 0);
-	// context.connect(context.destination, gain, 0, 0);
+	oscillator1.type = 'sine';
+	oscillator1.frequency.value = 220;
+	oscillator1.start(0);
 	
-	// oscillator1.type = 'sine';
-	// oscillator1.frequency.value = 220;
-	// oscillator1.start(0);
-	
-	// oscillator2.type = 'sine';
-	// oscillator2.frequency.value = 440;
-	// oscillator2.start(0);
+	oscillator2.type = 'sine';
+	oscillator2.frequency.value = 440;
+	oscillator2.start(0);
 	
 	
 	// for (let i = 0; i < 10; i++) {

@@ -20,7 +20,7 @@
 				'cpp/audio-node.cpp',
 				'cpp/audio-param.cpp',
 				# 'cpp/audio-processing-event.cpp',
-				# 'cpp/audio-scheduled-source-node.cpp',
+				'cpp/audio-scheduled-source-node.cpp',
 				# 'cpp/audio-timestamp.cpp',
 				# 'cpp/audio-worklet.cpp',
 				# 'cpp/audio-worklet-global-scope.cpp',
@@ -40,7 +40,7 @@
 				# 'cpp/media-stream-audio-destination-node.cpp',
 				# 'cpp/media-stream-audio-source-node.cpp',
 				# 'cpp/offline-audio-completion-event.cpp',
-				'cpp/offline-audio-context.cpp',
+				# 'cpp/offline-audio-context.cpp',
 				'cpp/oscillator-node.cpp',
 				# 'cpp/panner-node.cpp',
 				# 'cpp/periodic-wave.cpp',
@@ -76,8 +76,7 @@
 						'msvs_settings' : {
 							'VCCLCompilerTool' : {
 								'AdditionalOptions' : [
-									'/O2','/Oy','/GL','/GF','/Gm-', '/Fm-',
-									'/EHsc','/MT','/GS','/Gy','/GR','/Gd',
+									'/O2','/GL','/Gm-', '/Fm-','/EHsc'
 								]
 							},
 							'VCLinkerTool' : {

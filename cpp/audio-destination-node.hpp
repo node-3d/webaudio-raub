@@ -6,16 +6,20 @@
 
 #include "audio-node.hpp"
 
+namespace lab { class AudioDestinationNode; };
+
 
 class AudioDestinationNode : public AudioNode {
+	
+	typedef std::shared_ptr<lab::AudioDestinationNode> DestPtr;
 	
 public:
 	
 	// Public V8 init
-	static void init(v8::Local<v8::Object> target);
+	static void init(V8_VAR_OBJ target);
 	
 	// Make a new instance from C++ land
-	static v8::Local<v8::Object> getNew();
+	static V8_VAR_OBJ getNew(V8_VAR_OBJ context, DestPtr node);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -24,15 +28,18 @@ public:
 // Methods and props, available for children
 protected:
 	
-	AudioDestinationNode();
+	AudioDestinationNode(V8_VAR_OBJ context, DestPtr node);
 	virtual ~AudioDestinationNode();
 	
-	static Nan::Persistent<v8::FunctionTemplate> _protoAudioDestinationNode;
-	static Nan::Persistent<v8::Function> _ctorAudioDestinationNode;
+	static V8_STORE_FT _protoAudioDestinationNode;
+	static V8_STORE_FUNC _ctorAudioDestinationNode;
 	
 	bool _isDestroyed;
 	
 	unsigned int _maxChannelCount;
+	
+	DestPtr _impl;
+	V8_STORE_OBJ _context;
 	
 	
 // JS methods and props, available through V8 APIs

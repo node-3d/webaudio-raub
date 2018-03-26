@@ -32,7 +32,7 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-AudioParam::AudioParam(v8::Local<v8::Object> context, ParamPtr param) {
+AudioParam::AudioParam(Local<Object> context, ParamPtr param) {
 	
 	_impl = param;
 	_context.Reset(context);

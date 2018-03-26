@@ -12,12 +12,15 @@
 	},
 	"extends": ["eslint:recommended"],
 	"parserOptions": {
-		"ecmaVersion": 8
+		"ecmaVersion": 8,
+		"ecmaFeatures": {
+			"experimentalObjectRestSpread": true
+		}
 	},
 	"rules": {
 		"arrow-parens": ["error", "as-needed"],
 		"no-trailing-spaces": [
-			"error", 
+			"error",
 			{
 				"skipBlankLines": true
 			}

@@ -23,6 +23,7 @@ public:
 	void _destroy();
 	
 	lab::AudioContext *getContext() const;
+	void storeDestination(v8::Local<v8::Object> context);
 	
 	
 // Methods and props

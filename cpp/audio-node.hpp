@@ -12,6 +12,8 @@ namespace lab { class AudioNode; };
 
 class AudioNode : public EventEmitter {
 	
+	typedef std::shared_ptr<lab::AudioNode> NodePtr;
+	
 public:
 	
 	// Public V8 init
@@ -25,7 +27,7 @@ public:
 protected:
 	
 	AudioNode() {} // fake, TODO: remove
-	AudioNode(v8::Local<v8::Object> context, lab::AudioNode *node);
+	AudioNode(v8::Local<v8::Object> context, NodePtr node);
 	virtual ~AudioNode();
 	
 	static Nan::Persistent<v8::FunctionTemplate> _protoAudioNode; // for inheritance
@@ -37,8 +39,9 @@ protected:
 	std::string _channelCountMode;
 	std::string _channelInterpretation;
 	
-	std::unique_ptr<lab::AudioNode> _impl;
+	NodePtr _impl;
 	Nan::Persistent<v8::Object> _context;
+	
 	
 // JS methods and props, available through V8 APIs
 private:

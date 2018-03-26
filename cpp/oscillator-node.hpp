@@ -4,10 +4,10 @@
 
 #include <addon-tools.hpp>
 
-#include "audio-node.hpp"
+#include "audio-scheduled-source-node.hpp"
 
 
-class OscillatorNode : public AudioNode {
+class OscillatorNode : public AudioScheduledSourceNode {
 	
 public:
 	
