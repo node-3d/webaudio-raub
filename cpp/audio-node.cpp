@@ -69,7 +69,7 @@ inline lab::ChannelInterpretation toChannelInterpretation(const std::string &io)
 
 // ------ Constructor and Destructor
 
-AudioNode::AudioNode(Local<Object> context, NodePtr node) : EventEmitter() {
+AudioNode::AudioNode(V8_VAR_OBJ context, NodePtr node) : EventEmitter() {
 	
 	_isDestroyed = false;
 	
@@ -108,7 +108,7 @@ NAN_METHOD(AudioNode::connect) { THIS_AUDIO_NODE; THIS_CHECK;
 	LET_INT32_ARG(1, output);
 	LET_INT32_ARG(2, input);
 	
-	Local<Object> context = JS_OBJ(audioNode->_context);
+	V8_VAR_OBJ context = JS_OBJ(audioNode->_context);
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	
 	lab::AudioContext *ctx = audioContext->getContext();
@@ -126,7 +126,7 @@ NAN_METHOD(AudioNode::disconnect) { THIS_AUDIO_NODE; THIS_CHECK;
 	LET_INT32_ARG(1, output);
 	LET_INT32_ARG(2, input);
 	
-	Local<Object> context = JS_OBJ(audioNode->_context);
+	V8_VAR_OBJ context = JS_OBJ(audioNode->_context);
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	
 	lab::AudioContext *ctx = audioContext->getContext();
@@ -169,7 +169,7 @@ NAN_SETTER(AudioNode::channelCountSetter) { THIS_AUDIO_NODE; THIS_CHECK; SETTER_
 	
 	CACHE_CAS(_channelCount, v);
 	
-	Local<Object> context = JS_OBJ(audioNode->_context);
+	V8_VAR_OBJ context = JS_OBJ(audioNode->_context);
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	
 	lab::ContextGraphLock graphLock(audioContext->getContext(), "AudioNode::channelCountSetter");
@@ -222,16 +222,16 @@ NAN_SETTER(AudioNode::channelInterpretationSetter) { THIS_AUDIO_NODE; THIS_CHECK
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> AudioNode::_protoAudioNode;
-Nan::Persistent<v8::Function> AudioNode::_ctorAudioNode;
+V8_STORE_FT AudioNode::_protoAudioNode;
+V8_STORE_FUNC AudioNode::_ctorAudioNode;
 
 
-void AudioNode::init(Local<Object> target) {
+void AudioNode::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 	
 	// class AudioNode inherits EventEmitter
-	Local<FunctionTemplate> parent = Nan::New(EventEmitter::_protoEventEmitter);
+	V8_VAR_FT parent = Nan::New(EventEmitter::_protoEventEmitter);
 	proto->Inherit(parent);
 	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
@@ -239,7 +239,7 @@ void AudioNode::init(Local<Object> target) {
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, context);
@@ -258,7 +258,7 @@ void AudioNode::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoAudioNode.Reset(proto);
 	_ctorAudioNode.Reset(ctor);

@@ -16,10 +16,10 @@ class AudioParam : public Nan::ObjectWrap {
 public:
 	
 	// Public V8 init
-	static void init(v8::Local<v8::Object> target);
+	static void init(V8_VAR_OBJ target);
 	
 	// Make a new instance from C++ land
-	static v8::Local<v8::Object> getNew(v8::Local<v8::Object> context, ParamPtr param);
+	static V8_VAR_OBJ getNew(V8_VAR_OBJ context, ParamPtr param);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -28,11 +28,11 @@ public:
 // Methods and props, available for children
 protected:
 	
-	explicit AudioParam(v8::Local<v8::Object> context, ParamPtr param);
+	explicit AudioParam(V8_VAR_OBJ context, ParamPtr param);
 	virtual ~AudioParam();
 	
-	static Nan::Persistent<v8::FunctionTemplate> _protoAudioParam;
-	static Nan::Persistent<v8::Function> _ctorAudioParam;
+	static V8_STORE_FT _protoAudioParam;
+	static V8_STORE_FUNC _ctorAudioParam;
 	
 	bool _isDestroyed;
 	
@@ -42,7 +42,7 @@ protected:
 	float _maxValue;
 	
 	ParamPtr _impl;
-	Nan::Persistent<v8::Object> _context;
+	V8_STORE_OBJ _context;
 	
 	
 // JS methods and props, available through V8 APIs

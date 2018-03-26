@@ -12,10 +12,10 @@ class AudioContext : public BaseAudioContext {
 public:
 	
 	// Public V8 init
-	static void init(v8::Local<v8::Object> target);
+	static void init(V8_VAR_OBJ target);
 	
 	// Make a new instance from C++ land
-	static v8::Local<v8::Object> getNew(v8::Local<v8::Object> context);
+	static V8_VAR_OBJ getNew(V8_VAR_OBJ context);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -28,8 +28,8 @@ protected:
 	explicit AudioContext(float sampleRate);
 	virtual ~AudioContext();
 	
-	static Nan::Persistent<v8::FunctionTemplate> _protoAudioContext; // for inheritance
-	static Nan::Persistent<v8::Function> _ctorAudioContext;
+	static V8_STORE_FT _protoAudioContext; // for inheritance
+	static V8_STORE_FUNC _ctorAudioContext;
 	
 	bool _isDestroyed;
 	

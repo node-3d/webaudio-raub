@@ -17,7 +17,7 @@ class AudioNode : public EventEmitter {
 public:
 	
 	// Public V8 init
-	static void init(v8::Local<v8::Object> target);
+	static void init(V8_VAR_OBJ target);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -27,11 +27,11 @@ public:
 protected:
 	
 	AudioNode() {} // fake, TODO: remove
-	AudioNode(v8::Local<v8::Object> context, NodePtr node);
+	AudioNode(V8_VAR_OBJ context, NodePtr node);
 	virtual ~AudioNode();
 	
-	static Nan::Persistent<v8::FunctionTemplate> _protoAudioNode; // for inheritance
-	static Nan::Persistent<v8::Function> _ctorAudioNode;
+	static V8_STORE_FT _protoAudioNode; // for inheritance
+	static V8_STORE_FUNC _ctorAudioNode;
 	
 	bool _isDestroyed;
 	
@@ -40,7 +40,7 @@ protected:
 	std::string _channelInterpretation;
 	
 	NodePtr _impl;
-	Nan::Persistent<v8::Object> _context;
+	V8_STORE_OBJ _context;
 	
 	
 // JS methods and props, available through V8 APIs

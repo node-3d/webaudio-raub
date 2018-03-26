@@ -2,6 +2,8 @@
 //#include <iostream> // -> cout << "..." << endl;
 
 
+#include <LabSound/core/AudioScheduledSourceNode.h>
+
 #include "audio-scheduled-source-node.hpp"
 
 
@@ -27,7 +29,8 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-AudioScheduledSourceNode::AudioScheduledSourceNode() : AudioNode() {
+AudioScheduledSourceNode::AudioScheduledSourceNode(V8_VAR_OBJ context, NodePtr node) :
+AudioNode(context, node) {
 	
 	_isDestroyed = false;
 	
@@ -135,11 +138,12 @@ void AudioScheduledSourceNode::init(V8_VAR_OBJ target) {
 }
 
 
-V8_VAR_OBJ AudioScheduledSourceNode::getNew() {
+V8_VAR_OBJ AudioScheduledSourceNode::getNew(V8_VAR_OBJ context, NodePtr node) {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorAudioScheduledSourceNode);
-	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
-	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
+	Local<External> extNode = JS_EXT(&node);
+	V8_VAR_VAL argv[] = { context, extNode };
+	return Nan::NewInstance(ctor, 2, argv).ToLocalChecked();
 	
 }
 
@@ -148,7 +152,12 @@ NAN_METHOD(AudioScheduledSourceNode::newCtor) {
 	
 	CTOR_CHECK("AudioScheduledSourceNode");
 	
-	AudioScheduledSourceNode *audioScheduledSourceNode = new AudioScheduledSourceNode();
+	REQ_OBJ_ARG(0, context);
+	REQ_EXT_ARG(1, extNode);
+	
+	NodePtr *node = reinterpret_cast<NodePtr *>(extNode->Value());
+	
+	AudioScheduledSourceNode *audioScheduledSourceNode = new AudioScheduledSourceNode(context, *node);
 	audioScheduledSourceNode->Wrap(info.This());
 	
 	RET_VALUE(info.This());

@@ -115,16 +115,16 @@ NAN_GETTER(AudioContext::baseLatencyGetter) { THIS_AUDIO_CONTEXT; THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> AudioContext::_protoAudioContext;
-Nan::Persistent<v8::Function> AudioContext::_ctorAudioContext;
+V8_STORE_FT AudioContext::_protoAudioContext;
+V8_STORE_FUNC AudioContext::_ctorAudioContext;
 
 
-void AudioContext::init(Local<Object> target) {
+void AudioContext::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 	
 	// class AudioContext inherits BaseAudioContext
-	Local<FunctionTemplate> parent = Nan::New(BaseAudioContext::_protoBaseAudioContext);
+	V8_VAR_FT parent = Nan::New(BaseAudioContext::_protoBaseAudioContext);
 	proto->Inherit(parent);
 	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
@@ -132,7 +132,7 @@ void AudioContext::init(Local<Object> target) {
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, baseLatency);
@@ -150,7 +150,7 @@ void AudioContext::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoAudioContext.Reset(proto);
 	_ctorAudioContext.Reset(ctor);

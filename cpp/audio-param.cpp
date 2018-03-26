@@ -32,7 +32,7 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-AudioParam::AudioParam(Local<Object> context, ParamPtr param) {
+AudioParam::AudioParam(V8_VAR_OBJ context, ParamPtr param) {
 	
 	_impl = param;
 	_context.Reset(context);
@@ -135,7 +135,7 @@ NAN_METHOD(AudioParam::cancelAndHoldAtTime) { THIS_AUDIO_PARAM; THIS_CHECK;
 
 NAN_GETTER(AudioParam::valueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
 	
-	Local<Object> context = JS_OBJ(audioParam->_context);
+	V8_VAR_OBJ context = JS_OBJ(audioParam->_context);
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	
 	lab::ContextRenderLock renderLock(audioContext->getContext(), "AudioParam::valueGetter");
@@ -178,16 +178,16 @@ Nan::Persistent<FunctionTemplate> AudioParam::_protoAudioParam;
 Nan::Persistent<Function> AudioParam::_ctorAudioParam;
 
 
-void AudioParam::init(Local<Object> target) {
+void AudioParam::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
 	proto->SetClassName(JS_STR("AudioParam"));
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_RW(obj, value);
@@ -209,7 +209,7 @@ void AudioParam::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoAudioParam.Reset(proto);
 	_ctorAudioParam.Reset(ctor);
@@ -220,11 +220,11 @@ void AudioParam::init(Local<Object> target) {
 }
 
 
-Local<Object> AudioParam::getNew(Local<Object> context, ParamPtr param) {
+V8_VAR_OBJ AudioParam::getNew(V8_VAR_OBJ context, ParamPtr param) {
 	
-	Local<Function> ctor = Nan::New(_ctorAudioParam);
+	V8_VAR_FUNC ctor = Nan::New(_ctorAudioParam);
 	Local<External> extParam = JS_EXT(&param);
-	Local<Value> argv[] = { context, extParam };
+	V8_VAR_VAL argv[] = { context, extParam };
 	return Nan::NewInstance(ctor, 2, argv).ToLocalChecked();
 	
 }

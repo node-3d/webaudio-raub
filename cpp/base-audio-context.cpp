@@ -71,7 +71,7 @@ lab::AudioContext *BaseAudioContext::getContext() const {
 }
 
 
-void BaseAudioContext::storeDestination(Local<Object> context) {
+void BaseAudioContext::storeDestination(V8_VAR_OBJ context) {
 	cout<<"store1"<<endl;
 	V8_VAR_OBJ node = AudioDestinationNode::getNew(context, _impl->destination());
 	cout<<"store2"<<endl;
@@ -323,16 +323,16 @@ NAN_GETTER(BaseAudioContext::stateGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<v8::FunctionTemplate> BaseAudioContext::_protoBaseAudioContext;
-Nan::Persistent<v8::Function> BaseAudioContext::_ctorBaseAudioContext;
+V8_STORE_FT BaseAudioContext::_protoBaseAudioContext;
+V8_STORE_FUNC BaseAudioContext::_ctorBaseAudioContext;
 
 
-void BaseAudioContext::init(Local<Object> target) {
+void BaseAudioContext::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 	
 	// class BaseAudioContext inherits EventEmitter
-	Local<FunctionTemplate> parent = Nan::New(EventEmitter::_protoEventEmitter);
+	V8_VAR_FT parent = Nan::New(EventEmitter::_protoEventEmitter);
 	proto->Inherit(parent);
 	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
@@ -340,7 +340,7 @@ void BaseAudioContext::init(Local<Object> target) {
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, destination);
@@ -379,7 +379,7 @@ void BaseAudioContext::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoBaseAudioContext.Reset(proto);
 	_ctorBaseAudioContext.Reset(ctor);

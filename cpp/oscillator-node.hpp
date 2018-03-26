@@ -12,10 +12,10 @@ class OscillatorNode : public AudioScheduledSourceNode {
 public:
 	
 	// Public V8 init
-	static void init(v8::Local<v8::Object> target);
+	static void init(V8_VAR_OBJ target);
 	
 	// Make a new instance from C++ land
-	static v8::Local<v8::Object> getNew(v8::Local<v8::Object> context);
+	static V8_VAR_OBJ getNew(V8_VAR_OBJ context);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -24,17 +24,17 @@ public:
 // Methods and props, available for children
 protected:
 	
-	OscillatorNode(v8::Local<v8::Object> context, float sampleRate);
+	OscillatorNode(V8_VAR_OBJ context, float sampleRate);
 	virtual ~OscillatorNode();
 	
-	static Nan::Persistent<v8::FunctionTemplate> _protoOscillatorNode;
-	static Nan::Persistent<v8::Function> _ctorOscillatorNode;
+	static V8_STORE_FT _protoOscillatorNode;
+	static V8_STORE_FUNC _ctorOscillatorNode;
 	
 	bool _isDestroyed;
 	
 	std::string _type;
-	Nan::Persistent<v8::Object> _frequency;
-	Nan::Persistent<v8::Object> _detune;
+	V8_STORE_OBJ _frequency;
+	V8_STORE_OBJ _detune;
 	
 	
 // JS methods and props, available through V8 APIs

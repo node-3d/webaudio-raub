@@ -14,16 +14,16 @@ class BaseAudioContext : public EventEmitter {
 public:
 	
 	// Public V8 init
-	static void init(v8::Local<v8::Object> target);
+	static void init(V8_VAR_OBJ target);
 	
 	// Make a new instance from C++ land
-	static v8::Local<v8::Object> getNew(v8::Local<v8::Object> context);
+	static V8_VAR_OBJ getNew(V8_VAR_OBJ context);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
 	
 	lab::AudioContext *getContext() const;
-	void storeDestination(v8::Local<v8::Object> context);
+	void storeDestination(V8_VAR_OBJ context);
 	
 	
 // Methods and props
@@ -32,15 +32,15 @@ protected:
 	BaseAudioContext(bool isOffline = false, float sampleRate = 44100.f);
 	virtual ~BaseAudioContext();
 	
-	static Nan::Persistent<v8::FunctionTemplate> _protoBaseAudioContext; // for inheritance
-	static Nan::Persistent<v8::Function> _ctorBaseAudioContext;
+	static V8_STORE_FT _protoBaseAudioContext; // for inheritance
+	static V8_STORE_FUNC _ctorBaseAudioContext;
 	
 	bool _isDestroyed;
 	
-	Nan::Persistent<v8::Object> _destination;
+	V8_STORE_OBJ _destination;
 	double _currentTime;
 	float _sampleRate;
-	Nan::Persistent<v8::Object> _listener;
+	V8_STORE_OBJ _listener;
 	std::string _state;
 	
 	std::unique_ptr<lab::AudioContext> _impl;

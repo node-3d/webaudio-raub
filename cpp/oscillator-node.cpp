@@ -31,8 +31,11 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-OscillatorNode::OscillatorNode(v8::Local<v8::Object> context, float sampleRate) :
-AudioNode(context, shared_ptr<lab::AudioNode>(new lab::OscillatorNode(sampleRate))) {
+OscillatorNode::OscillatorNode(V8_VAR_OBJ context, float sampleRate) :
+AudioScheduledSourceNode(
+	context,
+	shared_ptr<lab::AudioScheduledSourceNode>(new lab::OscillatorNode(sampleRate))
+) {
 	
 	lab::OscillatorNode *node = static_cast<lab::OscillatorNode*>(_impl.get());
 	
@@ -112,12 +115,12 @@ Nan::Persistent<FunctionTemplate> OscillatorNode::_protoOscillatorNode;
 Nan::Persistent<Function> OscillatorNode::_ctorOscillatorNode;
 
 
-void OscillatorNode::init(Local<Object> target) {
+void OscillatorNode::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 	
 	// class OscillatorNode inherits AudioNode
-	Local<FunctionTemplate> parent = Nan::New(AudioNode::_protoAudioNode);
+	V8_VAR_FT parent = Nan::New(AudioScheduledSourceNode::_protoAudioNode);
 	proto->Inherit(parent);
 	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
@@ -125,7 +128,7 @@ void OscillatorNode::init(Local<Object> target) {
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_RW(obj, type);
@@ -140,7 +143,7 @@ void OscillatorNode::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoOscillatorNode.Reset(proto);
 	_ctorOscillatorNode.Reset(ctor);
@@ -151,10 +154,10 @@ void OscillatorNode::init(Local<Object> target) {
 }
 
 
-Local<Object> OscillatorNode::getNew(Local<Object> context) {
+V8_VAR_OBJ OscillatorNode::getNew(V8_VAR_OBJ context) {
 	
-	Local<Function> ctor = Nan::New(_ctorOscillatorNode);
-	Local<Value> argv[] = { context };
+	V8_VAR_FUNC ctor = Nan::New(_ctorOscillatorNode);
+	V8_VAR_VAL argv[] = { context };
 	return Nan::NewInstance(ctor, 1, argv).ToLocalChecked();
 	
 }
