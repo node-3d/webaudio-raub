@@ -120,7 +120,7 @@ void OscillatorNode::init(V8_VAR_OBJ target) {
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 	
 	// class OscillatorNode inherits AudioNode
-	V8_VAR_FT parent = Nan::New(AudioScheduledSourceNode::_protoAudioNode);
+	V8_VAR_FT parent = Nan::New(AudioScheduledSourceNode::_protoAudioScheduledSourceNode);
 	proto->Inherit(parent);
 	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
