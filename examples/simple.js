@@ -5,40 +5,35 @@ const { AudioContext } = require('..');
 
 (async () => { try {
 	
-        auto context = lab::MakeRealtimeAudioContext();
-        
-        std::shared_ptr<OscillatorNode> oscillator;
-        std::shared_ptr<SampledAudioNode> musicClipNode;
-        std::shared_ptr<GainNode> gain;
-        std::shared_ptr<AudioBus> musicClip = MakeBusFromFile("samples/stereo-music-clip.wav", false);
-
-        {
-            ContextRenderLock r(context.get(), "Red Alert");
-
-            oscillator = std::make_shared<OscillatorNode>(context->sampleRate());
-            gain = std::make_shared<GainNode>();
-            gain->gain()->setValue(0.0625f);
-
-            musicClipNode = std::make_shared<SampledAudioNode>();
-            musicClipNode->setBus(r, musicClip);
-            context->connect(gain, musicClipNode, 0, 0);
-            musicClipNode->start(0.0f);
-
-            // osc -> gain -> destination
-            context->connect(gain, oscillator, 0, 0);
-            context->connect(context->destination(), gain, 0, 0);
-
-            oscillator->frequency()->setValue(440.f);
-            oscillator->setType(OscillatorType::SINE);
-            oscillator->start(0.0f); 
-        };
-
-        const int seconds = 4;
-        for (int t = 0; t < seconds; ++t)
-        {
-            std::this_thread::sleep_for(std::chrono::seconds(1)); 
-        }
-
+	const context = new AudioContext();
+	
+	const clip = await new Promise((res, rej) => fs.readFile(
+		'samples/stereo-music-clip.wav',
+		(err, data) => err ? rej(err) : res(data)
+	));
+	
+	const musicClip = context.decodeAudioData(clip);
+	
+	const oscillator = context.createOscillator();
+	
+	const gain = context.createGain();
+	gain.gain.value = 0.0625;
+	
+	const musicClipNode = context.createBufferSource();
+	musicClipNode.buffer = musicClip;
+	musicClipNode.connect(gain);
+	musicClipNode.start(0);
+	
+	// osc -> gain -> destination
+	oscillator.connect(gain);
+	gain.connect(context.destination;
+		
+	oscillator.frequency.value = 440;
+	oscillator.type = 'sine';
+	oscillator.start(0);
+	
+	// 4 sec
+	await new Promise(res => setTimeout(res, 4000));
 	
 	console.log('DONE');
 	

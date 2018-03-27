@@ -2,15 +2,15 @@
 
 const { AudioContext } = require('..');
 
-function makeDistortionCurve(amount) {
-	var k = typeof amount === 'number' ? amount : 50;
-	var n_samples = 44100;
-	var curve = new Float32Array(n_samples);
-	var deg = Math.PI / 180;
-	var i = 0;
-	var x;
-	for ( ; i < n_samples; ++i ) {
-		x = i * 2 / n_samples - 1;
+const makeDistortionCurve = amount => {
+	let k = typeof amount === 'number' ? amount : 50;
+	let nSamples = 44100;
+	let curve = new Float32Array(nSamples);
+	let deg = Math.PI / 180;
+	let i = 0;
+	let x;
+	for ( ; i < nSamples; ++i ) {
+		x = i * 2 / nSamples - 1;
 		curve[i] = ( 3 + k ) * x * 20 * deg / ( Math.PI + k * Math.abs(x) );
 	}
 	return curve;
@@ -63,41 +63,42 @@ function makeDistortionCurve(amount) {
 	// A small addition to the graph given in Parker's paper is a compressor node
 	// immediately before the output. This ensures that the user's volume remains
 	// somewhat constant when the distortion is increased.
-	const compressor = context.createDynamicsCompressor(
+	const compressor = context.createDynamicsCompressor();
 	compressor.threshold.value = -14;
-
+	
 	// Now we connect up the graph following the block diagram above (on the web page).
 	// When working on complex graphs it helps to have a pen and paper handy!
-
-	input = MakeHardwareSourceNode(r);
-	const inlut = MakeHardwareSourceNode(r);
+	
+	//const stream = navigator.mediaDevices.getUserMedia({audio: true, video: true})
+	
+	const input = context.createMediaStreamSource(/*stream*/);
 	input.connect(vcInverter1);
 	input.connect(vcDiode4);
-
-
+	
+	
 	vcInverter1.connect(vcDiode3);
-
+	
 	// Then the Vin side
 	context.connect(vInGain, vIn, 0, 0);
 	context.connect(vInInverter1, vInGain, 0, 0);
 	context.connect(vcInverter1, vInGain, 0, 0);
 	context.connect(vcDiode4.node(), vInGain, 0, 0);
-
+	
 	context.connect(vInInverter2, vInInverter1, 0, 0);
 	context.connect(vInDiode2.node(), vInInverter1, 0, 0);
 	context.connect(vInDiode1.node(), vInInverter2, 0, 0);
-
+	
 	// Finally connect the four diodes to the destination via the output-stage compressor and master gain node
 	context.connect(vInInverter3, vInDiode1.node(), 0, 0);
 	context.connect(vInInverter3, vInDiode2.node(), 0, 0);
-
+	
 	context.connect(compressor, vInInverter3, 0, 0);
 	context.connect(compressor, vcDiode3.node(), 0, 0);
 	context.connect(compressor, vcDiode4.node(), 0, 0);
-
+	
 	context.connect(outGain, compressor, 0, 0);
 	context.connect(context.destination(), outGain, 0, 0);
-
+	
 	// 30 sec
 	await new Promise(res => setTimeout(res, 30000));
 	
