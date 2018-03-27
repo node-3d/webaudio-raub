@@ -34,26 +34,18 @@ using namespace std;
 // ------ Constructor and Destructor
 
 BaseAudioContext::BaseAudioContext(bool isOffline, float sampleRate) {
-	cout<<"01 "<<isOffline<<" "<<sampleRate<<endl;
+	
 	_isDestroyed = false;
 	
 	_impl.reset(new lab::AudioContext(isOffline));
-	cout<<"02"<<endl;
+	
 	_impl->setDestinationNode(
 		std::make_shared<lab::DefaultAudioDestinationNode>(
 			_impl.get(), sampleRate
 		)
 	);
 	_impl->lazyInitialize();
-	cout<<"03"<<endl;
-	V8_VAR_OBJ context;
-	cout<<"04"<<endl;
-	// this->Wrap(context);
-	cout<<"05"<<endl;
-	// _destination.Reset(AudioDestinationNode::getNew(context, _impl->destination()));
 	
-	
-	cout<<"06"<<endl;
 	_state = "running";
 	
 }
@@ -72,11 +64,10 @@ lab::AudioContext *BaseAudioContext::getContext() const {
 
 
 void BaseAudioContext::storeDestination(V8_VAR_OBJ context) {
-	cout<<"store1"<<endl;
+	
 	V8_VAR_OBJ node = AudioDestinationNode::getNew(context, _impl->destination());
-	cout<<"store2"<<endl;
 	_destination.Reset(node);
-	cout<<"store3"<<endl;
+	
 }
 
 

@@ -119,7 +119,7 @@ void OscillatorNode::init(V8_VAR_OBJ target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 	
-	// class OscillatorNode inherits AudioNode
+	// class OscillatorNode inherits AudioScheduledSourceNode
 	V8_VAR_FT parent = Nan::New(AudioScheduledSourceNode::_protoAudioScheduledSourceNode);
 	proto->Inherit(parent);
 	

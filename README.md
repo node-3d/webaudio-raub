@@ -47,13 +47,20 @@ Properties:
 
 
 Methods:
-* `void destroy()` - destroys the instance.
+* `void destroy()` - destroys the instance, `'destroy'` event is emitted.
 * `void getFloatFrequencyData(object array)` - TODO(description).
 * `void getByteFrequencyData(object array)` - TODO(description).
 * `void getFloatTimeDomainData(object array)` - TODO(description).
 * `void getByteTimeDomainData(object array)` - TODO(description).
 
 
+Events:
+* `'destroy' <>` - emitted when the instance was destroyed.
+* `'frequencyBinCount' <number>` - emitted when the property was changed.
+* `'fftSize' <number>` - emitted when the property was changed.
+* `'minDecibels' <number>` - emitted when the property was changed.
+* `'maxDecibels' <number>` - emitted when the property was changed.
+* `'smoothingTimeConstant' <number>` - emitted when the property was changed.
 
 
 
@@ -118,10 +125,18 @@ Properties:
 
 
 Methods:
-* `void destroy()` - destroys the instance.
+* `void destroy()` - destroys the instance, `'destroy'` event is emitted.
 * `void start(number when, number grainOffset, number grainDuration )` - TODO(description).
 
 
+Events:
+* `'destroy' <>` - emitted when the instance was destroyed.
+* `'buffer' <object>` - emitted when the property was changed.
+* `'playbackRate' <object>` - emitted when the property was changed.
+* `'detune' <object>` - emitted when the property was changed.
+* `'loop' <boolean>` - emitted when the property was changed.
+* `'loopStart' <number>` - emitted when the property was changed.
+* `'loopEnd' <number>` - emitted when the property was changed.
 
 
 
@@ -147,7 +162,7 @@ Properties:
 
 
 Methods:
-* `void destroy()` - destroys the instance.
+* `void destroy()` - destroys the instance, `'destroy'` event is emitted.
 * `void suspend()` - TODO(description).
 * `void close()` - TODO(description).
 * `void getOutputTimestamp()` - TODO(description).
@@ -156,6 +171,9 @@ Methods:
 * `void createMediaStreamDestination()` - TODO(description).
 
 
+Events:
+* `'destroy' <>` - emitted when the instance was destroyed.
+* `'baseLatency' <number>` - emitted when the property was changed.
 
 
 
@@ -181,10 +199,13 @@ Properties:
 
 
 Methods:
-* `void destroy()` - destroys the instance.
+* `void destroy()` - destroys the instance, `'destroy'` event is emitted.
 
 
 
+Events:
+* `'destroy' <>` - emitted when the instance was destroyed.
+* `'maxChannelCount' <number>` - emitted when the property was changed.
 
 
 
@@ -253,11 +274,19 @@ Properties:
 
 
 Methods:
-* `void destroy()` - destroys the instance.
+* `void destroy()` - destroys the instance, `'destroy'` event is emitted.
 * `void connect(object destination, number output, number input)` - TODO(description).
 * `void disconnect(object destination, number output, number input)` - TODO(description).
 
 
+Events:
+* `'destroy' <>` - emitted when the instance was destroyed.
+* `'context' <object>` - emitted when the property was changed.
+* `'numberOfInputs' <number>` - emitted when the property was changed.
+* `'numberOfOutputs' <number>` - emitted when the property was changed.
+* `'channelCount' <number>` - emitted when the property was changed.
+* `'channelCountMode' <string>` - emitted when the property was changed.
+* `'channelInterpretation' <string>` - emitted when the property was changed.
 
 
 
@@ -352,11 +381,14 @@ Properties:
 
 
 Methods:
-* `void destroy()` - destroys the instance.
+* `void destroy()` - destroys the instance, `'destroy'` event is emitted.
 * `void start(number when)` - TODO(description).
 * `void stop(number when)` - TODO(description).
 
 
+Events:
+* `'destroy' <>` - emitted when the instance was destroyed.
+* `'onended' <function>` - emitted when the property was changed.
 
 
 
@@ -536,9 +568,9 @@ Properties:
 
 
 Methods:
-* `void destroy()` - destroys the instance.
+* `void destroy()` - destroys the instance, `'destroy'` event is emitted.
 * `void createBuffer(number numberOfChannels, number numberOfFrames, number sampleRate)` - TODO(description).
-* `void decodeAudioData(object audioData, function successCallback, function  errorCallback)` - TODO(description).
+* `void decodeAudioData(object audioData, function successCallback, function errorCallback)` - TODO(description).
 * `void createBufferSource()` - TODO(description).
 * `void createConstantSource()` - TODO(description).
 * `void createGain()` - TODO(description).
@@ -562,6 +594,13 @@ Methods:
 * `void createMediaStreamDestination()` - TODO(description).
 
 
+Events:
+* `'destroy' <>` - emitted when the instance was destroyed.
+* `'destination' <object>` - emitted when the property was changed.
+* `'currentTime' <number>` - emitted when the property was changed.
+* `'sampleRate' <number>` - emitted when the property was changed.
+* `'listener' <object>` - emitted when the property was changed.
+* `'state' <string>` - emitted when the property was changed.
 
 
 
@@ -591,10 +630,17 @@ Properties:
 
 
 Methods:
-* `void destroy()` - destroys the instance.
+* `void destroy()` - destroys the instance, `'destroy'` event is emitted.
 * `void getFrequencyResponse(object frequencyHz, object magResponse, object phaseResponse)` - TODO(description).
 
 
+Events:
+* `'destroy' <>` - emitted when the instance was destroyed.
+* `'type' <string>` - emitted when the property was changed.
+* `'frequency' <object>` - emitted when the property was changed.
+* `'detune' <object>` - emitted when the property was changed.
+* `'Q' <object>` - emitted when the property was changed.
+* `'gain' <object>` - emitted when the property was changed.
 
 
 
@@ -620,9 +666,12 @@ Properties:
 
 
 Methods:
-* `void destroy()` - destroys the instance.
+* `void destroy()` - destroys the instance, `'destroy'` event is emitted.
 
 
+
+Events:
+* `'destroy' <>` - emitted when the instance was destroyed.
 
 
 
@@ -649,9 +698,12 @@ Properties:
 
 
 Methods:
-* `void destroy()` - destroys the instance.
+* `void destroy()` - destroys the instance, `'destroy'` event is emitted.
 
 
+
+Events:
+* `'destroy' <>` - emitted when the instance was destroyed.
 
 
 
@@ -678,10 +730,13 @@ Properties:
 
 
 Methods:
-* `void destroy()` - destroys the instance.
+* `void destroy()` - destroys the instance, `'destroy'` event is emitted.
 
 
 
+Events:
+* `'destroy' <>` - emitted when the instance was destroyed.
+* `'offset' <object>` - emitted when the property was changed.
 
 
 
@@ -708,10 +763,14 @@ Properties:
 
 
 Methods:
-* `void destroy()` - destroys the instance.
+* `void destroy()` - destroys the instance, `'destroy'` event is emitted.
 
 
 
+Events:
+* `'destroy' <>` - emitted when the instance was destroyed.
+* `'buffer' <object>` - emitted when the property was changed.
+* `'normalize' <boolean>` - emitted when the property was changed.
 
 
 
@@ -737,10 +796,13 @@ Properties:
 
 
 Methods:
-* `void destroy()` - destroys the instance.
+* `void destroy()` - destroys the instance, `'destroy'` event is emitted.
 
 
 
+Events:
+* `'destroy' <>` - emitted when the instance was destroyed.
+* `'delayTime' <object>` - emitted when the property was changed.
 
 
 
@@ -771,10 +833,18 @@ Properties:
 
 
 Methods:
-* `void destroy()` - destroys the instance.
+* `void destroy()` - destroys the instance, `'destroy'` event is emitted.
 
 
 
+Events:
+* `'destroy' <>` - emitted when the instance was destroyed.
+* `'threshold' <object>` - emitted when the property was changed.
+* `'knee' <object>` - emitted when the property was changed.
+* `'ratio' <object>` - emitted when the property was changed.
+* `'reduction' <number>` - emitted when the property was changed.
+* `'attack' <object>` - emitted when the property was changed.
+* `'release' <object>` - emitted when the property was changed.
 
 
 
@@ -800,10 +870,13 @@ Properties:
 
 
 Methods:
-* `void destroy()` - destroys the instance.
+* `void destroy()` - destroys the instance, `'destroy'` event is emitted.
 
 
 
+Events:
+* `'destroy' <>` - emitted when the instance was destroyed.
+* `'gain' <object>` - emitted when the property was changed.
 
 
 
@@ -829,9 +902,12 @@ Properties:
 
 
 Methods:
-* `void destroy()` - destroys the instance.
+* `void destroy()` - destroys the instance, `'destroy'` event is emitted.
 * `void getFrequencyResponse(object frequencyHz, object magResponse, object phaseResponse)` - TODO(description).
 
+
+Events:
+* `'destroy' <>` - emitted when the instance was destroyed.
 
 
 
@@ -858,10 +934,13 @@ Properties:
 
 
 Methods:
-* `void destroy()` - destroys the instance.
+* `void destroy()` - destroys the instance, `'destroy'` event is emitted.
 
 
 
+Events:
+* `'destroy' <>` - emitted when the instance was destroyed.
+* `'mediaElement' <object>` - emitted when the property was changed.
 
 
 
@@ -887,10 +966,13 @@ Properties:
 
 
 Methods:
-* `void destroy()` - destroys the instance.
+* `void destroy()` - destroys the instance, `'destroy'` event is emitted.
 
 
 
+Events:
+* `'destroy' <>` - emitted when the instance was destroyed.
+* `'stream' <object>` - emitted when the property was changed.
 
 
 
@@ -916,10 +998,13 @@ Properties:
 
 
 Methods:
-* `void destroy()` - destroys the instance.
+* `void destroy()` - destroys the instance, `'destroy'` event is emitted.
 
 
 
+Events:
+* `'destroy' <>` - emitted when the instance was destroyed.
+* `'mediaStream' <object>` - emitted when the property was changed.
 
 
 
@@ -975,11 +1060,15 @@ Properties:
 
 
 Methods:
-* `void destroy()` - destroys the instance.
+* `void destroy()` - destroys the instance, `'destroy'` event is emitted.
 * `void startRendering()` - TODO(description).
 * `void suspend(number suspendTime)` - TODO(description).
 
 
+Events:
+* `'destroy' <>` - emitted when the instance was destroyed.
+* `'oncomplete' <function>` - emitted when the property was changed.
+* `'length' <number>` - emitted when the property was changed.
 
 
 
@@ -1007,10 +1096,15 @@ Properties:
 
 
 Methods:
-* `void destroy()` - destroys the instance.
+* `void destroy()` - destroys the instance, `'destroy'` event is emitted.
 * `void setPeriodicWave(object periodicWave)` - TODO(description).
 
 
+Events:
+* `'destroy' <>` - emitted when the instance was destroyed.
+* `'type' <string>` - emitted when the property was changed.
+* `'frequency' <object>` - emitted when the property was changed.
+* `'detune' <object>` - emitted when the property was changed.
 
 
 
@@ -1049,11 +1143,27 @@ Properties:
 
 
 Methods:
-* `void destroy()` - destroys the instance.
+* `void destroy()` - destroys the instance, `'destroy'` event is emitted.
 * `void setPosition(number x, number y, number z)` - TODO(description).
 * `void setOrientation(number x, number y, number z)` - TODO(description).
 
 
+Events:
+* `'destroy' <>` - emitted when the instance was destroyed.
+* `'panningModel' <string>` - emitted when the property was changed.
+* `'positionX' <object>` - emitted when the property was changed.
+* `'positionY' <object>` - emitted when the property was changed.
+* `'positionZ' <object>` - emitted when the property was changed.
+* `'orientationX' <object>` - emitted when the property was changed.
+* `'orientationY' <object>` - emitted when the property was changed.
+* `'orientationZ' <object>` - emitted when the property was changed.
+* `'distanceModel' <string>` - emitted when the property was changed.
+* `'refDistance' <number>` - emitted when the property was changed.
+* `'maxDistance' <number>` - emitted when the property was changed.
+* `'rolloffFactor' <number>` - emitted when the property was changed.
+* `'coneInnerAngle' <number>` - emitted when the property was changed.
+* `'coneOuterAngle' <number>` - emitted when the property was changed.
+* `'coneOuterGain' <number>` - emitted when the property was changed.
 
 
 
@@ -1109,10 +1219,14 @@ Properties:
 
 
 Methods:
-* `void destroy()` - destroys the instance.
+* `void destroy()` - destroys the instance, `'destroy'` event is emitted.
 
 
 
+Events:
+* `'destroy' <>` - emitted when the instance was destroyed.
+* `'onaudioprocess' <function>` - emitted when the property was changed.
+* `'bufferSize' <number>` - emitted when the property was changed.
 
 
 
@@ -1138,10 +1252,13 @@ Properties:
 
 
 Methods:
-* `void destroy()` - destroys the instance.
+* `void destroy()` - destroys the instance, `'destroy'` event is emitted.
 
 
 
+Events:
+* `'destroy' <>` - emitted when the instance was destroyed.
+* `'pan' <object>` - emitted when the property was changed.
 
 
 
@@ -1168,8 +1285,12 @@ Properties:
 
 
 Methods:
-* `void destroy()` - destroys the instance.
+* `void destroy()` - destroys the instance, `'destroy'` event is emitted.
 
 
 
+Events:
+* `'destroy' <>` - emitted when the instance was destroyed.
+* `'curve' <object>` - emitted when the property was changed.
+* `'oversample' <string>` - emitted when the property was changed.
 

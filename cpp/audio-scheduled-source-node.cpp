@@ -60,7 +60,11 @@ NAN_METHOD(AudioScheduledSourceNode::start) { THIS_AUDIO_SCHEDULED_SOURCE_NODE; 
 	
 	REQ_DOUBLE_ARG(0, when);
 	
-	// TODO: do something?
+	lab::AudioScheduledSourceNode *node = static_cast<lab::AudioScheduledSourceNode*>(
+		audioScheduledSourceNode->_impl.get()
+	);
+	
+	node->start(when);
 	
 }
 
@@ -69,7 +73,11 @@ NAN_METHOD(AudioScheduledSourceNode::stop) { THIS_AUDIO_SCHEDULED_SOURCE_NODE; T
 	
 	REQ_DOUBLE_ARG(0, when);
 	
-	// TODO: do something?
+	lab::AudioScheduledSourceNode *node = static_cast<lab::AudioScheduledSourceNode*>(
+		audioScheduledSourceNode->_impl.get()
+	);
+	
+	node->stop(when);
 	
 }
 

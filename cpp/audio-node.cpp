@@ -129,7 +129,11 @@ NAN_METHOD(AudioNode::disconnect) { THIS_AUDIO_NODE; THIS_CHECK;
 	
 	int output = 0;
 	int input = 0;
-	NodePtr destination;
+	V8_VAR_OBJ destination;
+	
+	V8_VAR_OBJ context = JS_OBJ(audioNode->_context);
+	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
+	lab::AudioContext *ctx = audioContext->getContext();
 	
 	if (info.Length() == 1) {
 		
@@ -149,7 +153,7 @@ NAN_METHOD(AudioNode::disconnect) { THIS_AUDIO_NODE; THIS_CHECK;
 		REQ_OBJ_ARG(0, destArg);
 		REQ_INT_ARG(1, outputArg);
 		
-		
+		destination = destArg;
 		output = outputArg;
 		
 	} else if (info.Length() == 3) {
@@ -158,19 +162,19 @@ NAN_METHOD(AudioNode::disconnect) { THIS_AUDIO_NODE; THIS_CHECK;
 		REQ_INT_ARG(1, outputArg);
 		REQ_INT_ARG(2, inputArg);
 		
-		
+		destination = destArg;
 		output = outputArg;
 		input = inputArg;
 		
+	} else {
+		
+		// Disconnect self
+		ctx->disconnect(audioNode->_impl, NodePtr(), input, output);
+		return;
+		
 	}
 	
-	V8_VAR_OBJ context = JS_OBJ(audioNode->_context);
-	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
-	
-	lab::AudioContext *ctx = audioContext->getContext();
-	
 	AudioNode *destNode = ObjectWrap::Unwrap<AudioNode>(destination);
-	
 	ctx->disconnect(audioNode->_impl, destNode->_impl, input, output);
 	
 }

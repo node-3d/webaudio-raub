@@ -32,9 +32,9 @@ using namespace std;
 
 AudioDestinationNode::AudioDestinationNode(V8_VAR_OBJ context, DestPtr node) :
 AudioNode(context, node) {
-	cout<<"adn1"<<endl;
+	
 	_isDestroyed = false;
-	cout<<"adn2"<<endl;
+	
 }
 
 
@@ -109,8 +109,6 @@ void AudioDestinationNode::init(V8_VAR_OBJ target) {
 
 
 V8_VAR_OBJ AudioDestinationNode::getNew(V8_VAR_OBJ context, DestPtr node) {
-	
-	cout<<"adn gn1"<<endl;
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorAudioDestinationNode);
 	Local<External> extNode = JS_EXT(&node);

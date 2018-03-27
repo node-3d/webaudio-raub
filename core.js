@@ -7,15 +7,12 @@ const util = require('util');
 require('deps-labsound-raub');
 
 const core = require('./binary/waa');
-const { AudioContext, BaseAudioContext } = core;
-
-console.log('AudioContext', AudioContext);
-console.log('BaseAudioContext', BaseAudioContext);
-console.log('AudioContext', Object.getPrototypeOf(AudioContext));
+const { AudioContext } = core;
 
 
 AudioContext.prototype[util.inspect.custom] = function () {
 	return 'AudioContext { }';
 };
+
 
 module.exports = core;

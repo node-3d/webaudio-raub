@@ -1,27 +1,18 @@
 'use strict';
 
-const { AudioContext, OscillatorNode, AudioScheduledSourceNode } = require('..');
+const { AudioContext } = require('..');
 
 
 (async () => { try {
 	
-	console.log('index.js', 'ty', typeof AudioContext);
 	const context = new AudioContext();
-	console.log('index.js', 'CC', context);
-	// console.log('index.js', 'SUS');
-	// context.suspend();
-	// console.log('index.js', 'SUS OK');
-	console.log('index.js', context.state);
 	
 	const oscillator1 = context.createOscillator();
 	const oscillator2 = context.createOscillator();
-	console.log('index.js', 'OSC', oscillator1, oscillator1 instanceof OscillatorNode);
-	console.log('index.js', 'OSC', oscillator1, oscillator1 instanceof AudioScheduledSourceNode);
+	
 	const gain = context.createGain();
-	console.log('index.js', 'GAIN1');
-	// console.log('gain', context.createGain);
 	gain.gain.value = 0.5;
-	console.log('index.js', 'GAIN2');
+	
 	// osc . gain . destination
 	oscillator1.connect(gain);
 	oscillator2.connect(gain);
@@ -37,18 +28,17 @@ const { AudioContext, OscillatorNode, AudioScheduledSourceNode } = require('..')
 	
 	
 	for (let i = 0; i < 10; i++) {
-		console.log('i', i);
-		context.disconnect(null, oscillator1, 0, 0);
-		context.connect(gain, oscillator2, 0, 0);
+		oscillator1.disconnect();
+		oscillator2.connect(gain);
 		await new Promise(res => setTimeout(res, 200));
 		
-		context.disconnect(null, oscillator2, 0, 0);
-		context.connect(gain, oscillator1, 0, 0);
+		oscillator2.disconnect();
+		oscillator1.connect(gain);
 		await new Promise(res => setTimeout(res, 200));
 	}
 	
-	context.disconnect(null, oscillator1, 0, 0);
-	context.disconnect(null, oscillator2, 0, 0);
+	oscillator1.disconnect();
+	oscillator2.disconnect();
 	
 	console.log('DONE');
 	
