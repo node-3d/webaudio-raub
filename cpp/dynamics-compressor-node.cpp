@@ -105,7 +105,7 @@ V8_STORE_FUNC DynamicsCompressorNode::_ctorDynamicsCompressorNode;
 void DynamicsCompressorNode::init(V8_VAR_OBJ target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-
+	
 	// class DynamicsCompressorNode inherits AudioNode
 	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
 	proto->Inherit(parent);

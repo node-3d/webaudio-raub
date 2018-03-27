@@ -64,7 +64,7 @@ V8_STORE_FUNC ChannelSplitterNode::_ctorChannelSplitterNode;
 void ChannelSplitterNode::init(V8_VAR_OBJ target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-
+	
 	// class ChannelSplitterNode inherits AudioNode
 	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
 	proto->Inherit(parent);

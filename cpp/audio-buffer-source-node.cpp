@@ -158,7 +158,7 @@ V8_STORE_FUNC AudioBufferSourceNode::_ctorAudioBufferSourceNode;
 void AudioBufferSourceNode::init(V8_VAR_OBJ target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-
+	
 	// class AudioBufferSourceNode inherits AudioScheduledSourceNode
 	V8_VAR_FT parent = Nan::New(AudioScheduledSourceNode::_protoAudioScheduledSourceNode);
 	proto->Inherit(parent);

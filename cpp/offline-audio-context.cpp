@@ -105,7 +105,7 @@ V8_STORE_FUNC OfflineAudioContext::_ctorOfflineAudioContext;
 void OfflineAudioContext::init(V8_VAR_OBJ target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-
+	
 	// class OfflineAudioContext inherits BaseAudioContext
 	V8_VAR_FT parent = Nan::New(BaseAudioContext::_protoBaseAudioContext);
 	proto->Inherit(parent);
