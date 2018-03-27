@@ -23,7 +23,7 @@ TODO(howto)
 
 ---
 
-### class AnalyserNode
+### class AnalyserNode : AudioNode
 
 TODO(description)
 
@@ -100,7 +100,7 @@ Methods:
 
 ---
 
-### class AudioBufferSourceNode
+### class AudioBufferSourceNode : AudioScheduledSourceNode
 
 TODO(description)
 
@@ -142,7 +142,7 @@ Events:
 
 ---
 
-### class AudioContext
+### class AudioContext : BaseAudioContext
 
 TODO(description)
 
@@ -179,7 +179,7 @@ Events:
 
 ---
 
-### class AudioDestinationNode
+### class AudioDestinationNode : AudioNode
 
 TODO(description)
 
@@ -249,7 +249,7 @@ Methods:
 
 ---
 
-### class AudioNode
+### class AudioNode : EventEmitter
 
 TODO(description)
 
@@ -361,7 +361,7 @@ Methods:
 
 ---
 
-### class AudioScheduledSourceNode
+### class AudioScheduledSourceNode : AudioNode
 
 TODO(description)
 
@@ -544,7 +544,7 @@ Methods:
 
 ---
 
-### class BaseAudioContext
+### class BaseAudioContext : EventEmitter
 
 TODO(description)
 
@@ -606,7 +606,7 @@ Events:
 
 ---
 
-### class BiquadFilterNode
+### class BiquadFilterNode : AudioNode
 
 TODO(description)
 
@@ -646,7 +646,7 @@ Events:
 
 ---
 
-### class ChannelMergerNode
+### class ChannelMergerNode : AudioNode
 
 TODO(description)
 
@@ -678,7 +678,7 @@ Events:
 
 ---
 
-### class ChannelSplitterNode
+### class ChannelSplitterNode : AudioNode
 
 TODO(description)
 
@@ -710,7 +710,7 @@ Events:
 
 ---
 
-### class ConstantSourceNode
+### class ConstantSourceNode : AudioScheduledSourceNode
 
 TODO(description)
 
@@ -742,7 +742,7 @@ Events:
 
 ---
 
-### class ConvolverNode
+### class ConvolverNode : AudioNode
 
 TODO(description)
 
@@ -776,7 +776,7 @@ Events:
 
 ---
 
-### class DelayNode
+### class DelayNode : AudioNode
 
 TODO(description)
 
@@ -808,7 +808,7 @@ Events:
 
 ---
 
-### class DynamicsCompressorNode
+### class DynamicsCompressorNode : AudioNode
 
 TODO(description)
 
@@ -850,7 +850,7 @@ Events:
 
 ---
 
-### class GainNode
+### class GainNode : AudioNode
 
 TODO(description)
 
@@ -882,7 +882,7 @@ Events:
 
 ---
 
-### class IIRFilterNode
+### class IIRFilterNode : AudioNode
 
 TODO(description)
 
@@ -914,7 +914,7 @@ Events:
 
 ---
 
-### class MediaElementAudioSourceNode
+### class MediaElementAudioSourceNode : AudioNode
 
 TODO(description)
 
@@ -946,7 +946,7 @@ Events:
 
 ---
 
-### class MediaStreamAudioDestinationNode
+### class MediaStreamAudioDestinationNode : AudioNode
 
 TODO(description)
 
@@ -978,7 +978,7 @@ Events:
 
 ---
 
-### class MediaStreamAudioSourceNode
+### class MediaStreamAudioSourceNode : AudioNode
 
 TODO(description)
 
@@ -1039,7 +1039,7 @@ Methods:
 
 ---
 
-### class OfflineAudioContext
+### class OfflineAudioContext : BaseAudioContext
 
 TODO(description)
 
@@ -1074,7 +1074,7 @@ Events:
 
 ---
 
-### class OscillatorNode
+### class OscillatorNode : AudioScheduledSourceNode
 
 TODO(description)
 
@@ -1110,7 +1110,7 @@ Events:
 
 ---
 
-### class PannerNode
+### class PannerNode : AudioNode
 
 TODO(description)
 
@@ -1198,7 +1198,7 @@ Methods:
 
 ---
 
-### class ScriptProcessorNode
+### class ScriptProcessorNode : AudioNode
 
 TODO(description)
 
@@ -1232,7 +1232,7 @@ Events:
 
 ---
 
-### class StereoPannerNode
+### class StereoPannerNode : AudioNode
 
 TODO(description)
 
@@ -1264,7 +1264,7 @@ Events:
 
 ---
 
-### class WaveShaperNode
+### class WaveShaperNode : AudioNode
 
 TODO(description)
 
