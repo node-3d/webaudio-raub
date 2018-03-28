@@ -58,8 +58,8 @@ BaseAudioContext::~BaseAudioContext() {
 }
 
 
-lab::AudioContext *BaseAudioContext::getContext() const {
-	return _impl.get();
+CtxPtr BaseAudioContext::getContext() const {
+	return _impl;
 }
 
 

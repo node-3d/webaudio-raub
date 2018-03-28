@@ -11,6 +11,8 @@ namespace lab { class AudioContext; };
 
 class BaseAudioContext : public EventEmitter {
 	
+	typedef std::shared_ptr<lab::AudioContext> CtxPtr;
+	
 public:
 	
 	// Public V8 init
@@ -22,7 +24,7 @@ public:
 	// Destroy an instance from C++ land
 	void _destroy();
 	
-	lab::AudioContext *getContext() const;
+	CtxPtr getContext() const;
 	void storeDestination(V8_VAR_OBJ context);
 	
 	
@@ -43,7 +45,7 @@ protected:
 	V8_STORE_OBJ _listener;
 	std::string _state;
 	
-	std::unique_ptr<lab::AudioContext> _impl;
+	CtxPtr _impl;
 	
 	
 // System methods and props for ObjectWrap

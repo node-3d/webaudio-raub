@@ -56,7 +56,7 @@ void init(Local<Object> target) {
 	AudioContext::init(target);
 	// OfflineAudioContext::init(target);
 	
-	// AudioBuffer::init(target);
+	AudioBuffer::init(target);
 	// AudioListener::init(target);
 	AudioParam::init(target);
 	// AudioProcessingEvent::init(target);
@@ -73,7 +73,7 @@ void init(Local<Object> target) {
 	AudioScheduledSourceNode::init(target);
 	
 	// AnalyserNode::init(target);
-	// AudioBufferSourceNode::init(target);
+	AudioBufferSourceNode::init(target);
 	
 	// AudioWorkletNode::init(target);
 	// BiquadFilterNode::init(target);

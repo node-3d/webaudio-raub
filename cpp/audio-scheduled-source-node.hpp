@@ -28,6 +28,7 @@ public:
 // Methods and props, available for children
 protected:
 	
+	AudioScheduledSourceNode() {} // fake, TODO: remove
 	AudioScheduledSourceNode(V8_VAR_OBJ context, NodePtr node);
 	virtual ~AudioScheduledSourceNode();
 	

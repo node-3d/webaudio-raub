@@ -2,7 +2,10 @@
 //#include <iostream> // -> cout << "..." << endl;
 
 
+#include <LabSound/core/AudioBus.h>
+
 #include "audio-buffer.hpp"
+#include "audio-context.hpp"
 
 
 using namespace v8;
@@ -31,6 +34,17 @@ AudioBuffer::AudioBuffer() {
 	
 	_isDestroyed = false;
 	
+	_impl = make_shared<lab::AudioBus>(1, 1, false);
+	
+}
+
+
+AudioBuffer::AudioBuffer(BusPtr bus) {
+	
+	_isDestroyed = false;
+	
+	_impl = bus;
+	
 }
 
 
@@ -38,6 +52,11 @@ AudioBuffer::~AudioBuffer() {
 	
 	_destroy();
 	
+}
+
+
+AudioBuffer::BusPtr AudioBuffer::getBus() const {
+	return _impl;
 }
 
 
@@ -154,11 +173,12 @@ void AudioBuffer::init(V8_VAR_OBJ target) {
 }
 
 
-V8_VAR_OBJ AudioBuffer::getNew() {
+V8_VAR_OBJ AudioBuffer::getNew(BusPtr bus) {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorAudioBuffer);
-	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
-	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
+	Local<External> extBus = JS_EXT(&bus);
+	V8_VAR_VAL argv[] = { extBus };
+	return Nan::NewInstance(ctor, 1, argv).ToLocalChecked();
 	
 }
 
@@ -167,7 +187,33 @@ NAN_METHOD(AudioBuffer::newCtor) {
 	
 	CTOR_CHECK("AudioBuffer");
 	
-	AudioBuffer *audioBuffer = new AudioBuffer();
+	AudioBuffer *audioBuffer = nullptr;
+	
+	if (info.Length() > 0) {
+		
+		
+		if (info[0]->IsExternal()) {
+			
+			REQ_EXT_ARG(0, extBus);
+			
+			BusPtr *bus = reinterpret_cast<BusPtr *>(extBus->Value());
+			
+			audioBuffer = new AudioBuffer(*bus);
+			
+		} else if (info[0]->IsObject()) {
+			
+			REQ_OBJ_ARG(0, opts);
+			
+			audioBuffer = new AudioBuffer();
+			
+		}
+		
+	} else {
+		
+		audioBuffer = new AudioBuffer();
+		
+	}
+	
 	audioBuffer->Wrap(info.This());
 	
 	RET_VALUE(info.This());

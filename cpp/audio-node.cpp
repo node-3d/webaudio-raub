@@ -111,7 +111,7 @@ NAN_METHOD(AudioNode::connect) { THIS_AUDIO_NODE; THIS_CHECK;
 	V8_VAR_OBJ context = JS_OBJ(audioNode->_context);
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	
-	lab::AudioContext *ctx = audioContext->getContext();
+	lab::AudioContext *ctx = audioContext->getContext().get();
 	
 	AudioNode *destNode = ObjectWrap::Unwrap<AudioNode>(destination);
 	
@@ -133,7 +133,7 @@ NAN_METHOD(AudioNode::disconnect) { THIS_AUDIO_NODE; THIS_CHECK;
 	
 	V8_VAR_OBJ context = JS_OBJ(audioNode->_context);
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
-	lab::AudioContext *ctx = audioContext->getContext();
+	lab::AudioContext *ctx = audioContext->getContext().get();
 	
 	if (info.Length() == 1) {
 		

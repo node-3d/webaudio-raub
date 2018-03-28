@@ -12,8 +12,8 @@
 			'sources': [
 				'cpp/bindings.cpp',
 				# 'cpp/analyser-node.cpp',
-				# 'cpp/audio-buffer.cpp',
-				# 'cpp/audio-buffer-source-node.cpp',
+				'cpp/audio-buffer.cpp',
+				'cpp/audio-buffer-source-node.cpp',
 				'cpp/audio-context.cpp',
 				'cpp/audio-destination-node.cpp',
 				'cpp/audio-listener.cpp',

@@ -16,14 +16,14 @@ using namespace std;
 
 // ------ Aux macros
 
-#define THIS_OSCILLATOR_NODE                                                    \
+#define THIS_OSCILLATOR_NODE                                                  \
 	OscillatorNode *oscillatorNode = Nan::ObjectWrap::Unwrap<OscillatorNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (oscillatorNode->_isDestroyed) return;
 
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (oscillatorNode->CACHE == V) {                                           \
+	if (oscillatorNode->CACHE == V) {                                         \
 		return;                                                               \
 	}                                                                         \
 	oscillatorNode->CACHE = V;

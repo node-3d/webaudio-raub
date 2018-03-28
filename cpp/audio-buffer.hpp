@@ -2,10 +2,16 @@
 #define _AUDIO_BUFFER_HPP_
 
 
+#include <memory>
+
 #include <addon-tools.hpp>
+
+namespace lab { class AudioBus; };
 
 
 class AudioBuffer : public Nan::ObjectWrap {
+	
+	typedef std::shared_ptr<lab::AudioBus> BusPtr;
 	
 public:
 	
@@ -13,16 +19,19 @@ public:
 	static void init(V8_VAR_OBJ target);
 	
 	// Make a new instance from C++ land
-	static V8_VAR_OBJ getNew();
+	static V8_VAR_OBJ getNew(BusPtr bus);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
+	
+	BusPtr getBus() const;
 	
 	
 // Methods and props, available for children
 protected:
 	
 	AudioBuffer();
+	AudioBuffer(BusPtr bus);
 	virtual ~AudioBuffer();
 	
 	static V8_STORE_FT _protoAudioBuffer;
@@ -35,6 +44,7 @@ protected:
 	float _sampleRate;
 	unsigned int _numberOfChannels;
 	
+	BusPtr _impl;
 	
 // JS methods and props, available through V8 APIs
 private:
