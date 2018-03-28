@@ -138,7 +138,7 @@ NAN_GETTER(AudioParam::valueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
 	V8_VAR_OBJ context = JS_OBJ(audioParam->_context);
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	
-	lab::ContextRenderLock renderLock(audioContext->getContext(), "AudioParam::valueGetter");
+	lab::ContextRenderLock renderLock(audioContext->getContext().get(), "AudioParam::valueGetter");
 	
 	RET_VALUE(JS_FLOAT(audioParam->_impl->value(renderLock)));
 	

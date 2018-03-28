@@ -11,9 +11,9 @@ namespace lab { class AudioBus; };
 
 class AudioBuffer : public Nan::ObjectWrap {
 	
-	typedef std::shared_ptr<lab::AudioBus> BusPtr;
-	
 public:
+	
+	typedef std::shared_ptr<lab::AudioBus> BusPtr;
 	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
@@ -31,7 +31,7 @@ public:
 protected:
 	
 	AudioBuffer();
-	AudioBuffer(BusPtr bus);
+	explicit AudioBuffer(BusPtr bus);
 	virtual ~AudioBuffer();
 	
 	static V8_STORE_FT _protoAudioBuffer;

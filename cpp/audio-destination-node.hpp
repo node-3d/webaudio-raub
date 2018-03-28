@@ -11,9 +11,9 @@ namespace lab { class AudioDestinationNode; };
 
 class AudioDestinationNode : public AudioNode {
 	
-	typedef std::shared_ptr<lab::AudioDestinationNode> DestPtr;
-	
 public:
+	
+	typedef std::shared_ptr<lab::AudioDestinationNode> DestPtr;
 	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);

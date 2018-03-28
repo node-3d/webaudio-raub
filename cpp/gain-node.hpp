@@ -24,7 +24,7 @@ public:
 // Methods and props, available for children
 protected:
 	
-	GainNode(v8::Local<v8::Object> context);
+	explicit GainNode(v8::Local<v8::Object> context);
 	virtual ~GainNode();
 	
 	static Nan::Persistent<v8::FunctionTemplate> _protoGainNode;

@@ -11,9 +11,9 @@ namespace lab { class AudioParam; };
 
 class AudioParam : public Nan::ObjectWrap {
 	
-	typedef std::shared_ptr<lab::AudioParam> ParamPtr;
-	
 public:
+	
+	typedef std::shared_ptr<lab::AudioParam> ParamPtr;
 	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);

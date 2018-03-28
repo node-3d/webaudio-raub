@@ -18,14 +18,14 @@ using namespace std;
 
 // ------ Aux macros
 
-#define THIS_BASE_AUDIO_CONTEXT                                                    \
+#define THIS_BASE_AUDIO_CONTEXT                                               \
 	BaseAudioContext *baseAudioContext = Nan::ObjectWrap::Unwrap<BaseAudioContext>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (baseAudioContext->_isDestroyed) return;
 
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (baseAudioContext->CACHE == V) {                                           \
+	if (baseAudioContext->CACHE == V) {                                       \
 		return;                                                               \
 	}                                                                         \
 	baseAudioContext->CACHE = V;
@@ -58,7 +58,7 @@ BaseAudioContext::~BaseAudioContext() {
 }
 
 
-CtxPtr BaseAudioContext::getContext() const {
+BaseAudioContext::CtxPtr BaseAudioContext::getContext() const {
 	return _impl;
 }
 
@@ -79,7 +79,7 @@ void BaseAudioContext::_destroy() { DES_CHECK;
 	
 	_isDestroyed = true;
 	
-	_impl.reset(NULL);
+	_impl.reset();
 	
 }
 
@@ -102,9 +102,29 @@ NAN_METHOD(BaseAudioContext::decodeAudioData) { THIS_BASE_AUDIO_CONTEXT; THIS_CH
 	
 	REQ_OBJ_ARG(0, audioData);
 	REQ_FUN_ARG(1, successCallback);
-	REQ_FUN_ARG(2, errorCallback);
 	
-	// TODO: do something?
+	size_t len = Nan::Get(audioData, JS_STR("length")).ToLocalChecked().Uint32Value();
+	
+	uint8_t *data = node::Buffer::Data(audioData);
+	vector<uint8_t> dataVec(data, data + len);
+	
+	uint32_t mime = *static_cast<uint32_t*>(data);
+	string ext = "wav";
+	
+	switch () {
+		
+		case 0xff: ext = "mp3"; break;
+		
+		default: break; // throw
+		
+	}
+	
+	
+	AudioBuffer::BusPtr bus = MakeBusFromMemory(dataVec, ext);
+	
+	V8_VAR_OBJ buffer = AudioBuffer::getNew(bus);
+	
+	info.GetReturnValue().Set(buffer);
 	
 }
 

@@ -10,12 +10,12 @@ const { AudioContext } = require('..');
 	const context = new AudioContext();
 	
 	const cardiod = await new Promise((res, rej) => fs.readFile(
-		'impulse/cardiod-rear-levelled.wav',
+		`${__dirname}/impulse/cardiod-rear-levelled.wav`,
 		(err, data) => err ? rej(err) : res(data)
 	));
 	
 	const voice = await new Promise((res, rej) => fs.readFile(
-		'samples/voice.ogg',
+		`${__dirname}/samples/voice.ogg`,
 		(err, data) => err ? rej(err) : res(data)
 	));
 	

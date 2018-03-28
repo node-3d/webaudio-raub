@@ -1,5 +1,7 @@
 'use strict';
 
+const fs = require('fs');
+
 const { AudioContext } = require('..');
 
 
@@ -8,7 +10,7 @@ const { AudioContext } = require('..');
 	const context = new AudioContext();
 	
 	const clip = await new Promise((res, rej) => fs.readFile(
-		'samples/stereo-music-clip.wav',
+		`${__dirname}/samples/stereo-music-clip.wav`,
 		(err, data) => err ? rej(err) : res(data)
 	));
 	
@@ -26,7 +28,7 @@ const { AudioContext } = require('..');
 	
 	// osc -> gain -> destination
 	oscillator.connect(gain);
-	gain.connect(context.destination;
+	gain.connect(context.destination);
 		
 	oscillator.frequency.value = 440;
 	oscillator.type = 'sine';

@@ -24,7 +24,7 @@ public:
 // Methods and props, available for children
 protected:
 	
-	AudioBufferSourceNode(V8_VAR_OBJ context);
+	explicit AudioBufferSourceNode(V8_VAR_OBJ context);
 	virtual ~AudioBufferSourceNode();
 	
 	static V8_STORE_FT _protoAudioBufferSourceNode;

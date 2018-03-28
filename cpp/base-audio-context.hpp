@@ -11,9 +11,9 @@ namespace lab { class AudioContext; };
 
 class BaseAudioContext : public EventEmitter {
 	
-	typedef std::shared_ptr<lab::AudioContext> CtxPtr;
-	
 public:
+	
+	typedef std::shared_ptr<lab::AudioContext> CtxPtr;
 	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
@@ -31,7 +31,7 @@ public:
 // Methods and props
 protected:
 	
-	BaseAudioContext(bool isOffline = false, float sampleRate = 44100.f);
+	explicit BaseAudioContext(bool isOffline = false, float sampleRate = 44100.f);
 	virtual ~BaseAudioContext();
 	
 	static V8_STORE_FT _protoBaseAudioContext; // for inheritance

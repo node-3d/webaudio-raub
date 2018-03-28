@@ -207,6 +207,7 @@ NAN_GETTER(AudioNode::channelCountGetter) { THIS_AUDIO_NODE; THIS_CHECK;
 	
 }
 
+
 NAN_SETTER(AudioNode::channelCountSetter) { THIS_AUDIO_NODE; THIS_CHECK; SETTER_UINT32_ARG;
 	
 	CACHE_CAS(_channelCount, v);
@@ -214,7 +215,7 @@ NAN_SETTER(AudioNode::channelCountSetter) { THIS_AUDIO_NODE; THIS_CHECK; SETTER_
 	V8_VAR_OBJ context = JS_OBJ(audioNode->_context);
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	
-	lab::ContextGraphLock graphLock(audioContext->getContext(), "AudioNode::channelCountSetter");
+	lab::ContextGraphLock graphLock(audioContext->getContext().get(), "AudioNode::channelCountSetter");
 	audioNode->_impl->setChannelCount(graphLock, audioNode->_channelCount);
 	
 	audioNode->emit("channelCount", 1, &value);

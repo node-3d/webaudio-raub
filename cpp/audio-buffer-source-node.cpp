@@ -19,14 +19,14 @@ using namespace std;
 
 // ------ Aux macros
 
-#define THIS_AUDIO_BUFFER_SOURCE_NODE                                                    \
+#define THIS_AUDIO_BUFFER_SOURCE_NODE                                         \
 	AudioBufferSourceNode *audioBufferSourceNode = Nan::ObjectWrap::Unwrap<AudioBufferSourceNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (audioBufferSourceNode->_isDestroyed) return;
 
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (audioBufferSourceNode->CACHE == V) {                                           \
+	if (audioBufferSourceNode->CACHE == V) {                                  \
 		return;                                                               \
 	}                                                                         \
 	audioBufferSourceNode->CACHE = V;
@@ -75,7 +75,7 @@ NAN_METHOD(AudioBufferSourceNode::start) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_C
 	
 	LET_DOUBLE_ARG(0, when);
 	LET_DOUBLE_ARG(1, grainOffset);
-	LET_DOUBLE_ARG(2, grainDuration );
+	LET_DOUBLE_ARG(2, grainDuration);
 	
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
 		audioBufferSourceNode->_impl.get()
@@ -96,7 +96,9 @@ NAN_GETTER(AudioBufferSourceNode::bufferGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE;
 	
 }
 
-NAN_SETTER(AudioBufferSourceNode::bufferSetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK; SETTER_OBJ_ARG;
+
+NAN_SETTER(AudioBufferSourceNode::bufferSetter) {
+	THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK; SETTER_OBJ_ARG;
 	
 	if (Nan::New(audioBufferSourceNode->_buffer) == v) {
 		return;
@@ -111,7 +113,7 @@ NAN_SETTER(AudioBufferSourceNode::bufferSetter) { THIS_AUDIO_BUFFER_SOURCE_NODE;
 	lab::ContextRenderLock r(ctx, "AudioBufferSourceNode::bufferSetter");
 	
 	AudioBuffer *audioBuffer = ObjectWrap::Unwrap<AudioBuffer>(v);
-	BusPtr bus = audioBuffer->getBus();
+	AudioBuffer::BusPtr bus = audioBuffer->getBus();
 	
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
 		audioBufferSourceNode->_impl.get()
@@ -148,7 +150,8 @@ NAN_GETTER(AudioBufferSourceNode::loopGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; T
 	
 }
 
-NAN_SETTER(AudioBufferSourceNode::loopSetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK; SETTER_BOOL_ARG;
+NAN_SETTER(AudioBufferSourceNode::loopSetter) {
+	THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK; SETTER_BOOL_ARG;
 	
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
 		audioBufferSourceNode->_impl.get()
@@ -171,7 +174,8 @@ NAN_GETTER(AudioBufferSourceNode::loopStartGetter) { THIS_AUDIO_BUFFER_SOURCE_NO
 	
 }
 
-NAN_SETTER(AudioBufferSourceNode::loopStartSetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
+NAN_SETTER(AudioBufferSourceNode::loopStartSetter) {
+	THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
 		audioBufferSourceNode->_impl.get()
@@ -194,7 +198,8 @@ NAN_GETTER(AudioBufferSourceNode::loopEndGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE
 	
 }
 
-NAN_SETTER(AudioBufferSourceNode::loopEndSetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
+NAN_SETTER(AudioBufferSourceNode::loopEndSetter) {
+	THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
 		audioBufferSourceNode->_impl.get()
@@ -268,7 +273,9 @@ NAN_METHOD(AudioBufferSourceNode::newCtor) {
 	
 	CTOR_CHECK("AudioBufferSourceNode");
 	
-	AudioBufferSourceNode *audioBufferSourceNode = new AudioBufferSourceNode();
+	REQ_OBJ_ARG(0, context);
+	
+	AudioBufferSourceNode *audioBufferSourceNode = new AudioBufferSourceNode(context);
 	audioBufferSourceNode->Wrap(info.This());
 	
 	RET_VALUE(info.This());
