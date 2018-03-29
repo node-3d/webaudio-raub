@@ -10,11 +10,11 @@ const { AudioContext } = require('..');
 	const context = new AudioContext();
 	
 	const clip = await new Promise((res, rej) => fs.readFile(
-		`${__dirname}/samples/stereo-music-clip.wav`,
+		`${__dirname}/samples/voice.ogg`,
 		(err, data) => err ? rej(err) : res(data)
 	));
 	
-	const musicClip = context.decodeAudioData(clip);
+	const musicClip = await new Promise(res => context.decodeAudioData(clip, b => res(b)));
 	
 	const oscillator = context.createOscillator();
 	

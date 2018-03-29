@@ -2,11 +2,13 @@
 //#include <iostream> // -> std::cout << "..." << std::endl;
 
 
+#include <LabSound/extended/AudioFileReader.h>
 #include <LabSound/core/AudioContext.h>
 #include <LabSound/core/DefaultAudioDestinationNode.h>
 
 #include "base-audio-context.hpp"
 #include "gain-node.hpp"
+#include "audio-buffer.hpp"
 #include "oscillator-node.hpp"
 #include "audio-destination-node.hpp"
 
@@ -29,6 +31,47 @@ using namespace std;
 		return;                                                               \
 	}                                                                         \
 	baseAudioContext->CACHE = V;
+
+
+bool compareMagic(const uint8_t *data, const int16_t *magic) {
+	
+	for (int i = 0; magic[i] != -2; i++) {
+		
+		if (magic[i] >= 0 && data[i] != magic[i]) {
+			return false;
+		}
+		
+	}
+	
+	return true;
+	
+}
+
+string getExtension(const uint8_t *data) {
+	
+	static const int16_t wv[] = { 'w', 'v', 'p', 'k', -2 };
+	static const int16_t wav[] = { 0x52, 0x49, 0x46, 0x46, -1, -1, -1, -1, 0x57, 0x41, 0x56, 0x45, -2 };
+	static const int16_t flac[] = { 0x66, 0x4C, 0x61, 0x43, -2 };
+	static const int16_t pat[] = { 0x47, 0x50, 0x41, 0x54, -2 };
+	static const int16_t mid[] = { 0x4D, 0x54, 0x68, 0x64, -2 };
+	static const int16_t opus[] = { 'O', 'p', 'u', 's', 'H', 'e', 'a', 'd', -2 };
+	static const int16_t ogg[] = { 0x4F, 0x67, 0x67, 0x53, 0x00, 0x02, 0x00, 0x00, -2 };
+	
+	static const int16_t * numbers[] = { wv, wav, flac, pat, mid, opus, ogg, nullptr };
+	static const char* extensions[] = { "wv", "wav", "flac", "pat", "mid", "opus", "ogg" };
+	
+	for (int i = 0; numbers[i] != nullptr; i++) {
+		
+		if (compareMagic(data, numbers[i])) {
+			return extensions[i];
+		}
+		
+	}
+	
+	return "";
+	
+}
+
 
 
 // ------ Constructor and Destructor
@@ -103,28 +146,24 @@ NAN_METHOD(BaseAudioContext::decodeAudioData) { THIS_BASE_AUDIO_CONTEXT; THIS_CH
 	REQ_OBJ_ARG(0, audioData);
 	REQ_FUN_ARG(1, successCallback);
 	
-	size_t len = Nan::Get(audioData, JS_STR("length")).ToLocalChecked().Uint32Value();
+	size_t len = Nan::Get(audioData, JS_STR("length")).ToLocalChecked()->Uint32Value();
 	
-	uint8_t *data = node::Buffer::Data(audioData);
+	uint8_t *data = reinterpret_cast<uint8_t *>(node::Buffer::Data(audioData));
 	vector<uint8_t> dataVec(data, data + len);
 	
-	uint32_t mime = *static_cast<uint32_t*>(data);
-	string ext = "wav";
+	string ext = getExtension(data);
+	cout << "GUESS EXT:" << ext << endl;
+	AudioBuffer::BusPtr bus = lab::MakeBusFromMemory(dataVec, ext, false);
 	
-	switch () {
-		
-		case 0xff: ext = "mp3"; break;
-		
-		default: break; // throw
-		
+	V8_VAR_VAL buffer = AudioBuffer::getNew(bus);
+	
+	Nan::Callback callback(successCallback);
+	
+	if ( ! callback.IsEmpty() ) {
+		Nan::AsyncResource async("BaseAudioContext::decodeAudioData()");
+		callback.Call(1, &buffer, &async);
 	}
-	
-	
-	AudioBuffer::BusPtr bus = MakeBusFromMemory(dataVec, ext);
-	
-	V8_VAR_OBJ buffer = AudioBuffer::getNew(bus);
-	
-	info.GetReturnValue().Set(buffer);
+	// info.GetReturnValue().Set(buffer);
 	
 }
 
