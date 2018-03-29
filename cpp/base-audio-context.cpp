@@ -9,6 +9,7 @@
 #include "base-audio-context.hpp"
 #include "gain-node.hpp"
 #include "audio-buffer.hpp"
+#include "audio-buffer-source-node.hpp"
 #include "oscillator-node.hpp"
 #include "audio-destination-node.hpp"
 
@@ -152,25 +153,24 @@ NAN_METHOD(BaseAudioContext::decodeAudioData) { THIS_BASE_AUDIO_CONTEXT; THIS_CH
 	vector<uint8_t> dataVec(data, data + len);
 	
 	string ext = getExtension(data);
-	cout << "GUESS EXT:" << ext << endl;
+	
 	AudioBuffer::BusPtr bus = lab::MakeBusFromMemory(dataVec, ext, false);
 	
 	V8_VAR_VAL buffer = AudioBuffer::getNew(bus);
 	
 	Nan::Callback callback(successCallback);
 	
-	if ( ! callback.IsEmpty() ) {
+	if (!callback.IsEmpty()) {
 		Nan::AsyncResource async("BaseAudioContext::decodeAudioData()");
 		callback.Call(1, &buffer, &async);
 	}
-	// info.GetReturnValue().Set(buffer);
 	
 }
 
 
 NAN_METHOD(BaseAudioContext::createBufferSource) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
-	// TODO: do something?
+	info.GetReturnValue().Set(AudioBufferSourceNode::getNew(info.This()));
 	
 }
 

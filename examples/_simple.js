@@ -34,8 +34,8 @@ const { AudioContext } = require('..');
 	oscillator.type = 'sine';
 	oscillator.start(0);
 	
-	// 4 sec
-	await new Promise(res => setTimeout(res, 4000));
+	// 30 sec
+	await new Promise(res => setTimeout(res, 30000));
 	
 	console.log('DONE');
 	
