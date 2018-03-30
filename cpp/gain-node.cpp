@@ -31,8 +31,8 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-GainNode::GainNode(Local<Object> context) :
-AudioNode(context, shared_ptr<lab::AudioNode>(new lab::GainNode())) {
+GainNode::GainNode(V8_VAR_OBJ context) :
+AudioNode(context, NodePtr(new lab::GainNode())) {
 	
 	lab::GainNode *node = static_cast<lab::GainNode*>(_impl.get());
 	
@@ -76,12 +76,12 @@ Nan::Persistent<FunctionTemplate> GainNode::_protoGainNode;
 Nan::Persistent<Function> GainNode::_ctorGainNode;
 
 
-void GainNode::init(Local<Object> target) {
+void GainNode::init(V8_VAR_OBJ target) {
 	
-	Local<FunctionTemplate> proto = Nan::New<FunctionTemplate>(newCtor);
+	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 	
 	// class GainNode inherits AudioNode
-	Local<FunctionTemplate> parent = Nan::New(AudioNode::_protoAudioNode);
+	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
 	proto->Inherit(parent);
 	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
@@ -89,7 +89,7 @@ void GainNode::init(Local<Object> target) {
 	
 	
 	// Accessors
-	Local<ObjectTemplate> obj = proto->PrototypeTemplate();
+	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, gain);
@@ -102,7 +102,7 @@ void GainNode::init(Local<Object> target) {
 	
 	// -------- static
 	
-	Local<Function> ctor = Nan::GetFunction(proto).ToLocalChecked();
+	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
 	
 	_protoGainNode.Reset(proto);
 	_ctorGainNode.Reset(ctor);
@@ -113,10 +113,10 @@ void GainNode::init(Local<Object> target) {
 }
 
 
-Local<Object> GainNode::getNew(v8::Local<v8::Object> context) {
+V8_VAR_OBJ GainNode::getNew(V8_VAR_OBJ context) {
 	
-	Local<Function> ctor = Nan::New(_ctorGainNode);
-	Local<Value> argv[] = { context };
+	V8_VAR_FUNC ctor = Nan::New(_ctorGainNode);
+	V8_VAR_VAL argv[] = { context };
 	return Nan::NewInstance(ctor, 1, argv).ToLocalChecked();
 	
 }

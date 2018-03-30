@@ -4,10 +4,12 @@
 
 #include <LabSound/core/AudioContext.h>
 #include <LabSound/core/AudioNode.h>
+#include <LabSound/core/AudioParam.h>
 #include <LabSound/extended/AudioContextLock.h>
 
 #include "audio-node.hpp"
 #include "audio-context.hpp"
+#include "audio-param.hpp"
 
 
 using namespace v8;
@@ -40,6 +42,7 @@ inline std::string fromChannelCountMode(lab::ChannelCountMode mode) {
 	}
 }
 
+
 inline lab::ChannelCountMode toChannelCountMode(const std::string &mode) {
 	if (mode == "clamped-max") {
 		return lab::ChannelCountMode::ClampedMax;
@@ -50,6 +53,7 @@ inline lab::ChannelCountMode toChannelCountMode(const std::string &mode) {
 	}
 }
 
+
 inline std::string fromChannelInterpretation(lab::ChannelInterpretation io) {
 	if (io == lab::ChannelInterpretation::Discrete) {
 		return "discrete";
@@ -57,6 +61,7 @@ inline std::string fromChannelInterpretation(lab::ChannelInterpretation io) {
 		return "speakers";
 	}
 }
+
 
 inline lab::ChannelInterpretation toChannelInterpretation(const std::string &io) {
 	if (io == "discrete") {
@@ -90,6 +95,11 @@ AudioNode::~AudioNode() {
 }
 
 
+AudioNode::NodePtr AudioNode::getNode() const {
+	return _impl;
+}
+
+
 void AudioNode::_destroy() { DES_CHECK;
 	
 	_isDestroyed = true;
@@ -102,29 +112,46 @@ void AudioNode::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
+// node2 node1.connect(node2);
+// node2 node1.connect(node2, output);
+// node2 node1.connect(node2, output, input);
+// undefined node1.connect(param);
+// undefined node1.connect(param, output);
 NAN_METHOD(AudioNode::connect) { THIS_AUDIO_NODE; THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, destination);
-	LET_INT32_ARG(1, output);
-	LET_INT32_ARG(2, input);
 	
 	V8_VAR_OBJ context = JS_OBJ(audioNode->_context);
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	
 	lab::AudioContext *ctx = audioContext->getContext().get();
 	
-	AudioNode *destNode = ObjectWrap::Unwrap<AudioNode>(destination);
-	
-	ctx->connect(destNode->_impl, audioNode->_impl, input, output);
+	if (isAudioNode(destination)) {
+		
+		LET_INT32_ARG(1, output);
+		LET_INT32_ARG(2, input);
+		
+		AudioNode *destNode = ObjectWrap::Unwrap<AudioNode>(destination);
+		
+		ctx->connect(destNode->_impl, audioNode->_impl, input, output);
+		
+	} else if (AudioParam::isAudioParam(destination)) {
+		
+		LET_INT32_ARG(1, output);
+		
+		AudioParam *destParam = ObjectWrap::Unwrap<AudioParam>(destination);
+		
+		ctx->connectParam(destParam->getParam(), audioNode->_impl, output);
+		
+	}
 	
 }
 
 
-// AudioNode.disconnect();
-// AudioNode.disconnect(output);
-// AudioNode.disconnect(destination);
-// AudioNode.disconnect(destination, output);
-// AudioNode.disconnect(destination, output, input);
+// undefined node1.disconnect();
+// undefined node1.disconnect(node2);
+// undefined node1.disconnect(node2, output);
+// undefined node1.disconnect(node2, output, input);
 NAN_METHOD(AudioNode::disconnect) { THIS_AUDIO_NODE; THIS_CHECK;
 	
 	int output = 0;
@@ -174,8 +201,21 @@ NAN_METHOD(AudioNode::disconnect) { THIS_AUDIO_NODE; THIS_CHECK;
 		
 	}
 	
-	AudioNode *destNode = ObjectWrap::Unwrap<AudioNode>(destination);
-	ctx->disconnect(audioNode->_impl, destNode->_impl, input, output);
+	if (isAudioNode(destination)) {
+		
+		AudioNode *destNode = ObjectWrap::Unwrap<AudioNode>(destination);
+		ctx->disconnect(audioNode->_impl, destNode->_impl, input, output);
+		
+	} else if (AudioParam::isAudioParam(destination)) {
+		
+		AudioParam *destParam = ObjectWrap::Unwrap<AudioParam>(destination);
+		
+		AudioParam::ParamPtr param = destParam->getParam();
+		
+		lab::ContextGraphLock graphLock(ctx, "AudioNode::disconnect");
+		// param->disconnect(graphLock, param, audioNode->_impl);
+		
+	}
 	
 }
 
@@ -267,6 +307,11 @@ NAN_SETTER(AudioNode::channelInterpretationSetter) { THIS_AUDIO_NODE; THIS_CHECK
 
 V8_STORE_FT AudioNode::_protoAudioNode;
 V8_STORE_FUNC AudioNode::_ctorAudioNode;
+
+
+bool AudioNode::isAudioNode(V8_VAR_OBJ obj) {
+	return Nan::New(_protoAudioNode)->HasInstance(obj);
+}
 
 
 void AudioNode::init(V8_VAR_OBJ target) {

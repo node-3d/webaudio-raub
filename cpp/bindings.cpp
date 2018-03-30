@@ -80,7 +80,7 @@ void init(Local<Object> target) {
 	// ChannelMergerNode::init(target);
 	// ChannelSplitterNode::init(target);
 	// ConstantSourceNode::init(target);
-	// ConvolverNode::init(target);
+	ConvolverNode::init(target);
 	// DelayNode::init(target);
 	// DynamicsCompressorNode::init(target);
 	GainNode::init(target);

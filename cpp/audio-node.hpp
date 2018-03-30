@@ -12,15 +12,19 @@ namespace lab { class AudioNode; };
 
 class AudioNode : public EventEmitter {
 	
-	typedef std::shared_ptr<lab::AudioNode> NodePtr;
-	
 public:
+	
+	typedef std::shared_ptr<lab::AudioNode> NodePtr;
 	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
+	
+	NodePtr getNode() const;
+	
+	static bool isAudioNode(V8_VAR_OBJ obj);
 	
 	
 // Methods and props, available for children

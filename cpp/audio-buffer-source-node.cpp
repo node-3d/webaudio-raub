@@ -37,7 +37,7 @@ using namespace std;
 AudioBufferSourceNode::AudioBufferSourceNode(V8_VAR_OBJ context) :
 AudioScheduledSourceNode(
 	context,
-	shared_ptr<lab::SampledAudioNode>(new lab::SampledAudioNode())
+	NodePtr(new lab::SampledAudioNode())
 ) {
 	
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(_impl.get());
@@ -119,7 +119,6 @@ NAN_SETTER(AudioBufferSourceNode::bufferSetter) {
 		audioBufferSourceNode->_impl.get()
 	);
 	node->setBus(r, bus);
-	
 	
 	audioBufferSourceNode->emit("buffer", 1, &value);
 	

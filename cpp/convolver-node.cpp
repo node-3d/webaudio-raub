@@ -2,7 +2,12 @@
 //#include <iostream> // -> cout << "..." << endl;
 
 
+#include <LabSound/core/AudioContext.h>
+#include <LabSound/core/ConvolverNode.h>
+
 #include "convolver-node.hpp"
+#include "audio-context.hpp"
+#include "audio-buffer.hpp"
 
 
 using namespace v8;
@@ -12,14 +17,14 @@ using namespace std;
 
 // ------ Aux macros
 
-#define THIS_CONVOLVER_NODE                                                    \
+#define THIS_CONVOLVER_NODE                                                   \
 	ConvolverNode *convolverNode = Nan::ObjectWrap::Unwrap<ConvolverNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (convolverNode->_isDestroyed) return;
 
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (convolverNode->CACHE == V) {                                           \
+	if (convolverNode->CACHE == V) {                                          \
 		return;                                                               \
 	}                                                                         \
 	convolverNode->CACHE = V;
@@ -27,7 +32,10 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-ConvolverNode::ConvolverNode() : AudioNode() {
+ConvolverNode::ConvolverNode(V8_VAR_OBJ context) :
+AudioNode(context, NodePtr(new lab::ConvolverNode())) {
+	
+	lab::ConvolverNode *node = static_cast<lab::ConvolverNode*>(_impl.get());
 	
 	_isDestroyed = false;
 	
@@ -67,7 +75,20 @@ NAN_SETTER(ConvolverNode::bufferSetter) { THIS_CONVOLVER_NODE; THIS_CHECK; SETTE
 	}
 	convolverNode->_buffer.Reset(v);
 	
-	// TODO: may be additional actions on change?
+	V8_VAR_OBJ context = JS_OBJ(convolverNode->_context);
+	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
+	
+	lab::AudioContext *ctx = audioContext->getContext().get();
+	
+	// lab::ContextRenderLock r(ctx, "ConvolverNode::bufferSetter");
+	
+	AudioBuffer *audioBuffer = ObjectWrap::Unwrap<AudioBuffer>(v);
+	AudioBuffer::BusPtr bus = audioBuffer->getBus();
+	
+	lab::ConvolverNode *node = static_cast<lab::ConvolverNode*>(
+		convolverNode->_impl.get()
+	);
+	node->setImpulse(/*r, */bus);
 	
 	convolverNode->emit("buffer", 1, &value);
 	
@@ -76,15 +97,21 @@ NAN_SETTER(ConvolverNode::bufferSetter) { THIS_CONVOLVER_NODE; THIS_CHECK; SETTE
 
 NAN_GETTER(ConvolverNode::normalizeGetter) { THIS_CONVOLVER_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_BOOL(convolverNode->_normalize));
+	lab::ConvolverNode *node = static_cast<lab::ConvolverNode*>(
+		convolverNode->_impl.get()
+	);
+	
+	RET_VALUE(JS_BOOL(node->normalize()));
 	
 }
 
 NAN_SETTER(ConvolverNode::normalizeSetter) { THIS_CONVOLVER_NODE; THIS_CHECK; SETTER_BOOL_ARG;
 	
-	CACHE_CAS(_normalize, v);
+	lab::ConvolverNode *node = static_cast<lab::ConvolverNode*>(
+		convolverNode->_impl.get()
+	);
 	
-	// TODO: may be additional actions on change?
+	node->setNormalize(v);
 	
 	convolverNode->emit("normalize", 1, &value);
 	
@@ -135,11 +162,11 @@ void ConvolverNode::init(V8_VAR_OBJ target) {
 }
 
 
-V8_VAR_OBJ ConvolverNode::getNew() {
+V8_VAR_OBJ ConvolverNode::getNew(V8_VAR_OBJ context) {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorConvolverNode);
-	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
-	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
+	V8_VAR_VAL argv[] = { context };
+	return Nan::NewInstance(ctor, 1, argv).ToLocalChecked();
 	
 }
 
@@ -148,7 +175,9 @@ NAN_METHOD(ConvolverNode::newCtor) {
 	
 	CTOR_CHECK("ConvolverNode");
 	
-	ConvolverNode *convolverNode = new ConvolverNode();
+	REQ_OBJ_ARG(0, context);
+	
+	ConvolverNode *convolverNode = new ConvolverNode(context);
 	convolverNode->Wrap(info.This());
 	
 	RET_VALUE(info.This());

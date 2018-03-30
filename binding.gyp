@@ -31,7 +31,7 @@
 				# 'cpp/channel-merger-node.cpp',
 				# 'cpp/channel-splitter-node.cpp',
 				# 'cpp/constant-source-node.cpp',
-				# 'cpp/convolver-node.cpp',
+				'cpp/convolver-node.cpp',
 				# 'cpp/delay-node.cpp',
 				# 'cpp/dynamics-compressor-node.cpp',
 				'cpp/gain-node.cpp',

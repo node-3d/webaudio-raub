@@ -1,18 +1,15 @@
 'use strict';
 
-const fs = require('fs');
-
 const { AudioContext } = require('..');
+
+const read = require('./utils/read');
 
 
 (async () => { try {
 	
 	const context = new AudioContext();
 	
-	const clip = await new Promise((res, rej) => fs.readFile(
-		`${__dirname}/samples/voice.ogg`,
-		(err, data) => err ? rej(err) : res(data)
-	));
+	const clip = await read(`${__dirname}/samples/voice.ogg`);
 	
 	const musicClip = await new Promise(res => context.decodeAudioData(clip, b => res(b)));
 	
@@ -29,7 +26,7 @@ const { AudioContext } = require('..');
 	// osc -> gain -> destination
 	oscillator.connect(gain);
 	gain.connect(context.destination);
-		
+	
 	oscillator.frequency.value = 440;
 	oscillator.type = 'sine';
 	oscillator.start(0);

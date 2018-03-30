@@ -49,6 +49,11 @@ AudioParam::~AudioParam() {
 }
 
 
+AudioParam::ParamPtr AudioParam::getParam() const {
+	return _impl;
+}
+
+
 void AudioParam::_destroy() { DES_CHECK;
 	
 	_isDestroyed = true;
@@ -176,6 +181,11 @@ NAN_GETTER(AudioParam::maxValueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
 
 Nan::Persistent<FunctionTemplate> AudioParam::_protoAudioParam;
 Nan::Persistent<Function> AudioParam::_ctorAudioParam;
+
+
+bool AudioParam::isAudioParam(V8_VAR_OBJ obj) {
+	return Nan::New(_protoAudioParam)->HasInstance(obj);
+}
 
 
 void AudioParam::init(V8_VAR_OBJ target) {

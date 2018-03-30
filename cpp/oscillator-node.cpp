@@ -3,6 +3,7 @@
 
 
 #include <LabSound/core/OscillatorNode.h>
+#include <LabSound/core/Synthesis.h>
 
 #include "oscillator-node.hpp"
 #include "audio-context.hpp"
@@ -27,6 +28,36 @@ using namespace std;
 		return;                                                               \
 	}                                                                         \
 	oscillatorNode->CACHE = V;
+
+
+inline std::string fromOscillatorType(lab::OscillatorType mode) {
+	if (mode == lab::OscillatorType::SINE) {
+		return "sine";
+	} else if (mode == lab::OscillatorType::SQUARE) {
+		return "square";
+	} else if (mode == lab::OscillatorType::SAWTOOTH) {
+		return "sawtooth";
+	} else if (mode == lab::OscillatorType::TRIANGLE) {
+		return "triangle";
+	} else {
+		return "custom";
+	}
+}
+
+
+inline lab::OscillatorType toOscillatorType(const std::string &mode) {
+	if (mode == "sine") {
+		return lab::OscillatorType::SINE;
+	} else if (mode == "square") {
+		return lab::OscillatorType::SQUARE;
+	} else if (mode == "sawtooth") {
+		return lab::OscillatorType::SAWTOOTH;
+	} else if (mode == "triangle") {
+		return lab::OscillatorType::TRIANGLE;
+	} else {
+		return lab::OscillatorType::CUSTOM;
+	}
+}
 
 
 // ------ Constructor and Destructor
@@ -77,18 +108,22 @@ NAN_METHOD(OscillatorNode::setPeriodicWave) { THIS_OSCILLATOR_NODE; THIS_CHECK;
 
 NAN_GETTER(OscillatorNode::typeGetter) { THIS_OSCILLATOR_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_UTF8(oscillatorNode->_type));
+	lab::OscillatorNode *node = static_cast<lab::OscillatorNode*>(
+		oscillatorNode->_impl.get()
+	);
+	
+	RET_VALUE(JS_STR(fromOscillatorType(node->type())));
 	
 }
 
+
 NAN_SETTER(OscillatorNode::typeSetter) { THIS_OSCILLATOR_NODE; THIS_CHECK; SETTER_UTF8_ARG;
 	
-	if (oscillatorNode->_type == *v) {
-		return;
-	}
-	oscillatorNode->_type = *v;
+	lab::OscillatorNode *node = static_cast<lab::OscillatorNode*>(
+		oscillatorNode->_impl.get()
+	);
 	
-	// TODO: may be additional actions on change?
+	node->setType(toOscillatorType(*v));
 	
 	oscillatorNode->emit("type", 1, &value);
 	

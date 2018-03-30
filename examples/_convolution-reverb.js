@@ -1,26 +1,19 @@
 'use strict';
 
-const fs = require('fs');
-
 const { AudioContext } = require('..');
+
+const read = require('./utils/read');
 
 
 (async () => { try {
 	
 	const context = new AudioContext();
 	
-	const cardiod = await new Promise((res, rej) => fs.readFile(
-		`${__dirname}/impulse/cardiod-rear-levelled.wav`,
-		(err, data) => err ? rej(err) : res(data)
-	));
+	const cardiod = await read(`${__dirname}/samples/cardiod.wav`);
+	const voice = await read(`${__dirname}/samples/voice.ogg`);
 	
-	const voice = await new Promise((res, rej) => fs.readFile(
-		`${__dirname}/samples/voice.ogg`,
-		(err, data) => err ? rej(err) : res(data)
-	));
-	
-	const impulseResponseClip = context.decodeAudioData(cardiod);
-	const voiceClip = context.decodeAudioData(voice);
+	const impulseResponseClip = await new Promise(res => context.decodeAudioData(cardiod, b => res(b)));
+	const voiceClip = await new Promise(res => context.decodeAudioData(voice, b => res(b)));
 	
 	const outputGain = context.createGain();
 	
@@ -46,8 +39,8 @@ const { AudioContext } = require('..');
 	
 	outputGain.connect(context.destination);
 	
-	// 10 sec
-	await new Promise(res => setTimeout(res, 10000));
+	// 30 sec
+	await new Promise(res => setTimeout(res, 30000));
 	
 	console.log('DONE');
 	

@@ -24,6 +24,10 @@ public:
 	// Destroy an instance from C++ land
 	void _destroy();
 	
+	ParamPtr getParam() const;
+	
+	static bool isAudioParam(V8_VAR_OBJ obj);
+	
 	
 // Methods and props, available for children
 protected:

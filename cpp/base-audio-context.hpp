@@ -56,26 +56,27 @@ private:
 	static NAN_METHOD(destroy);
 	static NAN_GETTER(isDestroyedGetter);
 	
-	static NAN_METHOD(createBuffer);
+	static NAN_METHOD(resume);
 	static NAN_METHOD(decodeAudioData);
+	static NAN_METHOD(createBuffer);
+	
 	static NAN_METHOD(createBufferSource);
-	static NAN_METHOD(createConstantSource);
+	// static NAN_METHOD(createConstantSource);
 	static NAN_METHOD(createGain);
-	static NAN_METHOD(createDelay);
-	static NAN_METHOD(createBiquadFilter);
+	// static NAN_METHOD(createDelay);
+	// static NAN_METHOD(createBiquadFilter);
 	static NAN_METHOD(createIIRFilter);
-	static NAN_METHOD(createWaveShaper);
-	static NAN_METHOD(createPanner);
+	// static NAN_METHOD(createWaveShaper);
+	// static NAN_METHOD(createPanner);
 	static NAN_METHOD(createConvolver);
-	static NAN_METHOD(createDynamicsCompressor);
-	static NAN_METHOD(createAnalyser);
+	// static NAN_METHOD(createDynamicsCompressor);
+	// static NAN_METHOD(createAnalyser);
 	static NAN_METHOD(createScriptProcessor);
-	static NAN_METHOD(createStereoPanner);
+	// static NAN_METHOD(createStereoPanner);
 	static NAN_METHOD(createOscillator);
 	static NAN_METHOD(createPeriodicWave);
 	static NAN_METHOD(createChannelSplitter);
 	static NAN_METHOD(createChannelMerger);
-	static NAN_METHOD(resume);
 	static NAN_METHOD(createMediaElementSource);
 	static NAN_METHOD(createMediaStreamSource);
 	static NAN_METHOD(createMediaStreamDestination);

@@ -12,10 +12,10 @@ class GainNode : public AudioNode {
 public:
 	
 	// Public V8 init
-	static void init(v8::Local<v8::Object> target);
+	static void init(V8_VAR_OBJ target);
 	
 	// Make a new instance from C++ land
-	static v8::Local<v8::Object> getNew(v8::Local<v8::Object> context);
+	static V8_VAR_OBJ getNew(V8_VAR_OBJ context);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -24,15 +24,15 @@ public:
 // Methods and props, available for children
 protected:
 	
-	explicit GainNode(v8::Local<v8::Object> context);
+	explicit GainNode(V8_VAR_OBJ context);
 	virtual ~GainNode();
 	
-	static Nan::Persistent<v8::FunctionTemplate> _protoGainNode;
-	static Nan::Persistent<v8::Function> _ctorGainNode;
+	static V8_STORE_FT _protoGainNode;
+	static V8_STORE_FUNC _ctorGainNode;
 	
 	bool _isDestroyed;
 	
-	Nan::Persistent<v8::Object> _gain;
+	V8_STORE_OBJ _gain;
 	
 	
 // JS methods and props, available through V8 APIs

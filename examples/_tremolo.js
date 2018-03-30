@@ -16,16 +16,19 @@ const { AudioContext } = require('..');
 	modulatorGain.gain.value = 10;
 	
 	const osc = context.createOscillator();
-	modulator.type = 'triangle';
-	modulator.start(0);
-	modulator.frequency.value = 440;
+	osc.type = 'triangle';
+	osc.start(0);
+	osc.frequency.value = 440;
 	
+	// Set up processing chain
+	// modulator > modulatorGain ---> osc frequency
+	//                                osc > context
 	modulator.connect(modulatorGain);
 	modulatorGain.connect(modulator.frequency);
 	osc.connect(context.destination);
 	
-	// 5 sec
-	await new Promise(res => setTimeout(res, 5000));
+	// 30 sec
+	await new Promise(res => setTimeout(res, 30000));
 	
 	console.log('DONE');
 	
