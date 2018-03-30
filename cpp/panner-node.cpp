@@ -268,7 +268,7 @@ V8_STORE_FUNC PannerNode::_ctorPannerNode;
 void PannerNode::init(V8_VAR_OBJ target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-	
+
 	// class PannerNode inherits AudioNode
 	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
 	proto->Inherit(parent);
@@ -313,6 +313,11 @@ void PannerNode::init(V8_VAR_OBJ target) {
 	Nan::Set(target, JS_STR("PannerNode"), ctor);
 	
 	
+}
+
+
+bool PannerNode::isPannerNode(V8_VAR_OBJ obj) {
+	return Nan::New(_protoPannerNode)->HasInstance(obj);
 }
 
 

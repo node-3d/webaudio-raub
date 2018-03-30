@@ -173,7 +173,7 @@ V8_STORE_FUNC AnalyserNode::_ctorAnalyserNode;
 void AnalyserNode::init(V8_VAR_OBJ target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-	
+
 	// class AnalyserNode inherits AudioNode
 	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
 	proto->Inherit(parent);
@@ -211,6 +211,11 @@ void AnalyserNode::init(V8_VAR_OBJ target) {
 	Nan::Set(target, JS_STR("AnalyserNode"), ctor);
 	
 	
+}
+
+
+bool AnalyserNode::isAnalyserNode(V8_VAR_OBJ obj) {
+	return Nan::New(_protoAnalyserNode)->HasInstance(obj);
 }
 
 

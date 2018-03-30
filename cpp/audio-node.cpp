@@ -309,11 +309,6 @@ V8_STORE_FT AudioNode::_protoAudioNode;
 V8_STORE_FUNC AudioNode::_ctorAudioNode;
 
 
-bool AudioNode::isAudioNode(V8_VAR_OBJ obj) {
-	return Nan::New(_protoAudioNode)->HasInstance(obj);
-}
-
-
 void AudioNode::init(V8_VAR_OBJ target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
@@ -354,6 +349,11 @@ void AudioNode::init(V8_VAR_OBJ target) {
 	Nan::Set(target, JS_STR("AudioNode"), ctor);
 	
 	
+}
+
+
+bool AudioNode::isAudioNode(V8_VAR_OBJ obj) {
+	return Nan::New(_protoAudioNode)->HasInstance(obj);
 }
 
 

@@ -62,7 +62,7 @@ V8_STORE_FUNC AudioWorklet::_ctorAudioWorklet;
 void AudioWorklet::init(V8_VAR_OBJ target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-	
+
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
 	proto->SetClassName(JS_STR("AudioWorklet"));
 	
@@ -89,6 +89,11 @@ void AudioWorklet::init(V8_VAR_OBJ target) {
 	Nan::Set(target, JS_STR("AudioWorklet"), ctor);
 	
 	
+}
+
+
+bool AudioWorklet::isAudioWorklet(V8_VAR_OBJ obj) {
+	return Nan::New(_protoAudioWorklet)->HasInstance(obj);
 }
 
 

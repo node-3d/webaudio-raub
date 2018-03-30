@@ -74,7 +74,7 @@ V8_STORE_FUNC IIRFilterNode::_ctorIIRFilterNode;
 void IIRFilterNode::init(V8_VAR_OBJ target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-	
+
 	// class IIRFilterNode inherits AudioNode
 	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
 	proto->Inherit(parent);
@@ -105,6 +105,11 @@ void IIRFilterNode::init(V8_VAR_OBJ target) {
 	Nan::Set(target, JS_STR("IIRFilterNode"), ctor);
 	
 	
+}
+
+
+bool IIRFilterNode::isIIRFilterNode(V8_VAR_OBJ obj) {
+	return Nan::New(_protoIIRFilterNode)->HasInstance(obj);
 }
 
 

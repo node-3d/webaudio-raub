@@ -105,7 +105,7 @@ V8_STORE_FUNC OfflineAudioContext::_ctorOfflineAudioContext;
 void OfflineAudioContext::init(V8_VAR_OBJ target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-	
+
 	// class OfflineAudioContext inherits BaseAudioContext
 	V8_VAR_FT parent = Nan::New(BaseAudioContext::_protoBaseAudioContext);
 	proto->Inherit(parent);
@@ -138,6 +138,11 @@ void OfflineAudioContext::init(V8_VAR_OBJ target) {
 	Nan::Set(target, JS_STR("OfflineAudioContext"), ctor);
 	
 	
+}
+
+
+bool OfflineAudioContext::isOfflineAudioContext(V8_VAR_OBJ obj) {
+	return Nan::New(_protoOfflineAudioContext)->HasInstance(obj);
 }
 
 

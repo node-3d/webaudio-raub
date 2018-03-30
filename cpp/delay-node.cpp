@@ -70,7 +70,7 @@ V8_STORE_FUNC DelayNode::_ctorDelayNode;
 void DelayNode::init(V8_VAR_OBJ target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-	
+
 	// class DelayNode inherits AudioNode
 	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
 	proto->Inherit(parent);
@@ -101,6 +101,11 @@ void DelayNode::init(V8_VAR_OBJ target) {
 	Nan::Set(target, JS_STR("DelayNode"), ctor);
 	
 	
+}
+
+
+bool DelayNode::isDelayNode(V8_VAR_OBJ obj) {
+	return Nan::New(_protoDelayNode)->HasInstance(obj);
 }
 
 

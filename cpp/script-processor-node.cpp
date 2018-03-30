@@ -90,7 +90,7 @@ V8_STORE_FUNC ScriptProcessorNode::_ctorScriptProcessorNode;
 void ScriptProcessorNode::init(V8_VAR_OBJ target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-	
+
 	// class ScriptProcessorNode inherits AudioNode
 	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
 	proto->Inherit(parent);
@@ -122,6 +122,11 @@ void ScriptProcessorNode::init(V8_VAR_OBJ target) {
 	Nan::Set(target, JS_STR("ScriptProcessorNode"), ctor);
 	
 	
+}
+
+
+bool ScriptProcessorNode::isScriptProcessorNode(V8_VAR_OBJ obj) {
+	return Nan::New(_protoScriptProcessorNode)->HasInstance(obj);
 }
 
 

@@ -70,7 +70,7 @@ V8_STORE_FUNC MediaElementAudioSourceNode::_ctorMediaElementAudioSourceNode;
 void MediaElementAudioSourceNode::init(V8_VAR_OBJ target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-	
+
 	// class MediaElementAudioSourceNode inherits AudioNode
 	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
 	proto->Inherit(parent);
@@ -101,6 +101,11 @@ void MediaElementAudioSourceNode::init(V8_VAR_OBJ target) {
 	Nan::Set(target, JS_STR("MediaElementAudioSourceNode"), ctor);
 	
 	
+}
+
+
+bool MediaElementAudioSourceNode::isMediaElementAudioSourceNode(V8_VAR_OBJ obj) {
+	return Nan::New(_protoMediaElementAudioSourceNode)->HasInstance(obj);
 }
 
 

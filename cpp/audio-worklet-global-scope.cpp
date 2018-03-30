@@ -91,7 +91,7 @@ V8_STORE_FUNC AudioWorkletGlobalScope::_ctorAudioWorkletGlobalScope;
 void AudioWorkletGlobalScope::init(V8_VAR_OBJ target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-	
+
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
 	proto->SetClassName(JS_STR("AudioWorkletGlobalScope"));
 	
@@ -120,6 +120,11 @@ void AudioWorkletGlobalScope::init(V8_VAR_OBJ target) {
 	Nan::Set(target, JS_STR("AudioWorkletGlobalScope"), ctor);
 	
 	
+}
+
+
+bool AudioWorkletGlobalScope::isAudioWorkletGlobalScope(V8_VAR_OBJ obj) {
+	return Nan::New(_protoAudioWorkletGlobalScope)->HasInstance(obj);
 }
 
 
