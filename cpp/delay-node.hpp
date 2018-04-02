@@ -17,7 +17,7 @@ public:
 	static bool isDelayNode(V8_VAR_OBJ obj);
 	
 	// Make a new instance from C++ land
-	static V8_VAR_OBJ getNew();
+	static V8_VAR_OBJ getNew(V8_VAR_OBJ context, double delay);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -26,7 +26,7 @@ public:
 // Methods and props, available for children
 protected:
 	
-	DelayNode();
+	DelayNode(V8_VAR_OBJ context, float sampleRate, double delay);
 	virtual ~DelayNode();
 	
 	static V8_STORE_FT _protoDelayNode;

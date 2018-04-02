@@ -13,14 +13,13 @@
 // #include "analyser-node.hpp"
 #include "audio-buffer-source-node.hpp"
 #include "audio-destination-node.hpp"
-// #include "audio-scheduled-source-node.hpp"
 // #include "audio-worklet-node.hpp"
-// #include "biquad-filter-node.hpp"
+#include "biquad-filter-node.hpp"
 // #include "channel-merger-node.hpp"
 // #include "channel-splitter-node.hpp"
 // #include "constant-source-node.hpp"
 #include "convolver-node.hpp"
-// #include "delay-node.hpp"
+#include "delay-node.hpp"
 // #include "dynamics-compressor-node.hpp"
 #include "gain-node.hpp"
 // #include "iir-filter-node.hpp"
@@ -28,7 +27,7 @@
 // #include "media-stream-audio-destination-node.hpp"
 // #include "media-stream-audio-source-node.hpp"
 #include "oscillator-node.hpp"
-// #include "panner-node.hpp"
+#include "panner-node.hpp"
 // #include "script-processor-node.hpp"
 // #include "stereo-panner-node.hpp"
 // #include "wave-shaper-node.hpp"
@@ -196,10 +195,9 @@ NAN_METHOD(BaseAudioContext::decodeAudioData) { THIS_BASE_AUDIO_CONTEXT; THIS_CH
 NODE_CREATOR(BufferSource, AudioBufferSource);
 // NODE_CREATOR(ConstantSource, ConstantSource);
 NODE_CREATOR(Gain, Gain);
-// NODE_CREATOR(Delay, Delay);
-// NODE_CREATOR(BiquadFilter, BiquadFilter);
+NODE_CREATOR(BiquadFilter, BiquadFilter);
 // NODE_CREATOR(WaveShaper, WaveShaper);
-// NODE_CREATOR(Panner, Panner);
+NODE_CREATOR(Panner, Panner);
 NODE_CREATOR(Convolver, Convolver);
 // NODE_CREATOR(DynamicsCompressor, DynamicsCompressor);
 // NODE_CREATOR(Analyser, Analyser);
@@ -214,6 +212,15 @@ NAN_METHOD(BaseAudioContext::createIIRFilter) { THIS_BASE_AUDIO_CONTEXT; THIS_CH
 	REQ_OBJ_ARG(1, feedBack);
 	
 	// TODO: do something?
+	
+}
+
+
+NAN_METHOD(BaseAudioContext::createDelay) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+	
+	LET_DOUBLE_ARG(0, delay);
+	
+	info.GetReturnValue().Set(DelayNode::getNew(info.This(), delay));
 	
 }
 
@@ -362,11 +369,11 @@ void BaseAudioContext::init(V8_VAR_OBJ target) {
 	Nan::SetPrototypeMethod(proto, "createBufferSource", createBufferSource);
 	// Nan::SetPrototypeMethod(proto, "createConstantSource", createConstantSource);
 	Nan::SetPrototypeMethod(proto, "createGain", createGain);
-	// Nan::SetPrototypeMethod(proto, "createDelay", createDelay);
-	// Nan::SetPrototypeMethod(proto, "createBiquadFilter", createBiquadFilter);
+	Nan::SetPrototypeMethod(proto, "createDelay", createDelay);
+	Nan::SetPrototypeMethod(proto, "createBiquadFilter", createBiquadFilter);
 	Nan::SetPrototypeMethod(proto, "createIIRFilter", createIIRFilter);
 	// Nan::SetPrototypeMethod(proto, "createWaveShaper", createWaveShaper);
-	// Nan::SetPrototypeMethod(proto, "createPanner", createPanner);
+	Nan::SetPrototypeMethod(proto, "createPanner", createPanner);
 	Nan::SetPrototypeMethod(proto, "createConvolver", createConvolver);
 	// Nan::SetPrototypeMethod(proto, "createDynamicsCompressor", createDynamicsCompressor);
 	// Nan::SetPrototypeMethod(proto, "createAnalyser", createAnalyser);
@@ -376,10 +383,10 @@ void BaseAudioContext::init(V8_VAR_OBJ target) {
 	Nan::SetPrototypeMethod(proto, "createPeriodicWave", createPeriodicWave);
 	Nan::SetPrototypeMethod(proto, "createChannelSplitter", createChannelSplitter);
 	Nan::SetPrototypeMethod(proto, "createChannelMerger", createChannelMerger);
-	Nan::SetPrototypeMethod(proto, "resume", resume);
 	Nan::SetPrototypeMethod(proto, "createMediaElementSource", createMediaElementSource);
 	Nan::SetPrototypeMethod(proto, "createMediaStreamSource", createMediaStreamSource);
 	Nan::SetPrototypeMethod(proto, "createMediaStreamDestination", createMediaStreamDestination);
+	Nan::SetPrototypeMethod(proto, "resume", resume);
 	
 	// -------- static
 	

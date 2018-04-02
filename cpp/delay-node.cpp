@@ -2,7 +2,12 @@
 //#include <iostream> // -> cout << "..." << endl;
 
 
+#include <LabSound/core/AudioContext.h>
+#include <LabSound/core/DelayNode.h>
+
 #include "delay-node.hpp"
+#include "audio-context.hpp"
+#include "audio-param.hpp"
 
 
 using namespace v8;
@@ -12,14 +17,14 @@ using namespace std;
 
 // ------ Aux macros
 
-#define THIS_DELAY_NODE                                                    \
+#define THIS_DELAY_NODE                                                       \
 	DelayNode *delayNode = Nan::ObjectWrap::Unwrap<DelayNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (delayNode->_isDestroyed) return;
 
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (delayNode->CACHE == V) {                                           \
+	if (delayNode->CACHE == V) {                                              \
 		return;                                                               \
 	}                                                                         \
 	delayNode->CACHE = V;
@@ -27,7 +32,12 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-DelayNode::DelayNode() : AudioNode() {
+DelayNode::DelayNode(V8_VAR_OBJ context, float sampleRate, double delay) :
+AudioNode(context, NodePtr(new lab::DelayNode(sampleRate, delay))) {
+	
+	lab::DelayNode *node = static_cast<lab::DelayNode*>(_impl.get());
+	
+	_delayTime.Reset(AudioParam::getNew(context, node->delayTime()));
 	
 	_isDestroyed = false;
 	
@@ -109,11 +119,11 @@ bool DelayNode::isDelayNode(V8_VAR_OBJ obj) {
 }
 
 
-V8_VAR_OBJ DelayNode::getNew() {
+V8_VAR_OBJ DelayNode::getNew(V8_VAR_OBJ context, double delay) {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorDelayNode);
-	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
-	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
+	V8_VAR_VAL argv[] = { context, JS_NUM(delay) };
+	return Nan::NewInstance(ctor, 2, argv).ToLocalChecked();
 	
 }
 
@@ -122,7 +132,12 @@ NAN_METHOD(DelayNode::newCtor) {
 	
 	CTOR_CHECK("DelayNode");
 	
-	DelayNode *delayNode = new DelayNode();
+	REQ_OBJ_ARG(0, context);
+	REQ_DOUBLE_ARG(1, delay);
+	
+	AudioContext *audioContext = Nan::ObjectWrap::Unwrap<AudioContext>(context);
+	
+	DelayNode *delayNode = new DelayNode(context, audioContext->getContext()->sampleRate(), delay);
 	delayNode->Wrap(info.This());
 	
 	RET_VALUE(info.This());

@@ -63,11 +63,11 @@ private:
 	static NAN_METHOD(createBufferSource);
 	// static NAN_METHOD(createConstantSource);
 	static NAN_METHOD(createGain);
-	// static NAN_METHOD(createDelay);
-	// static NAN_METHOD(createBiquadFilter);
+	static NAN_METHOD(createDelay);
+	static NAN_METHOD(createBiquadFilter);
 	static NAN_METHOD(createIIRFilter);
 	// static NAN_METHOD(createWaveShaper);
-	// static NAN_METHOD(createPanner);
+	static NAN_METHOD(createPanner);
 	static NAN_METHOD(createConvolver);
 	// static NAN_METHOD(createDynamicsCompressor);
 	// static NAN_METHOD(createAnalyser);

@@ -80,7 +80,7 @@ const { AudioContext } = require('..');
 	
 	[740, 1400, 1500, 1600].forEach((f, i) => {
 		filter[i].frequency.value = f;
-		filter[i].q.value = 12;
+		filter[i].Q.value = 12;
 		delaySum.connect(filter[i]);
 		filter[i].connect(filterSum);
 	});
