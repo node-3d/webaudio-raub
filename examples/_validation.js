@@ -1,20 +1,17 @@
 'use strict';
 
-const fs = require('fs');
-
 const { AudioContext } = require('..');
+
+const read = require('./utils/read');
 
 
 (async () => { try {
 	
 	const context = new AudioContext();
 	
-	const cello = await new Promise((res, rej) => fs.readFile(
-		'samples/cello_pluck/cello_pluck_As0.wav',
-		(err, data) => err ? rej(err) : res(data)
-	));
+	const cello = await read(`${__dirname}/samples/voice.ogg`);
 	
-	const audioClip = context.decodeAudioData(cello);
+	const audioClip = await new Promise(res => context.decodeAudioData(cello, b => res(b)));
 	const audioClipNode = context.createBufferSource();
 	audioClipNode.buffer = audioClip;
 	

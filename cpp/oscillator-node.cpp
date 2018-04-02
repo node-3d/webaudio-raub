@@ -146,8 +146,8 @@ NAN_GETTER(OscillatorNode::detuneGetter) { THIS_OSCILLATOR_NODE; THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<FunctionTemplate> OscillatorNode::_protoOscillatorNode;
-Nan::Persistent<Function> OscillatorNode::_ctorOscillatorNode;
+V8_STORE_FT OscillatorNode::_protoOscillatorNode;
+V8_STORE_FUNC OscillatorNode::_ctorOscillatorNode;
 
 
 void OscillatorNode::init(V8_VAR_OBJ target) {
@@ -186,6 +186,11 @@ void OscillatorNode::init(V8_VAR_OBJ target) {
 	Nan::Set(target, JS_STR("OscillatorNode"), ctor);
 	
 	
+}
+
+
+bool OscillatorNode::isOscillatorNode(V8_VAR_OBJ obj) {
+	return Nan::New(_protoOscillatorNode)->HasInstance(obj);
 }
 
 

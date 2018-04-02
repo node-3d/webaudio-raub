@@ -2,7 +2,11 @@
 //#include <iostream> // -> cout << "..." << endl;
 
 
+#include <LabSound/core/PannerNode.h>
+
 #include "panner-node.hpp"
+#include "audio-context.hpp"
+#include "audio-param.hpp"
 
 
 using namespace v8;
@@ -27,7 +31,13 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-PannerNode::PannerNode() : AudioNode() {
+PannerNode::PannerNode(V8_VAR_OBJ context, float sampleRate) :
+AudioNode(context, NodePtr(new lab::PannerNode(sampleRate))) {
+	
+	lab::PannerNode *node = static_cast<lab::PannerNode*>(_impl.get());
+	
+	// _frequency.Reset(AudioParam::getNew(context, node->distanceGain()));
+	// _detune.Reset(AudioParam::getNew(context, node->coneGain()));
 	
 	_isDestroyed = false;
 	
@@ -321,11 +331,11 @@ bool PannerNode::isPannerNode(V8_VAR_OBJ obj) {
 }
 
 
-V8_VAR_OBJ PannerNode::getNew() {
+V8_VAR_OBJ PannerNode::getNew(V8_VAR_OBJ context) {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorPannerNode);
-	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
-	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
+	V8_VAR_VAL argv[] = { context };
+	return Nan::NewInstance(ctor, 1, argv).ToLocalChecked();
 	
 }
 
@@ -333,8 +343,12 @@ V8_VAR_OBJ PannerNode::getNew() {
 NAN_METHOD(PannerNode::newCtor) {
 	
 	CTOR_CHECK("PannerNode");
+		
+	REQ_OBJ_ARG(0, context);
 	
-	PannerNode *pannerNode = new PannerNode();
+	AudioContext *audioContext = Nan::ObjectWrap::Unwrap<AudioContext>(context);
+	
+	PannerNode *pannerNode = new PannerNode(context, audioContext->getContext()->sampleRate());
 	pannerNode->Wrap(info.This());
 	
 	RET_VALUE(info.This());

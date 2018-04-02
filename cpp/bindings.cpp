@@ -76,12 +76,12 @@ void init(Local<Object> target) {
 	AudioBufferSourceNode::init(target);
 	
 	// AudioWorkletNode::init(target);
-	// BiquadFilterNode::init(target);
+	BiquadFilterNode::init(target);
 	// ChannelMergerNode::init(target);
 	// ChannelSplitterNode::init(target);
 	// ConstantSourceNode::init(target);
 	ConvolverNode::init(target);
-	// DelayNode::init(target);
+	DelayNode::init(target);
 	// DynamicsCompressorNode::init(target);
 	GainNode::init(target);
 	// IIRFilterNode::init(target);
@@ -89,7 +89,7 @@ void init(Local<Object> target) {
 	// MediaStreamAudioDestinationNode::init(target);
 	// MediaStreamAudioSourceNode::init(target);
 	OscillatorNode::init(target);
-	// PannerNode::init(target);
+	PannerNode::init(target);
 	// ScriptProcessorNode::init(target);
 	// StereoPannerNode::init(target);
 	// WaveShaperNode::init(target);
