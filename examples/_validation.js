@@ -15,15 +15,16 @@ const read = require('./utils/read');
 	const audioClipNode = context.createBufferSource();
 	audioClipNode.buffer = audioClip;
 	
-	const pingping = context.createDelay();
-	pingping.delayTime.value = 120;
+	const pingping = context.createDelay(3);
+	
+	pingping.delayTime.value = 3;
 	pingping.connect(context.destination);
 	
 	audioClipNode.connect(pingping);
 	audioClipNode.start(0);
 	
-	// 10 sec
-	await new Promise(res => setTimeout(res, 10000));
+	// 20 sec
+	await new Promise(res => setTimeout(res, 20000));
 	
 	console.log('DONE');
 	

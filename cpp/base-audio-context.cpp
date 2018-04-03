@@ -1,5 +1,5 @@
 #include <cstdlib>
-//#include <iostream> // -> std::cout << "..." << std::endl;
+//#include <iostream> // -> cout << "..." << endl;
 
 
 #include <LabSound/extended/AudioFileReader.h>
@@ -219,6 +219,10 @@ NAN_METHOD(BaseAudioContext::createIIRFilter) { THIS_BASE_AUDIO_CONTEXT; THIS_CH
 NAN_METHOD(BaseAudioContext::createDelay) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
 	LET_DOUBLE_ARG(0, delay);
+	
+	if (delay == 0.0) {
+		delay = 1;
+	}
 	
 	info.GetReturnValue().Set(DelayNode::getNew(info.This(), delay));
 	
