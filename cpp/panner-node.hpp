@@ -5,6 +5,7 @@
 #include <addon-tools.hpp>
 
 #include "audio-node.hpp"
+#include "audio-param.hpp"
 
 
 class PannerNode : public AudioNode {
@@ -34,20 +35,19 @@ protected:
 	
 	bool _isDestroyed;
 	
-	std::string _panningModel;
 	V8_STORE_OBJ _positionX;
 	V8_STORE_OBJ _positionY;
 	V8_STORE_OBJ _positionZ;
 	V8_STORE_OBJ _orientationX;
 	V8_STORE_OBJ _orientationY;
 	V8_STORE_OBJ _orientationZ;
-	std::string _distanceModel;
-	double _refDistance;
-	double _maxDistance;
-	double _rolloffFactor;
-	double _coneInnerAngle;
-	double _coneOuterAngle;
-	double _coneOuterGain;
+	
+	AudioParam::ParamPtr _paramPositionX;
+	AudioParam::ParamPtr _paramPositionY;
+	AudioParam::ParamPtr _paramPositionZ;
+	AudioParam::ParamPtr _paramOrientationX;
+	AudioParam::ParamPtr _paramOrientationY;
+	AudioParam::ParamPtr _paramOrientationZ;
 	
 	
 // JS methods and props, available through V8 APIs
@@ -60,6 +60,7 @@ private:
 	
 	static NAN_METHOD(setPosition);
 	static NAN_METHOD(setOrientation);
+	static NAN_METHOD(setVelocity);
 	
 	static NAN_GETTER(panningModelGetter);
 	static NAN_SETTER(panningModelSetter);

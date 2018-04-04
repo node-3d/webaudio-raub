@@ -2,7 +2,9 @@
 //#include <iostream> // -> cout << "..." << endl;
 
 
+#include <LabSound/core/AudioNode.h>
 #include <LabSound/core/PannerNode.h>
+#include <LabSound/core/AudioParam.h>
 
 #include "panner-node.hpp"
 #include "audio-context.hpp"
@@ -16,17 +18,57 @@ using namespace std;
 
 // ------ Aux macros
 
-#define THIS_PANNER_NODE                                                    \
+#define THIS_PANNER_NODE                                                      \
 	PannerNode *pannerNode = Nan::ObjectWrap::Unwrap<PannerNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (pannerNode->_isDestroyed) return;
 
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (pannerNode->CACHE == V) {                                           \
+	if (pannerNode->CACHE == V) {                                             \
 		return;                                                               \
 	}                                                                         \
 	pannerNode->CACHE = V;
+
+
+inline std::string fromDistanceModel(unsigned short mode) {
+	if (mode == lab::PannerNode::LINEAR_DISTANCE) {
+		return "linear";
+	} else if (mode == lab::PannerNode::INVERSE_DISTANCE) {
+		return "inverse";
+	} else {
+		return "exponential";
+	}
+}
+
+
+inline unsigned short toDistanceModel(const std::string &mode) {
+	if (mode == "linear") {
+		return lab::PannerNode::LINEAR_DISTANCE;
+	} else if (mode == "inverse") {
+		return lab::PannerNode::INVERSE_DISTANCE;
+	} else {
+		return lab::PannerNode::EXPONENTIAL_DISTANCE;
+	}
+}
+
+
+inline std::string fromPanningMode(lab::PanningMode mode) {
+	if (mode == lab::PanningMode::EQUALPOWER) {
+		return "equalpower";
+	} else {
+		return "HRTF";
+	}
+}
+
+
+inline lab::PanningMode toPanningMode(const std::string &mode) {
+	if (mode == "equalpower") {
+		return lab::PanningMode::EQUALPOWER;
+	} else {
+		return lab::PanningMode::HRTF;
+	}
+}
 
 
 // ------ Constructor and Destructor
@@ -36,8 +78,22 @@ AudioNode(context, NodePtr(new lab::PannerNode(sampleRate))) {
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(_impl.get());
 	
-	// _frequency.Reset(AudioParam::getNew(context, node->distanceGain()));
-	// _detune.Reset(AudioParam::getNew(context, node->coneGain()));
+	double inf = std::numeric_limits<double>::infinity();
+	#define MAKE_PARAM(NAME) make_shared<lab::AudioParam>(#NAME, 0., -inf, inf)
+	
+	_paramPositionX = MAKE_PARAM(positionX);
+	_paramPositionY = MAKE_PARAM(positionY);
+	_paramPositionZ = MAKE_PARAM(positionZ);
+	_paramOrientationX = MAKE_PARAM(orientationX);
+	_paramOrientationY = MAKE_PARAM(orientationY);
+	_paramOrientationZ = MAKE_PARAM(orientationZ);
+	
+	_positionX.Reset(AudioParam::getNew(context, _paramPositionX));
+	_positionY.Reset(AudioParam::getNew(context, _paramPositionY));
+	_positionZ.Reset(AudioParam::getNew(context, _paramPositionZ));
+	_orientationX.Reset(AudioParam::getNew(context, _paramOrientationX));
+	_orientationY.Reset(AudioParam::getNew(context, _paramOrientationY));
+	_orientationZ.Reset(AudioParam::getNew(context, _paramOrientationZ));
 	
 	_isDestroyed = false;
 	
@@ -69,7 +125,11 @@ NAN_METHOD(PannerNode::setPosition) { THIS_PANNER_NODE; THIS_CHECK;
 	REQ_FLOAT_ARG(1, y);
 	REQ_FLOAT_ARG(2, z);
 	
-	// TODO: do something?
+	lab::PannerNode *node = static_cast<lab::PannerNode*>(
+		pannerNode->_impl.get()
+	);
+	
+	node->setPosition(x, y, z);
 	
 }
 
@@ -80,25 +140,46 @@ NAN_METHOD(PannerNode::setOrientation) { THIS_PANNER_NODE; THIS_CHECK;
 	REQ_FLOAT_ARG(1, y);
 	REQ_FLOAT_ARG(2, z);
 	
-	// TODO: do something?
+	lab::PannerNode *node = static_cast<lab::PannerNode*>(
+		pannerNode->_impl.get()
+	);
+	
+	node->setOrientation(x, y, z);
 	
 }
 
 
+NAN_METHOD(PannerNode::setVelocity) { THIS_PANNER_NODE; THIS_CHECK;
+	
+	REQ_FLOAT_ARG(0, x);
+	REQ_FLOAT_ARG(1, y);
+	REQ_FLOAT_ARG(2, z);
+	
+	lab::PannerNode *node = static_cast<lab::PannerNode*>(
+		pannerNode->_impl.get()
+	);
+	
+	node->setVelocity(x, y, z);
+	
+}
+
 NAN_GETTER(PannerNode::panningModelGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_UTF8(pannerNode->_panningModel));
+	lab::PannerNode *node = static_cast<lab::PannerNode*>(
+		pannerNode->_impl.get()
+	);
+	
+	RET_VALUE(JS_STR(fromPanningMode(node->panningModel())));
 	
 }
 
 NAN_SETTER(PannerNode::panningModelSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_UTF8_ARG;
 	
-	if (pannerNode->_panningModel == *v) {
-		return;
-	}
-	pannerNode->_panningModel = *v;
+	lab::PannerNode *node = static_cast<lab::PannerNode*>(
+		pannerNode->_impl.get()
+	);
 	
-	// TODO: may be additional actions on change?
+	node->setPanningModel(toPanningMode(*v));
 	
 	pannerNode->emit("panningModel", 1, &value);
 	
@@ -107,12 +188,24 @@ NAN_SETTER(PannerNode::panningModelSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTE
 
 NAN_GETTER(PannerNode::positionXGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
+	lab::PannerNode *node = static_cast<lab::PannerNode*>(
+		pannerNode->_impl.get()
+	);
+	
+	pannerNode->_paramPositionX->setValue(node->position().x);
+	
 	RET_VALUE(JS_OBJ(pannerNode->_positionX));
 	
 }
 
 
 NAN_GETTER(PannerNode::positionYGetter) { THIS_PANNER_NODE; THIS_CHECK;
+	
+	lab::PannerNode *node = static_cast<lab::PannerNode*>(
+		pannerNode->_impl.get()
+	);
+	
+	pannerNode->_paramPositionY->setValue(node->position().x);
 	
 	RET_VALUE(JS_OBJ(pannerNode->_positionY));
 	
@@ -121,12 +214,24 @@ NAN_GETTER(PannerNode::positionYGetter) { THIS_PANNER_NODE; THIS_CHECK;
 
 NAN_GETTER(PannerNode::positionZGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
+	lab::PannerNode *node = static_cast<lab::PannerNode*>(
+		pannerNode->_impl.get()
+	);
+	
+	pannerNode->_paramPositionZ->setValue(node->position().x);
+	
 	RET_VALUE(JS_OBJ(pannerNode->_positionZ));
 	
 }
 
 
 NAN_GETTER(PannerNode::orientationXGetter) { THIS_PANNER_NODE; THIS_CHECK;
+	
+	lab::PannerNode *node = static_cast<lab::PannerNode*>(
+		pannerNode->_impl.get()
+	);
+	
+	pannerNode->_paramOrientationX->setValue(node->orientation().x);
 	
 	RET_VALUE(JS_OBJ(pannerNode->_orientationX));
 	
@@ -135,12 +240,24 @@ NAN_GETTER(PannerNode::orientationXGetter) { THIS_PANNER_NODE; THIS_CHECK;
 
 NAN_GETTER(PannerNode::orientationYGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
+	lab::PannerNode *node = static_cast<lab::PannerNode*>(
+		pannerNode->_impl.get()
+	);
+	
+	pannerNode->_paramOrientationY->setValue(node->orientation().x);
+	
 	RET_VALUE(JS_OBJ(pannerNode->_orientationY));
 	
 }
 
 
 NAN_GETTER(PannerNode::orientationZGetter) { THIS_PANNER_NODE; THIS_CHECK;
+	
+	lab::PannerNode *node = static_cast<lab::PannerNode*>(
+		pannerNode->_impl.get()
+	);
+	
+	pannerNode->_paramOrientationZ->setValue(node->orientation().x);
 	
 	RET_VALUE(JS_OBJ(pannerNode->_orientationZ));
 	
@@ -149,18 +266,21 @@ NAN_GETTER(PannerNode::orientationZGetter) { THIS_PANNER_NODE; THIS_CHECK;
 
 NAN_GETTER(PannerNode::distanceModelGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_UTF8(pannerNode->_distanceModel));
+	lab::PannerNode *node = static_cast<lab::PannerNode*>(
+		pannerNode->_impl.get()
+	);
+	
+	RET_VALUE(JS_STR(fromDistanceModel(node->distanceModel())));
 	
 }
 
 NAN_SETTER(PannerNode::distanceModelSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_UTF8_ARG;
 	
-	if (pannerNode->_distanceModel == *v) {
-		return;
-	}
-	pannerNode->_distanceModel = *v;
+	lab::PannerNode *node = static_cast<lab::PannerNode*>(
+		pannerNode->_impl.get()
+	);
 	
-	// TODO: may be additional actions on change?
+	node->setDistanceModel(toDistanceModel(*v));
 	
 	pannerNode->emit("distanceModel", 1, &value);
 	
@@ -169,15 +289,21 @@ NAN_SETTER(PannerNode::distanceModelSetter) { THIS_PANNER_NODE; THIS_CHECK; SETT
 
 NAN_GETTER(PannerNode::refDistanceGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_DOUBLE(pannerNode->_refDistance));
+	lab::PannerNode *node = static_cast<lab::PannerNode*>(
+		pannerNode->_impl.get()
+	);
+	
+	RET_VALUE(JS_DOUBLE(node->refDistance()));
 	
 }
 
 NAN_SETTER(PannerNode::refDistanceSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
 	
-	CACHE_CAS(_refDistance, v);
+	lab::PannerNode *node = static_cast<lab::PannerNode*>(
+		pannerNode->_impl.get()
+	);
 	
-	// TODO: may be additional actions on change?
+	node->setRefDistance(static_cast<float>(v));
 	
 	pannerNode->emit("refDistance", 1, &value);
 	
@@ -186,15 +312,21 @@ NAN_SETTER(PannerNode::refDistanceSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER
 
 NAN_GETTER(PannerNode::maxDistanceGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_DOUBLE(pannerNode->_maxDistance));
+	lab::PannerNode *node = static_cast<lab::PannerNode*>(
+		pannerNode->_impl.get()
+	);
+	
+	RET_VALUE(JS_DOUBLE(node->maxDistance()));
 	
 }
 
 NAN_SETTER(PannerNode::maxDistanceSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
 	
-	CACHE_CAS(_maxDistance, v);
+	lab::PannerNode *node = static_cast<lab::PannerNode*>(
+		pannerNode->_impl.get()
+	);
 	
-	// TODO: may be additional actions on change?
+	node->setMaxDistance(static_cast<float>(v));
 	
 	pannerNode->emit("maxDistance", 1, &value);
 	
@@ -203,15 +335,21 @@ NAN_SETTER(PannerNode::maxDistanceSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER
 
 NAN_GETTER(PannerNode::rolloffFactorGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_DOUBLE(pannerNode->_rolloffFactor));
+	lab::PannerNode *node = static_cast<lab::PannerNode*>(
+		pannerNode->_impl.get()
+	);
+	
+	RET_VALUE(JS_DOUBLE(node->rolloffFactor()));
 	
 }
 
 NAN_SETTER(PannerNode::rolloffFactorSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
 	
-	CACHE_CAS(_rolloffFactor, v);
+	lab::PannerNode *node = static_cast<lab::PannerNode*>(
+		pannerNode->_impl.get()
+	);
 	
-	// TODO: may be additional actions on change?
+	node->setRolloffFactor(static_cast<float>(v));
 	
 	pannerNode->emit("rolloffFactor", 1, &value);
 	
@@ -220,15 +358,21 @@ NAN_SETTER(PannerNode::rolloffFactorSetter) { THIS_PANNER_NODE; THIS_CHECK; SETT
 
 NAN_GETTER(PannerNode::coneInnerAngleGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_DOUBLE(pannerNode->_coneInnerAngle));
+	lab::PannerNode *node = static_cast<lab::PannerNode*>(
+		pannerNode->_impl.get()
+	);
+	
+	RET_VALUE(JS_DOUBLE(node->coneInnerAngle()));
 	
 }
 
 NAN_SETTER(PannerNode::coneInnerAngleSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
 	
-	CACHE_CAS(_coneInnerAngle, v);
+	lab::PannerNode *node = static_cast<lab::PannerNode*>(
+		pannerNode->_impl.get()
+	);
 	
-	// TODO: may be additional actions on change?
+	node->setConeInnerAngle(static_cast<float>(v));
 	
 	pannerNode->emit("coneInnerAngle", 1, &value);
 	
@@ -237,15 +381,21 @@ NAN_SETTER(PannerNode::coneInnerAngleSetter) { THIS_PANNER_NODE; THIS_CHECK; SET
 
 NAN_GETTER(PannerNode::coneOuterAngleGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_DOUBLE(pannerNode->_coneOuterAngle));
+	lab::PannerNode *node = static_cast<lab::PannerNode*>(
+		pannerNode->_impl.get()
+	);
+	
+	RET_VALUE(JS_DOUBLE(node->coneOuterAngle()));
 	
 }
 
 NAN_SETTER(PannerNode::coneOuterAngleSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
 	
-	CACHE_CAS(_coneOuterAngle, v);
+	lab::PannerNode *node = static_cast<lab::PannerNode*>(
+		pannerNode->_impl.get()
+	);
 	
-	// TODO: may be additional actions on change?
+	node->setConeOuterAngle(static_cast<float>(v));
 	
 	pannerNode->emit("coneOuterAngle", 1, &value);
 	
@@ -254,15 +404,21 @@ NAN_SETTER(PannerNode::coneOuterAngleSetter) { THIS_PANNER_NODE; THIS_CHECK; SET
 
 NAN_GETTER(PannerNode::coneOuterGainGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_DOUBLE(pannerNode->_coneOuterGain));
+	lab::PannerNode *node = static_cast<lab::PannerNode*>(
+		pannerNode->_impl.get()
+	);
+	
+	RET_VALUE(JS_DOUBLE(node->coneOuterGain()));
 	
 }
 
 NAN_SETTER(PannerNode::coneOuterGainSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
 	
-	CACHE_CAS(_coneOuterGain, v);
+	lab::PannerNode *node = static_cast<lab::PannerNode*>(
+		pannerNode->_impl.get()
+	);
 	
-	// TODO: may be additional actions on change?
+	node->setConeOuterGain(static_cast<float>(v));
 	
 	pannerNode->emit("coneOuterGain", 1, &value);
 	
@@ -312,6 +468,7 @@ void PannerNode::init(V8_VAR_OBJ target) {
 	
 	Nan::SetPrototypeMethod(proto, "setPosition", setPosition);
 	Nan::SetPrototypeMethod(proto, "setOrientation", setOrientation);
+	Nan::SetPrototypeMethod(proto, "setVelocity", setVelocity);
 	
 	// -------- static
 	
