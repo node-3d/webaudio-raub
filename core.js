@@ -4,15 +4,16 @@
 const util = require('util');
 
 // Add deps dll dirs
-require('deps-labsound-raub');
+const { hrtf } = require('deps-labsound-raub');
 
 const core = require('./binary/waa');
-const { AudioContext } = core;
+const { AudioContext, PannerNode } = core;
 
 
 AudioContext.prototype[util.inspect.custom] = function () {
 	return 'AudioContext { }';
 };
 
+PannerNode.hrtf = hrtf;
 
 module.exports = core;

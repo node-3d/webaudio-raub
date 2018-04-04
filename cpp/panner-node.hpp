@@ -27,7 +27,7 @@ public:
 // Methods and props, available for children
 protected:
 	
-	PannerNode(V8_VAR_OBJ context, float sampleRate);
+	PannerNode(V8_VAR_OBJ context, float sampleRate, const std::string &hrtf);
 	virtual ~PannerNode();
 	
 	static V8_STORE_FT _protoPannerNode;
