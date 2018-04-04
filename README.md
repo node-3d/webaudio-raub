@@ -2,6 +2,8 @@
 
 Web Audio Api implementation for Node.js
 
+NOTE: This is WORK IN PROGRESS module. Some features may be missing. Contributions are welcome.
+
 
 ## Install
 
