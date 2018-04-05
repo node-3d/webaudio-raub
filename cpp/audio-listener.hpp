@@ -3,11 +3,16 @@
 
 
 #include <addon-tools.hpp>
+#include "audio-param.hpp"
+
+namespace lab { class AudioListener; };
 
 
 class AudioListener : public Nan::ObjectWrap {
 	
 public:
+	
+	typedef std::shared_ptr<lab::AudioListener> ListenerPtr;
 	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
@@ -15,7 +20,7 @@ public:
 	static bool isAudioListener(V8_VAR_OBJ obj);
 	
 	// Make a new instance from C++ land
-	static V8_VAR_OBJ getNew();
+	static V8_VAR_OBJ getNew(V8_VAR_OBJ context, ListenerPtr listener);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -24,7 +29,7 @@ public:
 // Methods and props, available for children
 protected:
 	
-	AudioListener();
+	explicit AudioListener(V8_VAR_OBJ context, ListenerPtr listener);
 	virtual ~AudioListener();
 	
 	static V8_STORE_FT _protoAudioListener;
@@ -41,6 +46,19 @@ protected:
 	V8_STORE_OBJ _upX;
 	V8_STORE_OBJ _upY;
 	V8_STORE_OBJ _upZ;
+	
+	AudioParam::ParamPtr _paramPositionX;
+	AudioParam::ParamPtr _paramPositionY;
+	AudioParam::ParamPtr _paramPositionZ;
+	AudioParam::ParamPtr _paramForwardX;
+	AudioParam::ParamPtr _paramForwardY;
+	AudioParam::ParamPtr _paramForwardZ;
+	AudioParam::ParamPtr _paramUpX;
+	AudioParam::ParamPtr _paramUpY;
+	AudioParam::ParamPtr _paramUpZ;
+	
+	ListenerPtr _impl;
+	V8_STORE_OBJ _context;
 	
 	
 // JS methods and props, available through V8 APIs

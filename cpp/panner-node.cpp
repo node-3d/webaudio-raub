@@ -205,7 +205,7 @@ NAN_GETTER(PannerNode::positionYGetter) { THIS_PANNER_NODE; THIS_CHECK;
 		pannerNode->_impl.get()
 	);
 	
-	pannerNode->_paramPositionY->setValue(node->position().x);
+	pannerNode->_paramPositionY->setValue(node->position().y);
 	
 	RET_VALUE(JS_OBJ(pannerNode->_positionY));
 	
@@ -218,7 +218,7 @@ NAN_GETTER(PannerNode::positionZGetter) { THIS_PANNER_NODE; THIS_CHECK;
 		pannerNode->_impl.get()
 	);
 	
-	pannerNode->_paramPositionZ->setValue(node->position().x);
+	pannerNode->_paramPositionZ->setValue(node->position().z);
 	
 	RET_VALUE(JS_OBJ(pannerNode->_positionZ));
 	
@@ -244,7 +244,7 @@ NAN_GETTER(PannerNode::orientationYGetter) { THIS_PANNER_NODE; THIS_CHECK;
 		pannerNode->_impl.get()
 	);
 	
-	pannerNode->_paramOrientationY->setValue(node->orientation().x);
+	pannerNode->_paramOrientationY->setValue(node->orientation().y);
 	
 	RET_VALUE(JS_OBJ(pannerNode->_orientationY));
 	
@@ -257,7 +257,7 @@ NAN_GETTER(PannerNode::orientationZGetter) { THIS_PANNER_NODE; THIS_CHECK;
 		pannerNode->_impl.get()
 	);
 	
-	pannerNode->_paramOrientationZ->setValue(node->orientation().x);
+	pannerNode->_paramOrientationZ->setValue(node->orientation().z);
 	
 	RET_VALUE(JS_OBJ(pannerNode->_orientationZ));
 	

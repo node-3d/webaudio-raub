@@ -5,9 +5,11 @@
 #include <LabSound/extended/AudioFileReader.h>
 #include <LabSound/core/AudioContext.h>
 #include <LabSound/core/DefaultAudioDestinationNode.h>
+#include <LabSound/core/AudioListener.h>
 
 #include "base-audio-context.hpp"
 #include "audio-buffer.hpp"
+#include "audio-listener.hpp"
 
 // Nodes
 // #include "analyser-node.hpp"
@@ -135,6 +137,9 @@ void BaseAudioContext::storeDestination(V8_VAR_OBJ context) {
 	
 	V8_VAR_OBJ node = AudioDestinationNode::getNew(context, _impl->destination());
 	_destination.Reset(node);
+	
+	V8_VAR_OBJ listener = AudioListener::getNew(context, AudioListener::ListenerPtr(&_impl->listener()));
+	_listener.Reset(listener);
 	
 }
 
