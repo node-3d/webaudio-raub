@@ -1,6 +1,6 @@
 {
 	"name": "waa-raub",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "Web Audio Api implementation for Node.js",
 	"main": "index.js",
 	"author": "Luis Blanco <raubtierxxx@gmail.com>",
