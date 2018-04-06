@@ -36,7 +36,7 @@ using namespace std;
 AudioPannerParam::AudioPannerParam(V8_VAR_OBJ context, ParamPtr param) :
 AudioParam(context, param) {
 	
-};
+}
 
 
 void AudioPannerParam::_destroy() { DES_CHECK;

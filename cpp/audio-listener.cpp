@@ -8,7 +8,8 @@
 
 #include "audio-listener.hpp"
 #include "audio-context.hpp"
-#include "audio-param.hpp"
+#include "audio-listener-param.hpp"
+#include "lab-audio-listener-param.hpp"
 
 
 using namespace v8;
@@ -36,109 +37,6 @@ NAN_GETTER(AudioListener::NAME ## Getter) { THIS_AUDIO_LISTENER; THIS_CHECK;  \
 }
 
 
-class ListenerParam : public lab::AudioParam {
-	
-public:
-	
-	enum ParamName {
-		positionX,
-		positionY,
-		positionZ,
-		forwardX,
-		forwardY,
-		forwardZ,
-		upX,
-		upY,
-		upZ,
-	};
-	
-	ListenerParam(string id, lab::AudioListener *target, ParamName name) :
-	lab::AudioParam(id, 0., -_inf, _inf) {
-		_target = target;
-		_name = name;
-	}
-	
-	float value() {
-		
-		if (_name == positionX) {
-			return _target->position().x;
-		} else if (_name == positionY) {
-			return _target->position().y;
-		} else if (_name == positionZ) {
-			return _target->position().z;
-		} else if (_name == forwardX) {
-			return _target->orientation().x;
-		} else if (_name == forwardY) {
-			return _target->orientation().y;
-		} else if (_name == forwardZ) {
-			return _target->orientation().z;
-		} else if (_name == upX) {
-			return _target->upVector().x;
-		} else if (_name == upY) {
-			return _target->upVector().y;
-		} else if (_name == upZ) {
-			return _target->upVector().z;
-		} else {
-			return 0.f;
-		}
-		
-	}
-	
-	void setValue(float v) {
-		
-		if (_name == positionX) {
-			lab::FloatPoint3D pos = _target->position();
-			pos.x = v;
-			_target->setPosition(pos);
-		} else if (_name == positionY) {
-			lab::FloatPoint3D pos = _target->position();
-			pos.y = v;
-			_target->setPosition(pos);
-		} else if (_name == positionZ) {
-			lab::FloatPoint3D pos = _target->position();
-			pos.z = v;
-			_target->setPosition(pos);
-		} else if (_name == forwardX) {
-			lab::FloatPoint3D orient = _target->orientation();
-			orient.x = v;
-			_target->setOrientation(orient);
-		} else if (_name == forwardY) {
-			lab::FloatPoint3D orient = _target->orientation();
-			orient.y = v;
-			_target->setOrientation(orient);
-		} else if (_name == forwardZ) {
-			lab::FloatPoint3D orient = _target->orientation();
-			orient.z = v;
-			_target->setOrientation(orient);
-		} else if (_name == upX) {
-			lab::FloatPoint3D up = _target->upVector();
-			up.x = v;
-			_target->setUpVector(up);
-		} else if (_name == upY) {
-			lab::FloatPoint3D up = _target->upVector();
-			up.y = v;
-			_target->setUpVector(up);
-		} else if (_name == upZ) {
-			lab::FloatPoint3D up = _target->upVector();
-			up.z = v;
-			_target->setUpVector(up);
-		}
-		
-	}
-	
-	
-private:
-	
-	lab::AudioListener *_target;
-	ParamName _name;
-	
-	static double _inf;
-	
-};
-
-double ListenerParam::_inf = std::numeric_limits<double>::infinity();
-
-
 // ------ Constructor and Destructor
 
 AudioListener::AudioListener(V8_VAR_OBJ context, ListenerPtr listener) {
@@ -146,7 +44,7 @@ AudioListener::AudioListener(V8_VAR_OBJ context, ListenerPtr listener) {
 	_impl = listener;
 	_context.Reset(context);
 	
-	#define MAKE_PARAM(NAME) make_shared<ListenerParam>(#NAME, _impl.get(), ListenerParam::NAME)
+	#define MAKE_PARAM(NAME) make_shared<LabAudioListenerParam>(#NAME, _impl.get(), LabAudioListenerParam::NAME)
 	
 	_paramPositionX = MAKE_PARAM(positionX);
 	_paramPositionY = MAKE_PARAM(positionY);
@@ -158,15 +56,15 @@ AudioListener::AudioListener(V8_VAR_OBJ context, ListenerPtr listener) {
 	_paramUpY = MAKE_PARAM(upY);
 	_paramUpZ = MAKE_PARAM(upZ);
 	
-	_positionX.Reset(AudioParam::getNew(context, _paramPositionX));
-	_positionY.Reset(AudioParam::getNew(context, _paramPositionY));
-	_positionZ.Reset(AudioParam::getNew(context, _paramPositionZ));
-	_forwardX.Reset(AudioParam::getNew(context, _paramForwardX));
-	_forwardY.Reset(AudioParam::getNew(context, _paramForwardY));
-	_forwardZ.Reset(AudioParam::getNew(context, _paramForwardZ));
-	_upX.Reset(AudioParam::getNew(context, _paramUpX));
-	_upY.Reset(AudioParam::getNew(context, _paramUpY));
-	_upZ.Reset(AudioParam::getNew(context, _paramUpZ));
+	_positionX.Reset(AudioListenerParam::getNew(context, _paramPositionX));
+	_positionY.Reset(AudioListenerParam::getNew(context, _paramPositionY));
+	_positionZ.Reset(AudioListenerParam::getNew(context, _paramPositionZ));
+	_forwardX.Reset(AudioListenerParam::getNew(context, _paramForwardX));
+	_forwardY.Reset(AudioListenerParam::getNew(context, _paramForwardY));
+	_forwardZ.Reset(AudioListenerParam::getNew(context, _paramForwardZ));
+	_upX.Reset(AudioListenerParam::getNew(context, _paramUpX));
+	_upY.Reset(AudioListenerParam::getNew(context, _paramUpY));
+	_upZ.Reset(AudioListenerParam::getNew(context, _paramUpZ));
 	
 	_isDestroyed = false;
 	
