@@ -3,8 +3,8 @@
 
 
 #include <LabSound/core/AudioListener.h>
-#include <LabSound/core/PannerNode.h>
 #include <LabSound/core/AudioParam.h>
+#include <LabSound/core/FloatPoint3D.h>
 
 #include "audio-listener.hpp"
 #include "audio-context.hpp"
@@ -18,17 +18,125 @@ using namespace std;
 
 // ------ Aux macros
 
-#define THIS_AUDIO_LISTENER                                                    \
+#define THIS_AUDIO_LISTENER                                                   \
 	AudioListener *audioListener = Nan::ObjectWrap::Unwrap<AudioListener>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (audioListener->_isDestroyed) return;
 
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (audioListener->CACHE == V) {                                           \
+	if (audioListener->CACHE == V) {                                          \
 		return;                                                               \
 	}                                                                         \
 	audioListener->CACHE = V;
+
+#define PARAM_GETTER(NAME)                                                    \
+NAN_GETTER(AudioListener::NAME ## Getter) { THIS_AUDIO_LISTENER; THIS_CHECK;  \
+	RET_VALUE(JS_OBJ(audioListener->_ ## NAME));                              \
+}
+
+
+class ListenerParam : public lab::AudioParam {
+	
+public:
+	
+	enum ParamName {
+		positionX,
+		positionY,
+		positionZ,
+		forwardX,
+		forwardY,
+		forwardZ,
+		upX,
+		upY,
+		upZ,
+	};
+	
+	ListenerParam(string id, lab::AudioListener *target, ParamName name) :
+	lab::AudioParam(id, 0., -_inf, _inf) {
+		_target = target;
+		_name = name;
+	}
+	
+	float value() {
+		
+		if (_name == positionX) {
+			return _target->position().x;
+		} else if (_name == positionY) {
+			return _target->position().y;
+		} else if (_name == positionZ) {
+			return _target->position().z;
+		} else if (_name == forwardX) {
+			return _target->orientation().x;
+		} else if (_name == forwardY) {
+			return _target->orientation().y;
+		} else if (_name == forwardZ) {
+			return _target->orientation().z;
+		} else if (_name == upX) {
+			return _target->upVector().x;
+		} else if (_name == upY) {
+			return _target->upVector().y;
+		} else if (_name == upZ) {
+			return _target->upVector().z;
+		} else {
+			return 0.f;
+		}
+		
+	}
+	
+	void setValue(float v) {
+		
+		if (_name == positionX) {
+			lab::FloatPoint3D pos = _target->position();
+			pos.x = v;
+			_target->setPosition(pos);
+		} else if (_name == positionY) {
+			lab::FloatPoint3D pos = _target->position();
+			pos.y = v;
+			_target->setPosition(pos);
+		} else if (_name == positionZ) {
+			lab::FloatPoint3D pos = _target->position();
+			pos.z = v;
+			_target->setPosition(pos);
+		} else if (_name == forwardX) {
+			lab::FloatPoint3D orient = _target->orientation();
+			orient.x = v;
+			_target->setOrientation(orient);
+		} else if (_name == forwardY) {
+			lab::FloatPoint3D orient = _target->orientation();
+			orient.y = v;
+			_target->setOrientation(orient);
+		} else if (_name == forwardZ) {
+			lab::FloatPoint3D orient = _target->orientation();
+			orient.z = v;
+			_target->setOrientation(orient);
+		} else if (_name == upX) {
+			lab::FloatPoint3D up = _target->upVector();
+			up.x = v;
+			_target->setUpVector(up);
+		} else if (_name == upY) {
+			lab::FloatPoint3D up = _target->upVector();
+			up.y = v;
+			_target->setUpVector(up);
+		} else if (_name == upZ) {
+			lab::FloatPoint3D up = _target->upVector();
+			up.z = v;
+			_target->setUpVector(up);
+		}
+		
+	}
+	
+	
+private:
+	
+	lab::AudioListener *_target;
+	ParamName _name;
+	
+	static double _inf;
+	
+};
+
+double ListenerParam::_inf = std::numeric_limits<double>::infinity();
 
 
 // ------ Constructor and Destructor
@@ -38,8 +146,7 @@ AudioListener::AudioListener(V8_VAR_OBJ context, ListenerPtr listener) {
 	_impl = listener;
 	_context.Reset(context);
 	
-	double inf = std::numeric_limits<double>::infinity();
-	#define MAKE_PARAM(NAME) make_shared<lab::AudioParam>(#NAME, 0., -inf, inf)
+	#define MAKE_PARAM(NAME) make_shared<ListenerParam>(#NAME, _impl.get(), ListenerParam::NAME)
 	
 	_paramPositionX = MAKE_PARAM(positionX);
 	_paramPositionY = MAKE_PARAM(positionY);
@@ -108,85 +215,15 @@ NAN_METHOD(AudioListener::setOrientation) { THIS_AUDIO_LISTENER; THIS_CHECK;
 }
 
 
-NAN_GETTER(AudioListener::positionXGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
-	
-	audioListener->_paramPositionX->setValue(audioListener->_impl->position().x);
-	
-	RET_VALUE(JS_OBJ(audioListener->_positionX));
-	
-}
-
-
-NAN_GETTER(AudioListener::positionYGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
-	
-	audioListener->_paramPositionY->setValue(audioListener->_impl->position().y);
-	
-	RET_VALUE(JS_OBJ(audioListener->_positionY));
-	
-}
-
-
-NAN_GETTER(AudioListener::positionZGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
-	
-	audioListener->_paramPositionZ->setValue(audioListener->_impl->position().z);
-	
-	RET_VALUE(JS_OBJ(audioListener->_positionZ));
-	
-}
-
-
-NAN_GETTER(AudioListener::forwardXGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
-	
-	audioListener->_paramForwardX->setValue(audioListener->_impl->orientation().x);
-	
-	RET_VALUE(JS_OBJ(audioListener->_forwardX));
-	
-}
-
-
-NAN_GETTER(AudioListener::forwardYGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
-	
-	audioListener->_paramForwardY->setValue(audioListener->_impl->orientation().y);
-	
-	RET_VALUE(JS_OBJ(audioListener->_forwardY));
-	
-}
-
-
-NAN_GETTER(AudioListener::forwardZGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
-	
-	audioListener->_paramForwardZ->setValue(audioListener->_impl->orientation().z);
-	
-	RET_VALUE(JS_OBJ(audioListener->_forwardZ));
-	
-}
-
-
-NAN_GETTER(AudioListener::upXGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
-	
-	audioListener->_paramUpX->setValue(audioListener->_impl->upVector().x);
-	
-	RET_VALUE(JS_OBJ(audioListener->_upX));
-	
-}
-
-
-NAN_GETTER(AudioListener::upYGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
-	
-	audioListener->_paramUpY->setValue(audioListener->_impl->upVector().y);
-	
-	RET_VALUE(JS_OBJ(audioListener->_upY));
-	
-}
-
-
-NAN_GETTER(AudioListener::upZGetter) { THIS_AUDIO_LISTENER; THIS_CHECK;
-	
-	audioListener->_paramUpZ->setValue(audioListener->_impl->upVector().z);
-	
-	RET_VALUE(JS_OBJ(audioListener->_upZ));
-	
-}
+PARAM_GETTER(positionX);
+PARAM_GETTER(positionY);
+PARAM_GETTER(positionZ);
+PARAM_GETTER(forwardX);
+PARAM_GETTER(forwardY);
+PARAM_GETTER(forwardZ);
+PARAM_GETTER(upX);
+PARAM_GETTER(upY);
+PARAM_GETTER(upZ);
 
 
 // ------ System methods and props for ObjectWrap

@@ -32,18 +32,13 @@ public:
 // Methods and props, available for children
 protected:
 	
-	explicit AudioParam(V8_VAR_OBJ context, ParamPtr param);
+	AudioParam(V8_VAR_OBJ context, ParamPtr param);
 	virtual ~AudioParam();
 	
 	static V8_STORE_FT _protoAudioParam;
 	static V8_STORE_FUNC _ctorAudioParam;
 	
 	bool _isDestroyed;
-	
-	float _value;
-	float _defaultValue;
-	float _minValue;
-	float _maxValue;
 	
 	ParamPtr _impl;
 	V8_STORE_OBJ _context;

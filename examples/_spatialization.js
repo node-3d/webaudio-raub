@@ -23,9 +23,9 @@ const read = require('./utils/read');
 	audioClipNode.start(0);
 	audioClipNode.loop = true;
 	
-	// context.listener.setPosition(0, 0, 0);
+	context.listener.setPosition(0, 0, 0);
 	
-	for (let i = 0; i < 10000; i++) {
+	for (let i = 0; i < 1000; i++) {
 		
 		const rad = Math.PI * i * 0.001;
 		const r = 11 - i / 1000;
@@ -33,12 +33,29 @@ const read = require('./utils/read');
 		const c = r * Math.cos(rad);
 		
 		panner.setVelocity(-s, 0, c); // derivative
-		panner.setPosition(c, 0, s);
+		// panner.setPosition(c, 0, s);
+		panner.positionX.value = c;
+		panner.positionZ.value = s;
 		
 		// Wait
 		await new Promise(res => setTimeout(res, 15));
 		
 	}
+	
+	// for (let i = 0; i < 1000; i++) {
+		
+	// 	const rad = Math.PI * i * 0.001;
+	// 	const r = 11 - i / 1000;
+	// 	const s = r * Math.sin(rad);
+	// 	const c = r * Math.cos(rad);
+		
+	// 	panner.setVelocity(-s, 0, c); // derivative
+	// 	panner.setPosition(c, 0, s);
+		
+	// 	// Wait
+	// 	await new Promise(res => setTimeout(res, 15));
+		
+	// }
 	
 	console.log('DONE');
 	

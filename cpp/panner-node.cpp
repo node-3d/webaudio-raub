@@ -4,11 +4,12 @@
 
 #include <LabSound/core/AudioNode.h>
 #include <LabSound/core/PannerNode.h>
-#include <LabSound/core/AudioParam.h>
+#include <LabSound/core/FloatPoint3D.h>
 
 #include "panner-node.hpp"
 #include "audio-context.hpp"
-#include "audio-param.hpp"
+#include "audio-panner-param.hpp"
+#include "lab-audio-panner-param.hpp"
 
 
 using namespace v8;
@@ -29,6 +30,11 @@ using namespace std;
 		return;                                                               \
 	}                                                                         \
 	pannerNode->CACHE = V;
+
+#define PARAM_GETTER(NAME)                                                    \
+NAN_GETTER(PannerNode::NAME ## Getter) { THIS_PANNER_NODE; THIS_CHECK;        \
+	RET_VALUE(JS_OBJ(pannerNode->_ ## NAME));                                 \
+}
 
 
 inline std::string fromDistanceModel(unsigned short mode) {
@@ -78,8 +84,7 @@ AudioNode(context, NodePtr(new lab::PannerNode(sampleRate, hrtf))) {
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(_impl.get());
 	
-	double inf = std::numeric_limits<double>::infinity();
-	#define MAKE_PARAM(NAME) make_shared<lab::AudioParam>(#NAME, 0., -inf, inf)
+	#define MAKE_PARAM(NAME) make_shared<LabAudioPannerParam>(#NAME, node, LabAudioPannerParam::NAME)
 	
 	_paramPositionX = MAKE_PARAM(positionX);
 	_paramPositionY = MAKE_PARAM(positionY);
@@ -88,12 +93,12 @@ AudioNode(context, NodePtr(new lab::PannerNode(sampleRate, hrtf))) {
 	_paramOrientationY = MAKE_PARAM(orientationY);
 	_paramOrientationZ = MAKE_PARAM(orientationZ);
 	
-	_positionX.Reset(AudioParam::getNew(context, _paramPositionX));
-	_positionY.Reset(AudioParam::getNew(context, _paramPositionY));
-	_positionZ.Reset(AudioParam::getNew(context, _paramPositionZ));
-	_orientationX.Reset(AudioParam::getNew(context, _paramOrientationX));
-	_orientationY.Reset(AudioParam::getNew(context, _paramOrientationY));
-	_orientationZ.Reset(AudioParam::getNew(context, _paramOrientationZ));
+	_positionX.Reset(AudioPannerParam::getNew(context, _paramPositionX));
+	_positionY.Reset(AudioPannerParam::getNew(context, _paramPositionY));
+	_positionZ.Reset(AudioPannerParam::getNew(context, _paramPositionZ));
+	_orientationX.Reset(AudioPannerParam::getNew(context, _paramOrientationX));
+	_orientationY.Reset(AudioPannerParam::getNew(context, _paramOrientationY));
+	_orientationZ.Reset(AudioPannerParam::getNew(context, _paramOrientationZ));
 	
 	_isDestroyed = false;
 	
@@ -188,24 +193,12 @@ NAN_SETTER(PannerNode::panningModelSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTE
 
 NAN_GETTER(PannerNode::positionXGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
-	lab::PannerNode *node = static_cast<lab::PannerNode*>(
-		pannerNode->_impl.get()
-	);
-	
-	pannerNode->_paramPositionX->setValue(node->position().x);
-	
 	RET_VALUE(JS_OBJ(pannerNode->_positionX));
 	
 }
 
 
 NAN_GETTER(PannerNode::positionYGetter) { THIS_PANNER_NODE; THIS_CHECK;
-	
-	lab::PannerNode *node = static_cast<lab::PannerNode*>(
-		pannerNode->_impl.get()
-	);
-	
-	pannerNode->_paramPositionY->setValue(node->position().y);
 	
 	RET_VALUE(JS_OBJ(pannerNode->_positionY));
 	
@@ -214,24 +207,12 @@ NAN_GETTER(PannerNode::positionYGetter) { THIS_PANNER_NODE; THIS_CHECK;
 
 NAN_GETTER(PannerNode::positionZGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
-	lab::PannerNode *node = static_cast<lab::PannerNode*>(
-		pannerNode->_impl.get()
-	);
-	
-	pannerNode->_paramPositionZ->setValue(node->position().z);
-	
 	RET_VALUE(JS_OBJ(pannerNode->_positionZ));
 	
 }
 
 
 NAN_GETTER(PannerNode::orientationXGetter) { THIS_PANNER_NODE; THIS_CHECK;
-	
-	lab::PannerNode *node = static_cast<lab::PannerNode*>(
-		pannerNode->_impl.get()
-	);
-	
-	pannerNode->_paramOrientationX->setValue(node->orientation().x);
 	
 	RET_VALUE(JS_OBJ(pannerNode->_orientationX));
 	
@@ -240,24 +221,12 @@ NAN_GETTER(PannerNode::orientationXGetter) { THIS_PANNER_NODE; THIS_CHECK;
 
 NAN_GETTER(PannerNode::orientationYGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
-	lab::PannerNode *node = static_cast<lab::PannerNode*>(
-		pannerNode->_impl.get()
-	);
-	
-	pannerNode->_paramOrientationY->setValue(node->orientation().y);
-	
 	RET_VALUE(JS_OBJ(pannerNode->_orientationY));
 	
 }
 
 
 NAN_GETTER(PannerNode::orientationZGetter) { THIS_PANNER_NODE; THIS_CHECK;
-	
-	lab::PannerNode *node = static_cast<lab::PannerNode*>(
-		pannerNode->_impl.get()
-	);
-	
-	pannerNode->_paramOrientationZ->setValue(node->orientation().z);
 	
 	RET_VALUE(JS_OBJ(pannerNode->_orientationZ));
 	
@@ -434,7 +403,7 @@ V8_STORE_FUNC PannerNode::_ctorPannerNode;
 void PannerNode::init(V8_VAR_OBJ target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-
+	
 	// class PannerNode inherits AudioNode
 	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
 	proto->Inherit(parent);
