@@ -7,12 +7,19 @@ const util = require('util');
 const { hrtf } = require('deps-labsound-raub');
 
 const core = require('./binary/waa');
-const { AudioContext, PannerNode } = core;
+const { AudioContext, PannerNode, AudioScheduledSourceNode } = core;
 
 
 AudioContext.prototype[util.inspect.custom] = function () {
 	return 'AudioContext { }';
 };
+
+
+Object.defineProperty(AudioScheduledSourceNode.prototype, 'onended', {
+	get() { return this.listeners('ended'); },
+	set(v) { this.on('ended', v); },
+});
+
 
 PannerNode.hrtf = hrtf;
 
