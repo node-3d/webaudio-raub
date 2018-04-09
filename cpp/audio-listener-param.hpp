@@ -47,6 +47,9 @@ private:
 	static NAN_GETTER(valueGetter);
 	static NAN_SETTER(valueSetter);
 	
+	static NAN_METHOD(setValueAtTime);
+	static NAN_METHOD(setTargetAtTime);
+	
 };
 
 

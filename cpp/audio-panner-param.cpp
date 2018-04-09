@@ -68,6 +68,26 @@ NAN_SETTER(AudioPannerParam::valueSetter) {
 }
 
 
+NAN_METHOD(AudioPannerParam::setValueAtTime) { THIS_AUDIO_PANNER_PARAM; THIS_CHECK;
+	
+	REQ_FLOAT_ARG(0, v);
+	
+	LabAudioPannerParam *param = static_cast<LabAudioPannerParam*>(audioPannerParam->_impl.get());
+	param->setValue(v);
+	
+}
+
+
+NAN_METHOD(AudioPannerParam::setTargetAtTime) { THIS_AUDIO_PANNER_PARAM; THIS_CHECK;
+	
+	REQ_FLOAT_ARG(0, v);
+	
+	LabAudioPannerParam *param = static_cast<LabAudioPannerParam*>(audioPannerParam->_impl.get());
+	param->setValue(v);
+	
+}
+
+
 // ------ System methods and props for ObjectWrap
 
 
@@ -101,6 +121,10 @@ void AudioPannerParam::init(V8_VAR_OBJ target) {
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
 	
+	Nan::SetPrototypeMethod(proto, "setValueAtTime", setValueAtTime);
+	Nan::SetPrototypeMethod(proto, "setTargetAtTime", setTargetAtTime);
+	
+	
 	// -------- static
 	
 	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
@@ -109,7 +133,6 @@ void AudioPannerParam::init(V8_VAR_OBJ target) {
 	_ctorAudioPannerParam.Reset(ctor);
 	
 	Nan::Set(target, JS_STR("AudioPannerParam"), ctor);
-	
 	
 }
 

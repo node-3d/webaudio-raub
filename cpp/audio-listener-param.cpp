@@ -18,7 +18,7 @@ using namespace std;
 
 // ------ Aux macros
 
-#define THIS_AUDIO_PANNER_PARAM                                               \
+#define THIS_AUDIO_LISTENER_PARAM                                               \
 	AudioListenerParam *audioListenerParam = Nan::ObjectWrap::Unwrap<AudioListenerParam>(info.This());
 
 #define THIS_CHECK                                                            \
@@ -48,7 +48,7 @@ void AudioListenerParam::_destroy() { DES_CHECK;
 }
 
 
-NAN_GETTER(AudioListenerParam::valueGetter) { THIS_AUDIO_PANNER_PARAM; THIS_CHECK;
+NAN_GETTER(AudioListenerParam::valueGetter) { THIS_AUDIO_LISTENER_PARAM; THIS_CHECK;
 	
 	V8_VAR_OBJ context = JS_OBJ(audioListenerParam->_context);
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
@@ -60,7 +60,27 @@ NAN_GETTER(AudioListenerParam::valueGetter) { THIS_AUDIO_PANNER_PARAM; THIS_CHEC
 
 
 NAN_SETTER(AudioListenerParam::valueSetter) {
-	THIS_AUDIO_PANNER_PARAM; THIS_CHECK; SETTER_FLOAT_ARG;
+	THIS_AUDIO_LISTENER_PARAM; THIS_CHECK; SETTER_FLOAT_ARG;
+	
+	LabAudioListenerParam *param = static_cast<LabAudioListenerParam*>(audioListenerParam->_impl.get());
+	param->setValue(v);
+	
+}
+
+
+NAN_METHOD(AudioListenerParam::setValueAtTime) { THIS_AUDIO_LISTENER_PARAM; THIS_CHECK;
+	
+	REQ_FLOAT_ARG(0, v);
+	
+	LabAudioListenerParam *param = static_cast<LabAudioListenerParam*>(audioListenerParam->_impl.get());
+	param->setValue(v);
+	
+}
+
+
+NAN_METHOD(AudioListenerParam::setTargetAtTime) { THIS_AUDIO_LISTENER_PARAM; THIS_CHECK;
+	
+	REQ_FLOAT_ARG(0, v);
 	
 	LabAudioListenerParam *param = static_cast<LabAudioListenerParam*>(audioListenerParam->_impl.get());
 	param->setValue(v);
@@ -101,6 +121,10 @@ void AudioListenerParam::init(V8_VAR_OBJ target) {
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
 	
+	Nan::SetPrototypeMethod(proto, "setValueAtTime", setValueAtTime);
+	Nan::SetPrototypeMethod(proto, "setTargetAtTime", setTargetAtTime);
+	
+	
 	// -------- static
 	
 	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
@@ -109,7 +133,6 @@ void AudioListenerParam::init(V8_VAR_OBJ target) {
 	_ctorAudioListenerParam.Reset(ctor);
 	
 	Nan::Set(target, JS_STR("AudioListenerParam"), ctor);
-	
 	
 }
 
@@ -141,14 +164,14 @@ NAN_METHOD(AudioListenerParam::newCtor) {
 }
 
 
-NAN_METHOD(AudioListenerParam::destroy) { THIS_AUDIO_PANNER_PARAM; THIS_CHECK;
+NAN_METHOD(AudioListenerParam::destroy) { THIS_AUDIO_LISTENER_PARAM; THIS_CHECK;
 	
 	audioListenerParam->_destroy();
 	
 }
 
 
-NAN_GETTER(AudioListenerParam::isDestroyedGetter) { THIS_AUDIO_PANNER_PARAM;
+NAN_GETTER(AudioListenerParam::isDestroyedGetter) { THIS_AUDIO_LISTENER_PARAM;
 	
 	RET_VALUE(JS_BOOL(audioListenerParam->_isDestroyed));
 	

@@ -14,14 +14,14 @@ using namespace std;
 
 // ------ Aux macros
 
-#define THIS_AUDIO_SCHEDULED_SOURCE_NODE                                                    \
+#define THIS_AUDIO_SCHEDULED_SOURCE_NODE                                      \
 	AudioScheduledSourceNode *audioScheduledSourceNode = Nan::ObjectWrap::Unwrap<AudioScheduledSourceNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (audioScheduledSourceNode->_isDestroyed) return;
 
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (audioScheduledSourceNode->CACHE == V) {                                           \
+	if (audioScheduledSourceNode->CACHE == V) {                               \
 		return;                                                               \
 	}                                                                         \
 	audioScheduledSourceNode->CACHE = V;
@@ -82,13 +82,15 @@ NAN_METHOD(AudioScheduledSourceNode::stop) { THIS_AUDIO_SCHEDULED_SOURCE_NODE; T
 }
 
 
-NAN_GETTER(AudioScheduledSourceNode::onendedGetter) { THIS_AUDIO_SCHEDULED_SOURCE_NODE; THIS_CHECK;
+NAN_GETTER(AudioScheduledSourceNode::onendedGetter) {
+	THIS_AUDIO_SCHEDULED_SOURCE_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_FUN(audioScheduledSourceNode->_onended));
 	
 }
 
-NAN_SETTER(AudioScheduledSourceNode::onendedSetter) { THIS_AUDIO_SCHEDULED_SOURCE_NODE; THIS_CHECK; SETTER_FUN_ARG;
+NAN_SETTER(AudioScheduledSourceNode::onendedSetter) {
+	THIS_AUDIO_SCHEDULED_SOURCE_NODE; THIS_CHECK; SETTER_FUN_ARG;
 	
 	if (Nan::New(audioScheduledSourceNode->_onended) == v) {
 		return;

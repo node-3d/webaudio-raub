@@ -17,14 +17,14 @@ using namespace std;
 
 // ------ Aux macros
 
-#define THIS_AUDIO_PARAM                                                    \
+#define THIS_AUDIO_PARAM                                                      \
 	AudioParam *audioParam = Nan::ObjectWrap::Unwrap<AudioParam>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (audioParam->_isDestroyed) return;
 
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (audioParam->CACHE == V) {                                           \
+	if (audioParam->CACHE == V) {                                             \
 		return;                                                               \
 	}                                                                         \
 	audioParam->CACHE = V;
