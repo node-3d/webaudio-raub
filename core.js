@@ -1,26 +1,34 @@
 'use strict';
 
 
-const util = require('util');
+// const util = require('util');
 
 // Add deps dll dirs
 const { hrtf } = require('deps-labsound-raub');
 
 const core = require('./binary/waa');
-const { AudioContext, PannerNode, AudioScheduledSourceNode } = core;
 
 
-AudioContext.prototype[util.inspect.custom] = function () {
-	return 'AudioContext { }';
+const {
+	BaseAudioContext,
+	OfflineAudioContext,
+	PannerNode,
+	AudioScheduledSourceNode
+} = core;
+
+const addHandler = (Target, name) => {
+	Object.defineProperty(Target.prototype, `on${name}`, {
+		get() { return this.listeners(name); },
+		set(v) { this.on(name, v); },
+	});
 };
 
 
-Object.defineProperty(AudioScheduledSourceNode.prototype, 'onended', {
-	get() { return this.listeners('ended'); },
-	set(v) { this.on('ended', v); },
-});
-
-
 PannerNode.hrtf = hrtf;
+
+addHandler(BaseAudioContext, 'statechange');
+addHandler(OfflineAudioContext, 'complete');
+addHandler(AudioScheduledSourceNode, 'ended');
+
 
 module.exports = core;
