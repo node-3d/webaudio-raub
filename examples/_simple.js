@@ -9,7 +9,7 @@ const read = require('./utils/read');
 	
 	const context = new AudioContext();
 	
-	const clip = await read(`${__dirname}/samples/voice.ogg`);
+	const clip = await read(`${__dirname}/samples/trainrolling.wav`);
 	
 	const musicClip = await new Promise(res => context.decodeAudioData(clip, b => res(b)));
 	
@@ -19,6 +19,8 @@ const read = require('./utils/read');
 	gain.gain.value = 0.0625;
 	
 	const musicClipNode = context.createBufferSource();
+	musicClipNode.on('ended', () => { console.log('Track ended.'); });
+	// musicClipNode.onended = () => { console.log('Track ended.'); };
 	musicClipNode.buffer = musicClip;
 	musicClipNode.connect(gain);
 	musicClipNode.start(0);

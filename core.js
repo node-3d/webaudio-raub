@@ -11,13 +11,13 @@ const core = require('./binary/waa');
 
 const {
 	BaseAudioContext,
-	OfflineAudioContext,
+	// OfflineAudioContext,
 	PannerNode,
 	AudioScheduledSourceNode
 } = core;
 
 const addHandler = (Target, name) => {
-	Object.defineProperty(Target.prototype, `on${name}`, {
+	Object.defineProperty(Object.getPrototypeOf(Target), `on${name}`, {
 		get() { return this.listeners(name); },
 		set(v) { this.on(name, v); },
 	});
@@ -27,7 +27,7 @@ const addHandler = (Target, name) => {
 PannerNode.hrtf = hrtf;
 
 addHandler(BaseAudioContext, 'statechange');
-addHandler(OfflineAudioContext, 'complete');
+// addHandler(OfflineAudioContext, 'complete');
 addHandler(AudioScheduledSourceNode, 'ended');
 
 

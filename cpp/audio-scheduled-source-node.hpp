@@ -37,7 +37,7 @@ protected:
 	
 	bool _isDestroyed;
 	
-	V8_STORE_FUNC _onended;
+	static void onended(void *userData);
 	
 	
 // JS methods and props, available through V8 APIs
@@ -50,9 +50,6 @@ private:
 	
 	static NAN_METHOD(start);
 	static NAN_METHOD(stop);
-	
-	static NAN_GETTER(onendedGetter);
-	static NAN_SETTER(onendedSetter);
 	
 };
 

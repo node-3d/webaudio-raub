@@ -32,6 +32,8 @@ using namespace std;
 AudioScheduledSourceNode::AudioScheduledSourceNode(V8_VAR_OBJ context, NodePtr node) :
 AudioNode(context, node) {
 	
+	node->setOnended(onended, this);
+	
 	_isDestroyed = false;
 	
 }
@@ -40,6 +42,15 @@ AudioNode(context, node) {
 AudioScheduledSourceNode::~AudioScheduledSourceNode() {
 	
 	_destroy();
+	
+}
+
+
+void AudioScheduledSourceNode::onended(void *userData) {
+	
+	AudioScheduledSourceNode *audioScheduledSourceNode = reinterpret_cast<AudioScheduledSourceNode*>(userData);
+	
+	audioScheduledSourceNode->emit("ended");
 	
 }
 
@@ -82,28 +93,6 @@ NAN_METHOD(AudioScheduledSourceNode::stop) { THIS_AUDIO_SCHEDULED_SOURCE_NODE; T
 }
 
 
-NAN_GETTER(AudioScheduledSourceNode::onendedGetter) {
-	THIS_AUDIO_SCHEDULED_SOURCE_NODE; THIS_CHECK;
-	
-	RET_VALUE(JS_FUN(audioScheduledSourceNode->_onended));
-	
-}
-
-NAN_SETTER(AudioScheduledSourceNode::onendedSetter) {
-	THIS_AUDIO_SCHEDULED_SOURCE_NODE; THIS_CHECK; SETTER_FUN_ARG;
-	
-	if (Nan::New(audioScheduledSourceNode->_onended) == v) {
-		return;
-	}
-	audioScheduledSourceNode->_onended.Reset(v);
-	
-	// TODO: may be additional actions on change?
-	
-	audioScheduledSourceNode->emit("onended", 1, &value);
-	
-}
-
-
 // ------ System methods and props for ObjectWrap
 
 V8_STORE_FT AudioScheduledSourceNode::_protoAudioScheduledSourceNode;
@@ -125,8 +114,6 @@ void AudioScheduledSourceNode::init(V8_VAR_OBJ target) {
 	// Accessors
 	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_RW(obj, onended);
 	
 	// -------- dynamic
 	
