@@ -32,7 +32,7 @@ using namespace std;
 AudioScheduledSourceNode::AudioScheduledSourceNode(V8_VAR_OBJ context, NodePtr node) :
 AudioNode(context, node) {
 	
-	node->setOnended(onended, this);
+	node->setOnEnded(std::bind(&AudioScheduledSourceNode::onEnded, this));
 	
 	_isDestroyed = false;
 	
@@ -46,11 +46,13 @@ AudioScheduledSourceNode::~AudioScheduledSourceNode() {
 }
 
 
-void AudioScheduledSourceNode::onended(void *userData) {
+void AudioScheduledSourceNode::onEnded() {
 	
-	AudioScheduledSourceNode *audioScheduledSourceNode = reinterpret_cast<AudioScheduledSourceNode*>(userData);
-	
-	audioScheduledSourceNode->emit("ended");
+	// AudioScheduledSourceNode *audioScheduledSourceNode = reinterpret_cast<AudioScheduledSourceNode*>(userData);
+	cout << "NAN_HS" << endl;
+	NAN_HS;
+	cout << "CALL" << endl;
+	emit("ended");
 	
 }
 

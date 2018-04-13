@@ -37,7 +37,7 @@ protected:
 	
 	bool _isDestroyed;
 	
-	static void onended(void *userData);
+	void onEnded();
 	
 	
 // JS methods and props, available through V8 APIs
