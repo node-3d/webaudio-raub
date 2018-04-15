@@ -19,8 +19,10 @@ const read = require('./utils/read');
 	gain.gain.value = 0.0625;
 	
 	const musicClipNode = context.createBufferSource();
-	musicClipNode.on('ended', () => { console.log('Track ended.'); });
-	// musicClipNode.onended = () => { console.log('Track ended.'); };
+	
+	musicClipNode.on('ended', () => { console.log('.on("ended"): Track "trainrolling.wav" ended.'); });
+	musicClipNode.onended = () => { console.log('.onended: Track "trainrolling.wav" ended.'); };
+	
 	musicClipNode.buffer = musicClip;
 	musicClipNode.connect(gain);
 	musicClipNode.start(0);
@@ -33,8 +35,8 @@ const read = require('./utils/read');
 	oscillator.type = 'sine';
 	oscillator.start(0);
 	
-	// 30 sec
-	await new Promise(res => setTimeout(res, 30000));
+	// 10 sec
+	await new Promise(res => setTimeout(res, 10000));
 	
 	console.log('DONE');
 	

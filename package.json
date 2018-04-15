@@ -1,6 +1,6 @@
 {
 	"name": "waa-raub",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"description": "Web Audio Api implementation for Node.js",
 	"main": "index.js",
 	"author": "Luis Blanco <raubtierxxx@gmail.com>",
@@ -25,6 +25,6 @@
 	},
 	"dependencies": {
 		"addon-tools-raub": "0.1.6",
-		"deps-labsound-raub": "0.0.8"
+		"deps-labsound-raub": "0.0.9"
 	}
 }

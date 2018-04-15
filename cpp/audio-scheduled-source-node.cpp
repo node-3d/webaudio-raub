@@ -15,7 +15,8 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_AUDIO_SCHEDULED_SOURCE_NODE                                      \
-	AudioScheduledSourceNode *audioScheduledSourceNode = Nan::ObjectWrap::Unwrap<AudioScheduledSourceNode>(info.This());
+	AudioScheduledSourceNode *audioScheduledSourceNode =                      \
+		Nan::ObjectWrap::Unwrap<AudioScheduledSourceNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (audioScheduledSourceNode->_isDestroyed) return;
@@ -46,12 +47,8 @@ AudioScheduledSourceNode::~AudioScheduledSourceNode() {
 }
 
 
-void AudioScheduledSourceNode::onEnded() {
+void AudioScheduledSourceNode::onEnded() { NAN_HS;
 	
-	// AudioScheduledSourceNode *audioScheduledSourceNode = reinterpret_cast<AudioScheduledSourceNode*>(userData);
-	cout << "NAN_HS" << endl;
-	NAN_HS;
-	cout << "CALL" << endl;
 	emit("ended");
 	
 }

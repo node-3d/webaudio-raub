@@ -17,7 +17,7 @@ const {
 } = core;
 
 const addHandler = (Target, name) => {
-	Object.defineProperty(Object.getPrototypeOf(Target), `on${name}`, {
+	Object.defineProperty(Target.prototype, `on${name}`, {
 		get() { return this.listeners(name); },
 		set(v) { this.on(name, v); },
 	});
@@ -25,6 +25,18 @@ const addHandler = (Target, name) => {
 
 
 PannerNode.hrtf = hrtf;
+
+BaseAudioContext.UPDATE_INTERVAL = 30;
+
+BaseAudioContext.startUpdater = that => {
+	that._updateTimerId = setInterval(() => that.update(), BaseAudioContext.UPDATE_INTERVAL);
+	that._updateTimerId.unref();
+};
+
+BaseAudioContext.stopUpdater = that => {
+	clearInterval(that._updateTimerId);
+	that._updateTimerId = null;
+};
 
 addHandler(BaseAudioContext, 'statechange');
 // addHandler(OfflineAudioContext, 'complete');

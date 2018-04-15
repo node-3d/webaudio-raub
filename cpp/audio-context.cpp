@@ -173,7 +173,7 @@ NAN_METHOD(AudioContext::newCtor) {
 		
 		if (opts->Has(JS_STR("sampleRate"))) {
 			
-			if ( ! opts->Get(JS_STR("sampleRate"))->IsNumber() ) {
+			if ( !opts->Get(JS_STR("sampleRate"))->IsNumber() ) {
 				return Nan::ThrowTypeError("Type of 'opts.sampleRate' must be 'number'.");
 			}
 			
@@ -184,13 +184,13 @@ NAN_METHOD(AudioContext::newCtor) {
 		
 	}
 	
-	if ( ! audioContext ) {
+	if ( !audioContext ) {
 		audioContext = new AudioContext();
 	}
 	
 	audioContext->Wrap(info.This());
 	
-	audioContext->storeDestination(info.This());
+	audioContext->finishNew(info.This());
 	
 	RET_VALUE(info.This());
 	

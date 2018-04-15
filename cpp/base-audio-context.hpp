@@ -25,7 +25,7 @@ public:
 	void _destroy();
 	
 	CtxPtr getContext() const;
-	void storeDestination(V8_VAR_OBJ context);
+	void finishNew(V8_VAR_OBJ context);
 	
 	
 // Methods and props
@@ -55,6 +55,8 @@ private:
 	
 	static NAN_METHOD(destroy);
 	static NAN_GETTER(isDestroyedGetter);
+	
+	static NAN_METHOD(update);
 	
 	static NAN_METHOD(resume);
 	static NAN_METHOD(decodeAudioData);

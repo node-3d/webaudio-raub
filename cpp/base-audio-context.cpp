@@ -107,7 +107,7 @@ BaseAudioContext::BaseAudioContext(bool isOffline, float sampleRate) {
 	
 	_isDestroyed = false;
 	
-	_impl.reset(new lab::AudioContext(isOffline));
+	_impl.reset(new lab::AudioContext(isOffline, false));
 	
 	_impl->setDestinationNode(
 		std::make_shared<lab::DefaultAudioDestinationNode>(
@@ -133,7 +133,7 @@ BaseAudioContext::CtxPtr BaseAudioContext::getContext() const {
 }
 
 
-void BaseAudioContext::storeDestination(V8_VAR_OBJ context) {
+void BaseAudioContext::finishNew(V8_VAR_OBJ context) {
 	
 	V8_VAR_OBJ node = AudioDestinationNode::getNew(context, _impl->destination());
 	_destination.Reset(node);
@@ -144,10 +144,35 @@ void BaseAudioContext::storeDestination(V8_VAR_OBJ context) {
 	);
 	_listener.Reset(listener);
 	
+	V8_VAR_FUNC startUpdater = V8_VAR_FUNC::Cast(
+		V8_VAR_FUNC::Cast(Nan::New(_ctorBaseAudioContext))->Get(
+			JS_STR("startUpdater")
+		)
+	);
+	Nan::Callback startUpdaterCb(startUpdater);
+	
+	V8_VAR_VAL argv = context;
+	Nan::AsyncResource async("BaseAudioContext::finishNew()");
+	startUpdaterCb.Call(1, &argv, &async);
+	
 }
 
 
 void BaseAudioContext::_destroy() { DES_CHECK;
+	
+	V8_VAR_OBJ context = Nan::New<v8::Object>();
+	this->Wrap(context);
+	
+	V8_VAR_FUNC stopUpdater = V8_VAR_FUNC::Cast(
+		V8_VAR_FUNC::Cast(Nan::New(_ctorBaseAudioContext))->Get(
+			JS_STR("stopUpdater")
+		)
+	);
+	Nan::Callback stopUpdaterCb(stopUpdater);
+	
+	V8_VAR_VAL argv = context;
+	Nan::AsyncResource async("BaseAudioContext::_destroy()");
+	stopUpdaterCb.Call(1, &argv, &async);
 	
 	if (_state != "closed") {
 		_state = "closed";
@@ -277,6 +302,13 @@ NAN_METHOD(BaseAudioContext::createChannelMerger) { THIS_BASE_AUDIO_CONTEXT; THI
 }
 
 
+NAN_METHOD(BaseAudioContext::update) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+	
+	baseAudioContext->_impl->dispatchEvents();
+	
+}
+
+
 NAN_METHOD(BaseAudioContext::resume) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
 	// TODO: do something?
@@ -375,6 +407,8 @@ void BaseAudioContext::init(V8_VAR_OBJ target) {
 	// -------- dynamic
 	
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
+	
+	Nan::SetPrototypeMethod(proto, "update", update);
 	
 	Nan::SetPrototypeMethod(proto, "createBuffer", createBuffer);
 	Nan::SetPrototypeMethod(proto, "decodeAudioData", decodeAudioData);
