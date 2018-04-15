@@ -350,14 +350,14 @@ NAN_GETTER(BaseAudioContext::destinationGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_
 
 NAN_GETTER(BaseAudioContext::currentTimeGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
-	RET_VALUE(JS_DOUBLE(baseAudioContext->_currentTime));
+	RET_VALUE(JS_DOUBLE(baseAudioContext->_impl->currentTime()));
 	
 }
 
 
 NAN_GETTER(BaseAudioContext::sampleRateGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
-	RET_VALUE(JS_FLOAT(baseAudioContext->_sampleRate));
+	RET_VALUE(JS_FLOAT(baseAudioContext->_impl->sampleRate()));
 	
 }
 

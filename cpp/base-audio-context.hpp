@@ -40,8 +40,6 @@ protected:
 	bool _isDestroyed;
 	
 	V8_STORE_OBJ _destination;
-	double _currentTime;
-	float _sampleRate;
 	V8_STORE_OBJ _listener;
 	std::string _state;
 	
