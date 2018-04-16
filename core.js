@@ -26,7 +26,7 @@ const addHandler = (Target, name) => {
 
 PannerNode.hrtf = hrtf;
 
-BaseAudioContext.UPDATE_INTERVAL = 30;
+BaseAudioContext.UPDATE_INTERVAL = 20;
 
 BaseAudioContext.startUpdater = that => {
 	that._updateTimerId = setInterval(() => that.update(), BaseAudioContext.UPDATE_INTERVAL);

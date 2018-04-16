@@ -26,18 +26,21 @@ const read = require('./utils/read');
 	
 	
 	let isActive;
-	let startTime;
+	let i = 1;
 	
 	musicClipNode.on('ended', () => isActive = false);
+	musicClipNode.on('ended', () => console.log('Played:', i++));
+	
+	// Let it settle down
+	await new Promise(res => setTimeout(res, 1000));
 	
 	setInterval(() => {
 		if (isActive) {
 			console.log('STILL ACTIVE!');
 		}
 		isActive = true;
-		startTime = Date.now();
 		musicClipNode.start(0);
-	}, 500);
+	}, 100).unref();
 	
 	
 	// 60 sec
