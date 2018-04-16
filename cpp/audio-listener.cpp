@@ -8,8 +8,7 @@
 
 #include "audio-listener.hpp"
 #include "audio-context.hpp"
-#include "audio-listener-param.hpp"
-#include "lab-audio-listener-param.hpp"
+#include "audio-param.hpp"
 
 
 using namespace v8;
@@ -44,27 +43,15 @@ AudioListener::AudioListener(V8_VAR_OBJ context, ListenerPtr listener) {
 	_impl = listener;
 	_context.Reset(context);
 	
-	#define MAKE_PARAM(NAME) make_shared<LabAudioListenerParam>(#NAME, _impl.get(), LabAudioListenerParam::NAME)
-	
-	_paramPositionX = MAKE_PARAM(positionX);
-	_paramPositionY = MAKE_PARAM(positionY);
-	_paramPositionZ = MAKE_PARAM(positionZ);
-	_paramForwardX = MAKE_PARAM(forwardX);
-	_paramForwardY = MAKE_PARAM(forwardY);
-	_paramForwardZ = MAKE_PARAM(forwardZ);
-	_paramUpX = MAKE_PARAM(upX);
-	_paramUpY = MAKE_PARAM(upY);
-	_paramUpZ = MAKE_PARAM(upZ);
-	
-	_positionX.Reset(AudioListenerParam::getNew(context, _paramPositionX));
-	_positionY.Reset(AudioListenerParam::getNew(context, _paramPositionY));
-	_positionZ.Reset(AudioListenerParam::getNew(context, _paramPositionZ));
-	_forwardX.Reset(AudioListenerParam::getNew(context, _paramForwardX));
-	_forwardY.Reset(AudioListenerParam::getNew(context, _paramForwardY));
-	_forwardZ.Reset(AudioListenerParam::getNew(context, _paramForwardZ));
-	_upX.Reset(AudioListenerParam::getNew(context, _paramUpX));
-	_upY.Reset(AudioListenerParam::getNew(context, _paramUpY));
-	_upZ.Reset(AudioListenerParam::getNew(context, _paramUpZ));
+	_positionX.Reset(AudioParam::getNew(context, _impl->positionX()));
+	_positionY.Reset(AudioParam::getNew(context, _impl->positionY()));
+	_positionZ.Reset(AudioParam::getNew(context, _impl->positionZ()));
+	_forwardX.Reset(AudioParam::getNew(context, _impl->forwardX()));
+	_forwardY.Reset(AudioParam::getNew(context, _impl->forwardY()));
+	_forwardZ.Reset(AudioParam::getNew(context, _impl->forwardZ()));
+	_upX.Reset(AudioParam::getNew(context, _impl->upX()));
+	_upY.Reset(AudioParam::getNew(context, _impl->upY()));
+	_upZ.Reset(AudioParam::getNew(context, _impl->upZ()));
 	
 	_isDestroyed = false;
 	

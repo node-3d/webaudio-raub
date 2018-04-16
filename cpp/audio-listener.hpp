@@ -4,8 +4,6 @@
 
 #include <addon-tools.hpp>
 
-#include "audio-listener-param.hpp"
-
 namespace lab { class AudioListener; };
 
 
@@ -47,16 +45,6 @@ protected:
 	V8_STORE_OBJ _upX;
 	V8_STORE_OBJ _upY;
 	V8_STORE_OBJ _upZ;
-	
-	AudioListenerParam::ParamPtr _paramPositionX;
-	AudioListenerParam::ParamPtr _paramPositionY;
-	AudioListenerParam::ParamPtr _paramPositionZ;
-	AudioListenerParam::ParamPtr _paramForwardX;
-	AudioListenerParam::ParamPtr _paramForwardY;
-	AudioListenerParam::ParamPtr _paramForwardZ;
-	AudioListenerParam::ParamPtr _paramUpX;
-	AudioListenerParam::ParamPtr _paramUpY;
-	AudioListenerParam::ParamPtr _paramUpZ;
 	
 	ListenerPtr _impl;
 	V8_STORE_OBJ _context;

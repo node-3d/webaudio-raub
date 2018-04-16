@@ -11,7 +11,6 @@
 #include "audio-node.hpp"
 #include "audio-param.hpp"
 #include "audio-panner-param.hpp"
-#include "audio-listener-param.hpp"
 #include "audio-processing-event.hpp"
 #include "audio-scheduled-source-node.hpp"
 #include "audio-timestamp.hpp"
@@ -63,7 +62,6 @@ void init(Local<Object> target) {
 	
 	AudioParam::init(target);
 	AudioPannerParam::init(target);
-	AudioListenerParam::init(target);
 	
 	// AudioProcessingEvent::init(target);
 	// AudioTimestamp::init(target);
