@@ -11,6 +11,8 @@ class AudioBufferSourceNode : public AudioScheduledSourceNode {
 	
 public:
 	
+	~AudioBufferSourceNode();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -25,7 +27,6 @@ public:
 protected:
 	
 	explicit AudioBufferSourceNode(V8_VAR_OBJ context);
-	virtual ~AudioBufferSourceNode();
 	
 	static V8_STORE_FT _protoAudioBufferSourceNode;
 	static V8_STORE_FUNC _ctorAudioBufferSourceNode;

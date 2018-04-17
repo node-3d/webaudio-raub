@@ -19,8 +19,6 @@
 				'cpp/audio-listener.cpp',
 				'cpp/audio-node.cpp',
 				'cpp/audio-param.cpp',
-				'cpp/audio-panner-param.cpp',
-				'cpp/lab-audio-panner-param.cpp',
 				# 'cpp/audio-processing-event.cpp',
 				'cpp/audio-scheduled-source-node.cpp',
 				# 'cpp/audio-timestamp.cpp',

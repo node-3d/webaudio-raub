@@ -53,17 +53,17 @@ AudioScheduledSourceNode(
 
 
 AudioBufferSourceNode::~AudioBufferSourceNode() {
+	cout << "AudioBufferSourceNode DESTROY 1" << endl;
+	AudioBufferSourceNode::_destroy();
 	
-	_destroy();
-	
+	// AudioScheduledSourceNode::~AudioScheduledSourceNode();
+	cout << "AudioBufferSourceNode DESTROY 2" << endl;
 }
 
 
 void AudioBufferSourceNode::_destroy() { DES_CHECK;
 	
 	_isDestroyed = true;
-	
-	AudioScheduledSourceNode::_destroy();
 	
 }
 

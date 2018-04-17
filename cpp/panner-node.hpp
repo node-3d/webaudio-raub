@@ -4,7 +4,7 @@
 
 #include "audio-node.hpp"
 
-#include "audio-panner-param.hpp"
+#include "audio-param.hpp"
 
 
 class PannerNode : public AudioNode {
@@ -40,13 +40,6 @@ protected:
 	V8_STORE_OBJ _orientationX;
 	V8_STORE_OBJ _orientationY;
 	V8_STORE_OBJ _orientationZ;
-	
-	AudioPannerParam::ParamPtr _paramPositionX;
-	AudioPannerParam::ParamPtr _paramPositionY;
-	AudioPannerParam::ParamPtr _paramPositionZ;
-	AudioPannerParam::ParamPtr _paramOrientationX;
-	AudioPannerParam::ParamPtr _paramOrientationY;
-	AudioPannerParam::ParamPtr _paramOrientationZ;
 	
 	
 // JS methods and props, available through V8 APIs

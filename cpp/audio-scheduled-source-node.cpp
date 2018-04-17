@@ -41,9 +41,11 @@ AudioNode(context, node) {
 
 
 AudioScheduledSourceNode::~AudioScheduledSourceNode() {
+	cout << "AudioScheduledSourceNode DESTROY 1" << endl;
+	AudioScheduledSourceNode::_destroy();
 	
-	_destroy();
-	
+	// AudioNode::~AudioNode();
+	cout << "AudioScheduledSourceNode DESTROY 2" << endl;
 }
 
 
@@ -57,8 +59,6 @@ void AudioScheduledSourceNode::onEnded() { NAN_HS;
 void AudioScheduledSourceNode::_destroy() { DES_CHECK;
 	
 	_isDestroyed = true;
-	
-	AudioNode::_destroy();
 	
 }
 

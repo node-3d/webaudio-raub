@@ -8,8 +8,7 @@
 
 #include "panner-node.hpp"
 #include "audio-context.hpp"
-#include "audio-panner-param.hpp"
-#include "lab-audio-panner-param.hpp"
+#include "audio-param.hpp"
 
 
 using namespace v8;
@@ -84,21 +83,12 @@ AudioNode(context, NodePtr(new lab::PannerNode(sampleRate, hrtf))) {
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(_impl.get());
 	
-	#define MAKE_PARAM(NAME) make_shared<LabAudioPannerParam>(#NAME, node, LabAudioPannerParam::NAME)
-	
-	_paramPositionX = MAKE_PARAM(positionX);
-	_paramPositionY = MAKE_PARAM(positionY);
-	_paramPositionZ = MAKE_PARAM(positionZ);
-	_paramOrientationX = MAKE_PARAM(orientationX);
-	_paramOrientationY = MAKE_PARAM(orientationY);
-	_paramOrientationZ = MAKE_PARAM(orientationZ);
-	
-	_positionX.Reset(AudioPannerParam::getNew(context, _paramPositionX));
-	_positionY.Reset(AudioPannerParam::getNew(context, _paramPositionY));
-	_positionZ.Reset(AudioPannerParam::getNew(context, _paramPositionZ));
-	_orientationX.Reset(AudioPannerParam::getNew(context, _paramOrientationX));
-	_orientationY.Reset(AudioPannerParam::getNew(context, _paramOrientationY));
-	_orientationZ.Reset(AudioPannerParam::getNew(context, _paramOrientationZ));
+	_positionX.Reset(AudioParam::getNew(context, node->positionX()));
+	_positionY.Reset(AudioParam::getNew(context, node->positionY()));
+	_positionZ.Reset(AudioParam::getNew(context, node->positionZ()));
+	_orientationX.Reset(AudioParam::getNew(context, node->forwardX()));
+	_orientationY.Reset(AudioParam::getNew(context, node->forwardY()));
+	_orientationZ.Reset(AudioParam::getNew(context, node->forwardZ()));
 	
 	_isDestroyed = false;
 	
@@ -149,7 +139,7 @@ NAN_METHOD(PannerNode::setOrientation) { THIS_PANNER_NODE; THIS_CHECK;
 		pannerNode->_impl.get()
 	);
 	
-	node->setOrientation(x, y, z);
+	node->setForward(lab::FloatPoint3D(x, y, z));
 	
 }
 
@@ -191,46 +181,12 @@ NAN_SETTER(PannerNode::panningModelSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTE
 }
 
 
-NAN_GETTER(PannerNode::positionXGetter) { THIS_PANNER_NODE; THIS_CHECK;
-	
-	RET_VALUE(JS_OBJ(pannerNode->_positionX));
-	
-}
-
-
-NAN_GETTER(PannerNode::positionYGetter) { THIS_PANNER_NODE; THIS_CHECK;
-	
-	RET_VALUE(JS_OBJ(pannerNode->_positionY));
-	
-}
-
-
-NAN_GETTER(PannerNode::positionZGetter) { THIS_PANNER_NODE; THIS_CHECK;
-	
-	RET_VALUE(JS_OBJ(pannerNode->_positionZ));
-	
-}
-
-
-NAN_GETTER(PannerNode::orientationXGetter) { THIS_PANNER_NODE; THIS_CHECK;
-	
-	RET_VALUE(JS_OBJ(pannerNode->_orientationX));
-	
-}
-
-
-NAN_GETTER(PannerNode::orientationYGetter) { THIS_PANNER_NODE; THIS_CHECK;
-	
-	RET_VALUE(JS_OBJ(pannerNode->_orientationY));
-	
-}
-
-
-NAN_GETTER(PannerNode::orientationZGetter) { THIS_PANNER_NODE; THIS_CHECK;
-	
-	RET_VALUE(JS_OBJ(pannerNode->_orientationZ));
-	
-}
+PARAM_GETTER(positionX);
+PARAM_GETTER(positionY);
+PARAM_GETTER(positionZ);
+PARAM_GETTER(orientationX);
+PARAM_GETTER(orientationY);
+PARAM_GETTER(orientationZ);
 
 
 NAN_GETTER(PannerNode::distanceModelGetter) { THIS_PANNER_NODE; THIS_CHECK;

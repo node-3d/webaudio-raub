@@ -89,9 +89,11 @@ AudioNode::AudioNode(V8_VAR_OBJ context, NodePtr node) : EventEmitter() {
 
 
 AudioNode::~AudioNode() {
+	cout << "AudioNode DESTROY 1" << endl;
+	AudioNode::_destroy();
 	
-	_destroy();
-	
+	// EventEmitter::~EventEmitter();
+	cout << "AudioNode DESTROY 2" << endl;
 }
 
 
@@ -103,8 +105,6 @@ AudioNode::NodePtr AudioNode::getNode() const {
 void AudioNode::_destroy() { DES_CHECK;
 	
 	_isDestroyed = true;
-	
-	EventEmitter::_destroy();
 	
 }
 

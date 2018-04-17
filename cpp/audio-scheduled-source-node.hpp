@@ -15,6 +15,8 @@ public:
 	
 	typedef std::shared_ptr<lab::AudioScheduledSourceNode> NodePtr;
 	
+	~AudioScheduledSourceNode();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -30,7 +32,6 @@ protected:
 	
 	AudioScheduledSourceNode() {} // fake, TODO: remove
 	AudioScheduledSourceNode(V8_VAR_OBJ context, NodePtr node);
-	virtual ~AudioScheduledSourceNode();
 	
 	static V8_STORE_FT _protoAudioScheduledSourceNode;
 	static V8_STORE_FUNC _ctorAudioScheduledSourceNode;
