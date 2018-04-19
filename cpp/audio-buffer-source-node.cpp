@@ -61,8 +61,8 @@ AudioBufferSourceNode::~AudioBufferSourceNode() {
 }
 
 
-void AudioBufferSourceNode::_destroy() { DES_CHECK;
-	
+void AudioBufferSourceNode::_destroy() { DES_CHECK; NAN_HS;
+	emit("desu");
 	_isDestroyed = true;
 	
 }
