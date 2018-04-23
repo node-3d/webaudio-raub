@@ -104,6 +104,9 @@ AudioNode::NodePtr AudioNode::getNode() const {
 
 void AudioNode::_destroy() { DES_CHECK;
 	
+	_impl.reset();
+	_context.Reset();
+	
 	_isDestroyed = true;
 	
 }

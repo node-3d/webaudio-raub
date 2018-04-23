@@ -39,7 +39,7 @@ AudioScheduledSourceNode(
 	context,
 	NodePtr(new lab::SampledAudioNode())
 ) {
-	
+	// cout << "Thread AudioBufferSourceNode" << GetCurrentThreadId() << endl;
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(_impl.get());
 	
 	_playbackRate.Reset(AudioParam::getNew(context, node->playbackRate()));
@@ -61,8 +61,14 @@ AudioBufferSourceNode::~AudioBufferSourceNode() {
 }
 
 
-void AudioBufferSourceNode::_destroy() { DES_CHECK; NAN_HS;
+void AudioBufferSourceNode::_destroy() { DES_CHECK;
+	
+	cout << "Thread _destroy()" << GetCurrentThreadId() << endl;
 	emit("desu");
+	_buffer.Reset();
+	_playbackRate.Reset();
+	_detune.Reset();
+	
 	_isDestroyed = true;
 	
 }

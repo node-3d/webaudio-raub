@@ -33,7 +33,7 @@ using namespace std;
 
 GainNode::GainNode(V8_VAR_OBJ context) :
 AudioNode(context, NodePtr(new lab::GainNode())) {
-	
+	cout << "Thread GainNode" << GetCurrentThreadId() << endl;
 	lab::GainNode *node = static_cast<lab::GainNode*>(_impl.get());
 	
 	_gain.Reset(AudioParam::getNew(context, node->gain()));
