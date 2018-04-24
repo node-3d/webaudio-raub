@@ -53,23 +53,21 @@ AudioScheduledSourceNode(
 
 
 AudioBufferSourceNode::~AudioBufferSourceNode() {
-	cout << "AudioBufferSourceNode DESTROY 1" << endl;
-	AudioBufferSourceNode::_destroy();
 	
-	// AudioScheduledSourceNode::~AudioScheduledSourceNode();
-	cout << "AudioBufferSourceNode DESTROY 2" << endl;
+	_destroy();
+	
 }
 
 
 void AudioBufferSourceNode::_destroy() { DES_CHECK;
 	
-	cout << "Thread _destroy()" << GetCurrentThreadId() << endl;
-	emit("desu");
 	_buffer.Reset();
 	_playbackRate.Reset();
 	_detune.Reset();
 	
 	_isDestroyed = true;
+	
+	AudioScheduledSourceNode::_destroy();
 	
 }
 
@@ -289,6 +287,8 @@ NAN_METHOD(AudioBufferSourceNode::newCtor) {
 
 
 NAN_METHOD(AudioBufferSourceNode::destroy) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
+	
+	audioBufferSourceNode->emit("destroy");
 	
 	audioBufferSourceNode->_destroy();
 	

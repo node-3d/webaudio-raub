@@ -89,11 +89,9 @@ AudioNode::AudioNode(V8_VAR_OBJ context, NodePtr node) : EventEmitter() {
 
 
 AudioNode::~AudioNode() {
-	cout << "AudioNode DESTROY 1" << endl;
-	AudioNode::_destroy();
 	
-	// EventEmitter::~EventEmitter();
-	cout << "AudioNode DESTROY 2" << endl;
+	_destroy();
+	
 }
 
 
@@ -108,6 +106,8 @@ void AudioNode::_destroy() { DES_CHECK;
 	_context.Reset();
 	
 	_isDestroyed = true;
+	
+	EventEmitter::_destroy();
 	
 }
 
@@ -368,6 +368,8 @@ NAN_METHOD(AudioNode::newCtor) {
 
 
 NAN_METHOD(AudioNode::destroy) { THIS_AUDIO_NODE; THIS_CHECK;
+	
+	audioNode->emit("destroy");
 	
 	audioNode->_destroy();
 	

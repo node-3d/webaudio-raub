@@ -41,11 +41,9 @@ AudioNode(context, node) {
 
 
 AudioScheduledSourceNode::~AudioScheduledSourceNode() {
-	cout << "AudioScheduledSourceNode DESTROY 1" << endl;
-	AudioScheduledSourceNode::_destroy();
 	
-	// AudioNode::~AudioNode();
-	cout << "AudioScheduledSourceNode DESTROY 2" << endl;
+	_destroy();
+	
 }
 
 
@@ -58,7 +56,15 @@ void AudioScheduledSourceNode::onEnded() { NAN_HS;
 
 void AudioScheduledSourceNode::_destroy() { DES_CHECK;
 	
+	lab::AudioScheduledSourceNode *node = static_cast<lab::AudioScheduledSourceNode*>(
+		_impl.get()
+	);
+	
+	node->setOnEnded(nullptr);
+	
 	_isDestroyed = true;
+	
+	AudioNode::_destroy();
 	
 }
 
@@ -162,6 +168,8 @@ NAN_METHOD(AudioScheduledSourceNode::newCtor) {
 
 
 NAN_METHOD(AudioScheduledSourceNode::destroy) { THIS_AUDIO_SCHEDULED_SOURCE_NODE; THIS_CHECK;
+	
+	audioScheduledSourceNode->emit("destroy");
 	
 	audioScheduledSourceNode->_destroy();
 	

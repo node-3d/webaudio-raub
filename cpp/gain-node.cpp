@@ -33,7 +33,7 @@ using namespace std;
 
 GainNode::GainNode(V8_VAR_OBJ context) :
 AudioNode(context, NodePtr(new lab::GainNode())) {
-	cout << "Thread GainNode" << GetCurrentThreadId() << endl;
+	
 	lab::GainNode *node = static_cast<lab::GainNode*>(_impl.get());
 	
 	_gain.Reset(AudioParam::getNew(context, node->gain()));
@@ -51,6 +51,8 @@ GainNode::~GainNode() {
 
 
 void GainNode::_destroy() { DES_CHECK;
+	
+	_gain.Reset();
 	
 	_isDestroyed = true;
 	
@@ -137,6 +139,8 @@ NAN_METHOD(GainNode::newCtor) {
 
 
 NAN_METHOD(GainNode::destroy) { THIS_GAIN_NODE; THIS_CHECK;
+	
+	gainNode->emit("destroy");
 	
 	gainNode->_destroy();
 	
