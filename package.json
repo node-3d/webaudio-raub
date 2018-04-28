@@ -28,7 +28,7 @@
 		"url": "https://github.com/node-3d/waa-raub.git"
 	},
 	"dependencies": {
-		"addon-tools-raub": "0.1.7",
+		"addon-tools-raub": "0.1.8",
 		"deps-labsound-raub": "0.1.1"
 	}
 }
