@@ -64,7 +64,6 @@ void GainNode::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-
 NAN_GETTER(GainNode::gainGetter) { THIS_GAIN_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(gainNode->_gain));
@@ -101,7 +100,6 @@ void GainNode::init(V8_VAR_OBJ target) {
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
 	
 	
-	
 	// -------- static
 	
 	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
@@ -110,7 +108,6 @@ void GainNode::init(V8_VAR_OBJ target) {
 	_ctorGainNode.Reset(ctor);
 	
 	Nan::Set(target, JS_STR("GainNode"), ctor);
-	
 	
 }
 

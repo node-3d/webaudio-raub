@@ -39,7 +39,7 @@ AudioScheduledSourceNode(
 	context,
 	NodePtr(new lab::SampledAudioNode())
 ) {
-	// cout << "Thread AudioBufferSourceNode" << GetCurrentThreadId() << endl;
+	
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(_impl.get());
 	
 	_playbackRate.Reset(AudioParam::getNew(context, node->playbackRate()));

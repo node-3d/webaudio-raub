@@ -216,6 +216,7 @@ NAN_METHOD(AudioNode::disconnect) { THIS_AUDIO_NODE; THIS_CHECK;
 		AudioParam::ParamPtr param = destParam->getParam();
 		
 		lab::ContextGraphLock graphLock(ctx, "AudioNode::disconnect");
+		// TODO:
 		// param->disconnect(graphLock, param, audioNode->_impl);
 		
 	}

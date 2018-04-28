@@ -1,27 +1,31 @@
 {
+	"author": "Luis Blanco <luisblanco1337@gmail.com>",
 	"name": "waa-raub",
-	"version": "0.0.6",
+	"version": "0.0.7",
 	"description": "Web Audio Api implementation for Node.js",
+	"license": "MIT",
 	"main": "index.js",
-	"author": "Luis Blanco <raubtierxxx@gmail.com>",
 	"keywords": [
-		"waa",
-		"audio",
-		"3d",
 		"addon",
-		"compile"
+		"waa",
+		"webaudio",
+		"labsound",
+		"sound"
 	],
+	"engines": {
+		"node": ">=8.11.1",
+		"npm": ">=5.6.0"
+	},
 	"maintainers": [
 		{
 			"name": "Luis Blanco",
-			"email": "raubtierxxx@gmail.com",
+			"email": "luisblanco1337@gmail.com",
 			"skype": "rauber666"
 		}
 	],
-	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/raub/node-waa.git"
+		"url": "https://github.com/node-3d/waa-raub.git"
 	},
 	"dependencies": {
 		"addon-tools-raub": "0.1.7",
