@@ -29,6 +29,6 @@
 	},
 	"dependencies": {
 		"addon-tools-raub": "0.1.8",
-		"deps-labsound-raub": "0.1.1"
+		"deps-labsound-raub": "0.1.2"
 	}
 }
