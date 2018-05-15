@@ -1,12 +1,13 @@
 'use strict';
 
-
 // const util = require('util');
 
 // Add deps dll dirs
 const { hrtf } = require('deps-labsound-raub');
 
-const core = require('./binary/waa');
+const { binPath } = require('addon-tools-raub');
+
+const core = require(`./${binPath}/webaudio`);
 
 
 const {

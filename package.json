@@ -1,7 +1,7 @@
 {
 	"author": "Luis Blanco <luisblanco1337@gmail.com>",
-	"name": "waa-raub",
-	"version": "0.0.7",
+	"name": "webaudio-raub",
+	"version": "0.0.8",
 	"description": "Web Audio Api implementation for Node.js",
 	"license": "MIT",
 	"main": "index.js",
@@ -28,7 +28,7 @@
 		"url": "https://github.com/node-3d/waa-raub.git"
 	},
 	"dependencies": {
-		"addon-tools-raub": "0.1.8",
-		"deps-labsound-raub": "0.1.2"
+		"addon-tools-raub": "^2.0.1",
+		"deps-labsound-raub": "0.2.0"
 	}
 }
