@@ -29,6 +29,7 @@
 	},
 	"dependencies": {
 		"addon-tools-raub": "^2.0.1",
-		"deps-labsound-raub": "0.2.0"
+		"deps-labsound-raub": "0.2.0",
+		"segfault-handler": "^1.0.0"
 	}
 }
