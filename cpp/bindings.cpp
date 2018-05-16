@@ -40,11 +40,6 @@
 #include "wave-shaper-node.hpp"
 
 
-using namespace v8;
-using namespace node;
-using namespace std;
-
-
 extern "C" {
 
 
@@ -99,7 +94,7 @@ void init(V8_VAR_OBJ target) {
 }
 
 
-NODE_MODULE(waa, init);
+NODE_MODULE(webaudio, init);
 
 
 } // extern "C"

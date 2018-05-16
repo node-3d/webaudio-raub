@@ -2,8 +2,6 @@
 #define _AUDIO_BUFFER_SOURCE_NODE_HPP_
 
 
-#include <addon-tools.hpp>
-
 #include "audio-scheduled-source-node.hpp"
 
 

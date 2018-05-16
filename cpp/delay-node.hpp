@@ -11,6 +11,8 @@ class DelayNode : public AudioNode {
 	
 public:
 	
+	~DelayNode();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -27,7 +29,6 @@ public:
 protected:
 	
 	DelayNode(V8_VAR_OBJ context, float sampleRate, double delay);
-	virtual ~DelayNode();
 	
 	static V8_STORE_FT _protoDelayNode;
 	static V8_STORE_FUNC _ctorDelayNode;

@@ -11,6 +11,8 @@ class BiquadFilterNode : public AudioNode {
 	
 public:
 	
+	~BiquadFilterNode();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -27,7 +29,6 @@ public:
 protected:
 	
 	explicit BiquadFilterNode(V8_VAR_OBJ context);
-	virtual ~BiquadFilterNode();
 	
 	static V8_STORE_FT _protoBiquadFilterNode;
 	static V8_STORE_FUNC _ctorBiquadFilterNode;

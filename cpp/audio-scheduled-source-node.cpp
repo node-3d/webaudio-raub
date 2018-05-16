@@ -1,6 +1,4 @@
 #include <cstdlib>
-//#include <iostream> // -> cout << "..." << endl;
-
 
 #include <LabSound/core/AudioScheduledSourceNode.h>
 
@@ -143,7 +141,7 @@ void AudioScheduledSourceNode::init(V8_VAR_OBJ target) {
 V8_VAR_OBJ AudioScheduledSourceNode::getNew(V8_VAR_OBJ context, NodePtr node) {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorAudioScheduledSourceNode);
-	Local<External> extNode = JS_EXT(&node);
+	V8_VAR_EXT extNode = JS_EXT(&node);
 	V8_VAR_VAL argv[] = { context, extNode };
 	return Nan::NewInstance(ctor, 2, argv).ToLocalChecked();
 	

@@ -11,6 +11,8 @@ class PannerNode : public AudioNode {
 	
 public:
 	
+	~PannerNode();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -27,7 +29,6 @@ public:
 protected:
 	
 	PannerNode(V8_VAR_OBJ context, float sampleRate, const std::string &hrtf);
-	virtual ~PannerNode();
 	
 	static V8_STORE_FT _protoPannerNode;
 	static V8_STORE_FUNC _ctorPannerNode;

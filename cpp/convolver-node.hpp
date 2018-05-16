@@ -11,6 +11,8 @@ class ConvolverNode : public AudioNode {
 	
 public:
 	
+	~ConvolverNode();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -25,7 +27,6 @@ public:
 protected:
 	
 	explicit ConvolverNode(V8_VAR_OBJ context);
-	virtual ~ConvolverNode();
 	
 	static V8_STORE_FT _protoConvolverNode;
 	static V8_STORE_FUNC _ctorConvolverNode;

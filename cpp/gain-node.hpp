@@ -11,6 +11,8 @@ class GainNode : public AudioNode {
 	
 public:
 	
+	~GainNode();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -25,7 +27,6 @@ public:
 protected:
 	
 	explicit GainNode(V8_VAR_OBJ context);
-	virtual ~GainNode();
 	
 	static V8_STORE_FT _protoGainNode;
 	static V8_STORE_FUNC _ctorGainNode;

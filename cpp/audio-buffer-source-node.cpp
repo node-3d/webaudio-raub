@@ -1,6 +1,4 @@
 #include <cstdlib>
-//#include <iostream> // -> cout << "..." << endl;
-
 
 #include <LabSound/core/AudioContext.h>
 #include <LabSound/core/SampledAudioNode.h>

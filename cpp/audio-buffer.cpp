@@ -62,6 +62,8 @@ AudioBuffer::BusPtr AudioBuffer::getBus() const {
 
 void AudioBuffer::_destroy() { DES_CHECK;
 	
+	_impl.reset();
+	
 	_isDestroyed = true;
 	
 }
@@ -83,7 +85,7 @@ NAN_METHOD(AudioBuffer::copyFromChannel) { THIS_AUDIO_BUFFER; THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, destination);
 	REQ_INT32_ARG(1, channelNumber);
-	REQ_UINT32_ARG(2, startInChannel );
+	REQ_UINT32_ARG(2, startInChannel);
 	
 	// TODO: do something?
 	
@@ -94,7 +96,7 @@ NAN_METHOD(AudioBuffer::copyToChannel) { THIS_AUDIO_BUFFER; THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, source);
 	REQ_INT32_ARG(1, channelNumber);
-	REQ_UINT32_ARG(2, startInChannel );
+	REQ_UINT32_ARG(2, startInChannel);
 	
 	// TODO: do something?
 	
@@ -176,7 +178,7 @@ void AudioBuffer::init(V8_VAR_OBJ target) {
 V8_VAR_OBJ AudioBuffer::getNew(BusPtr bus) {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorAudioBuffer);
-	Local<External> extBus = JS_EXT(&bus);
+	V8_VAR_EXT extBus = JS_EXT(&bus);
 	V8_VAR_VAL argv[] = { extBus };
 	return Nan::NewInstance(ctor, 1, argv).ToLocalChecked();
 	

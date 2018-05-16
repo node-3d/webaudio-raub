@@ -67,8 +67,8 @@ NAN_GETTER(AudioDestinationNode::maxChannelCountGetter) { THIS_AUDIO_DESTINATION
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<FunctionTemplate> AudioDestinationNode::_protoAudioDestinationNode;
-Nan::Persistent<Function> AudioDestinationNode::_ctorAudioDestinationNode;
+V8_STORE_FT AudioDestinationNode::_protoAudioDestinationNode;
+V8_STORE_FUNC AudioDestinationNode::_ctorAudioDestinationNode;
 
 
 void AudioDestinationNode::init(V8_VAR_OBJ target) {
@@ -111,7 +111,7 @@ void AudioDestinationNode::init(V8_VAR_OBJ target) {
 V8_VAR_OBJ AudioDestinationNode::getNew(V8_VAR_OBJ context, DestPtr node) {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorAudioDestinationNode);
-	Local<External> extNode = JS_EXT(&node);
+	V8_VAR_EXT extNode = JS_EXT(&node);
 	V8_VAR_VAL argv[] = { context, extNode };
 	return Nan::NewInstance(ctor, 2, argv).ToLocalChecked();
 	
@@ -137,6 +137,8 @@ NAN_METHOD(AudioDestinationNode::newCtor) {
 
 
 NAN_METHOD(AudioDestinationNode::destroy) { THIS_AUDIO_DESTINATION_NODE; THIS_CHECK;
+	
+	audioDestinationNode->emit("destroy");
 	
 	audioDestinationNode->_destroy();
 	

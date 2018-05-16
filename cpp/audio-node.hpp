@@ -35,7 +35,6 @@ protected:
 	AudioNode() {} // fake, TODO: remove
 	AudioNode(V8_VAR_OBJ context, NodePtr node);
 	
-	
 	static V8_STORE_FT _protoAudioNode; // for inheritance
 	static V8_STORE_FUNC _ctorAudioNode;
 	

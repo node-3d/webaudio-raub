@@ -15,6 +15,8 @@ public:
 	
 	typedef std::shared_ptr<lab::AudioContext> CtxPtr;
 	
+	~BaseAudioContext();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -32,7 +34,6 @@ public:
 protected:
 	
 	explicit BaseAudioContext(bool isOffline = false, float sampleRate = 44100.f);
-	virtual ~BaseAudioContext();
 	
 	static V8_STORE_FT _protoBaseAudioContext; // for inheritance
 	static V8_STORE_FUNC _ctorBaseAudioContext;

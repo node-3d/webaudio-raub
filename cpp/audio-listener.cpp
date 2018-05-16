@@ -67,6 +67,18 @@ AudioListener::~AudioListener() {
 
 void AudioListener::_destroy() { DES_CHECK;
 	
+	_context.Reset();
+	
+	_positionX.Reset();
+	_positionY.Reset();
+	_positionZ.Reset();
+	_forwardX.Reset();
+	_forwardY.Reset();
+	_forwardZ.Reset();
+	_upX.Reset();
+	_upY.Reset();
+	_upZ.Reset();
+	
 	_isDestroyed = true;
 	
 }
@@ -167,7 +179,7 @@ bool AudioListener::isAudioListener(V8_VAR_OBJ obj) {
 V8_VAR_OBJ AudioListener::getNew(V8_VAR_OBJ context, ListenerPtr listener) {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorAudioListener);
-	Local<External> extListener = JS_EXT(&listener);
+	V8_VAR_EXT extListener = JS_EXT(&listener);
 	V8_VAR_VAL argv[] = { context, extListener };
 	return Nan::NewInstance(ctor, 2, argv).ToLocalChecked();
 	

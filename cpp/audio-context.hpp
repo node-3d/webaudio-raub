@@ -11,6 +11,8 @@ class AudioContext : public BaseAudioContext {
 	
 public:
 	
+	~AudioContext();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -26,7 +28,6 @@ protected:
 	
 	AudioContext();
 	explicit AudioContext(float sampleRate);
-	virtual ~AudioContext();
 	
 	static V8_STORE_FT _protoAudioContext; // for inheritance
 	static V8_STORE_FUNC _ctorAudioContext;

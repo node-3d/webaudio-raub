@@ -13,6 +13,8 @@ public:
 	
 	typedef std::shared_ptr<lab::AudioListener> ListenerPtr;
 	
+	~AudioListener();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -29,7 +31,6 @@ public:
 protected:
 	
 	explicit AudioListener(V8_VAR_OBJ context, ListenerPtr listener);
-	virtual ~AudioListener();
 	
 	static V8_STORE_FT _protoAudioListener;
 	static V8_STORE_FUNC _ctorAudioListener;

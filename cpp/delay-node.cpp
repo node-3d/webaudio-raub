@@ -151,6 +151,8 @@ NAN_METHOD(DelayNode::newCtor) {
 
 NAN_METHOD(DelayNode::destroy) { THIS_DELAY_NODE; THIS_CHECK;
 	
+	delayNode->emit("destroy");
+	
 	delayNode->_destroy();
 	
 }

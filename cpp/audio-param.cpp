@@ -56,6 +56,8 @@ AudioParam::ParamPtr AudioParam::getParam() const {
 
 void AudioParam::_destroy() { DES_CHECK;
 	
+	_context.Reset();
+	
 	_isDestroyed = true;
 	
 }
@@ -179,8 +181,8 @@ NAN_GETTER(AudioParam::maxValueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<FunctionTemplate> AudioParam::_protoAudioParam;
-Nan::Persistent<Function> AudioParam::_ctorAudioParam;
+V8_STORE_FT AudioParam::_protoAudioParam;
+V8_STORE_FUNC AudioParam::_ctorAudioParam;
 
 
 bool AudioParam::isAudioParam(V8_VAR_OBJ obj) {
@@ -233,7 +235,7 @@ void AudioParam::init(V8_VAR_OBJ target) {
 V8_VAR_OBJ AudioParam::getNew(V8_VAR_OBJ context, ParamPtr param) {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorAudioParam);
-	Local<External> extParam = JS_EXT(&param);
+	V8_VAR_EXT extParam = JS_EXT(&param);
 	V8_VAR_VAL argv[] = { context, extParam };
 	return Nan::NewInstance(ctor, 2, argv).ToLocalChecked();
 	

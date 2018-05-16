@@ -2,8 +2,6 @@
 #define _AUDIO_SCHEDULED_SOURCE_NODE_HPP_
 
 
-#include <addon-tools.hpp>
-
 #include "audio-node.hpp"
 
 namespace lab { class AudioScheduledSourceNode; };

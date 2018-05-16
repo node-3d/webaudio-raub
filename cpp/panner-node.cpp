@@ -1,6 +1,4 @@
 #include <cstdlib>
-//#include <iostream> // -> cout << "..." << endl;
-
 
 #include <LabSound/core/AudioNode.h>
 #include <LabSound/core/PannerNode.h>
@@ -36,7 +34,7 @@ NAN_GETTER(PannerNode::NAME ## Getter) { THIS_PANNER_NODE; THIS_CHECK;        \
 }
 
 
-inline std::string fromDistanceModel(unsigned short mode) {
+inline string fromDistanceModel(unsigned short mode) {
 	if (mode == lab::PannerNode::LINEAR_DISTANCE) {
 		return "linear";
 	} else if (mode == lab::PannerNode::INVERSE_DISTANCE) {
@@ -47,7 +45,7 @@ inline std::string fromDistanceModel(unsigned short mode) {
 }
 
 
-inline unsigned short toDistanceModel(const std::string &mode) {
+inline unsigned short toDistanceModel(const string &mode) {
 	if (mode == "linear") {
 		return lab::PannerNode::LINEAR_DISTANCE;
 	} else if (mode == "inverse") {
@@ -58,7 +56,7 @@ inline unsigned short toDistanceModel(const std::string &mode) {
 }
 
 
-inline std::string fromPanningMode(lab::PanningMode mode) {
+inline string fromPanningMode(lab::PanningMode mode) {
 	if (mode == lab::PanningMode::EQUALPOWER) {
 		return "equalpower";
 	} else {
@@ -67,7 +65,7 @@ inline std::string fromPanningMode(lab::PanningMode mode) {
 }
 
 
-inline lab::PanningMode toPanningMode(const std::string &mode) {
+inline lab::PanningMode toPanningMode(const string &mode) {
 	if (mode == "equalpower") {
 		return lab::PanningMode::EQUALPOWER;
 	} else {
@@ -105,6 +103,13 @@ PannerNode::~PannerNode() {
 void PannerNode::_destroy() { DES_CHECK;
 	
 	_isDestroyed = true;
+	
+	_positionX.Reset();
+	_positionY.Reset();
+	_positionZ.Reset();
+	_orientationX.Reset();
+	_orientationY.Reset();
+	_orientationZ.Reset();
 	
 	AudioNode::_destroy();
 	
@@ -440,6 +445,8 @@ NAN_METHOD(PannerNode::newCtor) {
 
 
 NAN_METHOD(PannerNode::destroy) { THIS_PANNER_NODE; THIS_CHECK;
+	
+	pannerNode->emit("destroy");
 	
 	pannerNode->_destroy();
 	

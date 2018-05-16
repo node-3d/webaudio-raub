@@ -1,6 +1,4 @@
 #include <cstdlib>
-//#include <iostream> // -> cout << "..." << endl;
-
 
 #include <LabSound/core/BiquadFilterNode.h>
 
@@ -53,6 +51,11 @@ BiquadFilterNode::~BiquadFilterNode() {
 
 
 void BiquadFilterNode::_destroy() { DES_CHECK;
+	
+	_frequency.Reset();
+	_detune.Reset();
+	_Q.Reset();
+	_gain.Reset();
 	
 	_isDestroyed = true;
 	
@@ -199,6 +202,8 @@ NAN_METHOD(BiquadFilterNode::newCtor) {
 
 
 NAN_METHOD(BiquadFilterNode::destroy) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
+	
+	biquadFilterNode->emit("destroy");
 	
 	biquadFilterNode->_destroy();
 	

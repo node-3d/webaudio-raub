@@ -13,6 +13,8 @@ class AudioDestinationNode : public AudioNode {
 	
 public:
 	
+	~AudioDestinationNode();
+	
 	typedef std::shared_ptr<lab::AudioDestinationNode> DestPtr;
 	
 	// Public V8 init
@@ -29,7 +31,6 @@ public:
 protected:
 	
 	AudioDestinationNode(V8_VAR_OBJ context, DestPtr node);
-	virtual ~AudioDestinationNode();
 	
 	static V8_STORE_FT _protoAudioDestinationNode;
 	static V8_STORE_FUNC _ctorAudioDestinationNode;

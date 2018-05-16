@@ -187,6 +187,8 @@ NAN_METHOD(ConvolverNode::newCtor) {
 
 NAN_METHOD(ConvolverNode::destroy) { THIS_CONVOLVER_NODE; THIS_CHECK;
 	
+	convolverNode->emit("destroy");
+	
 	convolverNode->_destroy();
 	
 }

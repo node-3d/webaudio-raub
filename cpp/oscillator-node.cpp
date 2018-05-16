@@ -30,7 +30,7 @@ using namespace std;
 	oscillatorNode->CACHE = V;
 
 
-inline std::string fromOscillatorType(lab::OscillatorType mode) {
+inline string fromOscillatorType(lab::OscillatorType mode) {
 	if (mode == lab::OscillatorType::SINE) {
 		return "sine";
 	} else if (mode == lab::OscillatorType::SQUARE) {
@@ -45,7 +45,7 @@ inline std::string fromOscillatorType(lab::OscillatorType mode) {
 }
 
 
-inline lab::OscillatorType toOscillatorType(const std::string &mode) {
+inline lab::OscillatorType toOscillatorType(const string &mode) {
 	if (mode == "sine") {
 		return lab::OscillatorType::SINE;
 	} else if (mode == "square") {
@@ -220,6 +220,8 @@ NAN_METHOD(OscillatorNode::newCtor) {
 
 
 NAN_METHOD(OscillatorNode::destroy) { THIS_OSCILLATOR_NODE; THIS_CHECK;
+	
+	oscillatorNode->emit("destroy");
 	
 	oscillatorNode->_destroy();
 	

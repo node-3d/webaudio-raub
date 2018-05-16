@@ -456,6 +456,8 @@ NAN_METHOD(BaseAudioContext::newCtor) {
 
 NAN_METHOD(BaseAudioContext::destroy) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
+	baseAudioContext->emit("destroy");
+	
 	baseAudioContext->_destroy();
 	
 }

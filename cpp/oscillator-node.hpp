@@ -11,6 +11,8 @@ class OscillatorNode : public AudioScheduledSourceNode {
 	
 public:
 	
+	~OscillatorNode();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -27,7 +29,6 @@ public:
 protected:
 	
 	OscillatorNode(V8_VAR_OBJ context, float sampleRate);
-	virtual ~OscillatorNode();
 	
 	static V8_STORE_FT _protoOscillatorNode;
 	static V8_STORE_FUNC _ctorOscillatorNode;

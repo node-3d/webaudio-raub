@@ -1,6 +1,4 @@
 #include <cstdlib>
-//#include <iostream> // -> cout << "..." << endl;
-
 
 #include <LabSound/core/GainNode.h>
 
@@ -16,14 +14,14 @@ using namespace std;
 
 // ------ Aux macros
 
-#define THIS_GAIN_NODE                                                    \
+#define THIS_GAIN_NODE                                                        \
 	GainNode *gainNode = Nan::ObjectWrap::Unwrap<GainNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (gainNode->_isDestroyed) return;
 
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (gainNode->CACHE == V) {                                           \
+	if (gainNode->CACHE == V) {                                               \
 		return;                                                               \
 	}                                                                         \
 	gainNode->CACHE = V;
@@ -73,8 +71,8 @@ NAN_GETTER(GainNode::gainGetter) { THIS_GAIN_NODE; THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Nan::Persistent<FunctionTemplate> GainNode::_protoGainNode;
-Nan::Persistent<Function> GainNode::_ctorGainNode;
+V8_STORE_FT GainNode::_protoGainNode;
+V8_STORE_FUNC GainNode::_ctorGainNode;
 
 
 void GainNode::init(V8_VAR_OBJ target) {

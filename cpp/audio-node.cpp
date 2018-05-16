@@ -1,6 +1,4 @@
 #include <cstdlib>
-// #include <iostream> // -> std::cout << "..." << std::endl;
-
 
 #include <LabSound/core/AudioContext.h>
 #include <LabSound/core/AudioNode.h>
@@ -19,20 +17,20 @@ using namespace std;
 
 // ------ Aux macros
 
-#define THIS_AUDIO_NODE                                                    \
+#define THIS_AUDIO_NODE                                                       \
 	AudioNode *audioNode = Nan::ObjectWrap::Unwrap<AudioNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (audioNode->_isDestroyed) return;
 
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (audioNode->CACHE == V) {                                           \
+	if (audioNode->CACHE == V) {                                              \
 		return;                                                               \
 	}                                                                         \
 	audioNode->CACHE = V;
 
 
-inline std::string fromChannelCountMode(lab::ChannelCountMode mode) {
+inline string fromChannelCountMode(lab::ChannelCountMode mode) {
 	if (mode == lab::ChannelCountMode::ClampedMax) {
 		return "clamped-max";
 	} else if (mode == lab::ChannelCountMode::Explicit) {
@@ -43,7 +41,7 @@ inline std::string fromChannelCountMode(lab::ChannelCountMode mode) {
 }
 
 
-inline lab::ChannelCountMode toChannelCountMode(const std::string &mode) {
+inline lab::ChannelCountMode toChannelCountMode(const string &mode) {
 	if (mode == "clamped-max") {
 		return lab::ChannelCountMode::ClampedMax;
 	} else if (mode == "explicit") {
@@ -54,7 +52,7 @@ inline lab::ChannelCountMode toChannelCountMode(const std::string &mode) {
 }
 
 
-inline std::string fromChannelInterpretation(lab::ChannelInterpretation io) {
+inline string fromChannelInterpretation(lab::ChannelInterpretation io) {
 	if (io == lab::ChannelInterpretation::Discrete) {
 		return "discrete";
 	} else {
@@ -63,7 +61,7 @@ inline std::string fromChannelInterpretation(lab::ChannelInterpretation io) {
 }
 
 
-inline lab::ChannelInterpretation toChannelInterpretation(const std::string &io) {
+inline lab::ChannelInterpretation toChannelInterpretation(const string &io) {
 	if (io == "discrete") {
 		return lab::ChannelInterpretation::Discrete;
 	} else {
