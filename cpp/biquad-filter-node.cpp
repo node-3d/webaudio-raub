@@ -1,7 +1,11 @@
 #include <cstdlib>
+//#include <iostream> // -> cout << "..." << endl;
 
+
+#include <LabSound/core/BiquadFilterNode.h>
 
 #include "biquad-filter-node.hpp"
+#include "audio-param.hpp"
 
 
 using namespace v8;
@@ -26,8 +30,15 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-BiquadFilterNode::BiquadFilterNode() :
-AudioNode() {
+BiquadFilterNode::BiquadFilterNode(V8_VAR_OBJ context) :
+AudioNode(context, NodePtr(new lab::BiquadFilterNode())) {
+	
+	lab::BiquadFilterNode *node = static_cast<lab::BiquadFilterNode*>(_impl.get());
+	
+	_frequency.Reset(AudioParam::getNew(context, node->frequency()));
+	_detune.Reset(AudioParam::getNew(context, node->detune()));
+	_Q.Reset(AudioParam::getNew(context, node->q()));
+	_gain.Reset(AudioParam::getNew(context, node->gain()));
 	
 	_isDestroyed = false;
 	
@@ -164,11 +175,11 @@ bool BiquadFilterNode::isBiquadFilterNode(V8_VAR_OBJ obj) {
 }
 
 
-V8_VAR_OBJ BiquadFilterNode::getNew() {
+V8_VAR_OBJ BiquadFilterNode::getNew(V8_VAR_OBJ context) {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorBiquadFilterNode);
-	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
-	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
+	V8_VAR_VAL argv[] = { context };
+	return Nan::NewInstance(ctor, 1, argv).ToLocalChecked();
 	
 }
 
@@ -177,7 +188,9 @@ NAN_METHOD(BiquadFilterNode::newCtor) {
 	
 	CTOR_CHECK("BiquadFilterNode");
 	
-	BiquadFilterNode *biquadFilterNode = new BiquadFilterNode();
+	REQ_OBJ_ARG(0, context);
+	
+	BiquadFilterNode *biquadFilterNode = new BiquadFilterNode(context);
 	biquadFilterNode->Wrap(info.This());
 	
 	RET_VALUE(info.This());
@@ -186,8 +199,6 @@ NAN_METHOD(BiquadFilterNode::newCtor) {
 
 
 NAN_METHOD(BiquadFilterNode::destroy) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
-	
-	biquadFilterNode->emit("destroy");
 	
 	biquadFilterNode->_destroy();
 	
