@@ -1,5 +1,4 @@
 #include <cstdlib>
-//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "offline-audio-context.hpp"
@@ -27,7 +26,8 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-OfflineAudioContext::OfflineAudioContext() : BaseAudioContext() {
+OfflineAudioContext::OfflineAudioContext() :
+BaseAudioContext() {
 	
 	_isDestroyed = false;
 	
@@ -168,6 +168,8 @@ NAN_METHOD(OfflineAudioContext::newCtor) {
 
 
 NAN_METHOD(OfflineAudioContext::destroy) { THIS_OFFLINE_AUDIO_CONTEXT; THIS_CHECK;
+	
+	offlineAudioContext->emit("destroy");
 	
 	offlineAudioContext->_destroy();
 	

@@ -1,5 +1,4 @@
 #include <cstdlib>
-//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "analyser-node.hpp"
@@ -27,7 +26,8 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-AnalyserNode::AnalyserNode() : AudioNode() {
+AnalyserNode::AnalyserNode() :
+AudioNode() {
 	
 	_isDestroyed = false;
 	
@@ -241,6 +241,8 @@ NAN_METHOD(AnalyserNode::newCtor) {
 
 
 NAN_METHOD(AnalyserNode::destroy) { THIS_ANALYSER_NODE; THIS_CHECK;
+	
+	analyserNode->emit("destroy");
 	
 	analyserNode->_destroy();
 	

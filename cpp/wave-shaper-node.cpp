@@ -1,5 +1,4 @@
 #include <cstdlib>
-//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "wave-shaper-node.hpp"
@@ -27,7 +26,8 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-WaveShaperNode::WaveShaperNode() : AudioNode() {
+WaveShaperNode::WaveShaperNode() :
+AudioNode() {
 	
 	_isDestroyed = false;
 	
@@ -165,6 +165,8 @@ NAN_METHOD(WaveShaperNode::newCtor) {
 
 
 NAN_METHOD(WaveShaperNode::destroy) { THIS_WAVE_SHAPER_NODE; THIS_CHECK;
+	
+	waveShaperNode->emit("destroy");
 	
 	waveShaperNode->_destroy();
 	

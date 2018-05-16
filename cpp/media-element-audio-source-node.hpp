@@ -11,6 +11,8 @@ class MediaElementAudioSourceNode : public AudioNode {
 	
 public:
 	
+	~MediaElementAudioSourceNode();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -27,7 +29,6 @@ public:
 protected:
 	
 	MediaElementAudioSourceNode();
-	virtual ~MediaElementAudioSourceNode();
 	
 	static V8_STORE_FT _protoMediaElementAudioSourceNode;
 	static V8_STORE_FUNC _ctorMediaElementAudioSourceNode;

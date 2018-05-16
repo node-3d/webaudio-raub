@@ -11,6 +11,8 @@ class OfflineAudioContext : public BaseAudioContext {
 	
 public:
 	
+	~OfflineAudioContext();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -27,7 +29,6 @@ public:
 protected:
 	
 	OfflineAudioContext();
-	virtual ~OfflineAudioContext();
 	
 	static V8_STORE_FT _protoOfflineAudioContext;
 	static V8_STORE_FUNC _ctorOfflineAudioContext;

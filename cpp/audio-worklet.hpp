@@ -9,6 +9,8 @@ class AudioWorklet : public Nan::ObjectWrap {
 	
 public:
 	
+	~AudioWorklet();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -25,7 +27,6 @@ public:
 protected:
 	
 	AudioWorklet();
-	virtual ~AudioWorklet();
 	
 	static V8_STORE_FT _protoAudioWorklet;
 	static V8_STORE_FUNC _ctorAudioWorklet;

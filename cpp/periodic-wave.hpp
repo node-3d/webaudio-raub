@@ -9,6 +9,8 @@ class PeriodicWave : public Nan::ObjectWrap {
 	
 public:
 	
+	~PeriodicWave();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -25,7 +27,6 @@ public:
 protected:
 	
 	PeriodicWave();
-	virtual ~PeriodicWave();
 	
 	static V8_STORE_FT _protoPeriodicWave;
 	static V8_STORE_FUNC _ctorPeriodicWave;

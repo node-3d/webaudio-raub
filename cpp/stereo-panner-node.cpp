@@ -1,5 +1,4 @@
 #include <cstdlib>
-//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "stereo-panner-node.hpp"
@@ -27,7 +26,8 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-StereoPannerNode::StereoPannerNode() : AudioNode() {
+StereoPannerNode::StereoPannerNode() :
+AudioNode() {
 	
 	_isDestroyed = false;
 	
@@ -131,6 +131,8 @@ NAN_METHOD(StereoPannerNode::newCtor) {
 
 
 NAN_METHOD(StereoPannerNode::destroy) { THIS_STEREO_PANNER_NODE; THIS_CHECK;
+	
+	stereoPannerNode->emit("destroy");
 	
 	stereoPannerNode->_destroy();
 	

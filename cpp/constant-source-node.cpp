@@ -1,5 +1,4 @@
 #include <cstdlib>
-//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "constant-source-node.hpp"
@@ -27,7 +26,8 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-ConstantSourceNode::ConstantSourceNode() : AudioScheduledSourceNode() {
+ConstantSourceNode::ConstantSourceNode() :
+AudioScheduledSourceNode() {
 	
 	_isDestroyed = false;
 	
@@ -131,6 +131,8 @@ NAN_METHOD(ConstantSourceNode::newCtor) {
 
 
 NAN_METHOD(ConstantSourceNode::destroy) { THIS_CONSTANT_SOURCE_NODE; THIS_CHECK;
+	
+	constantSourceNode->emit("destroy");
 	
 	constantSourceNode->_destroy();
 	

@@ -1,5 +1,4 @@
 #include <cstdlib>
-//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "script-processor-node.hpp"
@@ -27,7 +26,8 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-ScriptProcessorNode::ScriptProcessorNode() : AudioNode() {
+ScriptProcessorNode::ScriptProcessorNode() :
+AudioNode() {
 	
 	_isDestroyed = false;
 	
@@ -152,6 +152,8 @@ NAN_METHOD(ScriptProcessorNode::newCtor) {
 
 
 NAN_METHOD(ScriptProcessorNode::destroy) { THIS_SCRIPT_PROCESSOR_NODE; THIS_CHECK;
+	
+	scriptProcessorNode->emit("destroy");
 	
 	scriptProcessorNode->_destroy();
 	

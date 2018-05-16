@@ -11,6 +11,8 @@ class ConstantSourceNode : public AudioScheduledSourceNode {
 	
 public:
 	
+	~ConstantSourceNode();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -27,7 +29,6 @@ public:
 protected:
 	
 	ConstantSourceNode();
-	virtual ~ConstantSourceNode();
 	
 	static V8_STORE_FT _protoConstantSourceNode;
 	static V8_STORE_FUNC _ctorConstantSourceNode;

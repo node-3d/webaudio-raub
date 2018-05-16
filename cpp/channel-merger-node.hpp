@@ -11,6 +11,8 @@ class ChannelMergerNode : public AudioNode {
 	
 public:
 	
+	~ChannelMergerNode();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -27,7 +29,6 @@ public:
 protected:
 	
 	ChannelMergerNode();
-	virtual ~ChannelMergerNode();
 	
 	static V8_STORE_FT _protoChannelMergerNode;
 	static V8_STORE_FUNC _ctorChannelMergerNode;

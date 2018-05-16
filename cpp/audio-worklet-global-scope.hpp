@@ -9,6 +9,8 @@ class AudioWorkletGlobalScope : public Nan::ObjectWrap {
 	
 public:
 	
+	~AudioWorkletGlobalScope();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -25,7 +27,6 @@ public:
 protected:
 	
 	AudioWorkletGlobalScope();
-	virtual ~AudioWorkletGlobalScope();
 	
 	static V8_STORE_FT _protoAudioWorkletGlobalScope;
 	static V8_STORE_FUNC _ctorAudioWorkletGlobalScope;

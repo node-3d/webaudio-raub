@@ -48,7 +48,7 @@ using namespace std;
 extern "C" {
 
 
-void init(Local<Object> target) {
+void init(V8_VAR_OBJ target) {
 	
 	EventEmitter::init(target);
 	

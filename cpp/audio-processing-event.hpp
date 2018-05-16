@@ -9,6 +9,8 @@ class AudioProcessingEvent : public Nan::ObjectWrap {
 	
 public:
 	
+	~AudioProcessingEvent();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -25,7 +27,6 @@ public:
 protected:
 	
 	AudioProcessingEvent();
-	virtual ~AudioProcessingEvent();
 	
 	static V8_STORE_FT _protoAudioProcessingEvent;
 	static V8_STORE_FUNC _ctorAudioProcessingEvent;

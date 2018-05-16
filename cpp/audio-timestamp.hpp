@@ -9,6 +9,8 @@ class AudioTimestamp : public Nan::ObjectWrap {
 	
 public:
 	
+	~AudioTimestamp();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -25,7 +27,6 @@ public:
 protected:
 	
 	AudioTimestamp();
-	virtual ~AudioTimestamp();
 	
 	static V8_STORE_FT _protoAudioTimestamp;
 	static V8_STORE_FUNC _ctorAudioTimestamp;

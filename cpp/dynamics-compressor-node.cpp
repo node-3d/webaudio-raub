@@ -1,5 +1,4 @@
 #include <cstdlib>
-//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "dynamics-compressor-node.hpp"
@@ -27,7 +26,8 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-DynamicsCompressorNode::DynamicsCompressorNode() : AudioNode() {
+DynamicsCompressorNode::DynamicsCompressorNode() :
+AudioNode() {
 	
 	_isDestroyed = false;
 	
@@ -171,6 +171,8 @@ NAN_METHOD(DynamicsCompressorNode::newCtor) {
 
 
 NAN_METHOD(DynamicsCompressorNode::destroy) { THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
+	
+	dynamicsCompressorNode->emit("destroy");
 	
 	dynamicsCompressorNode->_destroy();
 	

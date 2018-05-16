@@ -11,6 +11,8 @@ class ChannelSplitterNode : public AudioNode {
 	
 public:
 	
+	~ChannelSplitterNode();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -27,7 +29,6 @@ public:
 protected:
 	
 	ChannelSplitterNode();
-	virtual ~ChannelSplitterNode();
 	
 	static V8_STORE_FT _protoChannelSplitterNode;
 	static V8_STORE_FUNC _ctorChannelSplitterNode;

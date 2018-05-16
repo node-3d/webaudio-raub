@@ -11,6 +11,8 @@ class DynamicsCompressorNode : public AudioNode {
 	
 public:
 	
+	~DynamicsCompressorNode();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -27,7 +29,6 @@ public:
 protected:
 	
 	DynamicsCompressorNode();
-	virtual ~DynamicsCompressorNode();
 	
 	static V8_STORE_FT _protoDynamicsCompressorNode;
 	static V8_STORE_FUNC _ctorDynamicsCompressorNode;

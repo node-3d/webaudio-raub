@@ -1,5 +1,4 @@
 #include <cstdlib>
-//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "media-stream-audio-source-node.hpp"
@@ -27,7 +26,8 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-MediaStreamAudioSourceNode::MediaStreamAudioSourceNode() : AudioNode() {
+MediaStreamAudioSourceNode::MediaStreamAudioSourceNode() :
+AudioNode() {
 	
 	_isDestroyed = false;
 	
@@ -131,6 +131,8 @@ NAN_METHOD(MediaStreamAudioSourceNode::newCtor) {
 
 
 NAN_METHOD(MediaStreamAudioSourceNode::destroy) { THIS_MEDIA_STREAM_AUDIO_SOURCE_NODE; THIS_CHECK;
+	
+	mediaStreamAudioSourceNode->emit("destroy");
 	
 	mediaStreamAudioSourceNode->_destroy();
 	

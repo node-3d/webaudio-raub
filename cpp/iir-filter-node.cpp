@@ -1,5 +1,4 @@
 #include <cstdlib>
-//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "iir-filter-node.hpp"
@@ -27,7 +26,8 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-IIRFilterNode::IIRFilterNode() : AudioNode() {
+IIRFilterNode::IIRFilterNode() :
+AudioNode() {
 	
 	_isDestroyed = false;
 	
@@ -135,6 +135,8 @@ NAN_METHOD(IIRFilterNode::newCtor) {
 
 
 NAN_METHOD(IIRFilterNode::destroy) { THIS_IIR_FILTER_NODE; THIS_CHECK;
+	
+	iIRFilterNode->emit("destroy");
 	
 	iIRFilterNode->_destroy();
 	

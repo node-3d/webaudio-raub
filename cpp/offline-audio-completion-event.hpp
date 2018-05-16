@@ -9,6 +9,8 @@ class OfflineAudioCompletionEvent : public Nan::ObjectWrap {
 	
 public:
 	
+	~OfflineAudioCompletionEvent();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -25,7 +27,6 @@ public:
 protected:
 	
 	OfflineAudioCompletionEvent();
-	virtual ~OfflineAudioCompletionEvent();
 	
 	static V8_STORE_FT _protoOfflineAudioCompletionEvent;
 	static V8_STORE_FUNC _ctorOfflineAudioCompletionEvent;

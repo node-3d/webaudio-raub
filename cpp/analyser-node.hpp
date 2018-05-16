@@ -11,6 +11,8 @@ class AnalyserNode : public AudioNode {
 	
 public:
 	
+	~AnalyserNode();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -27,7 +29,6 @@ public:
 protected:
 	
 	AnalyserNode();
-	virtual ~AnalyserNode();
 	
 	static V8_STORE_FT _protoAnalyserNode;
 	static V8_STORE_FUNC _ctorAnalyserNode;

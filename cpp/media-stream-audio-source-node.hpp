@@ -11,6 +11,8 @@ class MediaStreamAudioSourceNode : public AudioNode {
 	
 public:
 	
+	~MediaStreamAudioSourceNode();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -27,7 +29,6 @@ public:
 protected:
 	
 	MediaStreamAudioSourceNode();
-	virtual ~MediaStreamAudioSourceNode();
 	
 	static V8_STORE_FT _protoMediaStreamAudioSourceNode;
 	static V8_STORE_FUNC _ctorMediaStreamAudioSourceNode;

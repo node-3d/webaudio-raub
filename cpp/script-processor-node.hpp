@@ -11,6 +11,8 @@ class ScriptProcessorNode : public AudioNode {
 	
 public:
 	
+	~ScriptProcessorNode();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -27,7 +29,6 @@ public:
 protected:
 	
 	ScriptProcessorNode();
-	virtual ~ScriptProcessorNode();
 	
 	static V8_STORE_FT _protoScriptProcessorNode;
 	static V8_STORE_FUNC _ctorScriptProcessorNode;

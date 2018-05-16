@@ -1,5 +1,4 @@
 #include <cstdlib>
-//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "channel-splitter-node.hpp"
@@ -27,7 +26,8 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-ChannelSplitterNode::ChannelSplitterNode() : AudioNode() {
+ChannelSplitterNode::ChannelSplitterNode() :
+AudioNode() {
 	
 	_isDestroyed = false;
 	
@@ -125,6 +125,8 @@ NAN_METHOD(ChannelSplitterNode::newCtor) {
 
 
 NAN_METHOD(ChannelSplitterNode::destroy) { THIS_CHANNEL_SPLITTER_NODE; THIS_CHECK;
+	
+	channelSplitterNode->emit("destroy");
 	
 	channelSplitterNode->_destroy();
 	

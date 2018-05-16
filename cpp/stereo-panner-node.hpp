@@ -11,6 +11,8 @@ class StereoPannerNode : public AudioNode {
 	
 public:
 	
+	~StereoPannerNode();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -27,7 +29,6 @@ public:
 protected:
 	
 	StereoPannerNode();
-	virtual ~StereoPannerNode();
 	
 	static V8_STORE_FT _protoStereoPannerNode;
 	static V8_STORE_FUNC _ctorStereoPannerNode;

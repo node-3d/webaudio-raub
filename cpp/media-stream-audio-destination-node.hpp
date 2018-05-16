@@ -11,6 +11,8 @@ class MediaStreamAudioDestinationNode : public AudioNode {
 	
 public:
 	
+	~MediaStreamAudioDestinationNode();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -27,7 +29,6 @@ public:
 protected:
 	
 	MediaStreamAudioDestinationNode();
-	virtual ~MediaStreamAudioDestinationNode();
 	
 	static V8_STORE_FT _protoMediaStreamAudioDestinationNode;
 	static V8_STORE_FUNC _ctorMediaStreamAudioDestinationNode;

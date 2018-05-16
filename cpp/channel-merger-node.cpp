@@ -1,5 +1,4 @@
 #include <cstdlib>
-//#include <iostream> // -> cout << "..." << endl;
 
 
 #include "channel-merger-node.hpp"
@@ -27,7 +26,8 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-ChannelMergerNode::ChannelMergerNode() : AudioNode() {
+ChannelMergerNode::ChannelMergerNode() :
+AudioNode() {
 	
 	_isDestroyed = false;
 	
@@ -125,6 +125,8 @@ NAN_METHOD(ChannelMergerNode::newCtor) {
 
 
 NAN_METHOD(ChannelMergerNode::destroy) { THIS_CHANNEL_MERGER_NODE; THIS_CHECK;
+	
+	channelMergerNode->emit("destroy");
 	
 	channelMergerNode->_destroy();
 	

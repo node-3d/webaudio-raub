@@ -11,6 +11,8 @@ class IIRFilterNode : public AudioNode {
 	
 public:
 	
+	~IIRFilterNode();
+	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);
 	
@@ -27,7 +29,6 @@ public:
 protected:
 	
 	IIRFilterNode();
-	virtual ~IIRFilterNode();
 	
 	static V8_STORE_FT _protoIIRFilterNode;
 	static V8_STORE_FUNC _ctorIIRFilterNode;
