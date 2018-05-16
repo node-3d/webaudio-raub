@@ -100,6 +100,11 @@ AudioNode::NodePtr AudioNode::getNode() const {
 
 void AudioNode::_destroy() { DES_CHECK;
 	
+	V8_VAR_OBJ context = JS_OBJ(_context);
+	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
+	lab::AudioContext *ctx = audioContext->getContext().get();
+	ctx->disconnect(_impl, NodePtr());
+	
 	_impl.reset();
 	_context.Reset();
 	
