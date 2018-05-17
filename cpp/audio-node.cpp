@@ -88,7 +88,7 @@ AudioNode::AudioNode(V8_VAR_OBJ context, NodePtr node) : EventEmitter() {
 
 AudioNode::~AudioNode() {
 	
-	_destroy();
+	// _destroy();
 	
 }
 
@@ -100,17 +100,17 @@ AudioNode::NodePtr AudioNode::getNode() const {
 
 void AudioNode::_destroy() { DES_CHECK;
 	
-	V8_VAR_OBJ context = JS_OBJ(_context);
-	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
-	lab::AudioContext *ctx = audioContext->getContext().get();
-	ctx->disconnect(_impl, NodePtr());
+	// V8_VAR_OBJ context = JS_OBJ(_context);
+	// AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
+	// lab::AudioContext *ctx = audioContext->getContext().get();
+	// ctx->disconnect(_impl, NodePtr());
 	
-	_impl.reset();
-	_context.Reset();
+	// _impl.reset();
+	// _context.Reset();
 	
 	_isDestroyed = true;
 	
-	EventEmitter::_destroy();
+	// EventEmitter::_destroy();
 	
 }
 

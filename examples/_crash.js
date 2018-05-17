@@ -10,7 +10,7 @@ const read = require('./utils/read');
 
 
 const GC_LOCK = { _i: 0 };
-
+let num = 0;
 (async () => { try {
 	
 	const count = 6;
@@ -52,8 +52,13 @@ const GC_LOCK = { _i: 0 };
 			
 			var source = context.createBufferSource();
 			
+			console.log(Date.now(), '+ABSN:', ++num);
+			
 			source.buffer = buffer;
-			source.onended = () => audio.isPlaying = false;
+			source.onended = () => {
+				audio.isPlaying = false;
+				console.log(Date.now(), '-ABSN:', --num);
+			};
 			source.playbackRate.setValueAtTime(audio.playbackRate, audio.startTime);
 			audio.startTime = context.currentTime;
 			source.start( audio.startTime, 0 );

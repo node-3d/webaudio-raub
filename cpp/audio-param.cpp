@@ -44,7 +44,7 @@ AudioParam::AudioParam(V8_VAR_OBJ context, ParamPtr param) {
 
 AudioParam::~AudioParam() {
 	
-	_destroy();
+	// _destroy();
 	
 }
 

@@ -1,4 +1,6 @@
 #include <cstdlib>
+#include <fstream>
+#include <chrono>
 
 #include <LabSound/core/AudioContext.h>
 #include <LabSound/core/SampledAudioNode.h>
@@ -13,6 +15,7 @@
 using namespace v8;
 using namespace node;
 using namespace std;
+using namespace std::chrono;
 
 
 // ------ Aux macros
@@ -32,6 +35,8 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
+int num = 0;
+
 AudioBufferSourceNode::AudioBufferSourceNode(V8_VAR_OBJ context) :
 AudioScheduledSourceNode(
 	context,
@@ -47,21 +52,30 @@ AudioScheduledSourceNode(
 	
 	_isDestroyed = false;
 	
+	ofstream log("absn.log", ios_base::app | ios_base::out);
+	milliseconds ms = duration_cast< milliseconds >(
+		system_clock::now().time_since_epoch()
+	);
+	log << ms.count() << " +ABSN: " << (++num) << endl;
 }
 
 
 AudioBufferSourceNode::~AudioBufferSourceNode() {
 	
-	_destroy();
-	
+	// _destroy();
+	ofstream log("absn.log", ios_base::app | ios_base::out);
+	milliseconds ms = duration_cast< milliseconds >(
+		system_clock::now().time_since_epoch()
+	);
+	log << ms.count() << " -ABSN: " << (--num) << endl;
 }
 
 
 void AudioBufferSourceNode::_destroy() { DES_CHECK;
 	
-	_buffer.Reset();
-	_playbackRate.Reset();
-	_detune.Reset();
+	// _buffer.Reset();
+	// _playbackRate.Reset();
+	// _detune.Reset();
 	
 	_isDestroyed = true;
 	
@@ -82,6 +96,12 @@ NAN_METHOD(AudioBufferSourceNode::start) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_C
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
 		audioBufferSourceNode->_impl.get()
 	);
+	
+	ofstream log("absn.log", ios_base::app | ios_base::out);
+	milliseconds ms = duration_cast< milliseconds >(
+		system_clock::now().time_since_epoch()
+	);
+	log << ms.count() << " ASSN: STARTED " << !node->getBus() << endl;
 	
 	if (grainDuration > 0) {
 		node->startGrain(when, grainOffset, grainDuration);

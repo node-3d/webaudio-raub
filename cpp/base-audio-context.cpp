@@ -123,7 +123,7 @@ BaseAudioContext::BaseAudioContext(bool isOffline, float sampleRate) {
 
 BaseAudioContext::~BaseAudioContext() {
 	
-	_destroy();
+	// _destroy();
 	
 }
 
@@ -160,9 +160,6 @@ void BaseAudioContext::finishNew(V8_VAR_OBJ context) {
 
 void BaseAudioContext::_destroy() { DES_CHECK;
 	
-	V8_VAR_OBJ context = Nan::New<v8::Object>();
-	this->Wrap(context);
-	
 	V8_VAR_FUNC stopUpdater = V8_VAR_FUNC::Cast(
 		V8_VAR_FUNC::Cast(Nan::New(_ctorBaseAudioContext))->Get(
 			JS_STR("stopUpdater")
@@ -170,7 +167,7 @@ void BaseAudioContext::_destroy() { DES_CHECK;
 	);
 	Nan::Callback stopUpdaterCb(stopUpdater);
 	
-	V8_VAR_VAL argv = context;
+	V8_VAR_VAL argv = handle();
 	Nan::AsyncResource async("BaseAudioContext::_destroy()");
 	stopUpdaterCb.Call(1, &argv, &async);
 	

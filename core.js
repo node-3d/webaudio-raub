@@ -35,6 +35,7 @@ BaseAudioContext.startUpdater = that => {
 };
 
 BaseAudioContext.stopUpdater = that => {
+	console.log('\n\nSTOP UPDATER\n\n');
 	clearInterval(that._updateTimerId);
 	that._updateTimerId = null;
 };
