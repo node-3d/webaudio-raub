@@ -78,6 +78,8 @@ AudioNode::AudioNode(V8_VAR_OBJ context, NodePtr node) : EventEmitter() {
 	
 	_context.Reset(context);
 	_impl = node;
+	NodePtr *nn = new NodePtr(node);
+	
 	
 	_channelCount = node->channelCount();
 	_channelCountMode = fromChannelCountMode(node->channelCountMode());
@@ -88,7 +90,7 @@ AudioNode::AudioNode(V8_VAR_OBJ context, NodePtr node) : EventEmitter() {
 
 AudioNode::~AudioNode() {
 	
-	// _destroy();
+	_destroy();
 	
 }
 
@@ -100,17 +102,18 @@ AudioNode::NodePtr AudioNode::getNode() const {
 
 void AudioNode::_destroy() { DES_CHECK;
 	
-	// V8_VAR_OBJ context = JS_OBJ(_context);
-	// AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
-	// lab::AudioContext *ctx = audioContext->getContext().get();
+	V8_VAR_OBJ context = JS_OBJ(_context);
+	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
+	lab::AudioContext *ctx = audioContext->getContext().get();
 	// ctx->disconnect(_impl, NodePtr());
+	// ctx->disconnect(NodePtr(), _impl);
 	
 	// _impl.reset();
 	// _context.Reset();
 	
 	_isDestroyed = true;
 	
-	// EventEmitter::_destroy();
+	EventEmitter::_destroy();
 	
 }
 

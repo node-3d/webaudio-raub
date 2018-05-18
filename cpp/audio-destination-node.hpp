@@ -13,9 +13,9 @@ class AudioDestinationNode : public AudioNode {
 	
 public:
 	
-	~AudioDestinationNode();
-	
 	typedef std::shared_ptr<lab::AudioDestinationNode> DestPtr;
+	
+	~AudioDestinationNode();
 	
 	// Public V8 init
 	static void init(V8_VAR_OBJ target);

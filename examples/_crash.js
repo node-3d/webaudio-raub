@@ -38,7 +38,7 @@ let num = 0;
 		const ball = { y: 0 };
 		const audio = {};
 		audio.panner = context.createPanner();
-		audio.panner.connect( gain );
+		audio.panner.connect( context.destination );
 		audio.isPlaying = false;
 		audio.startTime = 0;
 		audio.playbackRate = 1;
