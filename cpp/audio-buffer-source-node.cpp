@@ -48,7 +48,7 @@ AudioScheduledSourceNode(
 	_playbackRate.Reset(AudioParam::getNew(context, node->playbackRate()));
 	
 	// FIXME: LabSound
-	_detune.Reset(AudioParam::getNew(context, node->gain()));
+	// _detune.Reset(AudioParam::getNew(context, node->gain()));
 	
 	_isDestroyed = false;
 	
@@ -62,7 +62,7 @@ AudioScheduledSourceNode(
 
 AudioBufferSourceNode::~AudioBufferSourceNode() {
 	
-	// _destroy();
+	_destroy();
 	ofstream log("absn.log", ios_base::app | ios_base::out);
 	milliseconds ms = duration_cast< milliseconds >(
 		system_clock::now().time_since_epoch()
@@ -73,9 +73,24 @@ AudioBufferSourceNode::~AudioBufferSourceNode() {
 
 void AudioBufferSourceNode::_destroy() { DES_CHECK;
 	
-	// _buffer.Reset();
-	// _playbackRate.Reset();
-	// _detune.Reset();
+	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
+		_impl.get()
+	);
+	
+	
+	V8_VAR_OBJ context = JS_OBJ(_context);
+	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
+	
+	lab::AudioContext *ctx = audioContext->getContext().get();
+	
+	{
+		lab::ContextRenderLock r(ctx, "AudioBufferSourceNode::_destroy");
+		node->setBus(r, nullptr);
+	}
+	
+	_buffer.Reset();
+	_playbackRate.Reset();
+	_detune.Reset();
 	
 	_isDestroyed = true;
 	

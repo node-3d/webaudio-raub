@@ -21,8 +21,8 @@ let num = 0;
 	
 	const clip = await read(`${__dirname}/samples/hit.wav`);
 	
-	const gain = context.createGain();
-	gain.connect( context.destination );
+	// const gain = context.createGain();
+	// gain.connect( context.destination );
 	
 	const buffer = await new Promise(res => context.decodeAudioData(clip, b => res(b)));
 	

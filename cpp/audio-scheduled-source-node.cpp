@@ -43,7 +43,7 @@ AudioNode(context, node) {
 
 AudioScheduledSourceNode::~AudioScheduledSourceNode() {
 	
-	// _destroy();
+	_destroy();
 	
 }
 
@@ -67,7 +67,7 @@ void AudioScheduledSourceNode::_destroy() { DES_CHECK;
 		_impl.get()
 	);
 	
-	// node->setOnEnded(nullptr);
+	node->setOnEnded(nullptr);
 	
 	_isDestroyed = true;
 	
