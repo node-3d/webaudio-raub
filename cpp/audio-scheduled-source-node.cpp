@@ -1,6 +1,4 @@
 #include <cstdlib>
-#include <fstream>
-#include <chrono>
 
 #include <LabSound/core/AudioScheduledSourceNode.h>
 
@@ -10,7 +8,6 @@
 using namespace v8;
 using namespace node;
 using namespace std;
-using namespace std::chrono;
 
 
 // ------ Aux macros
@@ -50,12 +47,6 @@ AudioScheduledSourceNode::~AudioScheduledSourceNode() {
 
 void AudioScheduledSourceNode::onEnded() { NAN_HS;
 	
-	ofstream log("absn.log", ios_base::app | ios_base::out);
-	milliseconds ms = duration_cast< milliseconds >(
-		system_clock::now().time_since_epoch()
-	);
-	log << ms.count() << " ASSN: ENDED" << endl;
-	
 	emit("ended");
 	
 }
@@ -86,12 +77,6 @@ NAN_METHOD(AudioScheduledSourceNode::start) { THIS_AUDIO_SCHEDULED_SOURCE_NODE; 
 	lab::AudioScheduledSourceNode *node = static_cast<lab::AudioScheduledSourceNode*>(
 		audioScheduledSourceNode->_impl.get()
 	);
-	
-	ofstream log("absn.log", ios_base::app | ios_base::out);
-	milliseconds ms = duration_cast< milliseconds >(
-		system_clock::now().time_since_epoch()
-	);
-	log << ms.count() << " ASSN: STARTED" << endl;
 	
 	node->start(when);
 	

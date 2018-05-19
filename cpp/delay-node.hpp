@@ -46,8 +46,6 @@ private:
 	static NAN_METHOD(destroy);
 	static NAN_GETTER(isDestroyedGetter);
 	
-	
-	
 	static NAN_GETTER(delayTimeGetter);
 	
 };

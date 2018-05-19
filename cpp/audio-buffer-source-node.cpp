@@ -1,6 +1,4 @@
 #include <cstdlib>
-#include <fstream>
-#include <chrono>
 
 #include <LabSound/core/AudioContext.h>
 #include <LabSound/core/SampledAudioNode.h>
@@ -15,7 +13,6 @@
 using namespace v8;
 using namespace node;
 using namespace std;
-using namespace std::chrono;
 
 
 // ------ Aux macros
@@ -52,22 +49,13 @@ AudioScheduledSourceNode(
 	
 	_isDestroyed = false;
 	
-	ofstream log("absn.log", ios_base::app | ios_base::out);
-	milliseconds ms = duration_cast< milliseconds >(
-		system_clock::now().time_since_epoch()
-	);
-	log << ms.count() << " +ABSN: " << (++num) << endl;
 }
 
 
 AudioBufferSourceNode::~AudioBufferSourceNode() {
 	
 	_destroy();
-	ofstream log("absn.log", ios_base::app | ios_base::out);
-	milliseconds ms = duration_cast< milliseconds >(
-		system_clock::now().time_since_epoch()
-	);
-	log << ms.count() << " -ABSN: " << (--num) << endl;
+	
 }
 
 
@@ -76,7 +64,6 @@ void AudioBufferSourceNode::_destroy() { DES_CHECK;
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
 		_impl.get()
 	);
-	
 	
 	V8_VAR_OBJ context = JS_OBJ(_context);
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
@@ -111,12 +98,6 @@ NAN_METHOD(AudioBufferSourceNode::start) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_C
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
 		audioBufferSourceNode->_impl.get()
 	);
-	
-	ofstream log("absn.log", ios_base::app | ios_base::out);
-	milliseconds ms = duration_cast< milliseconds >(
-		system_clock::now().time_since_epoch()
-	);
-	log << ms.count() << " ASSN: STARTED " << !node->getBus() << endl;
 	
 	if (grainDuration > 0) {
 		node->startGrain(when, grainOffset, grainDuration);

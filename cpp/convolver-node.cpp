@@ -1,6 +1,4 @@
 #include <cstdlib>
-//#include <iostream> // -> cout << "..." << endl;
-
 
 #include <LabSound/core/AudioContext.h>
 #include <LabSound/core/ConvolverNode.h>
@@ -73,6 +71,7 @@ NAN_SETTER(ConvolverNode::bufferSetter) { THIS_CONVOLVER_NODE; THIS_CHECK; SETTE
 	if (Nan::New(convolverNode->_buffer) == v) {
 		return;
 	}
+	
 	convolverNode->_buffer.Reset(v);
 	
 	V8_VAR_OBJ context = JS_OBJ(convolverNode->_context);
@@ -80,15 +79,13 @@ NAN_SETTER(ConvolverNode::bufferSetter) { THIS_CONVOLVER_NODE; THIS_CHECK; SETTE
 	
 	lab::AudioContext *ctx = audioContext->getContext().get();
 	
-	// lab::ContextRenderLock r(ctx, "ConvolverNode::bufferSetter");
-	
 	AudioBuffer *audioBuffer = ObjectWrap::Unwrap<AudioBuffer>(v);
 	AudioBuffer::BusPtr bus = audioBuffer->getBus();
 	
 	lab::ConvolverNode *node = static_cast<lab::ConvolverNode*>(
 		convolverNode->_impl.get()
 	);
-	node->setImpulse(/*r, */bus);
+	node->setImpulse(bus);
 	
 	convolverNode->emit("buffer", 1, &value);
 	
@@ -148,7 +145,6 @@ void ConvolverNode::init(V8_VAR_OBJ target) {
 	Nan::SetPrototypeMethod(proto, "destroy", destroy);
 	
 	
-	
 	// -------- static
 	
 	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
@@ -157,7 +153,6 @@ void ConvolverNode::init(V8_VAR_OBJ target) {
 	_ctorConvolverNode.Reset(ctor);
 	
 	Nan::Set(target, JS_STR("ConvolverNode"), ctor);
-	
 	
 }
 

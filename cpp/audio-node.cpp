@@ -106,7 +106,6 @@ void AudioNode::_destroy() { DES_CHECK;
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	lab::AudioContext *ctx = audioContext->getContext().get();
 	ctx->disconnect(_impl, nullptr);
-	// ctx->disconnect(NodePtr(), _impl);
 	
 	_impl.reset();
 	_context.Reset();

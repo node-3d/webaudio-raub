@@ -1,6 +1,4 @@
 #include <cstdlib>
-//#include <iostream> // -> cout << "..." << endl;
-
 
 #include <LabSound/extended/AudioFileReader.h>
 #include <LabSound/core/AudioContext.h>
@@ -123,7 +121,7 @@ BaseAudioContext::BaseAudioContext(bool isOffline, float sampleRate) {
 
 BaseAudioContext::~BaseAudioContext() {
 	
-	// _destroy();
+	_destroy();
 	
 }
 

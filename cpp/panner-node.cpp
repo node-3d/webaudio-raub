@@ -102,14 +102,14 @@ PannerNode::~PannerNode() {
 
 void PannerNode::_destroy() { DES_CHECK;
 	
-	_isDestroyed = true;
-	
 	_positionX.Reset();
 	_positionY.Reset();
 	_positionZ.Reset();
 	_orientationX.Reset();
 	_orientationY.Reset();
 	_orientationZ.Reset();
+	
+	_isDestroyed = true;
 	
 	AudioNode::_destroy();
 	

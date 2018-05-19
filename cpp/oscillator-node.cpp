@@ -1,6 +1,4 @@
 #include <cstdlib>
-//#include <iostream> // -> cout << "..." << endl;
-
 
 #include <LabSound/core/OscillatorNode.h>
 #include <LabSound/core/Synthesis.h>
@@ -86,6 +84,9 @@ OscillatorNode::~OscillatorNode() {
 
 
 void OscillatorNode::_destroy() { DES_CHECK;
+	
+	_frequency.Reset();
+	_detune.Reset();
 	
 	_isDestroyed = true;
 	

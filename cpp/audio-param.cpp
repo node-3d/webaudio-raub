@@ -1,6 +1,4 @@
 #include <cstdlib>
-//#include <iostream> // -> cout << "..." << endl;
-
 
 #include <LabSound/core/AudioContext.h>
 #include <LabSound/core/AudioParam.h>
@@ -44,7 +42,7 @@ AudioParam::AudioParam(V8_VAR_OBJ context, ParamPtr param) {
 
 AudioParam::~AudioParam() {
 	
-	// _destroy();
+	_destroy();
 	
 }
 

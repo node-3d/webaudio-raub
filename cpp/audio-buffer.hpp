@@ -47,6 +47,7 @@ protected:
 	
 	BusPtr _impl;
 	
+	
 // JS methods and props, available through V8 APIs
 private:
 	

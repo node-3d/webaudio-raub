@@ -1,6 +1,4 @@
 #include <cstdlib>
-//#include <iostream> // -> cout << "..." << endl;
-
 
 #include <LabSound/core/AudioNode.h>
 #include <LabSound/core/AudioDestinationNode.h>

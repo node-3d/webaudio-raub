@@ -1,6 +1,4 @@
 #include <cstdlib>
-//#include <iostream> // -> cout << "..." << endl;
-
 
 #include <LabSound/core/AudioListener.h>
 #include <LabSound/core/AudioParam.h>
@@ -60,24 +58,24 @@ AudioListener::AudioListener(V8_VAR_OBJ context, ListenerPtr listener) {
 
 AudioListener::~AudioListener() {
 	
-	// _destroy();
+	_destroy();
 	
 }
 
 
 void AudioListener::_destroy() { DES_CHECK;
 	
-	// _context.Reset();
+	_context.Reset();
 	
-	// _positionX.Reset();
-	// _positionY.Reset();
-	// _positionZ.Reset();
-	// _forwardX.Reset();
-	// _forwardY.Reset();
-	// _forwardZ.Reset();
-	// _upX.Reset();
-	// _upY.Reset();
-	// _upZ.Reset();
+	_positionX.Reset();
+	_positionY.Reset();
+	_positionZ.Reset();
+	_forwardX.Reset();
+	_forwardY.Reset();
+	_forwardZ.Reset();
+	_upX.Reset();
+	_upY.Reset();
+	_upZ.Reset();
 	
 	_isDestroyed = true;
 	
