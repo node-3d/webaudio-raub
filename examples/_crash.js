@@ -1,15 +1,13 @@
 'use strict';
 
-var SegfaultHandler = require('segfault-handler');
- 
-SegfaultHandler.registerHandler('crash.log');
+// const SegfaultHandler = require('segfault-handler');
+// SegfaultHandler.registerHandler('crash.log');
 
 const { AudioContext } = require('..');
 
 const read = require('./utils/read');
 
 
-const GC_LOCK = { _i: 0 };
 let num = 0;
 (async () => { try {
 	
@@ -21,17 +19,7 @@ let num = 0;
 	
 	const clip = await read(`${__dirname}/samples/hit.wav`);
 	
-	// const gain = context.createGain();
-	// gain.connect( context.destination );
-	
 	const buffer = await new Promise(res => context.decodeAudioData(clip, b => res(b)));
-	
-	// GC_LOCK.objects = objects;
-	// GC_LOCK.scene = scene;
-	// GC_LOCK.context = context;
-	// GC_LOCK.clip = clip;
-	// GC_LOCK.gain = gain;
-	// GC_LOCK.buffer = buffer;
 	
 	// Create objects when audio buffer is loaded
 	for (let i = 0; i < count; i++) {
@@ -80,9 +68,9 @@ let num = 0;
 	const offset = 0.5;
 	
 	const render = () => {
-		GC_LOCK._i++;
 		
 		const time = Date.now();
+		
 		for ( let i = 0; i < objects.length; i++ ) {
 			const ball = objects[ i ];
 			const previousHeight = ball.y;
@@ -106,6 +94,7 @@ let num = 0;
 				}
 			}
 		}
+		
 	};
 	
 	setInterval(() => render(), 16);

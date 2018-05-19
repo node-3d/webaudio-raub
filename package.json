@@ -1,7 +1,7 @@
 {
 	"author": "Luis Blanco <luisblanco1337@gmail.com>",
 	"name": "webaudio-raub",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "Web Audio Api implementation for Node.js",
 	"license": "MIT",
 	"main": "index.js",
@@ -29,7 +29,6 @@
 	},
 	"dependencies": {
 		"addon-tools-raub": "^2.0.1",
-		"deps-labsound-raub": "0.2.0",
-		"segfault-handler": "^1.0.0"
+		"deps-labsound-raub": "0.2.0"
 	}
 }
