@@ -54,7 +54,7 @@
 				'<(labsound_include)',
 			],
 			'library_dirs': [ '<(labsound_bin)' ],
-			'libraries'    : [ '-llibnyquist', '-llabsound' ],
+			'libraries'    : [ '-llabsound' ],
 			'conditions'   : [
 				[
 					'OS=="linux"', {
