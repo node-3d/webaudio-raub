@@ -135,12 +135,8 @@ NAN_METHOD(DelayNode::newCtor) {
 	
 	AudioContext *audioContext = Nan::ObjectWrap::Unwrap<AudioContext>(context);
 	
-	try {
-		DelayNode *delayNode = new DelayNode(context, audioContext->getContext()->sampleRate(), delay);
-		delayNode->Wrap(info.This());
-	} catch (...) {
-		return Nan::ThrowError("Can't create a DelayNode.");
-	}
+	DelayNode *delayNode = new DelayNode(context, audioContext->getContext()->sampleRate(), delay);
+	delayNode->Wrap(info.This());
 	
 	RET_VALUE(info.This());
 	
