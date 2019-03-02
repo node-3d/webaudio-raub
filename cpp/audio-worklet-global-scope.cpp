@@ -11,14 +11,15 @@ using namespace std;
 
 // ------ Aux macros
 
-#define THIS_AUDIO_WORKLET_GLOBAL_SCOPE                                                    \
-	AudioWorkletGlobalScope *audioWorkletGlobalScope = Nan::ObjectWrap::Unwrap<AudioWorkletGlobalScope>(info.This());
+#define THIS_AUDIO_WORKLET_GLOBAL_SCOPE                                       \
+	AudioWorkletGlobalScope *audioWorkletGlobalScope =
+	Nan::ObjectWrap::Unwrap<AudioWorkletGlobalScope>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (audioWorkletGlobalScope->_isDestroyed) return;
 
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (audioWorkletGlobalScope->CACHE == V) {                                           \
+	if (audioWorkletGlobalScope->CACHE == V) {                                \
 		return;                                                               \
 	}                                                                         \
 	audioWorkletGlobalScope->CACHE = V;
@@ -50,7 +51,9 @@ void AudioWorkletGlobalScope::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-NAN_METHOD(AudioWorkletGlobalScope::registerProcessor) { THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK;
+NAN_METHOD(AudioWorkletGlobalScope::registerProcessor) {
+	
+	THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK;
 	
 	REQ_UTF8_ARG(0, name);
 	REQ_FUN_ARG(1, processorConstructor);
@@ -60,21 +63,27 @@ NAN_METHOD(AudioWorkletGlobalScope::registerProcessor) { THIS_AUDIO_WORKLET_GLOB
 }
 
 
-NAN_GETTER(AudioWorkletGlobalScope::currentFrameGetter) { THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK;
+NAN_GETTER(AudioWorkletGlobalScope::currentFrameGetter) {
+	
+	THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK;
 	
 	RET_VALUE(JS_OFFS(audioWorkletGlobalScope->_currentFrame));
 	
 }
 
 
-NAN_GETTER(AudioWorkletGlobalScope::currentTimeGetter) { THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK;
+NAN_GETTER(AudioWorkletGlobalScope::currentTimeGetter) {
+	
+	THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK;
 	
 	RET_VALUE(JS_DOUBLE(audioWorkletGlobalScope->_currentTime));
 	
 }
 
 
-NAN_GETTER(AudioWorkletGlobalScope::sampleRateGetter) { THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK;
+NAN_GETTER(AudioWorkletGlobalScope::sampleRateGetter) {
+	
+	THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK;
 	
 	RET_VALUE(JS_FLOAT(audioWorkletGlobalScope->_sampleRate));
 	
@@ -148,14 +157,18 @@ NAN_METHOD(AudioWorkletGlobalScope::newCtor) {
 }
 
 
-NAN_METHOD(AudioWorkletGlobalScope::destroy) { THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK;
+NAN_METHOD(AudioWorkletGlobalScope::destroy) {
+	
+	THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK;
 	
 	audioWorkletGlobalScope->_destroy();
 	
 }
 
 
-NAN_GETTER(AudioWorkletGlobalScope::isDestroyedGetter) { THIS_AUDIO_WORKLET_GLOBAL_SCOPE;
+NAN_GETTER(AudioWorkletGlobalScope::isDestroyedGetter) {
+	
+	THIS_AUDIO_WORKLET_GLOBAL_SCOPE;
 	
 	RET_VALUE(JS_BOOL(audioWorkletGlobalScope->_isDestroyed));
 	

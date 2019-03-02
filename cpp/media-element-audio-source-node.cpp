@@ -11,14 +11,15 @@ using namespace std;
 
 // ------ Aux macros
 
-#define THIS_MEDIA_ELEMENT_AUDIO_SOURCE_NODE                                                    \
-	MediaElementAudioSourceNode *mediaElementAudioSourceNode = Nan::ObjectWrap::Unwrap<MediaElementAudioSourceNode>(info.This());
+#define THIS_MEDIA_ELEMENT_AUDIO_SOURCE_NODE                                  \
+	MediaElementAudioSourceNode *mediaElementAudioSourceNode =
+	Nan::ObjectWrap::Unwrap<MediaElementAudioSourceNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (mediaElementAudioSourceNode->_isDestroyed) return;
 
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (mediaElementAudioSourceNode->CACHE == V) {                                           \
+	if (mediaElementAudioSourceNode->CACHE == V) {                            \
 		return;                                                               \
 	}                                                                         \
 	mediaElementAudioSourceNode->CACHE = V;
@@ -54,7 +55,9 @@ void MediaElementAudioSourceNode::_destroy() { DES_CHECK;
 
 
 
-NAN_GETTER(MediaElementAudioSourceNode::mediaElementGetter) { THIS_MEDIA_ELEMENT_AUDIO_SOURCE_NODE; THIS_CHECK;
+NAN_GETTER(MediaElementAudioSourceNode::mediaElementGetter) {
+	
+	THIS_MEDIA_ELEMENT_AUDIO_SOURCE_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(mediaElementAudioSourceNode->_mediaElement));
 	
@@ -122,7 +125,8 @@ NAN_METHOD(MediaElementAudioSourceNode::newCtor) {
 	
 	CTOR_CHECK("MediaElementAudioSourceNode");
 	
-	MediaElementAudioSourceNode *mediaElementAudioSourceNode = new MediaElementAudioSourceNode();
+	MediaElementAudioSourceNode *mediaElementAudioSourceNode =
+		new MediaElementAudioSourceNode();
 	mediaElementAudioSourceNode->Wrap(info.This());
 	
 	RET_VALUE(info.This());
@@ -130,7 +134,9 @@ NAN_METHOD(MediaElementAudioSourceNode::newCtor) {
 }
 
 
-NAN_METHOD(MediaElementAudioSourceNode::destroy) { THIS_MEDIA_ELEMENT_AUDIO_SOURCE_NODE; THIS_CHECK;
+NAN_METHOD(MediaElementAudioSourceNode::destroy) {
+	
+	THIS_MEDIA_ELEMENT_AUDIO_SOURCE_NODE; THIS_CHECK;
 	
 	mediaElementAudioSourceNode->emit("destroy");
 	
@@ -139,7 +145,9 @@ NAN_METHOD(MediaElementAudioSourceNode::destroy) { THIS_MEDIA_ELEMENT_AUDIO_SOUR
 }
 
 
-NAN_GETTER(MediaElementAudioSourceNode::isDestroyedGetter) { THIS_MEDIA_ELEMENT_AUDIO_SOURCE_NODE;
+NAN_GETTER(MediaElementAudioSourceNode::isDestroyedGetter) {
+	
+	THIS_MEDIA_ELEMENT_AUDIO_SOURCE_NODE;
 	
 	RET_VALUE(JS_BOOL(mediaElementAudioSourceNode->_isDestroyed));
 	

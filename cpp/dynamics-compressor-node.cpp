@@ -11,14 +11,15 @@ using namespace std;
 
 // ------ Aux macros
 
-#define THIS_DYNAMICS_COMPRESSOR_NODE                                                    \
-	DynamicsCompressorNode *dynamicsCompressorNode = Nan::ObjectWrap::Unwrap<DynamicsCompressorNode>(info.This());
+#define THIS_DYNAMICS_COMPRESSOR_NODE                                         \
+	DynamicsCompressorNode *dynamicsCompressorNode =
+	Nan::ObjectWrap::Unwrap<DynamicsCompressorNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (dynamicsCompressorNode->_isDestroyed) return;
 
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (dynamicsCompressorNode->CACHE == V) {                                           \
+	if (dynamicsCompressorNode->CACHE == V) {                                 \
 		return;                                                               \
 	}                                                                         \
 	dynamicsCompressorNode->CACHE = V;
@@ -54,42 +55,54 @@ void DynamicsCompressorNode::_destroy() { DES_CHECK;
 
 
 
-NAN_GETTER(DynamicsCompressorNode::thresholdGetter) { THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
+NAN_GETTER(DynamicsCompressorNode::thresholdGetter) {
+	
+	THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(dynamicsCompressorNode->_threshold));
 	
 }
 
 
-NAN_GETTER(DynamicsCompressorNode::kneeGetter) { THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
+NAN_GETTER(DynamicsCompressorNode::kneeGetter) {
+	
+	THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(dynamicsCompressorNode->_knee));
 	
 }
 
 
-NAN_GETTER(DynamicsCompressorNode::ratioGetter) { THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
+NAN_GETTER(DynamicsCompressorNode::ratioGetter) {
+	
+	THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(dynamicsCompressorNode->_ratio));
 	
 }
 
 
-NAN_GETTER(DynamicsCompressorNode::reductionGetter) { THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
+NAN_GETTER(DynamicsCompressorNode::reductionGetter) {
+	
+	THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_FLOAT(dynamicsCompressorNode->_reduction));
 	
 }
 
 
-NAN_GETTER(DynamicsCompressorNode::attackGetter) { THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
+NAN_GETTER(DynamicsCompressorNode::attackGetter) {
+	
+	THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(dynamicsCompressorNode->_attack));
 	
 }
 
 
-NAN_GETTER(DynamicsCompressorNode::releaseGetter) { THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
+NAN_GETTER(DynamicsCompressorNode::releaseGetter) {
+	
+	THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(dynamicsCompressorNode->_release));
 	
@@ -170,7 +183,9 @@ NAN_METHOD(DynamicsCompressorNode::newCtor) {
 }
 
 
-NAN_METHOD(DynamicsCompressorNode::destroy) { THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
+NAN_METHOD(DynamicsCompressorNode::destroy) {
+	
+	THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
 	
 	dynamicsCompressorNode->emit("destroy");
 	
@@ -179,7 +194,9 @@ NAN_METHOD(DynamicsCompressorNode::destroy) { THIS_DYNAMICS_COMPRESSOR_NODE; THI
 }
 
 
-NAN_GETTER(DynamicsCompressorNode::isDestroyedGetter) { THIS_DYNAMICS_COMPRESSOR_NODE;
+NAN_GETTER(DynamicsCompressorNode::isDestroyedGetter) {
+	
+	THIS_DYNAMICS_COMPRESSOR_NODE;
 	
 	RET_VALUE(JS_BOOL(dynamicsCompressorNode->_isDestroyed));
 	

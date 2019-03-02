@@ -11,14 +11,15 @@ using namespace std;
 
 // ------ Aux macros
 
-#define THIS_MEDIA_STREAM_AUDIO_DESTINATION_NODE                                                    \
-	MediaStreamAudioDestinationNode *mediaStreamAudioDestinationNode = Nan::ObjectWrap::Unwrap<MediaStreamAudioDestinationNode>(info.This());
+#define THIS_MEDIA_STREAM_AUDIO_DESTINATION_NODE                              \
+	MediaStreamAudioDestinationNode *mediaStreamAudioDestinationNode =        \
+	Nan::ObjectWrap::Unwrap<MediaStreamAudioDestinationNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (mediaStreamAudioDestinationNode->_isDestroyed) return;
 
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (mediaStreamAudioDestinationNode->CACHE == V) {                                           \
+	if (mediaStreamAudioDestinationNode->CACHE == V) {                        \
 		return;                                                               \
 	}                                                                         \
 	mediaStreamAudioDestinationNode->CACHE = V;
@@ -54,7 +55,9 @@ void MediaStreamAudioDestinationNode::_destroy() { DES_CHECK;
 
 
 
-NAN_GETTER(MediaStreamAudioDestinationNode::streamGetter) { THIS_MEDIA_STREAM_AUDIO_DESTINATION_NODE; THIS_CHECK;
+NAN_GETTER(MediaStreamAudioDestinationNode::streamGetter) {
+	
+	THIS_MEDIA_STREAM_AUDIO_DESTINATION_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(mediaStreamAudioDestinationNode->_stream));
 	
@@ -122,7 +125,8 @@ NAN_METHOD(MediaStreamAudioDestinationNode::newCtor) {
 	
 	CTOR_CHECK("MediaStreamAudioDestinationNode");
 	
-	MediaStreamAudioDestinationNode *mediaStreamAudioDestinationNode = new MediaStreamAudioDestinationNode();
+	MediaStreamAudioDestinationNode *mediaStreamAudioDestinationNode =
+		new MediaStreamAudioDestinationNode();
 	mediaStreamAudioDestinationNode->Wrap(info.This());
 	
 	RET_VALUE(info.This());
@@ -130,7 +134,9 @@ NAN_METHOD(MediaStreamAudioDestinationNode::newCtor) {
 }
 
 
-NAN_METHOD(MediaStreamAudioDestinationNode::destroy) { THIS_MEDIA_STREAM_AUDIO_DESTINATION_NODE; THIS_CHECK;
+NAN_METHOD(MediaStreamAudioDestinationNode::destroy) {
+	
+	THIS_MEDIA_STREAM_AUDIO_DESTINATION_NODE; THIS_CHECK;
 	
 	mediaStreamAudioDestinationNode->emit("destroy");
 	
@@ -139,7 +145,9 @@ NAN_METHOD(MediaStreamAudioDestinationNode::destroy) { THIS_MEDIA_STREAM_AUDIO_D
 }
 
 
-NAN_GETTER(MediaStreamAudioDestinationNode::isDestroyedGetter) { THIS_MEDIA_STREAM_AUDIO_DESTINATION_NODE;
+NAN_GETTER(MediaStreamAudioDestinationNode::isDestroyedGetter) {
+	
+	THIS_MEDIA_STREAM_AUDIO_DESTINATION_NODE;
 	
 	RET_VALUE(JS_BOOL(mediaStreamAudioDestinationNode->_isDestroyed));
 	

@@ -18,7 +18,8 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_AUDIO_BUFFER_SOURCE_NODE                                         \
-	AudioBufferSourceNode *audioBufferSourceNode = Nan::ObjectWrap::Unwrap<AudioBufferSourceNode>(info.This());
+	AudioBufferSourceNode *audioBufferSourceNode =
+	Nan::ObjectWrap::Unwrap<AudioBufferSourceNode>(info.This());
 
 #define THIS_CHECK                                                            \
 	if (audioBufferSourceNode->_isDestroyed) return;
@@ -108,7 +109,9 @@ NAN_METHOD(AudioBufferSourceNode::start) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_C
 }
 
 
-NAN_GETTER(AudioBufferSourceNode::bufferGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
+NAN_GETTER(AudioBufferSourceNode::bufferGetter) {
+	
+	THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
 	
 	RET_VALUE(JS_OBJ(audioBufferSourceNode->_buffer));
 	
