@@ -1,0 +1,16 @@
+{
+	"name": "test",
+	"version": "0.0.0",
+	"private": true,
+	"main": "mocha",
+	"scripts": {
+		"test": "mocha",
+		"start": "mocha"
+	},
+	"dependencies": {
+		"webaudio-raub": "https://github.com/node-3d/webaudio-raub.git",
+		"chai": "^4.2.0",
+		"mocha": "^5.2.0",
+		"sinon": "^7.1.1"
+	}
+}
