@@ -34,7 +34,7 @@ NAN_GETTER(PannerNode::NAME ## Getter) { THIS_PANNER_NODE; THIS_CHECK;        \
 }
 
 
-inline string fromDistanceModel(uint16 mode) {
+inline string fromDistanceModel(uint16_t mode) {
 	if (mode == lab::PannerNode::LINEAR_DISTANCE) {
 		return "linear";
 	} else if (mode == lab::PannerNode::INVERSE_DISTANCE) {
@@ -45,7 +45,7 @@ inline string fromDistanceModel(uint16 mode) {
 }
 
 
-inline uint16 toDistanceModel(const string &mode) {
+inline uint16_t toDistanceModel(const string &mode) {
 	if (mode == "linear") {
 		return lab::PannerNode::LINEAR_DISTANCE;
 	} else if (mode == "inverse") {
