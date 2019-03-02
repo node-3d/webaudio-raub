@@ -1,7 +1,7 @@
 {
 	"author": "Luis Blanco <luisblanco1337@gmail.com>",
 	"name": "webaudio-raub",
-	"version": "0.0.2",
+	"version": "1.0.0",
 	"description": "Web Audio Api implementation for Node.js",
 	"license": "MIT",
 	"main": "index.js",
@@ -10,11 +10,15 @@
 		"webaudio",
 		"labsound",
 		"audio",
-		"sound"
+		"sound",
+		"c++",
+		"bindings",
+		"native",
+		"gyp"
 	],
 	"engines": {
-		"node": ">=8.11.1",
-		"npm": ">=5.6.0"
+		"node": ">=10.13.0",
+		"npm": ">=6.4.1"
 	},
 	"maintainers": [
 		{
@@ -28,7 +32,7 @@
 		"url": "https://github.com/node-3d/webaudio-raub.git"
 	},
 	"dependencies": {
-		"addon-tools-raub": "^2.0.1",
-		"deps-labsound-raub": "0.2.0"
+		"addon-tools-raub": "4.2.0",
+		"deps-labsound-raub": "https://github.com/node-3d/deps-labsound-raub.git"
 	}
 }

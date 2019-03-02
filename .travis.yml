@@ -1,0 +1,19 @@
+language: node_js
+
+node_js:
+  - "10.13.0"
+
+
+matrix:
+  include:
+  - name: "Linux"
+    os: linux
+    dist: xenial
+    sudo: false
+  - name: "MacOS"
+    os: osx
+
+
+install:
+  - cd test
+  - npm i

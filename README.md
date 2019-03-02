@@ -1,6 +1,12 @@
-# Webaudio for Node.js
+# WebAudio for Node.js
 
 This is a part of [Node3D](https://github.com/node-3d) project.
+
+![NPM](https://nodei.co/npm/webaudio-raub.png?compact=true)
+
+![Build Status](https://api.travis-ci.org/node-3d/webaudio-raub.svg?branch=master)
+
+> npm i -s webaudio-raub
 
 
 ## Synopsis
@@ -8,14 +14,6 @@ This is a part of [Node3D](https://github.com/node-3d) project.
 **Node.js** addon implementing the
 [Web Audio Api](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API).
 
-> Note: This is WORK IN PROGRESS module. Some features may be missing. Contributions are welcome.
-
-
-## Install
-
-```
-npm i -s webaudio-raub
-```
 
 > Note: compilation tools must be in place on your system.
 For Windows, use **ADMIN PRIVELEGED** command line:
