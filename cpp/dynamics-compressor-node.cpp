@@ -12,7 +12,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_DYNAMICS_COMPRESSOR_NODE                                         \
-	DynamicsCompressorNode *dynamicsCompressorNode =
+	DynamicsCompressorNode *dynamicsCompressorNode =                          \
 	Nan::ObjectWrap::Unwrap<DynamicsCompressorNode>(info.This());
 
 #define THIS_CHECK                                                            \

@@ -18,7 +18,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_AUDIO_BUFFER_SOURCE_NODE                                         \
-	AudioBufferSourceNode *audioBufferSourceNode =
+	AudioBufferSourceNode *audioBufferSourceNode =                            \
 	Nan::ObjectWrap::Unwrap<AudioBufferSourceNode>(info.This());
 
 #define THIS_CHECK                                                            \

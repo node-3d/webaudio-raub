@@ -12,7 +12,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_AUDIO_WORKLET_GLOBAL_SCOPE                                       \
-	AudioWorkletGlobalScope *audioWorkletGlobalScope =
+	AudioWorkletGlobalScope *audioWorkletGlobalScope =                        \
 	Nan::ObjectWrap::Unwrap<AudioWorkletGlobalScope>(info.This());
 
 #define THIS_CHECK                                                            \

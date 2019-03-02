@@ -12,7 +12,7 @@ using namespace std;
 // ------ Aux macros
 
 #define THIS_MEDIA_ELEMENT_AUDIO_SOURCE_NODE                                  \
-	MediaElementAudioSourceNode *mediaElementAudioSourceNode =
+	MediaElementAudioSourceNode *mediaElementAudioSourceNode =                \
 	Nan::ObjectWrap::Unwrap<MediaElementAudioSourceNode>(info.This());
 
 #define THIS_CHECK                                                            \
