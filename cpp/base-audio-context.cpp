@@ -109,7 +109,7 @@ BaseAudioContext::BaseAudioContext(bool isOffline, float sampleRate) {
 	
 	_impl->setDestinationNode(
 		std::make_shared<lab::DefaultAudioDestinationNode>(
-			_impl.get(), sampleRate
+			_impl.get(), 2, sampleRate
 		)
 	);
 	_impl->lazyInitialize();
@@ -199,7 +199,12 @@ NAN_METHOD(BaseAudioContext::decodeAudioData) { THIS_BASE_AUDIO_CONTEXT; THIS_CH
 	REQ_OBJ_ARG(0, audioData);
 	REQ_FUN_ARG(1, successCallback);
 	
-	size_t len = Nan::Get(audioData, JS_STR("length")).ToLocalChecked()->Uint32Value();
+	size_t len = static_cast<size_t>(
+		Nan::Get(
+			audioData,
+			JS_STR("length")
+		).ToLocalChecked().As<v8::Integer>()->Value()
+	);
 	
 	uint8_t *data = reinterpret_cast<uint8_t *>(node::Buffer::Data(audioData));
 	vector<uint8_t> dataVec(data, data + len);

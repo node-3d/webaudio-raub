@@ -84,9 +84,9 @@ AudioNode(context, NodePtr(new lab::PannerNode(sampleRate, hrtf))) {
 	_positionX.Reset(AudioParam::getNew(context, node->positionX()));
 	_positionY.Reset(AudioParam::getNew(context, node->positionY()));
 	_positionZ.Reset(AudioParam::getNew(context, node->positionZ()));
-	_orientationX.Reset(AudioParam::getNew(context, node->forwardX()));
-	_orientationY.Reset(AudioParam::getNew(context, node->forwardY()));
-	_orientationZ.Reset(AudioParam::getNew(context, node->forwardZ()));
+	_orientationX.Reset(AudioParam::getNew(context, node->orientationX()));
+	_orientationY.Reset(AudioParam::getNew(context, node->orientationY()));
+	_orientationZ.Reset(AudioParam::getNew(context, node->orientationZ()));
 	
 	_isDestroyed = false;
 	
@@ -144,7 +144,7 @@ NAN_METHOD(PannerNode::setOrientation) { THIS_PANNER_NODE; THIS_CHECK;
 		pannerNode->_impl.get()
 	);
 	
-	node->setForward(lab::FloatPoint3D(x, y, z));
+	node->setOrientation(lab::FloatPoint3D(x, y, z));
 	
 }
 

@@ -238,14 +238,14 @@ NAN_GETTER(AudioNode::contextGetter) { THIS_AUDIO_NODE; THIS_CHECK;
 
 NAN_GETTER(AudioNode::numberOfInputsGetter) { THIS_AUDIO_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_UINT32(audioNode->_impl->numberOfInputs()));
+	RET_VALUE(JS_UINT32(static_cast<uint32_t>(audioNode->_impl->numberOfInputs())));
 	
 }
 
 
 NAN_GETTER(AudioNode::numberOfOutputsGetter) { THIS_AUDIO_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_UINT32(audioNode->_impl->numberOfOutputs()));
+	RET_VALUE(JS_UINT32(static_cast<uint32_t>(audioNode->_impl->numberOfOutputs())));
 	
 }
 

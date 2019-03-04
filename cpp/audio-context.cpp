@@ -175,7 +175,12 @@ NAN_METHOD(AudioContext::newCtor) {
 				return Nan::ThrowTypeError("Type of 'opts.sampleRate' must be 'number'.");
 			}
 			
-			float sampleRate = static_cast<float>(opts->Get(JS_STR("sampleRate"))->NumberValue());
+			float sampleRate = static_cast<float>(
+				Nan::Get(
+					opts,
+					JS_STR("sampleRate")
+				).ToLocalChecked().As<v8::Number>()->Value()
+			);
 			audioContext = new AudioContext(sampleRate);
 			
 		}
