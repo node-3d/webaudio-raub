@@ -18,10 +18,10 @@ public:
 	~AudioDestinationNode();
 	
 	// Public V8 init
-	static void init(V8_VAR_OBJ target);
+	static void init(Napi::Object target);
 	
 	// Make a new instance from C++ land
-	static V8_VAR_OBJ getNew(V8_VAR_OBJ context, DestPtr node);
+	static Napi::Object getNew(Napi::Object context, DestPtr node);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -30,7 +30,7 @@ public:
 // Methods and props, available for children
 protected:
 	
-	AudioDestinationNode(V8_VAR_OBJ context, DestPtr node);
+	AudioDestinationNode(Napi::Object context, DestPtr node);
 	
 	static V8_STORE_FT _protoAudioDestinationNode;
 	static V8_STORE_FUNC _ctorAudioDestinationNode;

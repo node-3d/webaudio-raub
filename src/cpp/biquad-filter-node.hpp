@@ -14,12 +14,12 @@ public:
 	~BiquadFilterNode();
 	
 	// Public V8 init
-	static void init(V8_VAR_OBJ target);
+	static void init(Napi::Object target);
 	
-	static bool isBiquadFilterNode(V8_VAR_OBJ obj);
+	static bool isBiquadFilterNode(Napi::Object obj);
 	
 	// Make a new instance from C++ land
-	static V8_VAR_OBJ getNew(V8_VAR_OBJ context);
+	static Napi::Object getNew(Napi::Object context);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -28,7 +28,7 @@ public:
 // Methods and props, available for children
 protected:
 	
-	explicit BiquadFilterNode(V8_VAR_OBJ context);
+	explicit BiquadFilterNode(Napi::Object context);
 	
 	static V8_STORE_FT _protoBiquadFilterNode;
 	static V8_STORE_FUNC _ctorBiquadFilterNode;

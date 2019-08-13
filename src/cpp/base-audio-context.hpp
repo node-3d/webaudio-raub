@@ -9,7 +9,7 @@
 namespace lab { class AudioContext; };
 
 
-class BaseAudioContext : public EventEmitter {
+class BaseAudioContext : public Napi::ObjectWrap<BaseAudioContext> {
 	
 public:
 	
@@ -18,16 +18,16 @@ public:
 	~BaseAudioContext();
 	
 	// Public V8 init
-	static void init(V8_VAR_OBJ target);
+	static void init(Napi::Object target);
 	
 	// Make a new instance from C++ land
-	static V8_VAR_OBJ getNew(V8_VAR_OBJ context);
+	static Napi::Object getNew(Napi::Object context);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
 	
 	CtxPtr getContext() const;
-	void finishNew(V8_VAR_OBJ context);
+	void finishNew(Napi::Object context);
 	
 	
 // Methods and props

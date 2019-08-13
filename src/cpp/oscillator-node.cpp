@@ -60,7 +60,7 @@ inline lab::OscillatorType toOscillatorType(const string &mode) {
 
 // ------ Constructor and Destructor
 
-OscillatorNode::OscillatorNode(V8_VAR_OBJ context, float sampleRate) :
+OscillatorNode::OscillatorNode(Napi::Object context, float sampleRate) :
 AudioScheduledSourceNode(
 	context,
 	shared_ptr<lab::AudioScheduledSourceNode>(new lab::OscillatorNode(sampleRate))
@@ -151,7 +151,7 @@ V8_STORE_FT OscillatorNode::_protoOscillatorNode;
 V8_STORE_FUNC OscillatorNode::_ctorOscillatorNode;
 
 
-void OscillatorNode::init(V8_VAR_OBJ target) {
+void OscillatorNode::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 	
@@ -190,12 +190,12 @@ void OscillatorNode::init(V8_VAR_OBJ target) {
 }
 
 
-bool OscillatorNode::isOscillatorNode(V8_VAR_OBJ obj) {
+bool OscillatorNode::isOscillatorNode(Napi::Object obj) {
 	return Nan::New(_protoOscillatorNode)->HasInstance(obj);
 }
 
 
-V8_VAR_OBJ OscillatorNode::getNew(V8_VAR_OBJ context) {
+Napi::Object OscillatorNode::getNew(Napi::Object context) {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorOscillatorNode);
 	V8_VAR_VAL argv[] = { context };

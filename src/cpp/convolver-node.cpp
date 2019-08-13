@@ -30,7 +30,7 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-ConvolverNode::ConvolverNode(V8_VAR_OBJ context) :
+ConvolverNode::ConvolverNode(Napi::Object context) :
 AudioNode(context, NodePtr(new lab::ConvolverNode())) {
 	
 	lab::ConvolverNode *node = static_cast<lab::ConvolverNode*>(_impl.get());
@@ -74,7 +74,7 @@ NAN_SETTER(ConvolverNode::bufferSetter) { THIS_CONVOLVER_NODE; THIS_CHECK; SETTE
 	
 	convolverNode->_buffer.Reset(v);
 	
-	V8_VAR_OBJ context = JS_OBJ(convolverNode->_context);
+	Napi::Object context = JS_OBJ(convolverNode->_context);
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	
 	lab::AudioContext *ctx = audioContext->getContext().get();
@@ -121,7 +121,7 @@ V8_STORE_FT ConvolverNode::_protoConvolverNode;
 V8_STORE_FUNC ConvolverNode::_ctorConvolverNode;
 
 
-void ConvolverNode::init(V8_VAR_OBJ target) {
+void ConvolverNode::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 	
@@ -157,7 +157,7 @@ void ConvolverNode::init(V8_VAR_OBJ target) {
 }
 
 
-V8_VAR_OBJ ConvolverNode::getNew(V8_VAR_OBJ context) {
+Napi::Object ConvolverNode::getNew(Napi::Object context) {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorConvolverNode);
 	V8_VAR_VAL argv[] = { context };

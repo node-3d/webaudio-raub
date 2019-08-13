@@ -70,7 +70,7 @@ V8_STORE_FT MediaElementAudioSourceNode::_protoMediaElementAudioSourceNode;
 V8_STORE_FUNC MediaElementAudioSourceNode::_ctorMediaElementAudioSourceNode;
 
 
-void MediaElementAudioSourceNode::init(V8_VAR_OBJ target) {
+void MediaElementAudioSourceNode::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 
@@ -107,12 +107,12 @@ void MediaElementAudioSourceNode::init(V8_VAR_OBJ target) {
 }
 
 
-bool MediaElementAudioSourceNode::isMediaElementAudioSourceNode(V8_VAR_OBJ obj) {
+bool MediaElementAudioSourceNode::isMediaElementAudioSourceNode(Napi::Object obj) {
 	return Nan::New(_protoMediaElementAudioSourceNode)->HasInstance(obj);
 }
 
 
-V8_VAR_OBJ MediaElementAudioSourceNode::getNew() {
+Napi::Object MediaElementAudioSourceNode::getNew() {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorMediaElementAudioSourceNode);
 	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };

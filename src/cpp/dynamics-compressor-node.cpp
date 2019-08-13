@@ -115,7 +115,7 @@ V8_STORE_FT DynamicsCompressorNode::_protoDynamicsCompressorNode;
 V8_STORE_FUNC DynamicsCompressorNode::_ctorDynamicsCompressorNode;
 
 
-void DynamicsCompressorNode::init(V8_VAR_OBJ target) {
+void DynamicsCompressorNode::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 
@@ -157,12 +157,12 @@ void DynamicsCompressorNode::init(V8_VAR_OBJ target) {
 }
 
 
-bool DynamicsCompressorNode::isDynamicsCompressorNode(V8_VAR_OBJ obj) {
+bool DynamicsCompressorNode::isDynamicsCompressorNode(Napi::Object obj) {
 	return Nan::New(_protoDynamicsCompressorNode)->HasInstance(obj);
 }
 
 
-V8_VAR_OBJ DynamicsCompressorNode::getNew() {
+Napi::Object DynamicsCompressorNode::getNew() {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorDynamicsCompressorNode);
 	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };

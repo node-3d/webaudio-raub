@@ -58,7 +58,7 @@ V8_STORE_FT AudioWorklet::_protoAudioWorklet;
 V8_STORE_FUNC AudioWorklet::_ctorAudioWorklet;
 
 
-void AudioWorklet::init(V8_VAR_OBJ target) {
+void AudioWorklet::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 
@@ -91,12 +91,12 @@ void AudioWorklet::init(V8_VAR_OBJ target) {
 }
 
 
-bool AudioWorklet::isAudioWorklet(V8_VAR_OBJ obj) {
+bool AudioWorklet::isAudioWorklet(Napi::Object obj) {
 	return Nan::New(_protoAudioWorklet)->HasInstance(obj);
 }
 
 
-V8_VAR_OBJ AudioWorklet::getNew() {
+Napi::Object AudioWorklet::getNew() {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorAudioWorklet);
 	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };

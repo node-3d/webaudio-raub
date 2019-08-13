@@ -131,12 +131,12 @@ BaseAudioContext::CtxPtr BaseAudioContext::getContext() const {
 }
 
 
-void BaseAudioContext::finishNew(V8_VAR_OBJ context) {
+void BaseAudioContext::finishNew(Napi::Object context) {
 	
-	V8_VAR_OBJ node = AudioDestinationNode::getNew(context, _impl->destination());
+	Napi::Object node = AudioDestinationNode::getNew(context, _impl->destination());
 	_destination.Reset(node);
 	
-	V8_VAR_OBJ listener = AudioListener::getNew(
+	Napi::Object listener = AudioListener::getNew(
 		context,
 		AudioListener::ListenerPtr(&_impl->listener())
 	);
@@ -382,7 +382,7 @@ V8_STORE_FT BaseAudioContext::_protoBaseAudioContext;
 V8_STORE_FUNC BaseAudioContext::_ctorBaseAudioContext;
 
 
-void BaseAudioContext::init(V8_VAR_OBJ target) {
+void BaseAudioContext::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 	

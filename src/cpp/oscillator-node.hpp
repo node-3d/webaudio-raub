@@ -14,12 +14,12 @@ public:
 	~OscillatorNode();
 	
 	// Public V8 init
-	static void init(V8_VAR_OBJ target);
+	static void init(Napi::Object target);
 	
-	static bool isOscillatorNode(V8_VAR_OBJ obj);
+	static bool isOscillatorNode(Napi::Object obj);
 	
 	// Make a new instance from C++ land
-	static V8_VAR_OBJ getNew(V8_VAR_OBJ context);
+	static Napi::Object getNew(Napi::Object context);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -28,7 +28,7 @@ public:
 // Methods and props, available for children
 protected:
 	
-	OscillatorNode(V8_VAR_OBJ context, float sampleRate);
+	OscillatorNode(Napi::Object context, float sampleRate);
 	
 	static V8_STORE_FT _protoOscillatorNode;
 	static V8_STORE_FUNC _ctorOscillatorNode;

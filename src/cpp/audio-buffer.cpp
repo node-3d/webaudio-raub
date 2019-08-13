@@ -135,7 +135,7 @@ V8_STORE_FT AudioBuffer::_protoAudioBuffer;
 V8_STORE_FUNC AudioBuffer::_ctorAudioBuffer;
 
 
-void AudioBuffer::init(V8_VAR_OBJ target) {
+void AudioBuffer::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 	
@@ -173,7 +173,7 @@ void AudioBuffer::init(V8_VAR_OBJ target) {
 }
 
 
-V8_VAR_OBJ AudioBuffer::getNew(BusPtr bus) {
+Napi::Object AudioBuffer::getNew(BusPtr bus) {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorAudioBuffer);
 	V8_VAR_EXT extBus = JS_EXT(&bus);

@@ -1,7 +1,3 @@
-#include <cstdlib>
-
-#include <event-emitter.hpp>
-
 #include "analyser-node.hpp"
 #include "audio-buffer.hpp"
 #include "audio-buffer-source-node.hpp"
@@ -40,61 +36,55 @@
 #include "wave-shaper-node.hpp"
 
 
-extern "C" {
-
-
-void init(V8_VAR_OBJ target) {
+Napi::Object initModule(Napi::Env env, Napi::Object exports) {
 	
-	EventEmitter::init(target);
+	BaseAudioContext::init(env, exports);
+	AudioContext::init(env, exports);
+	// OfflineAudioContext::init(env, exports);
 	
-	BaseAudioContext::init(target);
-	AudioContext::init(target);
-	// OfflineAudioContext::init(target);
+	AudioBuffer::init(env, exports);
+	AudioListener::init(env, exports);
 	
-	AudioBuffer::init(target);
-	AudioListener::init(target);
+	AudioParam::init(env, exports);
 	
-	AudioParam::init(target);
+	// AudioProcessingEvent::init(env, exports);
+	// AudioTimestamp::init(env, exports);
+	// AudioWorklet::init(env, exports);
+	// AudioWorkletGlobalScope::init(env, exports);
+	// AudioWorkletProcessor::init(env, exports);
+	// PeriodicWave::init(env, exports);
+	// OfflineAudioCompletionEvent::init(env, exports);
 	
-	// AudioProcessingEvent::init(target);
-	// AudioTimestamp::init(target);
-	// AudioWorklet::init(target);
-	// AudioWorkletGlobalScope::init(target);
-	// AudioWorkletProcessor::init(target);
-	// PeriodicWave::init(target);
-	// OfflineAudioCompletionEvent::init(target);
+	AudioNode::init(env, exports);
 	
-	AudioNode::init(target);
+	AudioDestinationNode::init(env, exports);
+	AudioScheduledSourceNode::init(env, exports);
 	
-	AudioDestinationNode::init(target);
-	AudioScheduledSourceNode::init(target);
+	// AnalyserNode::init(env, exports);
+	AudioBufferSourceNode::init(env, exports);
 	
-	// AnalyserNode::init(target);
-	AudioBufferSourceNode::init(target);
+	// AudioWorkletNode::init(env, exports);
+	BiquadFilterNode::init(env, exports);
+	// ChannelMergerNode::init(env, exports);
+	// ChannelSplitterNode::init(env, exports);
+	// ConstantSourceNode::init(env, exports);
+	ConvolverNode::init(env, exports);
+	DelayNode::init(env, exports);
+	// DynamicsCompressorNode::init(env, exports);
+	GainNode::init(env, exports);
+	// IIRFilterNode::init(env, exports);
+	// MediaElementAudioSourceNode::init(env, exports);
+	// MediaStreamAudioDestinationNode::init(env, exports);
+	// MediaStreamAudioSourceNode::init(env, exports);
+	OscillatorNode::init(env, exports);
+	PannerNode::init(env, exports);
+	// ScriptProcessorNode::init(env, exports);
+	// StereoPannerNode::init(env, exports);
+	// WaveShaperNode::init(env, exports);
 	
-	// AudioWorkletNode::init(target);
-	BiquadFilterNode::init(target);
-	// ChannelMergerNode::init(target);
-	// ChannelSplitterNode::init(target);
-	// ConstantSourceNode::init(target);
-	ConvolverNode::init(target);
-	DelayNode::init(target);
-	// DynamicsCompressorNode::init(target);
-	GainNode::init(target);
-	// IIRFilterNode::init(target);
-	// MediaElementAudioSourceNode::init(target);
-	// MediaStreamAudioDestinationNode::init(target);
-	// MediaStreamAudioSourceNode::init(target);
-	OscillatorNode::init(target);
-	PannerNode::init(target);
-	// ScriptProcessorNode::init(target);
-	// StereoPannerNode::init(target);
-	// WaveShaperNode::init(target);
+	return exports;
 	
 }
 
 
-NODE_MODULE(webaudio, init);
-
-
-} // extern "C"
+NODE_API_MODULE(glfw, initModule)

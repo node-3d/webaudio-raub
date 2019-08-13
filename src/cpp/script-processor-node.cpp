@@ -87,7 +87,7 @@ V8_STORE_FT ScriptProcessorNode::_protoScriptProcessorNode;
 V8_STORE_FUNC ScriptProcessorNode::_ctorScriptProcessorNode;
 
 
-void ScriptProcessorNode::init(V8_VAR_OBJ target) {
+void ScriptProcessorNode::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 
@@ -125,12 +125,12 @@ void ScriptProcessorNode::init(V8_VAR_OBJ target) {
 }
 
 
-bool ScriptProcessorNode::isScriptProcessorNode(V8_VAR_OBJ obj) {
+bool ScriptProcessorNode::isScriptProcessorNode(Napi::Object obj) {
 	return Nan::New(_protoScriptProcessorNode)->HasInstance(obj);
 }
 
 
-V8_VAR_OBJ ScriptProcessorNode::getNew() {
+Napi::Object ScriptProcessorNode::getNew() {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorScriptProcessorNode);
 	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };

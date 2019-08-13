@@ -30,7 +30,7 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-DelayNode::DelayNode(V8_VAR_OBJ context, float sampleRate, double delay) :
+DelayNode::DelayNode(Napi::Object context, float sampleRate, double delay) :
 AudioNode(context, NodePtr(new lab::DelayNode(sampleRate, delay))) {
 	
 	lab::DelayNode *node = static_cast<lab::DelayNode*>(_impl.get());
@@ -75,7 +75,7 @@ V8_STORE_FT DelayNode::_protoDelayNode;
 V8_STORE_FUNC DelayNode::_ctorDelayNode;
 
 
-void DelayNode::init(V8_VAR_OBJ target) {
+void DelayNode::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 
@@ -112,12 +112,12 @@ void DelayNode::init(V8_VAR_OBJ target) {
 }
 
 
-bool DelayNode::isDelayNode(V8_VAR_OBJ obj) {
+bool DelayNode::isDelayNode(Napi::Object obj) {
 	return Nan::New(_protoDelayNode)->HasInstance(obj);
 }
 
 
-V8_VAR_OBJ DelayNode::getNew(V8_VAR_OBJ context, double delay) {
+Napi::Object DelayNode::getNew(Napi::Object context, double delay) {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorDelayNode);
 	V8_VAR_VAL argv[] = { context, JS_NUM(delay) };

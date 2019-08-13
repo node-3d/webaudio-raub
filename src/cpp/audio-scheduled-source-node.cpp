@@ -28,7 +28,7 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-AudioScheduledSourceNode::AudioScheduledSourceNode(V8_VAR_OBJ context, NodePtr node) :
+AudioScheduledSourceNode::AudioScheduledSourceNode(Napi::Object context, NodePtr node) :
 AudioNode(context, node) {
 	
 	node->setOnEnded(std::bind(&AudioScheduledSourceNode::onEnded, this));
@@ -102,7 +102,7 @@ V8_STORE_FT AudioScheduledSourceNode::_protoAudioScheduledSourceNode;
 V8_STORE_FUNC AudioScheduledSourceNode::_ctorAudioScheduledSourceNode;
 
 
-void AudioScheduledSourceNode::init(V8_VAR_OBJ target) {
+void AudioScheduledSourceNode::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 
@@ -138,7 +138,7 @@ void AudioScheduledSourceNode::init(V8_VAR_OBJ target) {
 }
 
 
-V8_VAR_OBJ AudioScheduledSourceNode::getNew(V8_VAR_OBJ context, NodePtr node) {
+Napi::Object AudioScheduledSourceNode::getNew(Napi::Object context, NodePtr node) {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorAudioScheduledSourceNode);
 	V8_VAR_EXT extNode = JS_EXT(&node);

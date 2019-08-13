@@ -71,7 +71,7 @@ V8_STORE_FT IIRFilterNode::_protoIIRFilterNode;
 V8_STORE_FUNC IIRFilterNode::_ctorIIRFilterNode;
 
 
-void IIRFilterNode::init(V8_VAR_OBJ target) {
+void IIRFilterNode::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 
@@ -108,12 +108,12 @@ void IIRFilterNode::init(V8_VAR_OBJ target) {
 }
 
 
-bool IIRFilterNode::isIIRFilterNode(V8_VAR_OBJ obj) {
+bool IIRFilterNode::isIIRFilterNode(Napi::Object obj) {
 	return Nan::New(_protoIIRFilterNode)->HasInstance(obj);
 }
 
 
-V8_VAR_OBJ IIRFilterNode::getNew() {
+Napi::Object IIRFilterNode::getNew() {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorIIRFilterNode);
 	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };

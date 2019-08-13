@@ -36,7 +36,7 @@ NAN_GETTER(AudioListener::NAME ## Getter) { THIS_AUDIO_LISTENER; THIS_CHECK;  \
 
 // ------ Constructor and Destructor
 
-AudioListener::AudioListener(V8_VAR_OBJ context, ListenerPtr listener) {
+AudioListener::AudioListener(Napi::Object context, ListenerPtr listener) {
 	
 	_impl = listener;
 	_context.Reset(context);
@@ -127,7 +127,7 @@ V8_STORE_FT AudioListener::_protoAudioListener;
 V8_STORE_FUNC AudioListener::_ctorAudioListener;
 
 
-void AudioListener::init(V8_VAR_OBJ target) {
+void AudioListener::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 
@@ -169,12 +169,12 @@ void AudioListener::init(V8_VAR_OBJ target) {
 }
 
 
-bool AudioListener::isAudioListener(V8_VAR_OBJ obj) {
+bool AudioListener::isAudioListener(Napi::Object obj) {
 	return Nan::New(_protoAudioListener)->HasInstance(obj);
 }
 
 
-V8_VAR_OBJ AudioListener::getNew(V8_VAR_OBJ context, ListenerPtr listener) {
+Napi::Object AudioListener::getNew(Napi::Object context, ListenerPtr listener) {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorAudioListener);
 	V8_VAR_EXT extListener = JS_EXT(&listener);

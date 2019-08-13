@@ -30,7 +30,7 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-AudioParam::AudioParam(V8_VAR_OBJ context, ParamPtr param) {
+AudioParam::AudioParam(Napi::Object context, ParamPtr param) {
 	
 	_impl = param;
 	_context.Reset(context);
@@ -140,7 +140,7 @@ NAN_METHOD(AudioParam::cancelAndHoldAtTime) { THIS_AUDIO_PARAM; THIS_CHECK;
 
 NAN_GETTER(AudioParam::valueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
 	
-	V8_VAR_OBJ context = JS_OBJ(audioParam->_context);
+	Napi::Object context = JS_OBJ(audioParam->_context);
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	
 	lab::ContextRenderLock renderLock(audioContext->getContext().get(), "AudioParam::valueGetter");
@@ -183,12 +183,12 @@ V8_STORE_FT AudioParam::_protoAudioParam;
 V8_STORE_FUNC AudioParam::_ctorAudioParam;
 
 
-bool AudioParam::isAudioParam(V8_VAR_OBJ obj) {
+bool AudioParam::isAudioParam(Napi::Object obj) {
 	return Nan::New(_protoAudioParam)->HasInstance(obj);
 }
 
 
-void AudioParam::init(V8_VAR_OBJ target) {
+void AudioParam::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 	
@@ -230,7 +230,7 @@ void AudioParam::init(V8_VAR_OBJ target) {
 }
 
 
-V8_VAR_OBJ AudioParam::getNew(V8_VAR_OBJ context, ParamPtr param) {
+Napi::Object AudioParam::getNew(Napi::Object context, ParamPtr param) {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorAudioParam);
 	V8_VAR_EXT extParam = JS_EXT(&param);

@@ -78,7 +78,7 @@ V8_STORE_FT AudioProcessingEvent::_protoAudioProcessingEvent;
 V8_STORE_FUNC AudioProcessingEvent::_ctorAudioProcessingEvent;
 
 
-void AudioProcessingEvent::init(V8_VAR_OBJ target) {
+void AudioProcessingEvent::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 
@@ -113,12 +113,12 @@ void AudioProcessingEvent::init(V8_VAR_OBJ target) {
 }
 
 
-bool AudioProcessingEvent::isAudioProcessingEvent(V8_VAR_OBJ obj) {
+bool AudioProcessingEvent::isAudioProcessingEvent(Napi::Object obj) {
 	return Nan::New(_protoAudioProcessingEvent)->HasInstance(obj);
 }
 
 
-V8_VAR_OBJ AudioProcessingEvent::getNew() {
+Napi::Object AudioProcessingEvent::getNew() {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorAudioProcessingEvent);
 	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };

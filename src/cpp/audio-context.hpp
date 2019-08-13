@@ -14,10 +14,10 @@ public:
 	~AudioContext();
 	
 	// Public V8 init
-	static void init(V8_VAR_OBJ target);
+	static void init(Napi::Object target);
 	
 	// Make a new instance from C++ land
-	static V8_VAR_OBJ getNew(V8_VAR_OBJ context);
+	static Napi::Object getNew(Napi::Object context);
 	
 	// Destroy an instance from C++ land
 	void _destroy();

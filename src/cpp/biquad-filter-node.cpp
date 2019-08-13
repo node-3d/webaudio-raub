@@ -28,7 +28,7 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-BiquadFilterNode::BiquadFilterNode(V8_VAR_OBJ context) :
+BiquadFilterNode::BiquadFilterNode(Napi::Object context) :
 AudioNode(context, NodePtr(new lab::BiquadFilterNode())) {
 	
 	lab::BiquadFilterNode *node = static_cast<lab::BiquadFilterNode*>(_impl.get());
@@ -132,7 +132,7 @@ V8_STORE_FT BiquadFilterNode::_protoBiquadFilterNode;
 V8_STORE_FUNC BiquadFilterNode::_ctorBiquadFilterNode;
 
 
-void BiquadFilterNode::init(V8_VAR_OBJ target) {
+void BiquadFilterNode::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 
@@ -173,12 +173,12 @@ void BiquadFilterNode::init(V8_VAR_OBJ target) {
 }
 
 
-bool BiquadFilterNode::isBiquadFilterNode(V8_VAR_OBJ obj) {
+bool BiquadFilterNode::isBiquadFilterNode(Napi::Object obj) {
 	return Nan::New(_protoBiquadFilterNode)->HasInstance(obj);
 }
 
 
-V8_VAR_OBJ BiquadFilterNode::getNew(V8_VAR_OBJ context) {
+Napi::Object BiquadFilterNode::getNew(Napi::Object context) {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorBiquadFilterNode);
 	V8_VAR_VAL argv[] = { context };

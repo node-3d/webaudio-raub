@@ -14,12 +14,12 @@ public:
 	~DelayNode();
 	
 	// Public V8 init
-	static void init(V8_VAR_OBJ target);
+	static void init(Napi::Object target);
 	
-	static bool isDelayNode(V8_VAR_OBJ obj);
+	static bool isDelayNode(Napi::Object obj);
 	
 	// Make a new instance from C++ land
-	static V8_VAR_OBJ getNew(V8_VAR_OBJ context, double delay);
+	static Napi::Object getNew(Napi::Object context, double delay);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -28,7 +28,7 @@ public:
 // Methods and props, available for children
 protected:
 	
-	DelayNode(V8_VAR_OBJ context, float sampleRate, double delay);
+	DelayNode(Napi::Object context, float sampleRate, double delay);
 	
 	static V8_STORE_FT _protoDelayNode;
 	static V8_STORE_FUNC _ctorDelayNode;

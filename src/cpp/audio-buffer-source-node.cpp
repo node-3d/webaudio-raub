@@ -35,7 +35,7 @@ using namespace std;
 
 int num = 0;
 
-AudioBufferSourceNode::AudioBufferSourceNode(V8_VAR_OBJ context) :
+AudioBufferSourceNode::AudioBufferSourceNode(Napi::Object context) :
 AudioScheduledSourceNode(
 	context,
 	NodePtr(new lab::SampledAudioNode())
@@ -66,7 +66,7 @@ void AudioBufferSourceNode::_destroy() { DES_CHECK;
 		_impl.get()
 	);
 	
-	V8_VAR_OBJ context = JS_OBJ(_context);
+	Napi::Object context = JS_OBJ(_context);
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	
 	lab::AudioContext *ctx = audioContext->getContext().get();
@@ -126,7 +126,7 @@ NAN_SETTER(AudioBufferSourceNode::bufferSetter) {
 	}
 	audioBufferSourceNode->_buffer.Reset(v);
 	
-	V8_VAR_OBJ context = JS_OBJ(audioBufferSourceNode->_context);
+	Napi::Object context = JS_OBJ(audioBufferSourceNode->_context);
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	
 	lab::AudioContext *ctx = audioContext->getContext().get();
@@ -238,7 +238,7 @@ V8_STORE_FT AudioBufferSourceNode::_protoAudioBufferSourceNode;
 V8_STORE_FUNC AudioBufferSourceNode::_ctorAudioBufferSourceNode;
 
 
-void AudioBufferSourceNode::init(V8_VAR_OBJ target) {
+void AudioBufferSourceNode::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 	
@@ -280,7 +280,7 @@ void AudioBufferSourceNode::init(V8_VAR_OBJ target) {
 }
 
 
-V8_VAR_OBJ AudioBufferSourceNode::getNew(V8_VAR_OBJ context) {
+Napi::Object AudioBufferSourceNode::getNew(Napi::Object context) {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorAudioBufferSourceNode);
 	V8_VAR_VAL argv[] = { context };

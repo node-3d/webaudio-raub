@@ -29,7 +29,7 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-GainNode::GainNode(V8_VAR_OBJ context) :
+GainNode::GainNode(Napi::Object context) :
 AudioNode(context, NodePtr(new lab::GainNode())) {
 	
 	lab::GainNode *node = static_cast<lab::GainNode*>(_impl.get());
@@ -75,7 +75,7 @@ V8_STORE_FT GainNode::_protoGainNode;
 V8_STORE_FUNC GainNode::_ctorGainNode;
 
 
-void GainNode::init(V8_VAR_OBJ target) {
+void GainNode::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 	
@@ -110,7 +110,7 @@ void GainNode::init(V8_VAR_OBJ target) {
 }
 
 
-V8_VAR_OBJ GainNode::getNew(V8_VAR_OBJ context) {
+Napi::Object GainNode::getNew(Napi::Object context) {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorGainNode);
 	V8_VAR_VAL argv[] = { context };

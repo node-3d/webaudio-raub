@@ -76,7 +76,7 @@ inline lab::PanningMode toPanningMode(const string &mode) {
 
 // ------ Constructor and Destructor
 
-PannerNode::PannerNode(V8_VAR_OBJ context, float sampleRate, const string &hrtf) :
+PannerNode::PannerNode(Napi::Object context, float sampleRate, const string &hrtf) :
 AudioNode(context, NodePtr(new lab::PannerNode(sampleRate, hrtf))) {
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(_impl.get());
@@ -361,7 +361,7 @@ V8_STORE_FT PannerNode::_protoPannerNode;
 V8_STORE_FUNC PannerNode::_ctorPannerNode;
 
 
-void PannerNode::init(V8_VAR_OBJ target) {
+void PannerNode::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 	
@@ -413,12 +413,12 @@ void PannerNode::init(V8_VAR_OBJ target) {
 }
 
 
-bool PannerNode::isPannerNode(V8_VAR_OBJ obj) {
+bool PannerNode::isPannerNode(Napi::Object obj) {
 	return Nan::New(_protoPannerNode)->HasInstance(obj);
 }
 
 
-V8_VAR_OBJ PannerNode::getNew(V8_VAR_OBJ context) {
+Napi::Object PannerNode::getNew(Napi::Object context) {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorPannerNode);
 	V8_VAR_VAL argv[] = { context };
@@ -435,7 +435,7 @@ NAN_METHOD(PannerNode::newCtor) {
 	
 	AudioContext *audioContext = Nan::ObjectWrap::Unwrap<AudioContext>(context);
 	
-	Nan::Utf8String hrtf(V8_VAR_OBJ::Cast(Nan::New(_ctorPannerNode))->Get(JS_STR("hrtf")));
+	Nan::Utf8String hrtf(Napi::Object::Cast(Nan::New(_ctorPannerNode))->Get(JS_STR("hrtf")));
 	PannerNode *pannerNode = new PannerNode(context, audioContext->getContext()->sampleRate(), *hrtf);
 	pannerNode->Wrap(info.This());
 	

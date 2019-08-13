@@ -67,7 +67,7 @@ V8_STORE_FT StereoPannerNode::_protoStereoPannerNode;
 V8_STORE_FUNC StereoPannerNode::_ctorStereoPannerNode;
 
 
-void StereoPannerNode::init(V8_VAR_OBJ target) {
+void StereoPannerNode::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 
@@ -104,12 +104,12 @@ void StereoPannerNode::init(V8_VAR_OBJ target) {
 }
 
 
-bool StereoPannerNode::isStereoPannerNode(V8_VAR_OBJ obj) {
+bool StereoPannerNode::isStereoPannerNode(Napi::Object obj) {
 	return Nan::New(_protoStereoPannerNode)->HasInstance(obj);
 }
 
 
-V8_VAR_OBJ StereoPannerNode::getNew() {
+Napi::Object StereoPannerNode::getNew() {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorStereoPannerNode);
 	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };

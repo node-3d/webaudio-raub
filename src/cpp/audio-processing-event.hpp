@@ -12,12 +12,12 @@ public:
 	~AudioProcessingEvent();
 	
 	// Public V8 init
-	static void init(V8_VAR_OBJ target);
+	static void init(Napi::Object target);
 	
-	static bool isAudioProcessingEvent(V8_VAR_OBJ obj);
+	static bool isAudioProcessingEvent(Napi::Object obj);
 	
 	// Make a new instance from C++ land
-	static V8_VAR_OBJ getNew();
+	static Napi::Object getNew();
 	
 	// Destroy an instance from C++ land
 	void _destroy();

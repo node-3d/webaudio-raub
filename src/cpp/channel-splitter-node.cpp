@@ -61,7 +61,7 @@ V8_STORE_FT ChannelSplitterNode::_protoChannelSplitterNode;
 V8_STORE_FUNC ChannelSplitterNode::_ctorChannelSplitterNode;
 
 
-void ChannelSplitterNode::init(V8_VAR_OBJ target) {
+void ChannelSplitterNode::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 
@@ -98,12 +98,12 @@ void ChannelSplitterNode::init(V8_VAR_OBJ target) {
 }
 
 
-bool ChannelSplitterNode::isChannelSplitterNode(V8_VAR_OBJ obj) {
+bool ChannelSplitterNode::isChannelSplitterNode(Napi::Object obj) {
 	return Nan::New(_protoChannelSplitterNode)->HasInstance(obj);
 }
 
 
-V8_VAR_OBJ ChannelSplitterNode::getNew() {
+Napi::Object ChannelSplitterNode::getNew() {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorChannelSplitterNode);
 	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };

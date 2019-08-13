@@ -96,7 +96,7 @@ V8_STORE_FT AudioWorkletGlobalScope::_protoAudioWorkletGlobalScope;
 V8_STORE_FUNC AudioWorkletGlobalScope::_ctorAudioWorkletGlobalScope;
 
 
-void AudioWorkletGlobalScope::init(V8_VAR_OBJ target) {
+void AudioWorkletGlobalScope::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 
@@ -131,12 +131,12 @@ void AudioWorkletGlobalScope::init(V8_VAR_OBJ target) {
 }
 
 
-bool AudioWorkletGlobalScope::isAudioWorkletGlobalScope(V8_VAR_OBJ obj) {
+bool AudioWorkletGlobalScope::isAudioWorkletGlobalScope(Napi::Object obj) {
 	return Nan::New(_protoAudioWorkletGlobalScope)->HasInstance(obj);
 }
 
 
-V8_VAR_OBJ AudioWorkletGlobalScope::getNew() {
+Napi::Object AudioWorkletGlobalScope::getNew() {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorAudioWorkletGlobalScope);
 	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };

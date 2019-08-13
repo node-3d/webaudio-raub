@@ -72,7 +72,7 @@ inline lab::ChannelInterpretation toChannelInterpretation(const string &io) {
 
 // ------ Constructor and Destructor
 
-AudioNode::AudioNode(V8_VAR_OBJ context, NodePtr node) : EventEmitter() {
+AudioNode::AudioNode(Napi::Object context, NodePtr node) : EventEmitter() {
 	
 	_isDestroyed = false;
 	
@@ -102,7 +102,7 @@ AudioNode::NodePtr AudioNode::getNode() const {
 
 void AudioNode::_destroy() { DES_CHECK;
 	
-	V8_VAR_OBJ context = JS_OBJ(_context);
+	Napi::Object context = JS_OBJ(_context);
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	lab::AudioContext *ctx = audioContext->getContext().get();
 	ctx->disconnect(_impl, nullptr);
@@ -129,7 +129,7 @@ NAN_METHOD(AudioNode::connect) { THIS_AUDIO_NODE; THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, destination);
 	
-	V8_VAR_OBJ context = JS_OBJ(audioNode->_context);
+	Napi::Object context = JS_OBJ(audioNode->_context);
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	
 	lab::AudioContext *ctx = audioContext->getContext().get();
@@ -164,9 +164,9 @@ NAN_METHOD(AudioNode::disconnect) { THIS_AUDIO_NODE; THIS_CHECK;
 	
 	int output = 0;
 	int input = 0;
-	V8_VAR_OBJ destination;
+	Napi::Object destination;
 	
-	V8_VAR_OBJ context = JS_OBJ(audioNode->_context);
+	Napi::Object context = JS_OBJ(audioNode->_context);
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	lab::AudioContext *ctx = audioContext->getContext().get();
 	
@@ -261,7 +261,7 @@ NAN_SETTER(AudioNode::channelCountSetter) { THIS_AUDIO_NODE; THIS_CHECK; SETTER_
 	
 	CACHE_CAS(_channelCount, v);
 	
-	V8_VAR_OBJ context = JS_OBJ(audioNode->_context);
+	Napi::Object context = JS_OBJ(audioNode->_context);
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	
 	lab::ContextGraphLock graphLock(audioContext->getContext().get(), "AudioNode::channelCountSetter");
@@ -318,7 +318,7 @@ V8_STORE_FT AudioNode::_protoAudioNode;
 V8_STORE_FUNC AudioNode::_ctorAudioNode;
 
 
-void AudioNode::init(V8_VAR_OBJ target) {
+void AudioNode::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 	
@@ -361,7 +361,7 @@ void AudioNode::init(V8_VAR_OBJ target) {
 }
 
 
-bool AudioNode::isAudioNode(V8_VAR_OBJ obj) {
+bool AudioNode::isAudioNode(Napi::Object obj) {
 	return Nan::New(_protoAudioNode)->HasInstance(obj);
 }
 

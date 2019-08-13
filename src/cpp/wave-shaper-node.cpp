@@ -100,7 +100,7 @@ V8_STORE_FT WaveShaperNode::_protoWaveShaperNode;
 V8_STORE_FUNC WaveShaperNode::_ctorWaveShaperNode;
 
 
-void WaveShaperNode::init(V8_VAR_OBJ target) {
+void WaveShaperNode::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 
@@ -138,12 +138,12 @@ void WaveShaperNode::init(V8_VAR_OBJ target) {
 }
 
 
-bool WaveShaperNode::isWaveShaperNode(V8_VAR_OBJ obj) {
+bool WaveShaperNode::isWaveShaperNode(Napi::Object obj) {
 	return Nan::New(_protoWaveShaperNode)->HasInstance(obj);
 }
 
 
-V8_VAR_OBJ WaveShaperNode::getNew() {
+Napi::Object WaveShaperNode::getNew() {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorWaveShaperNode);
 	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };

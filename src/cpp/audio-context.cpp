@@ -117,7 +117,7 @@ V8_STORE_FT AudioContext::_protoAudioContext;
 V8_STORE_FUNC AudioContext::_ctorAudioContext;
 
 
-void AudioContext::init(V8_VAR_OBJ target) {
+void AudioContext::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 	

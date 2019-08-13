@@ -170,7 +170,7 @@ V8_STORE_FT AnalyserNode::_protoAnalyserNode;
 V8_STORE_FUNC AnalyserNode::_ctorAnalyserNode;
 
 
-void AnalyserNode::init(V8_VAR_OBJ target) {
+void AnalyserNode::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 
@@ -214,12 +214,12 @@ void AnalyserNode::init(V8_VAR_OBJ target) {
 }
 
 
-bool AnalyserNode::isAnalyserNode(V8_VAR_OBJ obj) {
+bool AnalyserNode::isAnalyserNode(Napi::Object obj) {
 	return Nan::New(_protoAnalyserNode)->HasInstance(obj);
 }
 
 
-V8_VAR_OBJ AnalyserNode::getNew() {
+Napi::Object AnalyserNode::getNew() {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorAnalyserNode);
 	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };

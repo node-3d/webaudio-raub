@@ -58,7 +58,7 @@ V8_STORE_FT PeriodicWave::_protoPeriodicWave;
 V8_STORE_FUNC PeriodicWave::_ctorPeriodicWave;
 
 
-void PeriodicWave::init(V8_VAR_OBJ target) {
+void PeriodicWave::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 
@@ -91,12 +91,12 @@ void PeriodicWave::init(V8_VAR_OBJ target) {
 }
 
 
-bool PeriodicWave::isPeriodicWave(V8_VAR_OBJ obj) {
+bool PeriodicWave::isPeriodicWave(Napi::Object obj) {
 	return Nan::New(_protoPeriodicWave)->HasInstance(obj);
 }
 
 
-V8_VAR_OBJ PeriodicWave::getNew() {
+Napi::Object PeriodicWave::getNew() {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorPeriodicWave);
 	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };

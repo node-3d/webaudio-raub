@@ -61,7 +61,7 @@ V8_STORE_FT ChannelMergerNode::_protoChannelMergerNode;
 V8_STORE_FUNC ChannelMergerNode::_ctorChannelMergerNode;
 
 
-void ChannelMergerNode::init(V8_VAR_OBJ target) {
+void ChannelMergerNode::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 
@@ -98,12 +98,12 @@ void ChannelMergerNode::init(V8_VAR_OBJ target) {
 }
 
 
-bool ChannelMergerNode::isChannelMergerNode(V8_VAR_OBJ obj) {
+bool ChannelMergerNode::isChannelMergerNode(Napi::Object obj) {
 	return Nan::New(_protoChannelMergerNode)->HasInstance(obj);
 }
 
 
-V8_VAR_OBJ ChannelMergerNode::getNew() {
+Napi::Object ChannelMergerNode::getNew() {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorChannelMergerNode);
 	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };

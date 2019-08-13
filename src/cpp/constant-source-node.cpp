@@ -67,7 +67,7 @@ V8_STORE_FT ConstantSourceNode::_protoConstantSourceNode;
 V8_STORE_FUNC ConstantSourceNode::_ctorConstantSourceNode;
 
 
-void ConstantSourceNode::init(V8_VAR_OBJ target) {
+void ConstantSourceNode::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 
@@ -104,12 +104,12 @@ void ConstantSourceNode::init(V8_VAR_OBJ target) {
 }
 
 
-bool ConstantSourceNode::isConstantSourceNode(V8_VAR_OBJ obj) {
+bool ConstantSourceNode::isConstantSourceNode(Napi::Object obj) {
 	return Nan::New(_protoConstantSourceNode)->HasInstance(obj);
 }
 
 
-V8_VAR_OBJ ConstantSourceNode::getNew() {
+Napi::Object ConstantSourceNode::getNew() {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorConstantSourceNode);
 	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };

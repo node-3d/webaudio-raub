@@ -16,10 +16,10 @@ public:
 	~AudioScheduledSourceNode();
 	
 	// Public V8 init
-	static void init(V8_VAR_OBJ target);
+	static void init(Napi::Object target);
 	
 	// Make a new instance from C++ land
-	static V8_VAR_OBJ getNew(V8_VAR_OBJ context, NodePtr node);
+	static Napi::Object getNew(Napi::Object context, NodePtr node);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -29,7 +29,7 @@ public:
 protected:
 	
 	AudioScheduledSourceNode() {} // fake, TODO: remove
-	AudioScheduledSourceNode(V8_VAR_OBJ context, NodePtr node);
+	AudioScheduledSourceNode(Napi::Object context, NodePtr node);
 	
 	static V8_STORE_FT _protoAudioScheduledSourceNode;
 	static V8_STORE_FUNC _ctorAudioScheduledSourceNode;

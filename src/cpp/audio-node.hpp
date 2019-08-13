@@ -10,7 +10,7 @@ namespace lab { class AudioNode; };
 #include <LabSound/core/AudioNode.h>
 
 
-class AudioNode : public EventEmitter {
+class AudioNode : public Napi::ObjectWrap<AudioNode> {
 	
 public:
 	
@@ -19,9 +19,9 @@ public:
 	~AudioNode();
 	
 	// Public V8 init
-	static void init(V8_VAR_OBJ target);
+	static void init(Napi::Object target);
 	
-	static bool isAudioNode(V8_VAR_OBJ obj);
+	static bool isAudioNode(Napi::Object obj);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -33,7 +33,7 @@ public:
 protected:
 	
 	AudioNode() {} // fake, TODO: remove
-	AudioNode(V8_VAR_OBJ context, NodePtr node);
+	AudioNode(Napi::Object context, NodePtr node);
 	
 	static V8_STORE_FT _protoAudioNode; // for inheritance
 	static V8_STORE_FUNC _ctorAudioNode;

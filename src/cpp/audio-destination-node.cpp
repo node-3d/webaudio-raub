@@ -28,7 +28,7 @@ using namespace std;
 
 // ------ Constructor and Destructor
 
-AudioDestinationNode::AudioDestinationNode(V8_VAR_OBJ context, DestPtr node) :
+AudioDestinationNode::AudioDestinationNode(Napi::Object context, DestPtr node) :
 AudioNode(context, node) {
 	
 	_isDestroyed = false;
@@ -69,7 +69,7 @@ V8_STORE_FT AudioDestinationNode::_protoAudioDestinationNode;
 V8_STORE_FUNC AudioDestinationNode::_ctorAudioDestinationNode;
 
 
-void AudioDestinationNode::init(V8_VAR_OBJ target) {
+void AudioDestinationNode::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 	
@@ -106,7 +106,7 @@ void AudioDestinationNode::init(V8_VAR_OBJ target) {
 }
 
 
-V8_VAR_OBJ AudioDestinationNode::getNew(V8_VAR_OBJ context, DestPtr node) {
+Napi::Object AudioDestinationNode::getNew(Napi::Object context, DestPtr node) {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorAudioDestinationNode);
 	V8_VAR_EXT extNode = JS_EXT(&node);

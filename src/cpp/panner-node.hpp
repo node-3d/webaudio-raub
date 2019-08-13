@@ -14,12 +14,12 @@ public:
 	~PannerNode();
 	
 	// Public V8 init
-	static void init(V8_VAR_OBJ target);
+	static void init(Napi::Object target);
 	
-	static bool isPannerNode(V8_VAR_OBJ obj);
+	static bool isPannerNode(Napi::Object obj);
 	
 	// Make a new instance from C++ land
-	static V8_VAR_OBJ getNew(V8_VAR_OBJ context);
+	static Napi::Object getNew(Napi::Object context);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -28,7 +28,7 @@ public:
 // Methods and props, available for children
 protected:
 	
-	PannerNode(V8_VAR_OBJ context, float sampleRate, const std::string &hrtf);
+	PannerNode(Napi::Object context, float sampleRate, const std::string &hrtf);
 	
 	static V8_STORE_FT _protoPannerNode;
 	static V8_STORE_FUNC _ctorPannerNode;

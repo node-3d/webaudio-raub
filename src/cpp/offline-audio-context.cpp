@@ -102,7 +102,7 @@ V8_STORE_FT OfflineAudioContext::_protoOfflineAudioContext;
 V8_STORE_FUNC OfflineAudioContext::_ctorOfflineAudioContext;
 
 
-void OfflineAudioContext::init(V8_VAR_OBJ target) {
+void OfflineAudioContext::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 
@@ -141,12 +141,12 @@ void OfflineAudioContext::init(V8_VAR_OBJ target) {
 }
 
 
-bool OfflineAudioContext::isOfflineAudioContext(V8_VAR_OBJ obj) {
+bool OfflineAudioContext::isOfflineAudioContext(Napi::Object obj) {
 	return Nan::New(_protoOfflineAudioContext)->HasInstance(obj);
 }
 
 
-V8_VAR_OBJ OfflineAudioContext::getNew() {
+Napi::Object OfflineAudioContext::getNew() {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorOfflineAudioContext);
 	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };

@@ -87,7 +87,7 @@ V8_STORE_FT AudioTimestamp::_protoAudioTimestamp;
 V8_STORE_FUNC AudioTimestamp::_ctorAudioTimestamp;
 
 
-void AudioTimestamp::init(V8_VAR_OBJ target) {
+void AudioTimestamp::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
 
@@ -121,12 +121,12 @@ void AudioTimestamp::init(V8_VAR_OBJ target) {
 }
 
 
-bool AudioTimestamp::isAudioTimestamp(V8_VAR_OBJ obj) {
+bool AudioTimestamp::isAudioTimestamp(Napi::Object obj) {
 	return Nan::New(_protoAudioTimestamp)->HasInstance(obj);
 }
 
 
-V8_VAR_OBJ AudioTimestamp::getNew() {
+Napi::Object AudioTimestamp::getNew() {
 	
 	V8_VAR_FUNC ctor = Nan::New(_ctorAudioTimestamp);
 	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
