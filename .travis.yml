@@ -1,22 +1,58 @@
 language: node_js
-
 node_js:
-  - "10.13.0"
+  - "10.16.1"
+
+install:
+  - cd test
+  - npm ci
 
 
 matrix:
   include:
-  - name: "Linux"
-    os: linux
-    dist: xenial
-    sudo: false
-  - name: "MacOS"
-    os: osx
+    - name: "Linux Test"
+      os: linux
+      if: NOT commit_message =~ /^:hammer:/
+      dist: xenial
+      sudo: false
+    - name: "OSX Test"
+      os: osx
+      if: NOT commit_message =~ /^:hammer:/
+      script:
+        - echo OK.
+    - name: "Linux Build"
+      os: linux
+      dist: xenial
+      sudo: false
+      if: commit_message =~ /^:hammer:/
+      env:
+        - ISBUILD=true
+        - SYSNAME=Linux
+      install:
+        - cd src
+      script:
+        - npm ci
+    - name: "OSX Build"
+      os: osx
+      if: commit_message =~ /^:hammer:/
+      env:
+        - ISBUILD=true
+        - SYSNAME=OSX
+      install:
+        - cd src
+      script:
+        - npm ci
 
 
-install:
-  - cd test
-  - npm i
-
-script:
-  - npm test
+deploy:
+  on:
+    all_branches: true
+    condition: $ISBUILD = true
+  provider: releases
+  name: "Binary for $SYSNAME"
+  body: $TRAVIS_COMMIT_MESSAGE
+  api_key: $GITHUB_TOKEN
+  skip_cleanup: true
+  overwrite: true
+  draft: true
+  file:
+    - "build/Release/webaudio.node"

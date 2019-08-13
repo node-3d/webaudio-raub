@@ -2,8 +2,7 @@
 
 const { expect } = require('chai');
 
-const WebAudio = require('webaudio-raub');
-
+const WebAudio = require('..');
 
 
 describe('WebAudio', () => {
