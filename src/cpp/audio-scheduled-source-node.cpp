@@ -16,14 +16,11 @@ using namespace std;
 	AudioScheduledSourceNode *audioScheduledSourceNode =                      \
 		Nan::ObjectWrap::Unwrap<AudioScheduledSourceNode>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (audioScheduledSourceNode->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (audioScheduledSourceNode->CACHE == V) {                               \
+	if (this.CACHE == V) {                               \
 		return;                                                               \
 	}                                                                         \
-	audioScheduledSourceNode->CACHE = V;
+	this.CACHE = V;
 
 
 // ------ Constructor and Destructor
@@ -176,6 +173,6 @@ NAN_METHOD(AudioScheduledSourceNode::destroy) { THIS_AUDIO_SCHEDULED_SOURCE_NODE
 
 NAN_GETTER(AudioScheduledSourceNode::isDestroyedGetter) { THIS_AUDIO_SCHEDULED_SOURCE_NODE;
 	
-	RET_VALUE(JS_BOOL(audioScheduledSourceNode->_isDestroyed));
+	RET_BOOL(audioScheduledSourceNode->_isDestroyed);
 	
 }

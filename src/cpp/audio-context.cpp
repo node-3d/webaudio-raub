@@ -13,14 +13,11 @@ using namespace std;
 #define THIS_AUDIO_CONTEXT                                                    \
 	AudioContext *audioContext = Nan::ObjectWrap::Unwrap<AudioContext>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (audioContext->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (audioContext->CACHE == V) {                                           \
+	if (this.CACHE == V) {                                           \
 		return;                                                               \
 	}                                                                         \
-	audioContext->CACHE = V;
+	this.CACHE = V;
 
 
 // ------ Constructor and Destructor
@@ -106,7 +103,7 @@ NAN_METHOD(AudioContext::createMediaStreamDestination) { THIS_AUDIO_CONTEXT; THI
 
 NAN_GETTER(AudioContext::baseLatencyGetter) { THIS_AUDIO_CONTEXT; THIS_CHECK;
 	
-	RET_VALUE(JS_DOUBLE(audioContext->_baseLatency));
+	RET_NUM(audioContext->_baseLatency);
 	
 }
 
@@ -211,6 +208,6 @@ NAN_METHOD(AudioContext::destroy) { THIS_AUDIO_CONTEXT; THIS_CHECK;
 
 NAN_GETTER(AudioContext::isDestroyedGetter) { THIS_AUDIO_CONTEXT;
 	
-	RET_VALUE(JS_BOOL(audioContext->_isDestroyed));
+	RET_BOOL(audioContext->_isDestroyed);
 	
 }

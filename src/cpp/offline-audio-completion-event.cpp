@@ -14,14 +14,11 @@ using namespace std;
 #define THIS_OFFLINE_AUDIO_COMPLETION_EVENT                                                    \
 	OfflineAudioCompletionEvent *offlineAudioCompletionEvent = Nan::ObjectWrap::Unwrap<OfflineAudioCompletionEvent>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (offlineAudioCompletionEvent->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (offlineAudioCompletionEvent->CACHE == V) {                                           \
+	if (this.CACHE == V) {                                           \
 		return;                                                               \
 	}                                                                         \
-	offlineAudioCompletionEvent->CACHE = V;
+	this.CACHE = V;
 
 
 // ------ Constructor and Destructor
@@ -132,6 +129,6 @@ NAN_METHOD(OfflineAudioCompletionEvent::destroy) { THIS_OFFLINE_AUDIO_COMPLETION
 
 NAN_GETTER(OfflineAudioCompletionEvent::isDestroyedGetter) { THIS_OFFLINE_AUDIO_COMPLETION_EVENT;
 	
-	RET_VALUE(JS_BOOL(offlineAudioCompletionEvent->_isDestroyed));
+	RET_BOOL(offlineAudioCompletionEvent->_isDestroyed);
 	
 }

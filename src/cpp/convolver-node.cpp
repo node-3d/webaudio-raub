@@ -18,14 +18,11 @@ using namespace std;
 #define THIS_CONVOLVER_NODE                                                   \
 	ConvolverNode *convolverNode = Nan::ObjectWrap::Unwrap<ConvolverNode>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (convolverNode->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (convolverNode->CACHE == V) {                                          \
+	if (this.CACHE == V) {                                          \
 		return;                                                               \
 	}                                                                         \
-	convolverNode->CACHE = V;
+	this.CACHE = V;
 
 
 // ------ Constructor and Destructor
@@ -98,7 +95,7 @@ NAN_GETTER(ConvolverNode::normalizeGetter) { THIS_CONVOLVER_NODE; THIS_CHECK;
 		convolverNode->_impl.get()
 	);
 	
-	RET_VALUE(JS_BOOL(node->normalize()));
+	RET_BOOL(node->normalize());
 	
 }
 
@@ -191,6 +188,6 @@ NAN_METHOD(ConvolverNode::destroy) { THIS_CONVOLVER_NODE; THIS_CHECK;
 
 NAN_GETTER(ConvolverNode::isDestroyedGetter) { THIS_CONVOLVER_NODE;
 	
-	RET_VALUE(JS_BOOL(convolverNode->_isDestroyed));
+	RET_BOOL(convolverNode->_isDestroyed);
 	
 }

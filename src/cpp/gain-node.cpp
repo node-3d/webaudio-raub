@@ -17,14 +17,11 @@ using namespace std;
 #define THIS_GAIN_NODE                                                        \
 	GainNode *gainNode = Nan::ObjectWrap::Unwrap<GainNode>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (gainNode->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (gainNode->CACHE == V) {                                               \
+	if (this.CACHE == V) {                                               \
 		return;                                                               \
 	}                                                                         \
-	gainNode->CACHE = V;
+	this.CACHE = V;
 
 
 // ------ Constructor and Destructor
@@ -144,6 +141,6 @@ NAN_METHOD(GainNode::destroy) { THIS_GAIN_NODE; THIS_CHECK;
 
 NAN_GETTER(GainNode::isDestroyedGetter) { THIS_GAIN_NODE;
 	
-	RET_VALUE(JS_BOOL(gainNode->_isDestroyed));
+	RET_BOOL(gainNode->_isDestroyed);
 	
 }

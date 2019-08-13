@@ -42,14 +42,11 @@ using namespace std;
 #define THIS_BASE_AUDIO_CONTEXT                                               \
 	BaseAudioContext *baseAudioContext = Nan::ObjectWrap::Unwrap<BaseAudioContext>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (baseAudioContext->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (baseAudioContext->CACHE == V) {                                       \
+	if (this.CACHE == V) {                                       \
 		return;                                                               \
 	}                                                                         \
-	baseAudioContext->CACHE = V;
+	this.CACHE = V;
 
 #define NODE_CREATOR(M, C)                                                    \
 NAN_METHOD(BaseAudioContext::create ## M) {                                   \
@@ -350,14 +347,14 @@ NAN_GETTER(BaseAudioContext::destinationGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_
 
 NAN_GETTER(BaseAudioContext::currentTimeGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
-	RET_VALUE(JS_DOUBLE(baseAudioContext->_impl->currentTime()));
+	RET_NUM(baseAudioContext->_impl->currentTime());
 	
 }
 
 
 NAN_GETTER(BaseAudioContext::sampleRateGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
-	RET_VALUE(JS_FLOAT(baseAudioContext->_impl->sampleRate()));
+	RET_NUM(baseAudioContext->_impl->sampleRate());
 	
 }
 
@@ -465,6 +462,6 @@ NAN_METHOD(BaseAudioContext::destroy) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 
 NAN_GETTER(BaseAudioContext::isDestroyedGetter) { THIS_BASE_AUDIO_CONTEXT;
 	
-	RET_VALUE(JS_BOOL(baseAudioContext->_isDestroyed));
+	RET_BOOL(baseAudioContext->_isDestroyed);
 	
 }

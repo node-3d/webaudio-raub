@@ -18,14 +18,11 @@ using namespace std;
 #define THIS_OSCILLATOR_NODE                                                  \
 	OscillatorNode *oscillatorNode = Nan::ObjectWrap::Unwrap<OscillatorNode>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (oscillatorNode->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (oscillatorNode->CACHE == V) {                                         \
+	if (this.CACHE == V) {                                         \
 		return;                                                               \
 	}                                                                         \
-	oscillatorNode->CACHE = V;
+	this.CACHE = V;
 
 
 inline string fromOscillatorType(lab::OscillatorType mode) {
@@ -231,6 +228,6 @@ NAN_METHOD(OscillatorNode::destroy) { THIS_OSCILLATOR_NODE; THIS_CHECK;
 
 NAN_GETTER(OscillatorNode::isDestroyedGetter) { THIS_OSCILLATOR_NODE;
 	
-	RET_VALUE(JS_BOOL(oscillatorNode->_isDestroyed));
+	RET_BOOL(oscillatorNode->_isDestroyed);
 	
 }

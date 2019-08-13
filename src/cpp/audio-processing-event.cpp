@@ -14,14 +14,11 @@ using namespace std;
 #define THIS_AUDIO_PROCESSING_EVENT                                                    \
 	AudioProcessingEvent *audioProcessingEvent = Nan::ObjectWrap::Unwrap<AudioProcessingEvent>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (audioProcessingEvent->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (audioProcessingEvent->CACHE == V) {                                           \
+	if (this.CACHE == V) {                                           \
 		return;                                                               \
 	}                                                                         \
-	audioProcessingEvent->CACHE = V;
+	this.CACHE = V;
 
 
 // ------ Constructor and Destructor
@@ -53,7 +50,7 @@ void AudioProcessingEvent::_destroy() { DES_CHECK;
 
 NAN_GETTER(AudioProcessingEvent::playbackTimeGetter) { THIS_AUDIO_PROCESSING_EVENT; THIS_CHECK;
 	
-	RET_VALUE(JS_DOUBLE(audioProcessingEvent->_playbackTime));
+	RET_NUM(audioProcessingEvent->_playbackTime);
 	
 }
 
@@ -148,6 +145,6 @@ NAN_METHOD(AudioProcessingEvent::destroy) { THIS_AUDIO_PROCESSING_EVENT; THIS_CH
 
 NAN_GETTER(AudioProcessingEvent::isDestroyedGetter) { THIS_AUDIO_PROCESSING_EVENT;
 	
-	RET_VALUE(JS_BOOL(audioProcessingEvent->_isDestroyed));
+	RET_BOOL(audioProcessingEvent->_isDestroyed);
 	
 }

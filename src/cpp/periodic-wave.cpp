@@ -14,14 +14,11 @@ using namespace std;
 #define THIS_PERIODIC_WAVE                                                    \
 	PeriodicWave *periodicWave = Nan::ObjectWrap::Unwrap<PeriodicWave>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (periodicWave->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (periodicWave->CACHE == V) {                                           \
+	if (this.CACHE == V) {                                           \
 		return;                                                               \
 	}                                                                         \
-	periodicWave->CACHE = V;
+	this.CACHE = V;
 
 
 // ------ Constructor and Destructor
@@ -126,6 +123,6 @@ NAN_METHOD(PeriodicWave::destroy) { THIS_PERIODIC_WAVE; THIS_CHECK;
 
 NAN_GETTER(PeriodicWave::isDestroyedGetter) { THIS_PERIODIC_WAVE;
 	
-	RET_VALUE(JS_BOOL(periodicWave->_isDestroyed));
+	RET_BOOL(periodicWave->_isDestroyed);
 	
 }

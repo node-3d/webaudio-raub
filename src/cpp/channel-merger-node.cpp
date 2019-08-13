@@ -14,14 +14,11 @@ using namespace std;
 #define THIS_CHANNEL_MERGER_NODE                                                    \
 	ChannelMergerNode *channelMergerNode = Nan::ObjectWrap::Unwrap<ChannelMergerNode>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (channelMergerNode->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (channelMergerNode->CACHE == V) {                                           \
+	if (this.CACHE == V) {                                           \
 		return;                                                               \
 	}                                                                         \
-	channelMergerNode->CACHE = V;
+	this.CACHE = V;
 
 
 // ------ Constructor and Destructor
@@ -135,6 +132,6 @@ NAN_METHOD(ChannelMergerNode::destroy) { THIS_CHANNEL_MERGER_NODE; THIS_CHECK;
 
 NAN_GETTER(ChannelMergerNode::isDestroyedGetter) { THIS_CHANNEL_MERGER_NODE;
 	
-	RET_VALUE(JS_BOOL(channelMergerNode->_isDestroyed));
+	RET_BOOL(channelMergerNode->_isDestroyed);
 	
 }

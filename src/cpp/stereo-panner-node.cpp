@@ -14,14 +14,11 @@ using namespace std;
 #define THIS_STEREO_PANNER_NODE                                                    \
 	StereoPannerNode *stereoPannerNode = Nan::ObjectWrap::Unwrap<StereoPannerNode>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (stereoPannerNode->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (stereoPannerNode->CACHE == V) {                                           \
+	if (this.CACHE == V) {                                           \
 		return;                                                               \
 	}                                                                         \
-	stereoPannerNode->CACHE = V;
+	this.CACHE = V;
 
 
 // ------ Constructor and Destructor
@@ -141,6 +138,6 @@ NAN_METHOD(StereoPannerNode::destroy) { THIS_STEREO_PANNER_NODE; THIS_CHECK;
 
 NAN_GETTER(StereoPannerNode::isDestroyedGetter) { THIS_STEREO_PANNER_NODE;
 	
-	RET_VALUE(JS_BOOL(stereoPannerNode->_isDestroyed));
+	RET_BOOL(stereoPannerNode->_isDestroyed);
 	
 }

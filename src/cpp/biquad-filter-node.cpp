@@ -16,14 +16,11 @@ using namespace std;
 #define THIS_BIQUAD_FILTER_NODE                                                    \
 	BiquadFilterNode *biquadFilterNode = Nan::ObjectWrap::Unwrap<BiquadFilterNode>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (biquadFilterNode->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (biquadFilterNode->CACHE == V) {                                           \
+	if (this.CACHE == V) {                                           \
 		return;                                                               \
 	}                                                                         \
-	biquadFilterNode->CACHE = V;
+	this.CACHE = V;
 
 
 // ------ Constructor and Destructor
@@ -212,6 +209,6 @@ NAN_METHOD(BiquadFilterNode::destroy) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
 
 NAN_GETTER(BiquadFilterNode::isDestroyedGetter) { THIS_BIQUAD_FILTER_NODE;
 	
-	RET_VALUE(JS_BOOL(biquadFilterNode->_isDestroyed));
+	RET_BOOL(biquadFilterNode->_isDestroyed);
 	
 }

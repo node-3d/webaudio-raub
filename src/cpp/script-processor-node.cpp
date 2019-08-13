@@ -14,14 +14,11 @@ using namespace std;
 #define THIS_SCRIPT_PROCESSOR_NODE                                                    \
 	ScriptProcessorNode *scriptProcessorNode = Nan::ObjectWrap::Unwrap<ScriptProcessorNode>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (scriptProcessorNode->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (scriptProcessorNode->CACHE == V) {                                           \
+	if (this.CACHE == V) {                                           \
 		return;                                                               \
 	}                                                                         \
-	scriptProcessorNode->CACHE = V;
+	this.CACHE = V;
 
 
 // ------ Constructor and Destructor
@@ -76,7 +73,7 @@ NAN_SETTER(ScriptProcessorNode::onaudioprocessSetter) { THIS_SCRIPT_PROCESSOR_NO
 
 NAN_GETTER(ScriptProcessorNode::bufferSizeGetter) { THIS_SCRIPT_PROCESSOR_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_INT32(scriptProcessorNode->_bufferSize));
+	RET_NUM(scriptProcessorNode->_bufferSize);
 	
 }
 
@@ -162,6 +159,6 @@ NAN_METHOD(ScriptProcessorNode::destroy) { THIS_SCRIPT_PROCESSOR_NODE; THIS_CHEC
 
 NAN_GETTER(ScriptProcessorNode::isDestroyedGetter) { THIS_SCRIPT_PROCESSOR_NODE;
 	
-	RET_VALUE(JS_BOOL(scriptProcessorNode->_isDestroyed));
+	RET_BOOL(scriptProcessorNode->_isDestroyed);
 	
 }

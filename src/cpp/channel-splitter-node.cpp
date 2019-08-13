@@ -14,14 +14,11 @@ using namespace std;
 #define THIS_CHANNEL_SPLITTER_NODE                                                    \
 	ChannelSplitterNode *channelSplitterNode = Nan::ObjectWrap::Unwrap<ChannelSplitterNode>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (channelSplitterNode->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (channelSplitterNode->CACHE == V) {                                           \
+	if (this.CACHE == V) {                                           \
 		return;                                                               \
 	}                                                                         \
-	channelSplitterNode->CACHE = V;
+	this.CACHE = V;
 
 
 // ------ Constructor and Destructor
@@ -135,6 +132,6 @@ NAN_METHOD(ChannelSplitterNode::destroy) { THIS_CHANNEL_SPLITTER_NODE; THIS_CHEC
 
 NAN_GETTER(ChannelSplitterNode::isDestroyedGetter) { THIS_CHANNEL_SPLITTER_NODE;
 	
-	RET_VALUE(JS_BOOL(channelSplitterNode->_isDestroyed));
+	RET_BOOL(channelSplitterNode->_isDestroyed);
 	
 }

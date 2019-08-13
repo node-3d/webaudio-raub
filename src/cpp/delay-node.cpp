@@ -18,14 +18,11 @@ using namespace std;
 #define THIS_DELAY_NODE                                                       \
 	DelayNode *delayNode = Nan::ObjectWrap::Unwrap<DelayNode>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (delayNode->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (delayNode->CACHE == V) {                                              \
+	if (this.CACHE == V) {                                              \
 		return;                                                               \
 	}                                                                         \
-	delayNode->CACHE = V;
+	this.CACHE = V;
 
 
 // ------ Constructor and Destructor
@@ -154,6 +151,6 @@ NAN_METHOD(DelayNode::destroy) { THIS_DELAY_NODE; THIS_CHECK;
 
 NAN_GETTER(DelayNode::isDestroyedGetter) { THIS_DELAY_NODE;
 	
-	RET_VALUE(JS_BOOL(delayNode->_isDestroyed));
+	RET_BOOL(delayNode->_isDestroyed);
 	
 }

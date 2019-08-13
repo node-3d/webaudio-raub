@@ -15,14 +15,11 @@ using namespace std;
 	AudioWorkletGlobalScope *audioWorkletGlobalScope =                        \
 	Nan::ObjectWrap::Unwrap<AudioWorkletGlobalScope>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (audioWorkletGlobalScope->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (audioWorkletGlobalScope->CACHE == V) {                                \
+	if (this.CACHE == V) {                                \
 		return;                                                               \
 	}                                                                         \
-	audioWorkletGlobalScope->CACHE = V;
+	this.CACHE = V;
 
 
 // ------ Constructor and Destructor
@@ -76,7 +73,7 @@ NAN_GETTER(AudioWorkletGlobalScope::currentTimeGetter) {
 	
 	THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK;
 	
-	RET_VALUE(JS_DOUBLE(audioWorkletGlobalScope->_currentTime));
+	RET_NUM(audioWorkletGlobalScope->_currentTime);
 	
 }
 
@@ -85,7 +82,7 @@ NAN_GETTER(AudioWorkletGlobalScope::sampleRateGetter) {
 	
 	THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK;
 	
-	RET_VALUE(JS_FLOAT(audioWorkletGlobalScope->_sampleRate));
+	RET_NUM(audioWorkletGlobalScope->_sampleRate);
 	
 }
 
@@ -170,6 +167,6 @@ NAN_GETTER(AudioWorkletGlobalScope::isDestroyedGetter) {
 	
 	THIS_AUDIO_WORKLET_GLOBAL_SCOPE;
 	
-	RET_VALUE(JS_BOOL(audioWorkletGlobalScope->_isDestroyed));
+	RET_BOOL(audioWorkletGlobalScope->_isDestroyed);
 	
 }

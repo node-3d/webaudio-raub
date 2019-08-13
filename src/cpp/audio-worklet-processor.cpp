@@ -14,14 +14,11 @@ using namespace std;
 #define THIS_AUDIO_WORKLET_PROCESSOR                                                    \
 	AudioWorkletProcessor *audioWorkletProcessor = Nan::ObjectWrap::Unwrap<AudioWorkletProcessor>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (audioWorkletProcessor->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (audioWorkletProcessor->CACHE == V) {                                           \
+	if (this.CACHE == V) {                                           \
 		return;                                                               \
 	}                                                                         \
-	audioWorkletProcessor->CACHE = V;
+	this.CACHE = V;
 
 
 // ------ Constructor and Destructor
@@ -132,6 +129,6 @@ NAN_METHOD(AudioWorkletProcessor::destroy) { THIS_AUDIO_WORKLET_PROCESSOR; THIS_
 
 NAN_GETTER(AudioWorkletProcessor::isDestroyedGetter) { THIS_AUDIO_WORKLET_PROCESSOR;
 	
-	RET_VALUE(JS_BOOL(audioWorkletProcessor->_isDestroyed));
+	RET_BOOL(audioWorkletProcessor->_isDestroyed);
 	
 }

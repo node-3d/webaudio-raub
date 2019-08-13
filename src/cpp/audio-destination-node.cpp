@@ -16,14 +16,11 @@ using namespace std;
 #define THIS_AUDIO_DESTINATION_NODE                                           \
 	AudioDestinationNode *audioDestinationNode = Nan::ObjectWrap::Unwrap<AudioDestinationNode>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (audioDestinationNode->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (audioDestinationNode->CACHE == V) {                                   \
+	if (this.CACHE == V) {                                   \
 		return;                                                               \
 	}                                                                         \
-	audioDestinationNode->CACHE = V;
+	this.CACHE = V;
 
 
 // ------ Constructor and Destructor
@@ -58,7 +55,7 @@ void AudioDestinationNode::_destroy() { DES_CHECK;
 
 NAN_GETTER(AudioDestinationNode::maxChannelCountGetter) { THIS_AUDIO_DESTINATION_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_UINT32(audioDestinationNode->_maxChannelCount));
+	RET_NUM(audioDestinationNode->_maxChannelCount);
 	
 }
 
@@ -145,6 +142,6 @@ NAN_METHOD(AudioDestinationNode::destroy) { THIS_AUDIO_DESTINATION_NODE; THIS_CH
 
 NAN_GETTER(AudioDestinationNode::isDestroyedGetter) { THIS_AUDIO_DESTINATION_NODE;
 	
-	RET_VALUE(JS_BOOL(audioDestinationNode->_isDestroyed));
+	RET_BOOL(audioDestinationNode->_isDestroyed);
 	
 }

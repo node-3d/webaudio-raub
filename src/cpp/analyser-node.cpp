@@ -14,14 +14,11 @@ using namespace std;
 #define THIS_ANALYSER_NODE                                                    \
 	AnalyserNode *analyserNode = Nan::ObjectWrap::Unwrap<AnalyserNode>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (analyserNode->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (analyserNode->CACHE == V) {                                           \
+	if (this.CACHE == V) {                                           \
 		return;                                                               \
 	}                                                                         \
-	analyserNode->CACHE = V;
+	this.CACHE = V;
 
 
 // ------ Constructor and Destructor
@@ -91,14 +88,14 @@ NAN_METHOD(AnalyserNode::getByteTimeDomainData) { THIS_ANALYSER_NODE; THIS_CHECK
 
 NAN_GETTER(AnalyserNode::frequencyBinCountGetter) { THIS_ANALYSER_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_UINT32(analyserNode->_frequencyBinCount));
+	RET_NUM(analyserNode->_frequencyBinCount);
 	
 }
 
 
 NAN_GETTER(AnalyserNode::fftSizeGetter) { THIS_ANALYSER_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_UINT32(analyserNode->_fftSize));
+	RET_NUM(analyserNode->_fftSize);
 	
 }
 
@@ -115,7 +112,7 @@ NAN_SETTER(AnalyserNode::fftSizeSetter) { THIS_ANALYSER_NODE; THIS_CHECK; SETTER
 
 NAN_GETTER(AnalyserNode::minDecibelsGetter) { THIS_ANALYSER_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_DOUBLE(analyserNode->_minDecibels));
+	RET_NUM(analyserNode->_minDecibels);
 	
 }
 
@@ -132,7 +129,7 @@ NAN_SETTER(AnalyserNode::minDecibelsSetter) { THIS_ANALYSER_NODE; THIS_CHECK; SE
 
 NAN_GETTER(AnalyserNode::maxDecibelsGetter) { THIS_ANALYSER_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_DOUBLE(analyserNode->_maxDecibels));
+	RET_NUM(analyserNode->_maxDecibels);
 	
 }
 
@@ -149,7 +146,7 @@ NAN_SETTER(AnalyserNode::maxDecibelsSetter) { THIS_ANALYSER_NODE; THIS_CHECK; SE
 
 NAN_GETTER(AnalyserNode::smoothingTimeConstantGetter) { THIS_ANALYSER_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_DOUBLE(analyserNode->_smoothingTimeConstant));
+	RET_NUM(analyserNode->_smoothingTimeConstant);
 	
 }
 
@@ -251,6 +248,6 @@ NAN_METHOD(AnalyserNode::destroy) { THIS_ANALYSER_NODE; THIS_CHECK;
 
 NAN_GETTER(AnalyserNode::isDestroyedGetter) { THIS_ANALYSER_NODE;
 	
-	RET_VALUE(JS_BOOL(analyserNode->_isDestroyed));
+	RET_BOOL(analyserNode->_isDestroyed);
 	
 }

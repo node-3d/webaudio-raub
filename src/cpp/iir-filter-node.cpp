@@ -14,14 +14,11 @@ using namespace std;
 #define THIS_IIR_FILTER_NODE                                                    \
 	IIRFilterNode *iIRFilterNode = Nan::ObjectWrap::Unwrap<IIRFilterNode>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (iIRFilterNode->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (iIRFilterNode->CACHE == V) {                                           \
+	if (this.CACHE == V) {                                           \
 		return;                                                               \
 	}                                                                         \
-	iIRFilterNode->CACHE = V;
+	this.CACHE = V;
 
 
 // ------ Constructor and Destructor
@@ -145,6 +142,6 @@ NAN_METHOD(IIRFilterNode::destroy) { THIS_IIR_FILTER_NODE; THIS_CHECK;
 
 NAN_GETTER(IIRFilterNode::isDestroyedGetter) { THIS_IIR_FILTER_NODE;
 	
-	RET_VALUE(JS_BOOL(iIRFilterNode->_isDestroyed));
+	RET_BOOL(iIRFilterNode->_isDestroyed);
 	
 }

@@ -14,14 +14,11 @@ using namespace std;
 #define THIS_MEDIA_STREAM_AUDIO_SOURCE_NODE                                                    \
 	MediaStreamAudioSourceNode *mediaStreamAudioSourceNode = Nan::ObjectWrap::Unwrap<MediaStreamAudioSourceNode>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (mediaStreamAudioSourceNode->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (mediaStreamAudioSourceNode->CACHE == V) {                                           \
+	if (this.CACHE == V) {                                           \
 		return;                                                               \
 	}                                                                         \
-	mediaStreamAudioSourceNode->CACHE = V;
+	this.CACHE = V;
 
 
 // ------ Constructor and Destructor
@@ -141,6 +138,6 @@ NAN_METHOD(MediaStreamAudioSourceNode::destroy) { THIS_MEDIA_STREAM_AUDIO_SOURCE
 
 NAN_GETTER(MediaStreamAudioSourceNode::isDestroyedGetter) { THIS_MEDIA_STREAM_AUDIO_SOURCE_NODE;
 	
-	RET_VALUE(JS_BOOL(mediaStreamAudioSourceNode->_isDestroyed));
+	RET_BOOL(mediaStreamAudioSourceNode->_isDestroyed);
 	
 }

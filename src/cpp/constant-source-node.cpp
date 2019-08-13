@@ -14,14 +14,11 @@ using namespace std;
 #define THIS_CONSTANT_SOURCE_NODE                                                    \
 	ConstantSourceNode *constantSourceNode = Nan::ObjectWrap::Unwrap<ConstantSourceNode>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (constantSourceNode->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (constantSourceNode->CACHE == V) {                                           \
+	if (this.CACHE == V) {                                           \
 		return;                                                               \
 	}                                                                         \
-	constantSourceNode->CACHE = V;
+	this.CACHE = V;
 
 
 // ------ Constructor and Destructor
@@ -141,6 +138,6 @@ NAN_METHOD(ConstantSourceNode::destroy) { THIS_CONSTANT_SOURCE_NODE; THIS_CHECK;
 
 NAN_GETTER(ConstantSourceNode::isDestroyedGetter) { THIS_CONSTANT_SOURCE_NODE;
 	
-	RET_VALUE(JS_BOOL(constantSourceNode->_isDestroyed));
+	RET_BOOL(constantSourceNode->_isDestroyed);
 	
 }

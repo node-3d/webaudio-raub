@@ -18,14 +18,11 @@ using namespace std;
 #define THIS_AUDIO_PARAM                                                      \
 	AudioParam *audioParam = Nan::ObjectWrap::Unwrap<AudioParam>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (audioParam->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (audioParam->CACHE == V) {                                             \
+	if (this.CACHE == V) {                                             \
 		return;                                                               \
 	}                                                                         \
-	audioParam->CACHE = V;
+	this.CACHE = V;
 
 
 // ------ Constructor and Destructor
@@ -145,7 +142,7 @@ NAN_GETTER(AudioParam::valueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
 	
 	lab::ContextRenderLock renderLock(audioContext->getContext().get(), "AudioParam::valueGetter");
 	
-	RET_VALUE(JS_FLOAT(audioParam->_impl->value(renderLock)));
+	RET_NUM(audioParam->_impl->value(renderLock));
 	
 }
 
@@ -158,21 +155,21 @@ NAN_SETTER(AudioParam::valueSetter) { THIS_AUDIO_PARAM; THIS_CHECK; SETTER_FLOAT
 
 NAN_GETTER(AudioParam::defaultValueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
 	
-	RET_VALUE(JS_FLOAT(audioParam->_impl->defaultValue()));
+	RET_NUM(audioParam->_impl->defaultValue());
 	
 }
 
 
 NAN_GETTER(AudioParam::minValueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
 	
-	RET_VALUE(JS_FLOAT(audioParam->_impl->minValue()));
+	RET_NUM(audioParam->_impl->minValue());
 	
 }
 
 
 NAN_GETTER(AudioParam::maxValueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
 	
-	RET_VALUE(JS_FLOAT(audioParam->_impl->maxValue()));
+	RET_NUM(audioParam->_impl->maxValue());
 	
 }
 
@@ -266,6 +263,6 @@ NAN_METHOD(AudioParam::destroy) { THIS_AUDIO_PARAM; THIS_CHECK;
 
 NAN_GETTER(AudioParam::isDestroyedGetter) { THIS_AUDIO_PARAM;
 	
-	RET_VALUE(JS_BOOL(audioParam->_isDestroyed));
+	RET_BOOL(audioParam->_isDestroyed);
 	
 }

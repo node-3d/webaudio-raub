@@ -21,14 +21,11 @@ using namespace std;
 	AudioBufferSourceNode *audioBufferSourceNode =                            \
 	Nan::ObjectWrap::Unwrap<AudioBufferSourceNode>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (audioBufferSourceNode->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (audioBufferSourceNode->CACHE == V) {                                  \
+	if (this.CACHE == V) {                                  \
 		return;                                                               \
 	}                                                                         \
-	audioBufferSourceNode->CACHE = V;
+	this.CACHE = V;
 
 
 // ------ Constructor and Destructor
@@ -166,7 +163,7 @@ NAN_GETTER(AudioBufferSourceNode::loopGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; T
 		audioBufferSourceNode->_impl.get()
 	);
 	
-	RET_VALUE(JS_BOOL(node->loop()));
+	RET_BOOL(node->loop());
 	
 }
 
@@ -190,7 +187,7 @@ NAN_GETTER(AudioBufferSourceNode::loopStartGetter) { THIS_AUDIO_BUFFER_SOURCE_NO
 		audioBufferSourceNode->_impl.get()
 	);
 	
-	RET_VALUE(JS_DOUBLE(node->loopStart()));
+	RET_NUM(node->loopStart());
 	
 }
 
@@ -214,7 +211,7 @@ NAN_GETTER(AudioBufferSourceNode::loopEndGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE
 		audioBufferSourceNode->_impl.get()
 	);
 	
-	RET_VALUE(JS_DOUBLE(node->loopEnd()));
+	RET_NUM(node->loopEnd());
 	
 }
 
@@ -314,6 +311,6 @@ NAN_METHOD(AudioBufferSourceNode::destroy) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS
 
 NAN_GETTER(AudioBufferSourceNode::isDestroyedGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE;
 	
-	RET_VALUE(JS_BOOL(audioBufferSourceNode->_isDestroyed));
+	RET_BOOL(audioBufferSourceNode->_isDestroyed);
 	
 }

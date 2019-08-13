@@ -14,14 +14,11 @@ using namespace std;
 #define THIS_AUDIO_TIMESTAMP                                                    \
 	AudioTimestamp *audioTimestamp = Nan::ObjectWrap::Unwrap<AudioTimestamp>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (audioTimestamp->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (audioTimestamp->CACHE == V) {                                           \
+	if (this.CACHE == V) {                                           \
 		return;                                                               \
 	}                                                                         \
-	audioTimestamp->CACHE = V;
+	this.CACHE = V;
 
 
 // ------ Constructor and Destructor
@@ -53,7 +50,7 @@ void AudioTimestamp::_destroy() { DES_CHECK;
 
 NAN_GETTER(AudioTimestamp::contextTimeGetter) { THIS_AUDIO_TIMESTAMP; THIS_CHECK;
 	
-	RET_VALUE(JS_DOUBLE(audioTimestamp->_contextTime));
+	RET_NUM(audioTimestamp->_contextTime);
 	
 }
 
@@ -68,7 +65,7 @@ NAN_SETTER(AudioTimestamp::contextTimeSetter) { THIS_AUDIO_TIMESTAMP; THIS_CHECK
 
 NAN_GETTER(AudioTimestamp::performanceTimeGetter) { THIS_AUDIO_TIMESTAMP; THIS_CHECK;
 	
-	RET_VALUE(JS_DOUBLE(audioTimestamp->_performanceTime));
+	RET_NUM(audioTimestamp->_performanceTime);
 	
 }
 
@@ -156,6 +153,6 @@ NAN_METHOD(AudioTimestamp::destroy) { THIS_AUDIO_TIMESTAMP; THIS_CHECK;
 
 NAN_GETTER(AudioTimestamp::isDestroyedGetter) { THIS_AUDIO_TIMESTAMP;
 	
-	RET_VALUE(JS_BOOL(audioTimestamp->_isDestroyed));
+	RET_BOOL(audioTimestamp->_isDestroyed);
 	
 }

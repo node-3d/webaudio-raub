@@ -19,14 +19,11 @@ using namespace std;
 #define THIS_AUDIO_LISTENER                                                   \
 	AudioListener *audioListener = Nan::ObjectWrap::Unwrap<AudioListener>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (audioListener->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (audioListener->CACHE == V) {                                          \
+	if (this.CACHE == V) {                                          \
 		return;                                                               \
 	}                                                                         \
-	audioListener->CACHE = V;
+	this.CACHE = V;
 
 #define PARAM_GETTER(NAME)                                                    \
 NAN_GETTER(AudioListener::NAME ## Getter) { THIS_AUDIO_LISTENER; THIS_CHECK;  \
@@ -130,7 +127,7 @@ V8_STORE_FUNC AudioListener::_ctorAudioListener;
 void AudioListener::init(Napi::Object target) {
 	
 	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-
+	
 	proto->InstanceTemplate()->SetInternalFieldCount(1);
 	proto->SetClassName(JS_STR("AudioListener"));
 	
@@ -210,6 +207,6 @@ NAN_METHOD(AudioListener::destroy) { THIS_AUDIO_LISTENER; THIS_CHECK;
 
 NAN_GETTER(AudioListener::isDestroyedGetter) { THIS_AUDIO_LISTENER;
 	
-	RET_VALUE(JS_BOOL(audioListener->_isDestroyed));
+	RET_BOOL(audioListener->_isDestroyed);
 	
 }

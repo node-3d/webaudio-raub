@@ -20,14 +20,11 @@ using namespace std;
 #define THIS_AUDIO_NODE                                                       \
 	AudioNode *audioNode = Nan::ObjectWrap::Unwrap<AudioNode>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (audioNode->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (audioNode->CACHE == V) {                                              \
+	if (this.CACHE == V) {                                              \
 		return;                                                               \
 	}                                                                         \
-	audioNode->CACHE = V;
+	this.CACHE = V;
 
 
 inline string fromChannelCountMode(lab::ChannelCountMode mode) {
@@ -238,21 +235,21 @@ NAN_GETTER(AudioNode::contextGetter) { THIS_AUDIO_NODE; THIS_CHECK;
 
 NAN_GETTER(AudioNode::numberOfInputsGetter) { THIS_AUDIO_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_UINT32(static_cast<uint32_t>(audioNode->_impl->numberOfInputs())));
+	RET_NUM(static_cast<uint32_t>(audioNode->_impl->numberOfInputs()));
 	
 }
 
 
 NAN_GETTER(AudioNode::numberOfOutputsGetter) { THIS_AUDIO_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_UINT32(static_cast<uint32_t>(audioNode->_impl->numberOfOutputs())));
+	RET_NUM(static_cast<uint32_t>(audioNode->_impl->numberOfOutputs()));
 	
 }
 
 
 NAN_GETTER(AudioNode::channelCountGetter) { THIS_AUDIO_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_UINT32(static_cast<uint32_t>(audioNode->_impl->channelCount())));
+	RET_NUM(static_cast<uint32_t>(audioNode->_impl->channelCount()));
 	
 }
 
@@ -384,6 +381,6 @@ NAN_METHOD(AudioNode::destroy) { THIS_AUDIO_NODE; THIS_CHECK;
 
 NAN_GETTER(AudioNode::isDestroyedGetter) { THIS_AUDIO_NODE;
 	
-	RET_VALUE(JS_BOOL(audioNode->_isDestroyed));
+	RET_BOOL(audioNode->_isDestroyed);
 	
 }

@@ -14,14 +14,11 @@ using namespace std;
 #define THIS_OFFLINE_AUDIO_CONTEXT                                                    \
 	OfflineAudioContext *offlineAudioContext = Nan::ObjectWrap::Unwrap<OfflineAudioContext>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (offlineAudioContext->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (offlineAudioContext->CACHE == V) {                                           \
+	if (this.CACHE == V) {                                           \
 		return;                                                               \
 	}                                                                         \
-	offlineAudioContext->CACHE = V;
+	this.CACHE = V;
 
 
 // ------ Constructor and Destructor
@@ -91,7 +88,7 @@ NAN_SETTER(OfflineAudioContext::oncompleteSetter) { THIS_OFFLINE_AUDIO_CONTEXT; 
 
 NAN_GETTER(OfflineAudioContext::lengthGetter) { THIS_OFFLINE_AUDIO_CONTEXT; THIS_CHECK;
 	
-	RET_VALUE(JS_UINT32(offlineAudioContext->_length));
+	RET_NUM(offlineAudioContext->_length);
 	
 }
 
@@ -178,6 +175,6 @@ NAN_METHOD(OfflineAudioContext::destroy) { THIS_OFFLINE_AUDIO_CONTEXT; THIS_CHEC
 
 NAN_GETTER(OfflineAudioContext::isDestroyedGetter) { THIS_OFFLINE_AUDIO_CONTEXT;
 	
-	RET_VALUE(JS_BOOL(offlineAudioContext->_isDestroyed));
+	RET_BOOL(offlineAudioContext->_isDestroyed);
 	
 }

@@ -19,14 +19,11 @@ using namespace std;
 #define THIS_PANNER_NODE                                                      \
 	PannerNode *pannerNode = Nan::ObjectWrap::Unwrap<PannerNode>(info.This());
 
-#define THIS_CHECK                                                            \
-	if (pannerNode->_isDestroyed) return;
-
 #define CACHE_CAS(CACHE, V)                                                   \
-	if (pannerNode->CACHE == V) {                                             \
+	if (this.CACHE == V) {                                             \
 		return;                                                               \
 	}                                                                         \
-	pannerNode->CACHE = V;
+	this.CACHE = V;
 
 #define PARAM_GETTER(NAME)                                                    \
 NAN_GETTER(PannerNode::NAME ## Getter) { THIS_PANNER_NODE; THIS_CHECK;        \
@@ -223,7 +220,7 @@ NAN_GETTER(PannerNode::refDistanceGetter) { THIS_PANNER_NODE; THIS_CHECK;
 		pannerNode->_impl.get()
 	);
 	
-	RET_VALUE(JS_DOUBLE(node->refDistance()));
+	RET_NUM(node->refDistance());
 	
 }
 
@@ -246,7 +243,7 @@ NAN_GETTER(PannerNode::maxDistanceGetter) { THIS_PANNER_NODE; THIS_CHECK;
 		pannerNode->_impl.get()
 	);
 	
-	RET_VALUE(JS_DOUBLE(node->maxDistance()));
+	RET_NUM(node->maxDistance());
 	
 }
 
@@ -269,7 +266,7 @@ NAN_GETTER(PannerNode::rolloffFactorGetter) { THIS_PANNER_NODE; THIS_CHECK;
 		pannerNode->_impl.get()
 	);
 	
-	RET_VALUE(JS_DOUBLE(node->rolloffFactor()));
+	RET_NUM(node->rolloffFactor());
 	
 }
 
@@ -292,7 +289,7 @@ NAN_GETTER(PannerNode::coneInnerAngleGetter) { THIS_PANNER_NODE; THIS_CHECK;
 		pannerNode->_impl.get()
 	);
 	
-	RET_VALUE(JS_DOUBLE(node->coneInnerAngle()));
+	RET_NUM(node->coneInnerAngle());
 	
 }
 
@@ -315,7 +312,7 @@ NAN_GETTER(PannerNode::coneOuterAngleGetter) { THIS_PANNER_NODE; THIS_CHECK;
 		pannerNode->_impl.get()
 	);
 	
-	RET_VALUE(JS_DOUBLE(node->coneOuterAngle()));
+	RET_NUM(node->coneOuterAngle());
 	
 }
 
@@ -338,7 +335,7 @@ NAN_GETTER(PannerNode::coneOuterGainGetter) { THIS_PANNER_NODE; THIS_CHECK;
 		pannerNode->_impl.get()
 	);
 	
-	RET_VALUE(JS_DOUBLE(node->coneOuterGain()));
+	RET_NUM(node->coneOuterGain());
 	
 }
 
@@ -455,6 +452,6 @@ NAN_METHOD(PannerNode::destroy) { THIS_PANNER_NODE; THIS_CHECK;
 
 NAN_GETTER(PannerNode::isDestroyedGetter) { THIS_PANNER_NODE;
 	
-	RET_VALUE(JS_BOOL(pannerNode->_isDestroyed));
+	RET_BOOL(pannerNode->_isDestroyed);
 	
 }
