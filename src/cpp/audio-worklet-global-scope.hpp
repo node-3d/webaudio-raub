@@ -5,19 +5,19 @@
 #include <addon-tools.hpp>
 
 
-class AudioWorkletGlobalScope : public Nan::ObjectWrap {
+class AudioWorkletGlobalScope : public Napi::ObjectWrap<AudioWorkletGlobalScope> {
 	
 public:
 	
 	~AudioWorkletGlobalScope();
 	
 	// Public V8 init
-	static void init(Napi::Object target);
+	static void init(Napi::Env env, Napi::Object exports);
 	
 	static bool isAudioWorkletGlobalScope(Napi::Object obj);
 	
 	// Make a new instance from C++ land
-	static Napi::Object getNew();
+	explicit AudioWorkletGlobalScope(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -28,8 +28,7 @@ protected:
 	
 	AudioWorkletGlobalScope();
 	
-	static V8_STORE_FT _protoAudioWorkletGlobalScope;
-	static V8_STORE_FUNC _ctorAudioWorkletGlobalScope;
+	static Napi::FunctionReference _ctorAudioWorkletGlobalScope;
 	
 	bool _isDestroyed;
 	
@@ -41,18 +40,18 @@ protected:
 // JS methods and props, available through V8 APIs
 private:
 	
-	static NAN_METHOD(newCtor);
+	JS_METHOD(newCtor);
 	
-	static NAN_METHOD(destroy);
-	static NAN_GETTER(isDestroyedGetter);
+	JS_METHOD(destroy);
+	JS_GETTER(isDestroyedGetter);
 	
-	static NAN_METHOD(registerProcessor);
+	JS_METHOD(registerProcessor);
 	
-	static NAN_GETTER(currentFrameGetter);
+	JS_GETTER(currentFrameGetter);
 	
-	static NAN_GETTER(currentTimeGetter);
+	JS_GETTER(currentTimeGetter);
 	
-	static NAN_GETTER(sampleRateGetter);
+	JS_GETTER(sampleRateGetter);
 	
 };
 

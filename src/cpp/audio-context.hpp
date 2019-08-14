@@ -14,10 +14,10 @@ public:
 	~AudioContext();
 	
 	// Public V8 init
-	static void init(Napi::Object target);
+	static void init(Napi::Env env, Napi::Object exports);
 	
 	// Make a new instance from C++ land
-	static Napi::Object getNew(Napi::Object context);
+	explicit AudioContext(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -30,7 +30,7 @@ protected:
 	explicit AudioContext(float sampleRate);
 	
 	static V8_STORE_FT _protoAudioContext; // for inheritance
-	static V8_STORE_FUNC _ctorAudioContext;
+	static Napi::FunctionReference _ctorAudioContext;
 	
 	bool _isDestroyed;
 	
@@ -40,19 +40,19 @@ protected:
 // System methods and props for ObjectWrap
 private:
 	
-	static NAN_METHOD(newCtor);
+	JS_METHOD(newCtor);
 	
-	static NAN_METHOD(destroy);
-	static NAN_GETTER(isDestroyedGetter);
+	JS_METHOD(destroy);
+	JS_GETTER(isDestroyedGetter);
 	
-	static NAN_METHOD(suspend);
-	static NAN_METHOD(close);
-	static NAN_METHOD(getOutputTimestamp);
-	static NAN_METHOD(createMediaElementSource);
-	static NAN_METHOD(createMediaStreamSource);
-	static NAN_METHOD(createMediaStreamDestination);
+	JS_METHOD(suspend);
+	JS_METHOD(close);
+	JS_METHOD(getOutputTimestamp);
+	JS_METHOD(createMediaElementSource);
+	JS_METHOD(createMediaStreamSource);
+	JS_METHOD(createMediaStreamDestination);
 	
-	static NAN_GETTER(baseLatencyGetter);
+	JS_GETTER(baseLatencyGetter);
 	
 };
 

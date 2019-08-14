@@ -1,24 +1,7 @@
-#include <cstdlib>
-
 
 #include "audio-processing-event.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
-
-
-// ------ Aux macros
-
-#define THIS_AUDIO_PROCESSING_EVENT                                                    \
-	AudioProcessingEvent *audioProcessingEvent = Nan::ObjectWrap::Unwrap<AudioProcessingEvent>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                           \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
+#include "common.hpp"
 
 
 // ------ Constructor and Destructor
@@ -48,43 +31,35 @@ void AudioProcessingEvent::_destroy() { DES_CHECK;
 
 
 
-NAN_GETTER(AudioProcessingEvent::playbackTimeGetter) { THIS_AUDIO_PROCESSING_EVENT; THIS_CHECK;
+JS_GETTER(AudioProcessingEvent::playbackTimeGetter) { THIS_AUDIO_PROCESSING_EVENT; THIS_CHECK;
 	
-	RET_NUM(audioProcessingEvent->_playbackTime);
-	
-}
-
-
-NAN_GETTER(AudioProcessingEvent::inputBufferGetter) { THIS_AUDIO_PROCESSING_EVENT; THIS_CHECK;
-	
-	RET_VALUE(JS_OBJ(audioProcessingEvent->_inputBuffer));
+	RET_NUM(_playbackTime);
 	
 }
 
 
-NAN_GETTER(AudioProcessingEvent::outputBufferGetter) { THIS_AUDIO_PROCESSING_EVENT; THIS_CHECK;
+JS_GETTER(AudioProcessingEvent::inputBufferGetter) { THIS_AUDIO_PROCESSING_EVENT; THIS_CHECK;
 	
-	RET_VALUE(JS_OBJ(audioProcessingEvent->_outputBuffer));
+	RET_VALUE(__inputBuffer.Value());
+	
+}
+
+
+JS_GETTER(AudioProcessingEvent::outputBufferGetter) { THIS_AUDIO_PROCESSING_EVENT; THIS_CHECK;
+	
+	RET_VALUE(__outputBuffer.Value());
 	
 }
 
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT AudioProcessingEvent::_protoAudioProcessingEvent;
-V8_STORE_FUNC AudioProcessingEvent::_ctorAudioProcessingEvent;
+Napi::FunctionReference AudioProcessingEvent::_ctorAudioProcessingEvent;
 
 
-void AudioProcessingEvent::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("AudioProcessingEvent"));
+void AudioProcessingEvent::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, playbackTime);
@@ -99,19 +74,20 @@ void AudioProcessingEvent::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "AudioProcessingEvent", {
 	
-	_protoAudioProcessingEvent.Reset(proto);
-	_ctorAudioProcessingEvent.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("AudioProcessingEvent"), ctor);
+	_ctorAudioProcessingEvent = Napi::Persistent(ctor);
+	_ctorAudioProcessingEvent.SuppressDestruct();
 	
+	exports.Set("AudioProcessingEvent", ctor);
 	
 }
 
 
 bool AudioProcessingEvent::isAudioProcessingEvent(Napi::Object obj) {
-	return Nan::New(_protoAudioProcessingEvent)->HasInstance(obj);
+	return obj.InstanceOf(_ctorAudioProcessingEvent.Value());
 }
 
 
@@ -124,7 +100,7 @@ Napi::Object AudioProcessingEvent::getNew() {
 }
 
 
-NAN_METHOD(AudioProcessingEvent::newCtor) {
+JS_METHOD(AudioProcessingEvent::newCtor) {
 	
 	CTOR_CHECK("AudioProcessingEvent");
 	
@@ -136,15 +112,15 @@ NAN_METHOD(AudioProcessingEvent::newCtor) {
 }
 
 
-NAN_METHOD(AudioProcessingEvent::destroy) { THIS_AUDIO_PROCESSING_EVENT; THIS_CHECK;
+JS_METHOD(AudioProcessingEvent::destroy) { THIS_AUDIO_PROCESSING_EVENT; THIS_CHECK;
 	
-	audioProcessingEvent->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(AudioProcessingEvent::isDestroyedGetter) { THIS_AUDIO_PROCESSING_EVENT;
+JS_GETTER(AudioProcessingEvent::isDestroyedGetter) { THIS_AUDIO_PROCESSING_EVENT;
 	
-	RET_BOOL(audioProcessingEvent->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

@@ -14,12 +14,12 @@ public:
 	~PannerNode();
 	
 	// Public V8 init
-	static void init(Napi::Object target);
+	static void init(Napi::Env env, Napi::Object exports);
 	
 	static bool isPannerNode(Napi::Object obj);
 	
 	// Make a new instance from C++ land
-	static Napi::Object getNew(Napi::Object context);
+	explicit PannerNode(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -30,66 +30,65 @@ protected:
 	
 	PannerNode(Napi::Object context, float sampleRate, const std::string &hrtf);
 	
-	static V8_STORE_FT _protoPannerNode;
-	static V8_STORE_FUNC _ctorPannerNode;
+	static Napi::FunctionReference _ctorPannerNode;
 	
 	bool _isDestroyed;
 	
-	V8_STORE_OBJ _positionX;
-	V8_STORE_OBJ _positionY;
-	V8_STORE_OBJ _positionZ;
-	V8_STORE_OBJ _orientationX;
-	V8_STORE_OBJ _orientationY;
-	V8_STORE_OBJ _orientationZ;
+	Napi::ObjectReference _positionX;
+	Napi::ObjectReference _positionY;
+	Napi::ObjectReference _positionZ;
+	Napi::ObjectReference _orientationX;
+	Napi::ObjectReference _orientationY;
+	Napi::ObjectReference _orientationZ;
 	
 	
 // JS methods and props, available through V8 APIs
 private:
 	
-	static NAN_METHOD(newCtor);
+	JS_METHOD(newCtor);
 	
-	static NAN_METHOD(destroy);
-	static NAN_GETTER(isDestroyedGetter);
+	JS_METHOD(destroy);
+	JS_GETTER(isDestroyedGetter);
 	
-	static NAN_METHOD(setPosition);
-	static NAN_METHOD(setOrientation);
-	static NAN_METHOD(setVelocity);
+	JS_METHOD(setPosition);
+	JS_METHOD(setOrientation);
+	JS_METHOD(setVelocity);
 	
-	static NAN_GETTER(panningModelGetter);
-	static NAN_SETTER(panningModelSetter);
+	JS_GETTER(panningModelGetter);
+	JS_SETTER(panningModelSetter);
 	
-	static NAN_GETTER(positionXGetter);
+	JS_GETTER(positionXGetter);
 	
-	static NAN_GETTER(positionYGetter);
+	JS_GETTER(positionYGetter);
 	
-	static NAN_GETTER(positionZGetter);
+	JS_GETTER(positionZGetter);
 	
-	static NAN_GETTER(orientationXGetter);
+	JS_GETTER(orientationXGetter);
 	
-	static NAN_GETTER(orientationYGetter);
+	JS_GETTER(orientationYGetter);
 	
-	static NAN_GETTER(orientationZGetter);
+	JS_GETTER(orientationZGetter);
 	
-	static NAN_GETTER(distanceModelGetter);
-	static NAN_SETTER(distanceModelSetter);
+	JS_GETTER(distanceModelGetter);
+	JS_SETTER(distanceModelSetter);
 	
-	static NAN_GETTER(refDistanceGetter);
-	static NAN_SETTER(refDistanceSetter);
+	JS_GETTER(refDistanceGetter);
+	JS_SETTER(refDistanceSetter);
 	
-	static NAN_GETTER(maxDistanceGetter);
-	static NAN_SETTER(maxDistanceSetter);
+	JS_GETTER(maxDistanceGetter);
+	JS_SETTER(maxDistanceSetter);
 	
-	static NAN_GETTER(rolloffFactorGetter);
-	static NAN_SETTER(rolloffFactorSetter);
+	JS_GETTER(rolloffFactorGetter);
+	JS_SETTER(rolloffFactorSetter);
 	
-	static NAN_GETTER(coneInnerAngleGetter);
-	static NAN_SETTER(coneInnerAngleSetter);
+	JS_GETTER(coneInnerAngleGetter);
+	JS_SETTER(coneInnerAngleSetter);
 	
-	static NAN_GETTER(coneOuterAngleGetter);
-	static NAN_SETTER(coneOuterAngleSetter);
+	JS_GETTER(coneOuterAngleGetter);
+	JS_SETTER(coneOuterAngleSetter);
 	
-	static NAN_GETTER(coneOuterGainGetter);
-	static NAN_SETTER(coneOuterGainSetter);
+	JS_GETTER(coneOuterGainGetter);
+	JS_SETTER(coneOuterGainSetter);
 	
 };
 

@@ -14,12 +14,12 @@ public:
 	~ScriptProcessorNode();
 	
 	// Public V8 init
-	static void init(Napi::Object target);
+	static void init(Napi::Env env, Napi::Object exports);
 	
 	static bool isScriptProcessorNode(Napi::Object obj);
 	
 	// Make a new instance from C++ land
-	static Napi::Object getNew();
+	explicit ScriptProcessorNode(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -30,8 +30,7 @@ protected:
 	
 	ScriptProcessorNode();
 	
-	static V8_STORE_FT _protoScriptProcessorNode;
-	static V8_STORE_FUNC _ctorScriptProcessorNode;
+	static Napi::FunctionReference _ctorScriptProcessorNode;
 	
 	bool _isDestroyed;
 	
@@ -42,17 +41,17 @@ protected:
 // JS methods and props, available through V8 APIs
 private:
 	
-	static NAN_METHOD(newCtor);
+	JS_METHOD(newCtor);
 	
-	static NAN_METHOD(destroy);
-	static NAN_GETTER(isDestroyedGetter);
+	JS_METHOD(destroy);
+	JS_GETTER(isDestroyedGetter);
 	
 	
 	
-	static NAN_GETTER(onaudioprocessGetter);
-	static NAN_SETTER(onaudioprocessSetter);
+	JS_GETTER(onaudioprocessGetter);
+	JS_SETTER(onaudioprocessSetter);
 	
-	static NAN_GETTER(bufferSizeGetter);
+	JS_GETTER(bufferSizeGetter);
 	
 };
 

@@ -1,24 +1,7 @@
-#include <cstdlib>
-
 
 #include "iir-filter-node.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
-
-
-// ------ Aux macros
-
-#define THIS_IIR_FILTER_NODE                                                    \
-	IIRFilterNode *iIRFilterNode = Nan::ObjectWrap::Unwrap<IIRFilterNode>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                           \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
+#include "common.hpp"
 
 
 // ------ Constructor and Destructor
@@ -50,7 +33,7 @@ void IIRFilterNode::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-NAN_METHOD(IIRFilterNode::getFrequencyResponse) { THIS_IIR_FILTER_NODE; THIS_CHECK;
+JS_METHOD(IIRFilterNode::getFrequencyResponse) { THIS_IIR_FILTER_NODE; THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, frequencyHz);
 	REQ_OBJ_ARG(1, magResponse);
@@ -64,24 +47,12 @@ NAN_METHOD(IIRFilterNode::getFrequencyResponse) { THIS_IIR_FILTER_NODE; THIS_CHE
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT IIRFilterNode::_protoIIRFilterNode;
-V8_STORE_FUNC IIRFilterNode::_ctorIIRFilterNode;
+Napi::FunctionReference IIRFilterNode::_ctorIIRFilterNode;
 
 
-void IIRFilterNode::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-
-	// class IIRFilterNode inherits AudioNode
-	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
-	proto->Inherit(parent);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("IIRFilterNode"));
+void IIRFilterNode::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	
@@ -94,19 +65,20 @@ void IIRFilterNode::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "IIRFilterNode", {
 	
-	_protoIIRFilterNode.Reset(proto);
-	_ctorIIRFilterNode.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("IIRFilterNode"), ctor);
+	_ctorIIRFilterNode = Napi::Persistent(ctor);
+	_ctorIIRFilterNode.SuppressDestruct();
 	
+	exports.Set("IIRFilterNode", ctor);
 	
 }
 
 
 bool IIRFilterNode::isIIRFilterNode(Napi::Object obj) {
-	return Nan::New(_protoIIRFilterNode)->HasInstance(obj);
+	return obj.InstanceOf(_ctorIIRFilterNode.Value());
 }
 
 
@@ -119,7 +91,7 @@ Napi::Object IIRFilterNode::getNew() {
 }
 
 
-NAN_METHOD(IIRFilterNode::newCtor) {
+JS_METHOD(IIRFilterNode::newCtor) {
 	
 	CTOR_CHECK("IIRFilterNode");
 	
@@ -131,17 +103,17 @@ NAN_METHOD(IIRFilterNode::newCtor) {
 }
 
 
-NAN_METHOD(IIRFilterNode::destroy) { THIS_IIR_FILTER_NODE; THIS_CHECK;
+JS_METHOD(IIRFilterNode::destroy) { THIS_IIR_FILTER_NODE; THIS_CHECK;
 	
 	iIRFilterNode->emit("destroy");
 	
-	iIRFilterNode->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(IIRFilterNode::isDestroyedGetter) { THIS_IIR_FILTER_NODE;
+JS_GETTER(IIRFilterNode::isDestroyedGetter) { THIS_IIR_FILTER_NODE;
 	
-	RET_BOOL(iIRFilterNode->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

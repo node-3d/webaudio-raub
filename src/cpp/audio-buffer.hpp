@@ -9,7 +9,7 @@
 namespace lab { class AudioBus; };
 
 
-class AudioBuffer : public Nan::ObjectWrap {
+class AudioBuffer : public Napi::ObjectWrap<AudioBuffer> {
 	
 public:
 	
@@ -18,10 +18,10 @@ public:
 	~AudioBuffer();
 	
 	// Public V8 init
-	static void init(Napi::Object target);
+	static void init(Napi::Env env, Napi::Object exports);
 	
 	// Make a new instance from C++ land
-	static Napi::Object getNew(BusPtr bus);
+	explicit AudioBuffer(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -35,8 +35,7 @@ protected:
 	AudioBuffer();
 	explicit AudioBuffer(BusPtr bus);
 	
-	static V8_STORE_FT _protoAudioBuffer;
-	static V8_STORE_FUNC _ctorAudioBuffer;
+	static Napi::FunctionReference _ctorAudioBuffer;
 	
 	bool _isDestroyed;
 	
@@ -51,22 +50,22 @@ protected:
 // JS methods and props, available through V8 APIs
 private:
 	
-	static NAN_METHOD(newCtor);
+	JS_METHOD(newCtor);
 	
-	static NAN_METHOD(destroy);
-	static NAN_GETTER(isDestroyedGetter);
+	JS_METHOD(destroy);
+	JS_GETTER(isDestroyedGetter);
 	
-	static NAN_METHOD(getChannelData);
-	static NAN_METHOD(copyFromChannel);
-	static NAN_METHOD(copyToChannel);
+	JS_METHOD(getChannelData);
+	JS_METHOD(copyFromChannel);
+	JS_METHOD(copyToChannel);
 	
-	static NAN_GETTER(lengthGetter);
+	JS_GETTER(lengthGetter);
 	
-	static NAN_GETTER(durationGetter);
+	JS_GETTER(durationGetter);
 	
-	static NAN_GETTER(sampleRateGetter);
+	JS_GETTER(sampleRateGetter);
 	
-	static NAN_GETTER(numberOfChannelsGetter);
+	JS_GETTER(numberOfChannelsGetter);
 	
 };
 

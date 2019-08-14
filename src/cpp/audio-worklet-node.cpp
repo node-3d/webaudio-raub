@@ -1,24 +1,7 @@
-#include <cstdlib>
-
 
 #include "audio-worklet-node.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
-
-
-// ------ Aux macros
-
-#define THIS_AUDIO_WORKLET_NODE                                                    \
-	AudioWorkletNode *audioWorkletNode = Nan::ObjectWrap::Unwrap<AudioWorkletNode>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                           \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
+#include "common.hpp"
 
 
 // ------ Constructor and Destructor
@@ -48,32 +31,32 @@ void AudioWorkletNode::_destroy() { DES_CHECK;
 
 
 
-NAN_GETTER(AudioWorkletNode::parametersGetter) { THIS_AUDIO_WORKLET_NODE; THIS_CHECK;
+JS_GETTER(AudioWorkletNode::parametersGetter) { THIS_AUDIO_WORKLET_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_OBJ(audioWorkletNode->_parameters));
-	
-}
-
-
-NAN_GETTER(AudioWorkletNode::portGetter) { THIS_AUDIO_WORKLET_NODE; THIS_CHECK;
-	
-	RET_VALUE(JS_OBJ(audioWorkletNode->_port));
+	RET_VALUE(__parameters.Value());
 	
 }
 
 
-NAN_GETTER(AudioWorkletNode::onprocessorerrorGetter) { THIS_AUDIO_WORKLET_NODE; THIS_CHECK;
+JS_GETTER(AudioWorkletNode::portGetter) { THIS_AUDIO_WORKLET_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_FUN(audioWorkletNode->_onprocessorerror));
+	RET_VALUE(__port.Value());
 	
 }
 
-NAN_SETTER(AudioWorkletNode::onprocessorerrorSetter) { THIS_AUDIO_WORKLET_NODE; THIS_CHECK; SETTER_FUN_ARG;
+
+JS_GETTER(AudioWorkletNode::onprocessorerrorGetter) { THIS_AUDIO_WORKLET_NODE; THIS_CHECK;
 	
-	if (Nan::New(audioWorkletNode->_onprocessorerror) == v) {
+	RET_VALUE(JS_FUN(_onprocessorerror));
+	
+}
+
+JS_SETTER(AudioWorkletNode::onprocessorerrorSetter) { THIS_AUDIO_WORKLET_NODE; THIS_CHECK; SETTER_FUN_ARG;
+	
+	if (Nan::New(_onprocessorerror) == v) {
 		return;
 	}
-	audioWorkletNode->_onprocessorerror.Reset(v);
+	_onprocessorerror.Reset(v);
 	
 	// TODO: may be additional actions on change?
 	
@@ -82,20 +65,12 @@ NAN_SETTER(AudioWorkletNode::onprocessorerrorSetter) { THIS_AUDIO_WORKLET_NODE; 
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT AudioWorkletNode::_protoAudioWorkletNode;
-V8_STORE_FUNC AudioWorkletNode::_ctorAudioWorkletNode;
+Napi::FunctionReference AudioWorkletNode::_ctorAudioWorkletNode;
 
 
-void AudioWorkletNode::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("AudioWorkletNode"));
+void AudioWorkletNode::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, parameters);
@@ -110,19 +85,20 @@ void AudioWorkletNode::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "AudioWorkletNode", {
 	
-	_protoAudioWorkletNode.Reset(proto);
-	_ctorAudioWorkletNode.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("AudioWorkletNode"), ctor);
+	_ctorAudioWorkletNode = Napi::Persistent(ctor);
+	_ctorAudioWorkletNode.SuppressDestruct();
 	
+	exports.Set("AudioWorkletNode", ctor);
 	
 }
 
 
 bool AudioWorkletNode::isAudioWorkletNode(Napi::Object obj) {
-	return Nan::New(_protoAudioWorkletNode)->HasInstance(obj);
+	return obj.InstanceOf(_ctorAudioWorkletNode.Value());
 }
 
 
@@ -135,7 +111,7 @@ Napi::Object AudioWorkletNode::getNew() {
 }
 
 
-NAN_METHOD(AudioWorkletNode::newCtor) {
+JS_METHOD(AudioWorkletNode::newCtor) {
 	
 	CTOR_CHECK("AudioWorkletNode");
 	
@@ -147,15 +123,15 @@ NAN_METHOD(AudioWorkletNode::newCtor) {
 }
 
 
-NAN_METHOD(AudioWorkletNode::destroy) { THIS_AUDIO_WORKLET_NODE; THIS_CHECK;
+JS_METHOD(AudioWorkletNode::destroy) { THIS_AUDIO_WORKLET_NODE; THIS_CHECK;
 	
-	audioWorkletNode->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(AudioWorkletNode::isDestroyedGetter) { THIS_AUDIO_WORKLET_NODE;
+JS_GETTER(AudioWorkletNode::isDestroyedGetter) { THIS_AUDIO_WORKLET_NODE;
 	
-	RET_BOOL(audioWorkletNode->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

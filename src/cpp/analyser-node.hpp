@@ -14,12 +14,12 @@ public:
 	~AnalyserNode();
 	
 	// Public V8 init
-	static void init(Napi::Object target);
+	static void init(Napi::Env env, Napi::Object exports);
 	
 	static bool isAnalyserNode(Napi::Object obj);
 	
 	// Make a new instance from C++ land
-	static Napi::Object getNew();
+	explicit AnalyserNode(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -30,8 +30,7 @@ protected:
 	
 	AnalyserNode();
 	
-	static V8_STORE_FT _protoAnalyserNode;
-	static V8_STORE_FUNC _ctorAnalyserNode;
+	static Napi::FunctionReference _ctorAnalyserNode;
 	
 	bool _isDestroyed;
 	
@@ -45,29 +44,29 @@ protected:
 // JS methods and props, available through V8 APIs
 private:
 	
-	static NAN_METHOD(newCtor);
+	JS_METHOD(newCtor);
 	
-	static NAN_METHOD(destroy);
-	static NAN_GETTER(isDestroyedGetter);
+	JS_METHOD(destroy);
+	JS_GETTER(isDestroyedGetter);
 	
-	static NAN_METHOD(getFloatFrequencyData);
-	static NAN_METHOD(getByteFrequencyData);
-	static NAN_METHOD(getFloatTimeDomainData);
-	static NAN_METHOD(getByteTimeDomainData);
+	JS_METHOD(getFloatFrequencyData);
+	JS_METHOD(getByteFrequencyData);
+	JS_METHOD(getFloatTimeDomainData);
+	JS_METHOD(getByteTimeDomainData);
 	
-	static NAN_GETTER(frequencyBinCountGetter);
+	JS_GETTER(frequencyBinCountGetter);
 	
-	static NAN_GETTER(fftSizeGetter);
-	static NAN_SETTER(fftSizeSetter);
+	JS_GETTER(fftSizeGetter);
+	JS_SETTER(fftSizeSetter);
 	
-	static NAN_GETTER(minDecibelsGetter);
-	static NAN_SETTER(minDecibelsSetter);
+	JS_GETTER(minDecibelsGetter);
+	JS_SETTER(minDecibelsSetter);
 	
-	static NAN_GETTER(maxDecibelsGetter);
-	static NAN_SETTER(maxDecibelsSetter);
+	JS_GETTER(maxDecibelsGetter);
+	JS_SETTER(maxDecibelsSetter);
 	
-	static NAN_GETTER(smoothingTimeConstantGetter);
-	static NAN_SETTER(smoothingTimeConstantSetter);
+	JS_GETTER(smoothingTimeConstantGetter);
+	JS_SETTER(smoothingTimeConstantSetter);
 	
 };
 

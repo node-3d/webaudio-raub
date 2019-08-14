@@ -1,5 +1,3 @@
-#include <cstdlib>
-
 #include <LabSound/core/AudioContext.h>
 #include <LabSound/core/AudioParam.h>
 #include <LabSound/extended/AudioContextLock.h>
@@ -7,22 +5,7 @@
 #include "audio-param.hpp"
 #include "audio-context.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
-
-
-// ------ Aux macros
-
-#define THIS_AUDIO_PARAM                                                      \
-	AudioParam *audioParam = Nan::ObjectWrap::Unwrap<AudioParam>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                             \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
+#include "common.hpp"
 
 
 // ------ Constructor and Destructor
@@ -61,48 +44,48 @@ void AudioParam::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-NAN_METHOD(AudioParam::setValueAtTime) { THIS_AUDIO_PARAM; THIS_CHECK;
+JS_METHOD(AudioParam::setValueAtTime) { THIS_AUDIO_PARAM; THIS_CHECK;
 	
 	REQ_FLOAT_ARG(0, value);
 	REQ_FLOAT_ARG(1, time);
 	
-	audioParam->_impl->setValueAtTime(value, time);
+	_impl->setValueAtTime(value, time);
 	
 }
 
 
-NAN_METHOD(AudioParam::linearRampToValueAtTime) { THIS_AUDIO_PARAM; THIS_CHECK;
+JS_METHOD(AudioParam::linearRampToValueAtTime) { THIS_AUDIO_PARAM; THIS_CHECK;
 	
 	REQ_FLOAT_ARG(0, value);
 	REQ_FLOAT_ARG(1, time);
 	
-	audioParam->_impl->linearRampToValueAtTime(value, time);
+	_impl->linearRampToValueAtTime(value, time);
 	
 }
 
 
-NAN_METHOD(AudioParam::exponentialRampToValueAtTime) { THIS_AUDIO_PARAM; THIS_CHECK;
+JS_METHOD(AudioParam::exponentialRampToValueAtTime) { THIS_AUDIO_PARAM; THIS_CHECK;
 	
 	REQ_FLOAT_ARG(0, value);
 	REQ_FLOAT_ARG(1, time);
 	
-	audioParam->_impl->exponentialRampToValueAtTime(value, time);
+	_impl->exponentialRampToValueAtTime(value, time);
 	
 }
 
 
-NAN_METHOD(AudioParam::setTargetAtTime) { THIS_AUDIO_PARAM; THIS_CHECK;
+JS_METHOD(AudioParam::setTargetAtTime) { THIS_AUDIO_PARAM; THIS_CHECK;
 	
 	REQ_FLOAT_ARG(0, target);
 	REQ_FLOAT_ARG(1, time);
 	REQ_FLOAT_ARG(2, timeConstant);
 	
-	audioParam->_impl->setTargetAtTime(target, time, timeConstant);
+	_impl->setTargetAtTime(target, time, timeConstant);
 	
 }
 
 
-NAN_METHOD(AudioParam::setValueCurveAtTime) { THIS_AUDIO_PARAM; THIS_CHECK;
+JS_METHOD(AudioParam::setValueCurveAtTime) { THIS_AUDIO_PARAM; THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, values);
 	REQ_FLOAT_ARG(1, time);
@@ -111,90 +94,82 @@ NAN_METHOD(AudioParam::setValueCurveAtTime) { THIS_AUDIO_PARAM; THIS_CHECK;
 	std::vector<float> curve;
 	// TODO: read array
 	
-	audioParam->_impl->setValueCurveAtTime(curve, time, duration);
+	_impl->setValueCurveAtTime(curve, time, duration);
 	
 }
 
 
-NAN_METHOD(AudioParam::cancelScheduledValues) { THIS_AUDIO_PARAM; THIS_CHECK;
+JS_METHOD(AudioParam::cancelScheduledValues) { THIS_AUDIO_PARAM; THIS_CHECK;
 	
 	REQ_FLOAT_ARG(0, startTime);
 	
-	audioParam->_impl->cancelScheduledValues(startTime);
+	_impl->cancelScheduledValues(startTime);
 	
 }
 
 
-NAN_METHOD(AudioParam::cancelAndHoldAtTime) { THIS_AUDIO_PARAM; THIS_CHECK;
+JS_METHOD(AudioParam::cancelAndHoldAtTime) { THIS_AUDIO_PARAM; THIS_CHECK;
 	
 	REQ_FLOAT_ARG(0, startTime);
 	
 	// TODO: implement
-	// audioParam->_impl->cancelAndHoldAtTime(startTime);
+	// _impl->cancelAndHoldAtTime(startTime);
 	
 }
 
 
-NAN_GETTER(AudioParam::valueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
+JS_GETTER(AudioParam::valueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
 	
-	Napi::Object context = JS_OBJ(audioParam->_context);
+	Napi::Object context = JS_OBJ(_context);
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	
 	lab::ContextRenderLock renderLock(audioContext->getContext().get(), "AudioParam::valueGetter");
 	
-	RET_NUM(audioParam->_impl->value(renderLock));
+	RET_NUM(_impl->value(renderLock));
 	
 }
 
-NAN_SETTER(AudioParam::valueSetter) { THIS_AUDIO_PARAM; THIS_CHECK; SETTER_FLOAT_ARG;
+JS_SETTER(AudioParam::valueSetter) { THIS_AUDIO_PARAM; THIS_CHECK; SETTER_FLOAT_ARG;
 	
-	audioParam->_impl->setValue(v);
-	
-}
-
-
-NAN_GETTER(AudioParam::defaultValueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
-	
-	RET_NUM(audioParam->_impl->defaultValue());
+	_impl->setValue(v);
 	
 }
 
 
-NAN_GETTER(AudioParam::minValueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
+JS_GETTER(AudioParam::defaultValueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
 	
-	RET_NUM(audioParam->_impl->minValue());
+	RET_NUM(_impl->defaultValue());
 	
 }
 
 
-NAN_GETTER(AudioParam::maxValueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
+JS_GETTER(AudioParam::minValueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
 	
-	RET_NUM(audioParam->_impl->maxValue());
+	RET_NUM(_impl->minValue());
+	
+}
+
+
+JS_GETTER(AudioParam::maxValueGetter) { THIS_AUDIO_PARAM; THIS_CHECK;
+	
+	RET_NUM(_impl->maxValue());
 	
 }
 
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT AudioParam::_protoAudioParam;
-V8_STORE_FUNC AudioParam::_ctorAudioParam;
+Napi::FunctionReference AudioParam::_ctorAudioParam;
 
 
 bool AudioParam::isAudioParam(Napi::Object obj) {
-	return Nan::New(_protoAudioParam)->HasInstance(obj);
+	return obj.InstanceOf(_ctorAudioParam.Value());
 }
 
 
-void AudioParam::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("AudioParam"));
+void AudioParam::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_RW(obj, value);
@@ -216,13 +191,14 @@ void AudioParam::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "AudioParam", {
 	
-	_protoAudioParam.Reset(proto);
-	_ctorAudioParam.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("AudioParam"), ctor);
+	_ctorAudioParam = Napi::Persistent(ctor);
+	_ctorAudioParam.SuppressDestruct();
 	
+	exports.Set("AudioParam", ctor);
 	
 }
 
@@ -237,7 +213,7 @@ Napi::Object AudioParam::getNew(Napi::Object context, ParamPtr param) {
 }
 
 
-NAN_METHOD(AudioParam::newCtor) {
+JS_METHOD(AudioParam::newCtor) {
 	
 	CTOR_CHECK("AudioParam");
 	
@@ -254,15 +230,15 @@ NAN_METHOD(AudioParam::newCtor) {
 }
 
 
-NAN_METHOD(AudioParam::destroy) { THIS_AUDIO_PARAM; THIS_CHECK;
+JS_METHOD(AudioParam::destroy) { THIS_AUDIO_PARAM; THIS_CHECK;
 	
-	audioParam->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(AudioParam::isDestroyedGetter) { THIS_AUDIO_PARAM;
+JS_GETTER(AudioParam::isDestroyedGetter) { THIS_AUDIO_PARAM;
 	
-	RET_BOOL(audioParam->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

@@ -1,24 +1,7 @@
-#include <cstdlib>
-
 
 #include "periodic-wave.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
-
-
-// ------ Aux macros
-
-#define THIS_PERIODIC_WAVE                                                    \
-	PeriodicWave *periodicWave = Nan::ObjectWrap::Unwrap<PeriodicWave>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                           \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
+#include "common.hpp"
 
 
 // ------ Constructor and Destructor
@@ -51,20 +34,12 @@ void PeriodicWave::_destroy() { DES_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT PeriodicWave::_protoPeriodicWave;
-V8_STORE_FUNC PeriodicWave::_ctorPeriodicWave;
+Napi::FunctionReference PeriodicWave::_ctorPeriodicWave;
 
 
-void PeriodicWave::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("PeriodicWave"));
+void PeriodicWave::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	
@@ -77,19 +52,20 @@ void PeriodicWave::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "PeriodicWave", {
 	
-	_protoPeriodicWave.Reset(proto);
-	_ctorPeriodicWave.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("PeriodicWave"), ctor);
+	_ctorPeriodicWave = Napi::Persistent(ctor);
+	_ctorPeriodicWave.SuppressDestruct();
 	
+	exports.Set("PeriodicWave", ctor);
 	
 }
 
 
 bool PeriodicWave::isPeriodicWave(Napi::Object obj) {
-	return Nan::New(_protoPeriodicWave)->HasInstance(obj);
+	return obj.InstanceOf(_ctorPeriodicWave.Value());
 }
 
 
@@ -102,7 +78,7 @@ Napi::Object PeriodicWave::getNew() {
 }
 
 
-NAN_METHOD(PeriodicWave::newCtor) {
+JS_METHOD(PeriodicWave::newCtor) {
 	
 	CTOR_CHECK("PeriodicWave");
 	
@@ -114,15 +90,15 @@ NAN_METHOD(PeriodicWave::newCtor) {
 }
 
 
-NAN_METHOD(PeriodicWave::destroy) { THIS_PERIODIC_WAVE; THIS_CHECK;
+JS_METHOD(PeriodicWave::destroy) { THIS_PERIODIC_WAVE; THIS_CHECK;
 	
-	periodicWave->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(PeriodicWave::isDestroyedGetter) { THIS_PERIODIC_WAVE;
+JS_GETTER(PeriodicWave::isDestroyedGetter) { THIS_PERIODIC_WAVE;
 	
-	RET_BOOL(periodicWave->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

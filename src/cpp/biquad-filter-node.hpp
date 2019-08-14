@@ -14,12 +14,12 @@ public:
 	~BiquadFilterNode();
 	
 	// Public V8 init
-	static void init(Napi::Object target);
+	static void init(Napi::Env env, Napi::Object exports);
 	
 	static bool isBiquadFilterNode(Napi::Object obj);
 	
 	// Make a new instance from C++ land
-	static Napi::Object getNew(Napi::Object context);
+	explicit BiquadFilterNode(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -30,38 +30,37 @@ protected:
 	
 	explicit BiquadFilterNode(Napi::Object context);
 	
-	static V8_STORE_FT _protoBiquadFilterNode;
-	static V8_STORE_FUNC _ctorBiquadFilterNode;
+	static Napi::FunctionReference _ctorBiquadFilterNode;
 	
 	bool _isDestroyed;
 	
 	std::string _type;
-	V8_STORE_OBJ _frequency;
-	V8_STORE_OBJ _detune;
-	V8_STORE_OBJ _Q;
-	V8_STORE_OBJ _gain;
+	Napi::ObjectReference _frequency;
+	Napi::ObjectReference _detune;
+	Napi::ObjectReference _Q;
+	Napi::ObjectReference _gain;
 	
 	
 // JS methods and props, available through V8 APIs
 private:
 	
-	static NAN_METHOD(newCtor);
+	JS_METHOD(newCtor);
 	
-	static NAN_METHOD(destroy);
-	static NAN_GETTER(isDestroyedGetter);
+	JS_METHOD(destroy);
+	JS_GETTER(isDestroyedGetter);
 	
-	static NAN_METHOD(getFrequencyResponse);
+	JS_METHOD(getFrequencyResponse);
 	
-	static NAN_GETTER(typeGetter);
-	static NAN_SETTER(typeSetter);
+	JS_GETTER(typeGetter);
+	JS_SETTER(typeSetter);
 	
-	static NAN_GETTER(frequencyGetter);
+	JS_GETTER(frequencyGetter);
 	
-	static NAN_GETTER(detuneGetter);
+	JS_GETTER(detuneGetter);
 	
-	static NAN_GETTER(QGetter);
+	JS_GETTER(QGetter);
 	
-	static NAN_GETTER(gainGetter);
+	JS_GETTER(gainGetter);
 	
 };
 

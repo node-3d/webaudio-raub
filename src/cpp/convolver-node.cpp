@@ -1,5 +1,3 @@
-#include <cstdlib>
-
 #include <LabSound/core/AudioContext.h>
 #include <LabSound/core/ConvolverNode.h>
 
@@ -7,22 +5,7 @@
 #include "audio-context.hpp"
 #include "audio-buffer.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
-
-
-// ------ Aux macros
-
-#define THIS_CONVOLVER_NODE                                                   \
-	ConvolverNode *convolverNode = Nan::ObjectWrap::Unwrap<ConvolverNode>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                          \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
+#include "common.hpp"
 
 
 // ------ Constructor and Destructor
@@ -57,21 +40,21 @@ void ConvolverNode::_destroy() { DES_CHECK;
 
 
 
-NAN_GETTER(ConvolverNode::bufferGetter) { THIS_CONVOLVER_NODE; THIS_CHECK;
+JS_GETTER(ConvolverNode::bufferGetter) { THIS_CONVOLVER_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_OBJ(convolverNode->_buffer));
+	RET_VALUE(__buffer.Value());
 	
 }
 
-NAN_SETTER(ConvolverNode::bufferSetter) { THIS_CONVOLVER_NODE; THIS_CHECK; SETTER_OBJ_ARG;
+JS_SETTER(ConvolverNode::bufferSetter) { THIS_CONVOLVER_NODE; THIS_CHECK; SETTER_OBJ_ARG;
 	
-	if (Nan::New(convolverNode->_buffer) == v) {
+	if (Nan::New(_buffer) == v) {
 		return;
 	}
 	
-	convolverNode->_buffer.Reset(v);
+	_buffer.Reset(v);
 	
-	Napi::Object context = JS_OBJ(convolverNode->_context);
+	Napi::Object context = JS_OBJ(_context);
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	
 	lab::AudioContext *ctx = audioContext->getContext().get();
@@ -80,7 +63,7 @@ NAN_SETTER(ConvolverNode::bufferSetter) { THIS_CONVOLVER_NODE; THIS_CHECK; SETTE
 	AudioBuffer::BusPtr bus = audioBuffer->getBus();
 	
 	lab::ConvolverNode *node = static_cast<lab::ConvolverNode*>(
-		convolverNode->_impl.get()
+		_impl.get()
 	);
 	node->setImpulse(bus);
 	
@@ -89,20 +72,20 @@ NAN_SETTER(ConvolverNode::bufferSetter) { THIS_CONVOLVER_NODE; THIS_CHECK; SETTE
 }
 
 
-NAN_GETTER(ConvolverNode::normalizeGetter) { THIS_CONVOLVER_NODE; THIS_CHECK;
+JS_GETTER(ConvolverNode::normalizeGetter) { THIS_CONVOLVER_NODE; THIS_CHECK;
 	
 	lab::ConvolverNode *node = static_cast<lab::ConvolverNode*>(
-		convolverNode->_impl.get()
+		_impl.get()
 	);
 	
 	RET_BOOL(node->normalize());
 	
 }
 
-NAN_SETTER(ConvolverNode::normalizeSetter) { THIS_CONVOLVER_NODE; THIS_CHECK; SETTER_BOOL_ARG;
+JS_SETTER(ConvolverNode::normalizeSetter) { THIS_CONVOLVER_NODE; THIS_CHECK; SETTER_BOOL_ARG;
 	
 	lab::ConvolverNode *node = static_cast<lab::ConvolverNode*>(
-		convolverNode->_impl.get()
+		_impl.get()
 	);
 	
 	node->setNormalize(v);
@@ -114,24 +97,12 @@ NAN_SETTER(ConvolverNode::normalizeSetter) { THIS_CONVOLVER_NODE; THIS_CHECK; SE
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT ConvolverNode::_protoConvolverNode;
-V8_STORE_FUNC ConvolverNode::_ctorConvolverNode;
+Napi::FunctionReference ConvolverNode::_ctorConvolverNode;
 
 
-void ConvolverNode::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-	
-	// class ConvolverNode inherits AudioNode
-	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
-	proto->Inherit(parent);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("ConvolverNode"));
+void ConvolverNode::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_RW(obj, buffer);
@@ -144,12 +115,14 @@ void ConvolverNode::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "ConvolverNode", {
 	
-	_protoConvolverNode.Reset(proto);
-	_ctorConvolverNode.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("ConvolverNode"), ctor);
+	_ctorConvolverNode = Napi::Persistent(ctor);
+	_ctorConvolverNode.SuppressDestruct();
+	
+	exports.Set("ConvolverNode", ctor);
 	
 }
 
@@ -163,7 +136,7 @@ Napi::Object ConvolverNode::getNew(Napi::Object context) {
 }
 
 
-NAN_METHOD(ConvolverNode::newCtor) {
+JS_METHOD(ConvolverNode::newCtor) {
 	
 	CTOR_CHECK("ConvolverNode");
 	
@@ -177,17 +150,17 @@ NAN_METHOD(ConvolverNode::newCtor) {
 }
 
 
-NAN_METHOD(ConvolverNode::destroy) { THIS_CONVOLVER_NODE; THIS_CHECK;
+JS_METHOD(ConvolverNode::destroy) { THIS_CONVOLVER_NODE; THIS_CHECK;
 	
 	convolverNode->emit("destroy");
 	
-	convolverNode->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(ConvolverNode::isDestroyedGetter) { THIS_CONVOLVER_NODE;
+JS_GETTER(ConvolverNode::isDestroyedGetter) { THIS_CONVOLVER_NODE;
 	
-	RET_BOOL(convolverNode->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

@@ -1,24 +1,7 @@
-#include <cstdlib>
-
 
 #include "audio-worklet.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
-
-
-// ------ Aux macros
-
-#define THIS_AUDIO_WORKLET                                                    \
-	AudioWorklet *audioWorklet = Nan::ObjectWrap::Unwrap<AudioWorklet>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                           \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
+#include "common.hpp"
 
 
 // ------ Constructor and Destructor
@@ -51,20 +34,12 @@ void AudioWorklet::_destroy() { DES_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT AudioWorklet::_protoAudioWorklet;
-V8_STORE_FUNC AudioWorklet::_ctorAudioWorklet;
+Napi::FunctionReference AudioWorklet::_ctorAudioWorklet;
 
 
-void AudioWorklet::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("AudioWorklet"));
+void AudioWorklet::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	
@@ -77,19 +52,20 @@ void AudioWorklet::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "AudioWorklet", {
 	
-	_protoAudioWorklet.Reset(proto);
-	_ctorAudioWorklet.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("AudioWorklet"), ctor);
+	_ctorAudioWorklet = Napi::Persistent(ctor);
+	_ctorAudioWorklet.SuppressDestruct();
 	
+	exports.Set("AudioWorklet", ctor);
 	
 }
 
 
 bool AudioWorklet::isAudioWorklet(Napi::Object obj) {
-	return Nan::New(_protoAudioWorklet)->HasInstance(obj);
+	return obj.InstanceOf(_ctorAudioWorklet.Value());
 }
 
 
@@ -102,7 +78,7 @@ Napi::Object AudioWorklet::getNew() {
 }
 
 
-NAN_METHOD(AudioWorklet::newCtor) {
+JS_METHOD(AudioWorklet::newCtor) {
 	
 	CTOR_CHECK("AudioWorklet");
 	
@@ -114,15 +90,15 @@ NAN_METHOD(AudioWorklet::newCtor) {
 }
 
 
-NAN_METHOD(AudioWorklet::destroy) { THIS_AUDIO_WORKLET; THIS_CHECK;
+JS_METHOD(AudioWorklet::destroy) { THIS_AUDIO_WORKLET; THIS_CHECK;
 	
-	audioWorklet->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(AudioWorklet::isDestroyedGetter) { THIS_AUDIO_WORKLET;
+JS_GETTER(AudioWorklet::isDestroyedGetter) { THIS_AUDIO_WORKLET;
 	
-	RET_BOOL(audioWorklet->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

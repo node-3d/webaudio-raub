@@ -1,24 +1,7 @@
-#include <cstdlib>
-
 
 #include "channel-merger-node.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
-
-
-// ------ Aux macros
-
-#define THIS_CHANNEL_MERGER_NODE                                                    \
-	ChannelMergerNode *channelMergerNode = Nan::ObjectWrap::Unwrap<ChannelMergerNode>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                           \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
+#include "common.hpp"
 
 
 // ------ Constructor and Destructor
@@ -54,24 +37,12 @@ void ChannelMergerNode::_destroy() { DES_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT ChannelMergerNode::_protoChannelMergerNode;
-V8_STORE_FUNC ChannelMergerNode::_ctorChannelMergerNode;
+Napi::FunctionReference ChannelMergerNode::_ctorChannelMergerNode;
 
 
-void ChannelMergerNode::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-
-	// class ChannelMergerNode inherits AudioNode
-	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
-	proto->Inherit(parent);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("ChannelMergerNode"));
+void ChannelMergerNode::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	
@@ -84,19 +55,20 @@ void ChannelMergerNode::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "ChannelMergerNode", {
 	
-	_protoChannelMergerNode.Reset(proto);
-	_ctorChannelMergerNode.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("ChannelMergerNode"), ctor);
+	_ctorChannelMergerNode = Napi::Persistent(ctor);
+	_ctorChannelMergerNode.SuppressDestruct();
 	
+	exports.Set("ChannelMergerNode", ctor);
 	
 }
 
 
 bool ChannelMergerNode::isChannelMergerNode(Napi::Object obj) {
-	return Nan::New(_protoChannelMergerNode)->HasInstance(obj);
+	return obj.InstanceOf(_ctorChannelMergerNode.Value());
 }
 
 
@@ -109,7 +81,7 @@ Napi::Object ChannelMergerNode::getNew() {
 }
 
 
-NAN_METHOD(ChannelMergerNode::newCtor) {
+JS_METHOD(ChannelMergerNode::newCtor) {
 	
 	CTOR_CHECK("ChannelMergerNode");
 	
@@ -121,17 +93,17 @@ NAN_METHOD(ChannelMergerNode::newCtor) {
 }
 
 
-NAN_METHOD(ChannelMergerNode::destroy) { THIS_CHANNEL_MERGER_NODE; THIS_CHECK;
+JS_METHOD(ChannelMergerNode::destroy) { THIS_CHANNEL_MERGER_NODE; THIS_CHECK;
 	
 	channelMergerNode->emit("destroy");
 	
-	channelMergerNode->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(ChannelMergerNode::isDestroyedGetter) { THIS_CHANNEL_MERGER_NODE;
+JS_GETTER(ChannelMergerNode::isDestroyedGetter) { THIS_CHANNEL_MERGER_NODE;
 	
-	RET_BOOL(channelMergerNode->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

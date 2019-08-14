@@ -1,27 +1,10 @@
-#include <cstdlib>
-
 #include <LabSound/core/GainNode.h>
 
 #include "gain-node.hpp"
 #include "audio-context.hpp"
 #include "audio-param.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
-
-
-// ------ Aux macros
-
-#define THIS_GAIN_NODE                                                        \
-	GainNode *gainNode = Nan::ObjectWrap::Unwrap<GainNode>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                               \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
+#include "common.hpp"
 
 
 // ------ Constructor and Destructor
@@ -59,33 +42,21 @@ void GainNode::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-NAN_GETTER(GainNode::gainGetter) { THIS_GAIN_NODE; THIS_CHECK;
+JS_GETTER(GainNode::gainGetter) { THIS_GAIN_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_OBJ(gainNode->_gain));
+	RET_VALUE(__gain.Value());
 	
 }
 
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT GainNode::_protoGainNode;
-V8_STORE_FUNC GainNode::_ctorGainNode;
+Napi::FunctionReference GainNode::_ctorGainNode;
 
 
-void GainNode::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-	
-	// class GainNode inherits AudioNode
-	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
-	proto->Inherit(parent);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("GainNode"));
+void GainNode::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, gain);
@@ -97,12 +68,14 @@ void GainNode::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "GainNode", {
 	
-	_protoGainNode.Reset(proto);
-	_ctorGainNode.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("GainNode"), ctor);
+	_ctorGainNode = Napi::Persistent(ctor);
+	_ctorGainNode.SuppressDestruct();
+	
+	exports.Set("GainNode", ctor);
 	
 }
 
@@ -116,7 +89,7 @@ Napi::Object GainNode::getNew(Napi::Object context) {
 }
 
 
-NAN_METHOD(GainNode::newCtor) {
+JS_METHOD(GainNode::newCtor) {
 	
 	CTOR_CHECK("GainNode");
 	
@@ -130,17 +103,17 @@ NAN_METHOD(GainNode::newCtor) {
 }
 
 
-NAN_METHOD(GainNode::destroy) { THIS_GAIN_NODE; THIS_CHECK;
+JS_METHOD(GainNode::destroy) { THIS_GAIN_NODE; THIS_CHECK;
 	
 	gainNode->emit("destroy");
 	
-	gainNode->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(GainNode::isDestroyedGetter) { THIS_GAIN_NODE;
+JS_GETTER(GainNode::isDestroyedGetter) { THIS_GAIN_NODE;
 	
-	RET_BOOL(gainNode->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

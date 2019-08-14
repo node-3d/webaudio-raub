@@ -1,24 +1,7 @@
-#include <cstdlib>
-
 
 #include "channel-splitter-node.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
-
-
-// ------ Aux macros
-
-#define THIS_CHANNEL_SPLITTER_NODE                                                    \
-	ChannelSplitterNode *channelSplitterNode = Nan::ObjectWrap::Unwrap<ChannelSplitterNode>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                           \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
+#include "common.hpp"
 
 
 // ------ Constructor and Destructor
@@ -54,24 +37,12 @@ void ChannelSplitterNode::_destroy() { DES_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT ChannelSplitterNode::_protoChannelSplitterNode;
-V8_STORE_FUNC ChannelSplitterNode::_ctorChannelSplitterNode;
+Napi::FunctionReference ChannelSplitterNode::_ctorChannelSplitterNode;
 
 
-void ChannelSplitterNode::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-
-	// class ChannelSplitterNode inherits AudioNode
-	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
-	proto->Inherit(parent);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("ChannelSplitterNode"));
+void ChannelSplitterNode::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	
@@ -84,19 +55,20 @@ void ChannelSplitterNode::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "ChannelSplitterNode", {
 	
-	_protoChannelSplitterNode.Reset(proto);
-	_ctorChannelSplitterNode.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("ChannelSplitterNode"), ctor);
+	_ctorChannelSplitterNode = Napi::Persistent(ctor);
+	_ctorChannelSplitterNode.SuppressDestruct();
 	
+	exports.Set("ChannelSplitterNode", ctor);
 	
 }
 
 
 bool ChannelSplitterNode::isChannelSplitterNode(Napi::Object obj) {
-	return Nan::New(_protoChannelSplitterNode)->HasInstance(obj);
+	return obj.InstanceOf(_ctorChannelSplitterNode.Value());
 }
 
 
@@ -109,7 +81,7 @@ Napi::Object ChannelSplitterNode::getNew() {
 }
 
 
-NAN_METHOD(ChannelSplitterNode::newCtor) {
+JS_METHOD(ChannelSplitterNode::newCtor) {
 	
 	CTOR_CHECK("ChannelSplitterNode");
 	
@@ -121,17 +93,17 @@ NAN_METHOD(ChannelSplitterNode::newCtor) {
 }
 
 
-NAN_METHOD(ChannelSplitterNode::destroy) { THIS_CHANNEL_SPLITTER_NODE; THIS_CHECK;
+JS_METHOD(ChannelSplitterNode::destroy) { THIS_CHANNEL_SPLITTER_NODE; THIS_CHECK;
 	
 	channelSplitterNode->emit("destroy");
 	
-	channelSplitterNode->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(ChannelSplitterNode::isDestroyedGetter) { THIS_CHANNEL_SPLITTER_NODE;
+JS_GETTER(ChannelSplitterNode::isDestroyedGetter) { THIS_CHANNEL_SPLITTER_NODE;
 	
-	RET_BOOL(channelSplitterNode->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

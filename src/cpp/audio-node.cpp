@@ -1,5 +1,3 @@
-#include <cstdlib>
-
 #include <LabSound/core/AudioContext.h>
 #include <LabSound/core/AudioNode.h>
 #include <LabSound/core/AudioParam.h>
@@ -9,22 +7,10 @@
 #include "audio-context.hpp"
 #include "audio-param.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
+#include "common.hpp"
 
 
 // ------ Aux macros
-
-#define THIS_AUDIO_NODE                                                       \
-	AudioNode *audioNode = Nan::ObjectWrap::Unwrap<AudioNode>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                              \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
 
 
 inline string fromChannelCountMode(lab::ChannelCountMode mode) {
@@ -109,8 +95,6 @@ void AudioNode::_destroy() { DES_CHECK;
 	
 	_isDestroyed = true;
 	
-	EventEmitter::_destroy();
-	
 }
 
 
@@ -122,11 +106,11 @@ void AudioNode::_destroy() { DES_CHECK;
 // node2 node1.connect(node2, output, input);
 // undefined node1.connect(param);
 // undefined node1.connect(param, output);
-NAN_METHOD(AudioNode::connect) { THIS_AUDIO_NODE; THIS_CHECK;
+JS_METHOD(AudioNode::connect) { THIS_AUDIO_NODE; THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, destination);
 	
-	Napi::Object context = JS_OBJ(audioNode->_context);
+	Napi::Object context = JS_OBJ(_context);
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	
 	lab::AudioContext *ctx = audioContext->getContext().get();
@@ -138,7 +122,7 @@ NAN_METHOD(AudioNode::connect) { THIS_AUDIO_NODE; THIS_CHECK;
 		
 		AudioNode *destNode = ObjectWrap::Unwrap<AudioNode>(destination);
 		
-		ctx->connect(destNode->_impl, audioNode->_impl, input, output);
+		ctx->connect(_impl, _impl, input, output);
 		
 	} else if (AudioParam::isAudioParam(destination)) {
 		
@@ -146,7 +130,7 @@ NAN_METHOD(AudioNode::connect) { THIS_AUDIO_NODE; THIS_CHECK;
 		
 		AudioParam *destParam = ObjectWrap::Unwrap<AudioParam>(destination);
 		
-		ctx->connectParam(destParam->getParam(), audioNode->_impl, output);
+		ctx->connectParam(destParam->getParam(), _impl, output);
 		
 	}
 	
@@ -157,13 +141,13 @@ NAN_METHOD(AudioNode::connect) { THIS_AUDIO_NODE; THIS_CHECK;
 // undefined node1.disconnect(node2);
 // undefined node1.disconnect(node2, output);
 // undefined node1.disconnect(node2, output, input);
-NAN_METHOD(AudioNode::disconnect) { THIS_AUDIO_NODE; THIS_CHECK;
+JS_METHOD(AudioNode::disconnect) { THIS_AUDIO_NODE; THIS_CHECK;
 	
 	int output = 0;
 	int input = 0;
 	Napi::Object destination;
 	
-	Napi::Object context = JS_OBJ(audioNode->_context);
+	Napi::Object context = JS_OBJ(_context);
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	lab::AudioContext *ctx = audioContext->getContext().get();
 	
@@ -201,7 +185,7 @@ NAN_METHOD(AudioNode::disconnect) { THIS_AUDIO_NODE; THIS_CHECK;
 	} else {
 		
 		// Disconnect self
-		ctx->disconnect(audioNode->_impl, NodePtr(), input, output);
+		ctx->disconnect(_impl, NodePtr(), input, output);
 		return;
 		
 	}
@@ -209,7 +193,7 @@ NAN_METHOD(AudioNode::disconnect) { THIS_AUDIO_NODE; THIS_CHECK;
 	if (isAudioNode(destination)) {
 		
 		AudioNode *destNode = ObjectWrap::Unwrap<AudioNode>(destination);
-		ctx->disconnect(audioNode->_impl, destNode->_impl, input, output);
+		ctx->disconnect(_impl, _impl, input, output);
 		
 	} else if (AudioParam::isAudioParam(destination)) {
 		
@@ -219,68 +203,68 @@ NAN_METHOD(AudioNode::disconnect) { THIS_AUDIO_NODE; THIS_CHECK;
 		
 		lab::ContextGraphLock graphLock(ctx, "AudioNode::disconnect");
 		// TODO:
-		// param->disconnect(graphLock, param, audioNode->_impl);
+		// param->disconnect(graphLock, param, _impl);
 		
 	}
 	
 }
 
 
-NAN_GETTER(AudioNode::contextGetter) { THIS_AUDIO_NODE; THIS_CHECK;
+JS_GETTER(AudioNode::contextGetter) { THIS_AUDIO_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_OBJ(audioNode->_context));
-	
-}
-
-
-NAN_GETTER(AudioNode::numberOfInputsGetter) { THIS_AUDIO_NODE; THIS_CHECK;
-	
-	RET_NUM(static_cast<uint32_t>(audioNode->_impl->numberOfInputs()));
+	RET_VALUE(__context.Value());
 	
 }
 
 
-NAN_GETTER(AudioNode::numberOfOutputsGetter) { THIS_AUDIO_NODE; THIS_CHECK;
+JS_GETTER(AudioNode::numberOfInputsGetter) { THIS_AUDIO_NODE; THIS_CHECK;
 	
-	RET_NUM(static_cast<uint32_t>(audioNode->_impl->numberOfOutputs()));
-	
-}
-
-
-NAN_GETTER(AudioNode::channelCountGetter) { THIS_AUDIO_NODE; THIS_CHECK;
-	
-	RET_NUM(static_cast<uint32_t>(audioNode->_impl->channelCount()));
+	RET_NUM(static_cast<uint32_t>(_impl->numberOfInputs()));
 	
 }
 
 
-NAN_SETTER(AudioNode::channelCountSetter) { THIS_AUDIO_NODE; THIS_CHECK; SETTER_UINT32_ARG;
+JS_GETTER(AudioNode::numberOfOutputsGetter) { THIS_AUDIO_NODE; THIS_CHECK;
+	
+	RET_NUM(static_cast<uint32_t>(_impl->numberOfOutputs()));
+	
+}
+
+
+JS_GETTER(AudioNode::channelCountGetter) { THIS_AUDIO_NODE; THIS_CHECK;
+	
+	RET_NUM(static_cast<uint32_t>(_impl->channelCount()));
+	
+}
+
+
+JS_SETTER(AudioNode::channelCountSetter) { THIS_AUDIO_NODE; THIS_CHECK; SETTER_UINT32_ARG;
 	
 	CACHE_CAS(_channelCount, v);
 	
-	Napi::Object context = JS_OBJ(audioNode->_context);
+	Napi::Object context = JS_OBJ(_context);
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	
 	lab::ContextGraphLock graphLock(audioContext->getContext().get(), "AudioNode::channelCountSetter");
-	audioNode->_impl->setChannelCount(graphLock, audioNode->_channelCount);
+	_impl->setChannelCount(graphLock, _channelCount);
 	
 	audioNode->emit("channelCount", 1, &value);
 	
 }
 
 
-NAN_GETTER(AudioNode::channelCountModeGetter) { THIS_AUDIO_NODE; THIS_CHECK;
+JS_GETTER(AudioNode::channelCountModeGetter) { THIS_AUDIO_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_UTF8(audioNode->_channelCountMode));
+	RET_STR(__channelCountMode);
 	
 }
 
-NAN_SETTER(AudioNode::channelCountModeSetter) { THIS_AUDIO_NODE; THIS_CHECK; SETTER_UTF8_ARG;
+JS_SETTER(AudioNode::channelCountModeSetter) { THIS_AUDIO_NODE; THIS_CHECK; SETTER_UTF8_ARG;
 	
-	if (audioNode->_channelCountMode == *v) {
+	if (_channelCountMode == *v) {
 		return;
 	}
-	audioNode->_channelCountMode = *v;
+	_channelCountMode = *v;
 	
 	// TODO: may be additional actions on change?
 	
@@ -289,18 +273,18 @@ NAN_SETTER(AudioNode::channelCountModeSetter) { THIS_AUDIO_NODE; THIS_CHECK; SET
 }
 
 
-NAN_GETTER(AudioNode::channelInterpretationGetter) { THIS_AUDIO_NODE; THIS_CHECK;
+JS_GETTER(AudioNode::channelInterpretationGetter) { THIS_AUDIO_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_UTF8(audioNode->_channelInterpretation));
+	RET_STR(__channelInterpretation);
 	
 }
 
-NAN_SETTER(AudioNode::channelInterpretationSetter) { THIS_AUDIO_NODE; THIS_CHECK; SETTER_UTF8_ARG;
+JS_SETTER(AudioNode::channelInterpretationSetter) { THIS_AUDIO_NODE; THIS_CHECK; SETTER_UTF8_ARG;
 	
-	if (audioNode->_channelInterpretation == *v) {
+	if (_channelInterpretation == *v) {
 		return;
 	}
-	audioNode->_channelInterpretation = *v;
+	_channelInterpretation = *v;
 	
 	// TODO: may be additional actions on change?
 	
@@ -311,24 +295,12 @@ NAN_SETTER(AudioNode::channelInterpretationSetter) { THIS_AUDIO_NODE; THIS_CHECK
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT AudioNode::_protoAudioNode;
-V8_STORE_FUNC AudioNode::_ctorAudioNode;
+Napi::FunctionReference AudioNode::_ctorAudioNode;
 
 
-void AudioNode::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-	
-	// class AudioNode inherits EventEmitter
-	V8_VAR_FT parent = Nan::New(EventEmitter::_protoEventEmitter);
-	proto->Inherit(parent);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("AudioNode"));
+void AudioNode::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, context);
@@ -347,40 +319,41 @@ void AudioNode::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "AudioNode", {
 	
-	_protoAudioNode.Reset(proto);
-	_ctorAudioNode.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("AudioNode"), ctor);
+	_ctorAudioNode = Napi::Persistent(ctor);
+	_ctorAudioNode.SuppressDestruct();
 	
+	exports.Set("AudioNode", ctor);
 	
 }
 
 
 bool AudioNode::isAudioNode(Napi::Object obj) {
-	return Nan::New(_protoAudioNode)->HasInstance(obj);
+	return obj.InstanceOf(_ctorAudioNode.Value());
 }
 
 
-NAN_METHOD(AudioNode::newCtor) {
+JS_METHOD(AudioNode::newCtor) {
 	
 	Nan::ThrowTypeError("'AudioNode' is abstract, use a specific node class.");
 	
 }
 
 
-NAN_METHOD(AudioNode::destroy) { THIS_AUDIO_NODE; THIS_CHECK;
+JS_METHOD(AudioNode::destroy) { THIS_AUDIO_NODE; THIS_CHECK;
 	
 	audioNode->emit("destroy");
 	
-	audioNode->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(AudioNode::isDestroyedGetter) { THIS_AUDIO_NODE;
+JS_GETTER(AudioNode::isDestroyedGetter) { THIS_AUDIO_NODE;
 	
-	RET_BOOL(audioNode->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

@@ -1,25 +1,12 @@
-#include <cstdlib>
-
 
 #include "audio-worklet-global-scope.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
+#include "common.hpp"
 
 
 // ------ Aux macros
 
-#define THIS_AUDIO_WORKLET_GLOBAL_SCOPE                                       \
-	AudioWorkletGlobalScope *audioWorkletGlobalScope =                        \
 	Nan::ObjectWrap::Unwrap<AudioWorkletGlobalScope>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
 
 
 // ------ Constructor and Destructor
@@ -48,7 +35,7 @@ void AudioWorkletGlobalScope::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-NAN_METHOD(AudioWorkletGlobalScope::registerProcessor) {
+JS_METHOD(AudioWorkletGlobalScope::registerProcessor) {
 	
 	THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK;
 	
@@ -60,49 +47,41 @@ NAN_METHOD(AudioWorkletGlobalScope::registerProcessor) {
 }
 
 
-NAN_GETTER(AudioWorkletGlobalScope::currentFrameGetter) {
+JS_GETTER(AudioWorkletGlobalScope::currentFrameGetter) {
 	
 	THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK;
 	
-	RET_VALUE(JS_OFFS(audioWorkletGlobalScope->_currentFrame));
+	RET_VALUE(JS_OFFS(_currentFrame));
 	
 }
 
 
-NAN_GETTER(AudioWorkletGlobalScope::currentTimeGetter) {
+JS_GETTER(AudioWorkletGlobalScope::currentTimeGetter) {
 	
 	THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK;
 	
-	RET_NUM(audioWorkletGlobalScope->_currentTime);
+	RET_NUM(_currentTime);
 	
 }
 
 
-NAN_GETTER(AudioWorkletGlobalScope::sampleRateGetter) {
+JS_GETTER(AudioWorkletGlobalScope::sampleRateGetter) {
 	
 	THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK;
 	
-	RET_NUM(audioWorkletGlobalScope->_sampleRate);
+	RET_NUM(_sampleRate);
 	
 }
 
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT AudioWorkletGlobalScope::_protoAudioWorkletGlobalScope;
-V8_STORE_FUNC AudioWorkletGlobalScope::_ctorAudioWorkletGlobalScope;
+Napi::FunctionReference AudioWorkletGlobalScope::_ctorAudioWorkletGlobalScope;
 
 
-void AudioWorkletGlobalScope::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("AudioWorkletGlobalScope"));
+void AudioWorkletGlobalScope::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, currentFrame);
@@ -117,19 +96,20 @@ void AudioWorkletGlobalScope::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "AudioWorkletGlobalScope", {
 	
-	_protoAudioWorkletGlobalScope.Reset(proto);
-	_ctorAudioWorkletGlobalScope.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("AudioWorkletGlobalScope"), ctor);
+	_ctorAudioWorkletGlobalScope = Napi::Persistent(ctor);
+	_ctorAudioWorkletGlobalScope.SuppressDestruct();
 	
+	exports.Set("AudioWorkletGlobalScope", ctor);
 	
 }
 
 
 bool AudioWorkletGlobalScope::isAudioWorkletGlobalScope(Napi::Object obj) {
-	return Nan::New(_protoAudioWorkletGlobalScope)->HasInstance(obj);
+	return obj.InstanceOf(_ctorAudioWorkletGlobalScope.Value());
 }
 
 
@@ -142,7 +122,7 @@ Napi::Object AudioWorkletGlobalScope::getNew() {
 }
 
 
-NAN_METHOD(AudioWorkletGlobalScope::newCtor) {
+JS_METHOD(AudioWorkletGlobalScope::newCtor) {
 	
 	CTOR_CHECK("AudioWorkletGlobalScope");
 	
@@ -154,19 +134,19 @@ NAN_METHOD(AudioWorkletGlobalScope::newCtor) {
 }
 
 
-NAN_METHOD(AudioWorkletGlobalScope::destroy) {
+JS_METHOD(AudioWorkletGlobalScope::destroy) {
 	
 	THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK;
 	
-	audioWorkletGlobalScope->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(AudioWorkletGlobalScope::isDestroyedGetter) {
+JS_GETTER(AudioWorkletGlobalScope::isDestroyedGetter) {
 	
 	THIS_AUDIO_WORKLET_GLOBAL_SCOPE;
 	
-	RET_BOOL(audioWorkletGlobalScope->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

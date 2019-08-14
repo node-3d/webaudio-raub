@@ -4,7 +4,7 @@
 
 #include <memory>
 
-#include <event-emitter.hpp>
+#include <addon-tools.hpp>
 
 namespace lab { class AudioContext; };
 
@@ -18,10 +18,10 @@ public:
 	~BaseAudioContext();
 	
 	// Public V8 init
-	static void init(Napi::Object target);
+	static void init(Napi::Env env, Napi::Object exports);
 	
 	// Make a new instance from C++ land
-	static Napi::Object getNew(Napi::Object context);
+	explicit BaseAudioContext(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -36,12 +36,12 @@ protected:
 	explicit BaseAudioContext(bool isOffline = false, float sampleRate = 44100.f);
 	
 	static V8_STORE_FT _protoBaseAudioContext; // for inheritance
-	static V8_STORE_FUNC _ctorBaseAudioContext;
+	static Napi::FunctionReference _ctorBaseAudioContext;
 	
 	bool _isDestroyed;
 	
-	V8_STORE_OBJ _destination;
-	V8_STORE_OBJ _listener;
+	Napi::ObjectReference _destination;
+	Napi::ObjectReference _listener;
 	std::string _state;
 	
 	CtxPtr _impl;
@@ -50,47 +50,47 @@ protected:
 // System methods and props for ObjectWrap
 private:
 	
-	static NAN_METHOD(newCtor);
+	JS_METHOD(newCtor);
 	
-	static NAN_METHOD(destroy);
-	static NAN_GETTER(isDestroyedGetter);
+	JS_METHOD(destroy);
+	JS_GETTER(isDestroyedGetter);
 	
-	static NAN_METHOD(update);
+	JS_METHOD(update);
 	
-	static NAN_METHOD(resume);
-	static NAN_METHOD(decodeAudioData);
-	static NAN_METHOD(createBuffer);
+	JS_METHOD(resume);
+	JS_METHOD(decodeAudioData);
+	JS_METHOD(createBuffer);
 	
-	static NAN_METHOD(createBufferSource);
-	// static NAN_METHOD(createConstantSource);
-	static NAN_METHOD(createGain);
-	static NAN_METHOD(createDelay);
-	static NAN_METHOD(createBiquadFilter);
-	static NAN_METHOD(createIIRFilter);
-	// static NAN_METHOD(createWaveShaper);
-	static NAN_METHOD(createPanner);
-	static NAN_METHOD(createConvolver);
-	// static NAN_METHOD(createDynamicsCompressor);
-	// static NAN_METHOD(createAnalyser);
-	static NAN_METHOD(createScriptProcessor);
-	// static NAN_METHOD(createStereoPanner);
-	static NAN_METHOD(createOscillator);
-	static NAN_METHOD(createPeriodicWave);
-	static NAN_METHOD(createChannelSplitter);
-	static NAN_METHOD(createChannelMerger);
-	static NAN_METHOD(createMediaElementSource);
-	static NAN_METHOD(createMediaStreamSource);
-	static NAN_METHOD(createMediaStreamDestination);
+	JS_METHOD(createBufferSource);
+	// JS_METHOD(createConstantSource);
+	JS_METHOD(createGain);
+	JS_METHOD(createDelay);
+	JS_METHOD(createBiquadFilter);
+	JS_METHOD(createIIRFilter);
+	// JS_METHOD(createWaveShaper);
+	JS_METHOD(createPanner);
+	JS_METHOD(createConvolver);
+	// JS_METHOD(createDynamicsCompressor);
+	// JS_METHOD(createAnalyser);
+	JS_METHOD(createScriptProcessor);
+	// JS_METHOD(createStereoPanner);
+	JS_METHOD(createOscillator);
+	JS_METHOD(createPeriodicWave);
+	JS_METHOD(createChannelSplitter);
+	JS_METHOD(createChannelMerger);
+	JS_METHOD(createMediaElementSource);
+	JS_METHOD(createMediaStreamSource);
+	JS_METHOD(createMediaStreamDestination);
 	
-	static NAN_GETTER(destinationGetter);
+	JS_GETTER(destinationGetter);
 	
-	static NAN_GETTER(currentTimeGetter);
+	JS_GETTER(currentTimeGetter);
 	
-	static NAN_GETTER(sampleRateGetter);
+	JS_GETTER(sampleRateGetter);
 	
-	static NAN_GETTER(listenerGetter);
+	JS_GETTER(listenerGetter);
 	
-	static NAN_GETTER(stateGetter);
+	JS_GETTER(stateGetter);
 	
 };
 

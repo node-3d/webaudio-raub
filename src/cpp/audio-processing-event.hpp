@@ -5,19 +5,19 @@
 #include <addon-tools.hpp>
 
 
-class AudioProcessingEvent : public Nan::ObjectWrap {
+class AudioProcessingEvent : public Napi::ObjectWrap<AudioProcessingEvent> {
 	
 public:
 	
 	~AudioProcessingEvent();
 	
 	// Public V8 init
-	static void init(Napi::Object target);
+	static void init(Napi::Env env, Napi::Object exports);
 	
 	static bool isAudioProcessingEvent(Napi::Object obj);
 	
 	// Make a new instance from C++ land
-	static Napi::Object getNew();
+	explicit AudioProcessingEvent(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -28,31 +28,30 @@ protected:
 	
 	AudioProcessingEvent();
 	
-	static V8_STORE_FT _protoAudioProcessingEvent;
-	static V8_STORE_FUNC _ctorAudioProcessingEvent;
+	static Napi::FunctionReference _ctorAudioProcessingEvent;
 	
 	bool _isDestroyed;
 	
 	double _playbackTime;
-	V8_STORE_OBJ _inputBuffer;
-	V8_STORE_OBJ _outputBuffer;
+	Napi::ObjectReference _inputBuffer;
+	Napi::ObjectReference _outputBuffer;
 	
 	
 // JS methods and props, available through V8 APIs
 private:
 	
-	static NAN_METHOD(newCtor);
+	JS_METHOD(newCtor);
 	
-	static NAN_METHOD(destroy);
-	static NAN_GETTER(isDestroyedGetter);
+	JS_METHOD(destroy);
+	JS_GETTER(isDestroyedGetter);
 	
 	
 	
-	static NAN_GETTER(playbackTimeGetter);
+	JS_GETTER(playbackTimeGetter);
 	
-	static NAN_GETTER(inputBufferGetter);
+	JS_GETTER(inputBufferGetter);
 	
-	static NAN_GETTER(outputBufferGetter);
+	JS_GETTER(outputBufferGetter);
 	
 };
 

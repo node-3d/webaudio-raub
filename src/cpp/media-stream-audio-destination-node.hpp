@@ -14,12 +14,12 @@ public:
 	~MediaStreamAudioDestinationNode();
 	
 	// Public V8 init
-	static void init(Napi::Object target);
+	static void init(Napi::Env env, Napi::Object exports);
 	
 	static bool isMediaStreamAudioDestinationNode(Napi::Object obj);
 	
 	// Make a new instance from C++ land
-	static Napi::Object getNew();
+	explicit MediaStreamAudioDestinationNode(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -30,25 +30,24 @@ protected:
 	
 	MediaStreamAudioDestinationNode();
 	
-	static V8_STORE_FT _protoMediaStreamAudioDestinationNode;
-	static V8_STORE_FUNC _ctorMediaStreamAudioDestinationNode;
+	static Napi::FunctionReference _ctorMediaStreamAudioDestinationNode;
 	
 	bool _isDestroyed;
 	
-	V8_STORE_OBJ _stream;
+	Napi::ObjectReference _stream;
 	
 	
 // JS methods and props, available through V8 APIs
 private:
 	
-	static NAN_METHOD(newCtor);
+	JS_METHOD(newCtor);
 	
-	static NAN_METHOD(destroy);
-	static NAN_GETTER(isDestroyedGetter);
+	JS_METHOD(destroy);
+	JS_GETTER(isDestroyedGetter);
 	
 	
 	
-	static NAN_GETTER(streamGetter);
+	JS_GETTER(streamGetter);
 	
 };
 

@@ -5,19 +5,19 @@
 #include <addon-tools.hpp>
 
 
-class AudioWorklet : public Nan::ObjectWrap {
+class AudioWorklet : public Napi::ObjectWrap<AudioWorklet> {
 	
 public:
 	
 	~AudioWorklet();
 	
 	// Public V8 init
-	static void init(Napi::Object target);
+	static void init(Napi::Env env, Napi::Object exports);
 	
 	static bool isAudioWorklet(Napi::Object obj);
 	
 	// Make a new instance from C++ land
-	static Napi::Object getNew();
+	explicit AudioWorklet(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -28,8 +28,7 @@ protected:
 	
 	AudioWorklet();
 	
-	static V8_STORE_FT _protoAudioWorklet;
-	static V8_STORE_FUNC _ctorAudioWorklet;
+	static Napi::FunctionReference _ctorAudioWorklet;
 	
 	bool _isDestroyed;
 	
@@ -39,10 +38,10 @@ protected:
 // JS methods and props, available through V8 APIs
 private:
 	
-	static NAN_METHOD(newCtor);
+	JS_METHOD(newCtor);
 	
-	static NAN_METHOD(destroy);
-	static NAN_GETTER(isDestroyedGetter);
+	JS_METHOD(destroy);
+	JS_GETTER(isDestroyedGetter);
 	
 	
 	

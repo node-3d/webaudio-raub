@@ -7,7 +7,7 @@
 namespace lab { class AudioListener; };
 
 
-class AudioListener : public Nan::ObjectWrap {
+class AudioListener : public Napi::ObjectWrap<AudioListener> {
 	
 public:
 	
@@ -16,12 +16,12 @@ public:
 	~AudioListener();
 	
 	// Public V8 init
-	static void init(Napi::Object target);
+	static void init(Napi::Env env, Napi::Object exports);
 	
 	static bool isAudioListener(Napi::Object obj);
 	
 	// Make a new instance from C++ land
-	static Napi::Object getNew(Napi::Object context, ListenerPtr listener);
+	explicit AudioListener(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -32,47 +32,46 @@ protected:
 	
 	explicit AudioListener(Napi::Object context, ListenerPtr listener);
 	
-	static V8_STORE_FT _protoAudioListener;
-	static V8_STORE_FUNC _ctorAudioListener;
+	static Napi::FunctionReference _ctorAudioListener;
 	
 	bool _isDestroyed;
 	
-	V8_STORE_OBJ _positionX;
-	V8_STORE_OBJ _positionY;
-	V8_STORE_OBJ _positionZ;
-	V8_STORE_OBJ _forwardX;
-	V8_STORE_OBJ _forwardY;
-	V8_STORE_OBJ _forwardZ;
-	V8_STORE_OBJ _upX;
-	V8_STORE_OBJ _upY;
-	V8_STORE_OBJ _upZ;
+	Napi::ObjectReference _positionX;
+	Napi::ObjectReference _positionY;
+	Napi::ObjectReference _positionZ;
+	Napi::ObjectReference _forwardX;
+	Napi::ObjectReference _forwardY;
+	Napi::ObjectReference _forwardZ;
+	Napi::ObjectReference _upX;
+	Napi::ObjectReference _upY;
+	Napi::ObjectReference _upZ;
 	
 	ListenerPtr _impl;
-	V8_STORE_OBJ _context;
+	Napi::ObjectReference _context;
 	
 	
 // JS methods and props, available through V8 APIs
 private:
 	
-	static NAN_METHOD(newCtor);
+	JS_METHOD(newCtor);
 	
-	static NAN_METHOD(destroy);
-	static NAN_GETTER(isDestroyedGetter);
+	JS_METHOD(destroy);
+	JS_GETTER(isDestroyedGetter);
 	
-	static NAN_METHOD(setPosition);
-	static NAN_METHOD(setOrientation);
+	JS_METHOD(setPosition);
+	JS_METHOD(setOrientation);
 	
-	static NAN_GETTER(positionXGetter);
-	static NAN_GETTER(positionYGetter);
-	static NAN_GETTER(positionZGetter);
+	JS_GETTER(positionXGetter);
+	JS_GETTER(positionYGetter);
+	JS_GETTER(positionZGetter);
 	
-	static NAN_GETTER(forwardXGetter);
-	static NAN_GETTER(forwardYGetter);
-	static NAN_GETTER(forwardZGetter);
+	JS_GETTER(forwardXGetter);
+	JS_GETTER(forwardYGetter);
+	JS_GETTER(forwardZGetter);
 	
-	static NAN_GETTER(upXGetter);
-	static NAN_GETTER(upYGetter);
-	static NAN_GETTER(upZGetter);
+	JS_GETTER(upXGetter);
+	JS_GETTER(upYGetter);
+	JS_GETTER(upZGetter);
 	
 };
 

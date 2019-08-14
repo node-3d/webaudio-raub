@@ -5,19 +5,19 @@
 #include <addon-tools.hpp>
 
 
-class AudioTimestamp : public Nan::ObjectWrap {
+class AudioTimestamp : public Napi::ObjectWrap<AudioTimestamp> {
 	
 public:
 	
 	~AudioTimestamp();
 	
 	// Public V8 init
-	static void init(Napi::Object target);
+	static void init(Napi::Env env, Napi::Object exports);
 	
 	static bool isAudioTimestamp(Napi::Object obj);
 	
 	// Make a new instance from C++ land
-	static Napi::Object getNew();
+	explicit AudioTimestamp(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -28,8 +28,7 @@ protected:
 	
 	AudioTimestamp();
 	
-	static V8_STORE_FT _protoAudioTimestamp;
-	static V8_STORE_FUNC _ctorAudioTimestamp;
+	static Napi::FunctionReference _ctorAudioTimestamp;
 	
 	bool _isDestroyed;
 	
@@ -40,18 +39,18 @@ protected:
 // JS methods and props, available through V8 APIs
 private:
 	
-	static NAN_METHOD(newCtor);
+	JS_METHOD(newCtor);
 	
-	static NAN_METHOD(destroy);
-	static NAN_GETTER(isDestroyedGetter);
+	JS_METHOD(destroy);
+	JS_GETTER(isDestroyedGetter);
 	
 	
 	
-	static NAN_GETTER(contextTimeGetter);
-	static NAN_SETTER(contextTimeSetter);
+	JS_GETTER(contextTimeGetter);
+	JS_SETTER(contextTimeSetter);
 	
-	static NAN_GETTER(performanceTimeGetter);
-	static NAN_SETTER(performanceTimeSetter);
+	JS_GETTER(performanceTimeGetter);
+	JS_SETTER(performanceTimeSetter);
 	
 };
 

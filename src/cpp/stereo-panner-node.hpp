@@ -14,12 +14,12 @@ public:
 	~StereoPannerNode();
 	
 	// Public V8 init
-	static void init(Napi::Object target);
+	static void init(Napi::Env env, Napi::Object exports);
 	
 	static bool isStereoPannerNode(Napi::Object obj);
 	
 	// Make a new instance from C++ land
-	static Napi::Object getNew();
+	explicit StereoPannerNode(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -30,25 +30,24 @@ protected:
 	
 	StereoPannerNode();
 	
-	static V8_STORE_FT _protoStereoPannerNode;
-	static V8_STORE_FUNC _ctorStereoPannerNode;
+	static Napi::FunctionReference _ctorStereoPannerNode;
 	
 	bool _isDestroyed;
 	
-	V8_STORE_OBJ _pan;
+	Napi::ObjectReference _pan;
 	
 	
 // JS methods and props, available through V8 APIs
 private:
 	
-	static NAN_METHOD(newCtor);
+	JS_METHOD(newCtor);
 	
-	static NAN_METHOD(destroy);
-	static NAN_GETTER(isDestroyedGetter);
+	JS_METHOD(destroy);
+	JS_GETTER(isDestroyedGetter);
 	
 	
 	
-	static NAN_GETTER(panGetter);
+	JS_GETTER(panGetter);
 	
 };
 

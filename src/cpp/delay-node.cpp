@@ -1,5 +1,3 @@
-#include <cstdlib>
-
 #include <LabSound/core/AudioContext.h>
 #include <LabSound/core/DelayNode.h>
 
@@ -7,22 +5,7 @@
 #include "audio-context.hpp"
 #include "audio-param.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
-
-
-// ------ Aux macros
-
-#define THIS_DELAY_NODE                                                       \
-	DelayNode *delayNode = Nan::ObjectWrap::Unwrap<DelayNode>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                              \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
+#include "common.hpp"
 
 
 // ------ Constructor and Destructor
@@ -59,33 +42,21 @@ void DelayNode::_destroy() { DES_CHECK;
 
 
 
-NAN_GETTER(DelayNode::delayTimeGetter) { THIS_DELAY_NODE; THIS_CHECK;
+JS_GETTER(DelayNode::delayTimeGetter) { THIS_DELAY_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_OBJ(delayNode->_delayTime));
+	RET_VALUE(__delayTime.Value());
 	
 }
 
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT DelayNode::_protoDelayNode;
-V8_STORE_FUNC DelayNode::_ctorDelayNode;
+Napi::FunctionReference DelayNode::_ctorDelayNode;
 
 
-void DelayNode::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-
-	// class DelayNode inherits AudioNode
-	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
-	proto->Inherit(parent);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("DelayNode"));
+void DelayNode::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, delayTime);
@@ -98,19 +69,20 @@ void DelayNode::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "DelayNode", {
 	
-	_protoDelayNode.Reset(proto);
-	_ctorDelayNode.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("DelayNode"), ctor);
+	_ctorDelayNode = Napi::Persistent(ctor);
+	_ctorDelayNode.SuppressDestruct();
 	
+	exports.Set("DelayNode", ctor);
 	
 }
 
 
 bool DelayNode::isDelayNode(Napi::Object obj) {
-	return Nan::New(_protoDelayNode)->HasInstance(obj);
+	return obj.InstanceOf(_ctorDelayNode.Value());
 }
 
 
@@ -123,7 +95,7 @@ Napi::Object DelayNode::getNew(Napi::Object context, double delay) {
 }
 
 
-NAN_METHOD(DelayNode::newCtor) {
+JS_METHOD(DelayNode::newCtor) {
 	
 	CTOR_CHECK("DelayNode");
 	
@@ -140,17 +112,17 @@ NAN_METHOD(DelayNode::newCtor) {
 }
 
 
-NAN_METHOD(DelayNode::destroy) { THIS_DELAY_NODE; THIS_CHECK;
+JS_METHOD(DelayNode::destroy) { THIS_DELAY_NODE; THIS_CHECK;
 	
 	delayNode->emit("destroy");
 	
-	delayNode->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(DelayNode::isDestroyedGetter) { THIS_DELAY_NODE;
+JS_GETTER(DelayNode::isDestroyedGetter) { THIS_DELAY_NODE;
 	
-	RET_BOOL(delayNode->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

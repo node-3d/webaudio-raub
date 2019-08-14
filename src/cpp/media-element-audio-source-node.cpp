@@ -1,25 +1,12 @@
-#include <cstdlib>
-
 
 #include "media-element-audio-source-node.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
+#include "common.hpp"
 
 
 // ------ Aux macros
 
-#define THIS_MEDIA_ELEMENT_AUDIO_SOURCE_NODE                                  \
-	MediaElementAudioSourceNode *mediaElementAudioSourceNode =                \
 	Nan::ObjectWrap::Unwrap<MediaElementAudioSourceNode>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                            \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
 
 
 // ------ Constructor and Destructor
@@ -52,35 +39,23 @@ void MediaElementAudioSourceNode::_destroy() { DES_CHECK;
 
 
 
-NAN_GETTER(MediaElementAudioSourceNode::mediaElementGetter) {
+JS_GETTER(MediaElementAudioSourceNode::mediaElementGetter) {
 	
 	THIS_MEDIA_ELEMENT_AUDIO_SOURCE_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_OBJ(mediaElementAudioSourceNode->_mediaElement));
+	RET_VALUE(__mediaElement.Value());
 	
 }
 
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT MediaElementAudioSourceNode::_protoMediaElementAudioSourceNode;
-V8_STORE_FUNC MediaElementAudioSourceNode::_ctorMediaElementAudioSourceNode;
+Napi::FunctionReference MediaElementAudioSourceNode::_ctorMediaElementAudioSourceNode;
 
 
-void MediaElementAudioSourceNode::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-
-	// class MediaElementAudioSourceNode inherits AudioNode
-	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
-	proto->Inherit(parent);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("MediaElementAudioSourceNode"));
+void MediaElementAudioSourceNode::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, mediaElement);
@@ -93,19 +68,20 @@ void MediaElementAudioSourceNode::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "MediaElementAudioSourceNode", {
 	
-	_protoMediaElementAudioSourceNode.Reset(proto);
-	_ctorMediaElementAudioSourceNode.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("MediaElementAudioSourceNode"), ctor);
+	_ctorMediaElementAudioSourceNode = Napi::Persistent(ctor);
+	_ctorMediaElementAudioSourceNode.SuppressDestruct();
 	
+	exports.Set("MediaElementAudioSourceNode", ctor);
 	
 }
 
 
 bool MediaElementAudioSourceNode::isMediaElementAudioSourceNode(Napi::Object obj) {
-	return Nan::New(_protoMediaElementAudioSourceNode)->HasInstance(obj);
+	return obj.InstanceOf(_ctorMediaElementAudioSourceNode.Value());
 }
 
 
@@ -118,7 +94,7 @@ Napi::Object MediaElementAudioSourceNode::getNew() {
 }
 
 
-NAN_METHOD(MediaElementAudioSourceNode::newCtor) {
+JS_METHOD(MediaElementAudioSourceNode::newCtor) {
 	
 	CTOR_CHECK("MediaElementAudioSourceNode");
 	
@@ -131,21 +107,21 @@ NAN_METHOD(MediaElementAudioSourceNode::newCtor) {
 }
 
 
-NAN_METHOD(MediaElementAudioSourceNode::destroy) {
+JS_METHOD(MediaElementAudioSourceNode::destroy) {
 	
 	THIS_MEDIA_ELEMENT_AUDIO_SOURCE_NODE; THIS_CHECK;
 	
 	mediaElementAudioSourceNode->emit("destroy");
 	
-	mediaElementAudioSourceNode->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(MediaElementAudioSourceNode::isDestroyedGetter) {
+JS_GETTER(MediaElementAudioSourceNode::isDestroyedGetter) {
 	
 	THIS_MEDIA_ELEMENT_AUDIO_SOURCE_NODE;
 	
-	RET_BOOL(mediaElementAudioSourceNode->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

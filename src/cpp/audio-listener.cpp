@@ -1,5 +1,3 @@
-#include <cstdlib>
-
 #include <LabSound/core/AudioListener.h>
 #include <LabSound/core/AudioParam.h>
 #include <LabSound/core/FloatPoint3D.h>
@@ -8,25 +6,13 @@
 #include "audio-context.hpp"
 #include "audio-param.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
+#include "common.hpp"
 
 
 // ------ Aux macros
 
-#define THIS_AUDIO_LISTENER                                                   \
-	AudioListener *audioListener = Nan::ObjectWrap::Unwrap<AudioListener>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                          \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
-
 #define PARAM_GETTER(NAME)                                                    \
-NAN_GETTER(AudioListener::NAME ## Getter) { THIS_AUDIO_LISTENER; THIS_CHECK;  \
+JS_GETTER(AudioListener::NAME ## Getter) { THIS_AUDIO_LISTENER; THIS_CHECK;  \
 	RET_VALUE(JS_OBJ(audioListener->_ ## NAME));                              \
 }
 
@@ -82,18 +68,18 @@ void AudioListener::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-NAN_METHOD(AudioListener::setPosition) { THIS_AUDIO_LISTENER; THIS_CHECK;
+JS_METHOD(AudioListener::setPosition) { THIS_AUDIO_LISTENER; THIS_CHECK;
 	
 	REQ_FLOAT_ARG(0, x);
 	REQ_FLOAT_ARG(1, y);
 	REQ_FLOAT_ARG(2, z);
 	
-	audioListener->_impl->setPosition(x, y, z);
+	_impl->setPosition(x, y, z);
 	
 }
 
 
-NAN_METHOD(AudioListener::setOrientation) { THIS_AUDIO_LISTENER; THIS_CHECK;
+JS_METHOD(AudioListener::setOrientation) { THIS_AUDIO_LISTENER; THIS_CHECK;
 	
 	REQ_FLOAT_ARG(0, x);
 	REQ_FLOAT_ARG(1, y);
@@ -102,7 +88,7 @@ NAN_METHOD(AudioListener::setOrientation) { THIS_AUDIO_LISTENER; THIS_CHECK;
 	REQ_FLOAT_ARG(4, yUp);
 	REQ_FLOAT_ARG(5, zUp);
 	
-	audioListener->_impl->setOrientation(x, y, z, xUp, yUp, zUp);
+	_impl->setOrientation(x, y, z, xUp, yUp, zUp);
 	
 }
 
@@ -120,20 +106,12 @@ PARAM_GETTER(upZ);
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT AudioListener::_protoAudioListener;
-V8_STORE_FUNC AudioListener::_ctorAudioListener;
+Napi::FunctionReference AudioListener::_ctorAudioListener;
 
 
-void AudioListener::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("AudioListener"));
+void AudioListener::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, positionX);
@@ -155,19 +133,20 @@ void AudioListener::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "AudioListener", {
 	
-	_protoAudioListener.Reset(proto);
-	_ctorAudioListener.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("AudioListener"), ctor);
+	_ctorAudioListener = Napi::Persistent(ctor);
+	_ctorAudioListener.SuppressDestruct();
 	
+	exports.Set("AudioListener", ctor);
 	
 }
 
 
 bool AudioListener::isAudioListener(Napi::Object obj) {
-	return Nan::New(_protoAudioListener)->HasInstance(obj);
+	return obj.InstanceOf(_ctorAudioListener.Value());
 }
 
 
@@ -181,7 +160,7 @@ Napi::Object AudioListener::getNew(Napi::Object context, ListenerPtr listener) {
 }
 
 
-NAN_METHOD(AudioListener::newCtor) {
+JS_METHOD(AudioListener::newCtor) {
 	
 	CTOR_CHECK("AudioListener");
 	
@@ -198,15 +177,15 @@ NAN_METHOD(AudioListener::newCtor) {
 }
 
 
-NAN_METHOD(AudioListener::destroy) { THIS_AUDIO_LISTENER; THIS_CHECK;
+JS_METHOD(AudioListener::destroy) { THIS_AUDIO_LISTENER; THIS_CHECK;
 	
-	audioListener->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(AudioListener::isDestroyedGetter) { THIS_AUDIO_LISTENER;
+JS_GETTER(AudioListener::isDestroyedGetter) { THIS_AUDIO_LISTENER;
 	
-	RET_BOOL(audioListener->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

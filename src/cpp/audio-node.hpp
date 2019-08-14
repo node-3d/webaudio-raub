@@ -4,7 +4,7 @@
 
 #include <memory>
 
-#include <event-emitter.hpp>
+#include <addon-tools.hpp>
 
 namespace lab { class AudioNode; };
 #include <LabSound/core/AudioNode.h>
@@ -19,7 +19,7 @@ public:
 	~AudioNode();
 	
 	// Public V8 init
-	static void init(Napi::Object target);
+	static void init(Napi::Env env, Napi::Object exports);
 	
 	static bool isAudioNode(Napi::Object obj);
 	
@@ -36,7 +36,7 @@ protected:
 	AudioNode(Napi::Object context, NodePtr node);
 	
 	static V8_STORE_FT _protoAudioNode; // for inheritance
-	static V8_STORE_FUNC _ctorAudioNode;
+	static Napi::FunctionReference _ctorAudioNode;
 	
 	bool _isDestroyed;
 	
@@ -45,34 +45,34 @@ protected:
 	std::string _channelInterpretation;
 	
 	NodePtr _impl;
-	V8_STORE_OBJ _context;
+	Napi::ObjectReference _context;
 	
 	
 // JS methods and props, available through V8 APIs
 private:
 	
-	static NAN_METHOD(newCtor);
+	JS_METHOD(newCtor);
 	
-	static NAN_METHOD(destroy);
-	static NAN_GETTER(isDestroyedGetter);
+	JS_METHOD(destroy);
+	JS_GETTER(isDestroyedGetter);
 	
-	static NAN_METHOD(connect);
-	static NAN_METHOD(disconnect);
+	JS_METHOD(connect);
+	JS_METHOD(disconnect);
 	
-	static NAN_GETTER(contextGetter);
+	JS_GETTER(contextGetter);
 	
-	static NAN_GETTER(numberOfInputsGetter);
+	JS_GETTER(numberOfInputsGetter);
 	
-	static NAN_GETTER(numberOfOutputsGetter);
+	JS_GETTER(numberOfOutputsGetter);
 	
-	static NAN_GETTER(channelCountGetter);
-	static NAN_SETTER(channelCountSetter);
+	JS_GETTER(channelCountGetter);
+	JS_SETTER(channelCountSetter);
 	
-	static NAN_GETTER(channelCountModeGetter);
-	static NAN_SETTER(channelCountModeSetter);
+	JS_GETTER(channelCountModeGetter);
+	JS_SETTER(channelCountModeSetter);
 	
-	static NAN_GETTER(channelInterpretationGetter);
-	static NAN_SETTER(channelInterpretationSetter);
+	JS_GETTER(channelInterpretationGetter);
+	JS_SETTER(channelInterpretationSetter);
 	
 };
 

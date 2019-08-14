@@ -12,10 +12,10 @@ public:
 	~AudioBufferSourceNode();
 	
 	// Public V8 init
-	static void init(Napi::Object target);
+	static void init(Napi::Env env, Napi::Object exports);
 	
 	// Make a new instance from C++ land
-	static Napi::Object getNew(Napi::Object context);
+	explicit AudioBufferSourceNode(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -26,41 +26,40 @@ protected:
 	
 	explicit AudioBufferSourceNode(Napi::Object context);
 	
-	static V8_STORE_FT _protoAudioBufferSourceNode;
-	static V8_STORE_FUNC _ctorAudioBufferSourceNode;
+	static Napi::FunctionReference _ctorAudioBufferSourceNode;
 	
 	bool _isDestroyed;
 	
-	V8_STORE_OBJ _buffer;
-	V8_STORE_OBJ _playbackRate;
-	V8_STORE_OBJ _detune;
+	Napi::ObjectReference _buffer;
+	Napi::ObjectReference _playbackRate;
+	Napi::ObjectReference _detune;
 	
 	
 // JS methods and props, available through V8 APIs
 private:
 	
-	static NAN_METHOD(newCtor);
+	JS_METHOD(newCtor);
 	
-	static NAN_METHOD(destroy);
-	static NAN_GETTER(isDestroyedGetter);
+	JS_METHOD(destroy);
+	JS_GETTER(isDestroyedGetter);
 	
-	static NAN_METHOD(start);
+	JS_METHOD(start);
 	
-	static NAN_GETTER(bufferGetter);
-	static NAN_SETTER(bufferSetter);
+	JS_GETTER(bufferGetter);
+	JS_SETTER(bufferSetter);
 	
-	static NAN_GETTER(playbackRateGetter);
+	JS_GETTER(playbackRateGetter);
 	
-	static NAN_GETTER(detuneGetter);
+	JS_GETTER(detuneGetter);
 	
-	static NAN_GETTER(loopGetter);
-	static NAN_SETTER(loopSetter);
+	JS_GETTER(loopGetter);
+	JS_SETTER(loopSetter);
 	
-	static NAN_GETTER(loopStartGetter);
-	static NAN_SETTER(loopStartSetter);
+	JS_GETTER(loopStartGetter);
+	JS_SETTER(loopStartSetter);
 	
-	static NAN_GETTER(loopEndGetter);
-	static NAN_SETTER(loopEndSetter);
+	JS_GETTER(loopEndGetter);
+	JS_SETTER(loopEndSetter);
 	
 };
 

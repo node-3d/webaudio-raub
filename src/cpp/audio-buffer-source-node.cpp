@@ -1,5 +1,3 @@
-#include <cstdlib>
-
 #include <LabSound/core/AudioContext.h>
 #include <LabSound/core/SampledAudioNode.h>
 #include <LabSound/extended/AudioContextLock.h>
@@ -9,23 +7,12 @@
 #include "audio-param.hpp"
 #include "audio-buffer.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
+#include "common.hpp"
 
 
 // ------ Aux macros
 
-#define THIS_AUDIO_BUFFER_SOURCE_NODE                                         \
-	AudioBufferSourceNode *audioBufferSourceNode =                            \
 	Nan::ObjectWrap::Unwrap<AudioBufferSourceNode>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                  \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
 
 
 // ------ Constructor and Destructor
@@ -87,14 +74,14 @@ void AudioBufferSourceNode::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-NAN_METHOD(AudioBufferSourceNode::start) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
+JS_METHOD(AudioBufferSourceNode::start) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
 	
 	LET_DOUBLE_ARG(0, when);
 	LET_DOUBLE_ARG(1, grainOffset);
 	LET_DOUBLE_ARG(2, grainDuration);
 	
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
-		audioBufferSourceNode->_impl.get()
+		_impl.get()
 	);
 	
 	if (grainDuration > 0) {
@@ -106,24 +93,24 @@ NAN_METHOD(AudioBufferSourceNode::start) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_C
 }
 
 
-NAN_GETTER(AudioBufferSourceNode::bufferGetter) {
+JS_GETTER(AudioBufferSourceNode::bufferGetter) {
 	
 	THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_OBJ(audioBufferSourceNode->_buffer));
+	RET_VALUE(__buffer.Value());
 	
 }
 
 
-NAN_SETTER(AudioBufferSourceNode::bufferSetter) {
+JS_SETTER(AudioBufferSourceNode::bufferSetter) {
 	THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK; SETTER_OBJ_ARG;
 	
-	if (Nan::New(audioBufferSourceNode->_buffer) == v) {
+	if (Nan::New(_buffer) == v) {
 		return;
 	}
-	audioBufferSourceNode->_buffer.Reset(v);
+	_buffer.Reset(v);
 	
-	Napi::Object context = JS_OBJ(audioBufferSourceNode->_context);
+	Napi::Object context = JS_OBJ(_context);
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	
 	lab::AudioContext *ctx = audioContext->getContext().get();
@@ -134,7 +121,7 @@ NAN_SETTER(AudioBufferSourceNode::bufferSetter) {
 	AudioBuffer::BusPtr bus = audioBuffer->getBus();
 	
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
-		audioBufferSourceNode->_impl.get()
+		_impl.get()
 	);
 	node->setBus(r, bus);
 	
@@ -143,35 +130,35 @@ NAN_SETTER(AudioBufferSourceNode::bufferSetter) {
 }
 
 
-NAN_GETTER(AudioBufferSourceNode::playbackRateGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
+JS_GETTER(AudioBufferSourceNode::playbackRateGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_OBJ(audioBufferSourceNode->_playbackRate));
-	
-}
-
-
-NAN_GETTER(AudioBufferSourceNode::detuneGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
-	
-	RET_VALUE(JS_OBJ(audioBufferSourceNode->_detune));
+	RET_VALUE(__playbackRate.Value());
 	
 }
 
 
-NAN_GETTER(AudioBufferSourceNode::loopGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
+JS_GETTER(AudioBufferSourceNode::detuneGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
+	
+	RET_VALUE(__detune.Value());
+	
+}
+
+
+JS_GETTER(AudioBufferSourceNode::loopGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
 	
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
-		audioBufferSourceNode->_impl.get()
+		_impl.get()
 	);
 	
 	RET_BOOL(node->loop());
 	
 }
 
-NAN_SETTER(AudioBufferSourceNode::loopSetter) {
+JS_SETTER(AudioBufferSourceNode::loopSetter) {
 	THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK; SETTER_BOOL_ARG;
 	
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
-		audioBufferSourceNode->_impl.get()
+		_impl.get()
 	);
 	
 	node->setLoop(v);
@@ -181,21 +168,21 @@ NAN_SETTER(AudioBufferSourceNode::loopSetter) {
 }
 
 
-NAN_GETTER(AudioBufferSourceNode::loopStartGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
+JS_GETTER(AudioBufferSourceNode::loopStartGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
 	
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
-		audioBufferSourceNode->_impl.get()
+		_impl.get()
 	);
 	
 	RET_NUM(node->loopStart());
 	
 }
 
-NAN_SETTER(AudioBufferSourceNode::loopStartSetter) {
+JS_SETTER(AudioBufferSourceNode::loopStartSetter) {
 	THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
-		audioBufferSourceNode->_impl.get()
+		_impl.get()
 	);
 	
 	node->setLoopStart(v);
@@ -205,21 +192,21 @@ NAN_SETTER(AudioBufferSourceNode::loopStartSetter) {
 }
 
 
-NAN_GETTER(AudioBufferSourceNode::loopEndGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
+JS_GETTER(AudioBufferSourceNode::loopEndGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
 	
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
-		audioBufferSourceNode->_impl.get()
+		_impl.get()
 	);
 	
 	RET_NUM(node->loopEnd());
 	
 }
 
-NAN_SETTER(AudioBufferSourceNode::loopEndSetter) {
+JS_SETTER(AudioBufferSourceNode::loopEndSetter) {
 	THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
-		audioBufferSourceNode->_impl.get()
+		_impl.get()
 	);
 	
 	node->setLoopEnd(v);
@@ -231,24 +218,12 @@ NAN_SETTER(AudioBufferSourceNode::loopEndSetter) {
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT AudioBufferSourceNode::_protoAudioBufferSourceNode;
-V8_STORE_FUNC AudioBufferSourceNode::_ctorAudioBufferSourceNode;
+Napi::FunctionReference AudioBufferSourceNode::_ctorAudioBufferSourceNode;
 
 
-void AudioBufferSourceNode::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-	
-	// class AudioBufferSourceNode inherits AudioScheduledSourceNode
-	V8_VAR_FT parent = Nan::New(AudioScheduledSourceNode::_protoAudioScheduledSourceNode);
-	proto->Inherit(parent);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("AudioBufferSourceNode"));
+void AudioBufferSourceNode::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_RW(obj, buffer);
@@ -266,13 +241,14 @@ void AudioBufferSourceNode::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "AudioBufferSourceNode", {
 	
-	_protoAudioBufferSourceNode.Reset(proto);
-	_ctorAudioBufferSourceNode.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("AudioBufferSourceNode"), ctor);
+	_ctorAudioBufferSourceNode = Napi::Persistent(ctor);
+	_ctorAudioBufferSourceNode.SuppressDestruct();
 	
+	exports.Set("AudioBufferSourceNode", ctor);
 	
 }
 
@@ -286,7 +262,7 @@ Napi::Object AudioBufferSourceNode::getNew(Napi::Object context) {
 }
 
 
-NAN_METHOD(AudioBufferSourceNode::newCtor) {
+JS_METHOD(AudioBufferSourceNode::newCtor) {
 	
 	CTOR_CHECK("AudioBufferSourceNode");
 	
@@ -300,17 +276,17 @@ NAN_METHOD(AudioBufferSourceNode::newCtor) {
 }
 
 
-NAN_METHOD(AudioBufferSourceNode::destroy) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
+JS_METHOD(AudioBufferSourceNode::destroy) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
 	
 	audioBufferSourceNode->emit("destroy");
 	
-	audioBufferSourceNode->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(AudioBufferSourceNode::isDestroyedGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE;
+JS_GETTER(AudioBufferSourceNode::isDestroyedGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE;
 	
-	RET_BOOL(audioBufferSourceNode->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

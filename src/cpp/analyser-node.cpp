@@ -1,24 +1,7 @@
-#include <cstdlib>
-
 
 #include "analyser-node.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
-
-
-// ------ Aux macros
-
-#define THIS_ANALYSER_NODE                                                    \
-	AnalyserNode *analyserNode = Nan::ObjectWrap::Unwrap<AnalyserNode>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                           \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
+#include "common.hpp"
 
 
 // ------ Constructor and Destructor
@@ -50,7 +33,7 @@ void AnalyserNode::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-NAN_METHOD(AnalyserNode::getFloatFrequencyData) { THIS_ANALYSER_NODE; THIS_CHECK;
+JS_METHOD(AnalyserNode::getFloatFrequencyData) { THIS_ANALYSER_NODE; THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, array);
 	
@@ -59,7 +42,7 @@ NAN_METHOD(AnalyserNode::getFloatFrequencyData) { THIS_ANALYSER_NODE; THIS_CHECK
 }
 
 
-NAN_METHOD(AnalyserNode::getByteFrequencyData) { THIS_ANALYSER_NODE; THIS_CHECK;
+JS_METHOD(AnalyserNode::getByteFrequencyData) { THIS_ANALYSER_NODE; THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, array);
 	
@@ -68,7 +51,7 @@ NAN_METHOD(AnalyserNode::getByteFrequencyData) { THIS_ANALYSER_NODE; THIS_CHECK;
 }
 
 
-NAN_METHOD(AnalyserNode::getFloatTimeDomainData) { THIS_ANALYSER_NODE; THIS_CHECK;
+JS_METHOD(AnalyserNode::getFloatTimeDomainData) { THIS_ANALYSER_NODE; THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, array);
 	
@@ -77,7 +60,7 @@ NAN_METHOD(AnalyserNode::getFloatTimeDomainData) { THIS_ANALYSER_NODE; THIS_CHEC
 }
 
 
-NAN_METHOD(AnalyserNode::getByteTimeDomainData) { THIS_ANALYSER_NODE; THIS_CHECK;
+JS_METHOD(AnalyserNode::getByteTimeDomainData) { THIS_ANALYSER_NODE; THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, array);
 	
@@ -86,20 +69,20 @@ NAN_METHOD(AnalyserNode::getByteTimeDomainData) { THIS_ANALYSER_NODE; THIS_CHECK
 }
 
 
-NAN_GETTER(AnalyserNode::frequencyBinCountGetter) { THIS_ANALYSER_NODE; THIS_CHECK;
+JS_GETTER(AnalyserNode::frequencyBinCountGetter) { THIS_ANALYSER_NODE; THIS_CHECK;
 	
-	RET_NUM(analyserNode->_frequencyBinCount);
-	
-}
-
-
-NAN_GETTER(AnalyserNode::fftSizeGetter) { THIS_ANALYSER_NODE; THIS_CHECK;
-	
-	RET_NUM(analyserNode->_fftSize);
+	RET_NUM(_frequencyBinCount);
 	
 }
 
-NAN_SETTER(AnalyserNode::fftSizeSetter) { THIS_ANALYSER_NODE; THIS_CHECK; SETTER_UINT32_ARG;
+
+JS_GETTER(AnalyserNode::fftSizeGetter) { THIS_ANALYSER_NODE; THIS_CHECK;
+	
+	RET_NUM(_fftSize);
+	
+}
+
+JS_SETTER(AnalyserNode::fftSizeSetter) { THIS_ANALYSER_NODE; THIS_CHECK; SETTER_UINT32_ARG;
 	
 	CACHE_CAS(_fftSize, v);
 	
@@ -110,13 +93,13 @@ NAN_SETTER(AnalyserNode::fftSizeSetter) { THIS_ANALYSER_NODE; THIS_CHECK; SETTER
 }
 
 
-NAN_GETTER(AnalyserNode::minDecibelsGetter) { THIS_ANALYSER_NODE; THIS_CHECK;
+JS_GETTER(AnalyserNode::minDecibelsGetter) { THIS_ANALYSER_NODE; THIS_CHECK;
 	
-	RET_NUM(analyserNode->_minDecibels);
+	RET_NUM(_minDecibels);
 	
 }
 
-NAN_SETTER(AnalyserNode::minDecibelsSetter) { THIS_ANALYSER_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
+JS_SETTER(AnalyserNode::minDecibelsSetter) { THIS_ANALYSER_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	CACHE_CAS(_minDecibels, v);
 	
@@ -127,13 +110,13 @@ NAN_SETTER(AnalyserNode::minDecibelsSetter) { THIS_ANALYSER_NODE; THIS_CHECK; SE
 }
 
 
-NAN_GETTER(AnalyserNode::maxDecibelsGetter) { THIS_ANALYSER_NODE; THIS_CHECK;
+JS_GETTER(AnalyserNode::maxDecibelsGetter) { THIS_ANALYSER_NODE; THIS_CHECK;
 	
-	RET_NUM(analyserNode->_maxDecibels);
+	RET_NUM(_maxDecibels);
 	
 }
 
-NAN_SETTER(AnalyserNode::maxDecibelsSetter) { THIS_ANALYSER_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
+JS_SETTER(AnalyserNode::maxDecibelsSetter) { THIS_ANALYSER_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	CACHE_CAS(_maxDecibels, v);
 	
@@ -144,13 +127,13 @@ NAN_SETTER(AnalyserNode::maxDecibelsSetter) { THIS_ANALYSER_NODE; THIS_CHECK; SE
 }
 
 
-NAN_GETTER(AnalyserNode::smoothingTimeConstantGetter) { THIS_ANALYSER_NODE; THIS_CHECK;
+JS_GETTER(AnalyserNode::smoothingTimeConstantGetter) { THIS_ANALYSER_NODE; THIS_CHECK;
 	
-	RET_NUM(analyserNode->_smoothingTimeConstant);
+	RET_NUM(_smoothingTimeConstant);
 	
 }
 
-NAN_SETTER(AnalyserNode::smoothingTimeConstantSetter) { THIS_ANALYSER_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
+JS_SETTER(AnalyserNode::smoothingTimeConstantSetter) { THIS_ANALYSER_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	CACHE_CAS(_smoothingTimeConstant, v);
 	
@@ -163,24 +146,12 @@ NAN_SETTER(AnalyserNode::smoothingTimeConstantSetter) { THIS_ANALYSER_NODE; THIS
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT AnalyserNode::_protoAnalyserNode;
-V8_STORE_FUNC AnalyserNode::_ctorAnalyserNode;
+Napi::FunctionReference AnalyserNode::_ctorAnalyserNode;
 
 
-void AnalyserNode::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-
-	// class AnalyserNode inherits AudioNode
-	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
-	proto->Inherit(parent);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("AnalyserNode"));
+void AnalyserNode::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, frequencyBinCount);
@@ -200,19 +171,20 @@ void AnalyserNode::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "AnalyserNode", {
 	
-	_protoAnalyserNode.Reset(proto);
-	_ctorAnalyserNode.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("AnalyserNode"), ctor);
+	_ctorAnalyserNode = Napi::Persistent(ctor);
+	_ctorAnalyserNode.SuppressDestruct();
 	
+	exports.Set("AnalyserNode", ctor);
 	
 }
 
 
 bool AnalyserNode::isAnalyserNode(Napi::Object obj) {
-	return Nan::New(_protoAnalyserNode)->HasInstance(obj);
+	return obj.InstanceOf(_ctorAnalyserNode.Value());
 }
 
 
@@ -225,7 +197,7 @@ Napi::Object AnalyserNode::getNew() {
 }
 
 
-NAN_METHOD(AnalyserNode::newCtor) {
+JS_METHOD(AnalyserNode::newCtor) {
 	
 	CTOR_CHECK("AnalyserNode");
 	
@@ -237,17 +209,17 @@ NAN_METHOD(AnalyserNode::newCtor) {
 }
 
 
-NAN_METHOD(AnalyserNode::destroy) { THIS_ANALYSER_NODE; THIS_CHECK;
+JS_METHOD(AnalyserNode::destroy) { THIS_ANALYSER_NODE; THIS_CHECK;
 	
 	analyserNode->emit("destroy");
 	
-	analyserNode->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(AnalyserNode::isDestroyedGetter) { THIS_ANALYSER_NODE;
+JS_GETTER(AnalyserNode::isDestroyedGetter) { THIS_ANALYSER_NODE;
 	
-	RET_BOOL(analyserNode->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

@@ -1,26 +1,13 @@
-#include <cstdlib>
-
 #include <LabSound/core/AudioScheduledSourceNode.h>
 
 #include "audio-scheduled-source-node.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
+#include "common.hpp"
 
 
 // ------ Aux macros
 
-#define THIS_AUDIO_SCHEDULED_SOURCE_NODE                                      \
-	AudioScheduledSourceNode *audioScheduledSourceNode =                      \
 		Nan::ObjectWrap::Unwrap<AudioScheduledSourceNode>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                               \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
 
 
 // ------ Constructor and Destructor
@@ -67,12 +54,12 @@ void AudioScheduledSourceNode::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-NAN_METHOD(AudioScheduledSourceNode::start) { THIS_AUDIO_SCHEDULED_SOURCE_NODE; THIS_CHECK;
+JS_METHOD(AudioScheduledSourceNode::start) { THIS_AUDIO_SCHEDULED_SOURCE_NODE; THIS_CHECK;
 	
 	REQ_DOUBLE_ARG(0, when);
 	
 	lab::AudioScheduledSourceNode *node = static_cast<lab::AudioScheduledSourceNode*>(
-		audioScheduledSourceNode->_impl.get()
+		_impl.get()
 	);
 	
 	node->start(when);
@@ -80,12 +67,12 @@ NAN_METHOD(AudioScheduledSourceNode::start) { THIS_AUDIO_SCHEDULED_SOURCE_NODE; 
 }
 
 
-NAN_METHOD(AudioScheduledSourceNode::stop) { THIS_AUDIO_SCHEDULED_SOURCE_NODE; THIS_CHECK;
+JS_METHOD(AudioScheduledSourceNode::stop) { THIS_AUDIO_SCHEDULED_SOURCE_NODE; THIS_CHECK;
 	
 	REQ_DOUBLE_ARG(0, when);
 	
 	lab::AudioScheduledSourceNode *node = static_cast<lab::AudioScheduledSourceNode*>(
-		audioScheduledSourceNode->_impl.get()
+		_impl.get()
 	);
 	
 	node->stop(when);
@@ -95,24 +82,12 @@ NAN_METHOD(AudioScheduledSourceNode::stop) { THIS_AUDIO_SCHEDULED_SOURCE_NODE; T
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT AudioScheduledSourceNode::_protoAudioScheduledSourceNode;
-V8_STORE_FUNC AudioScheduledSourceNode::_ctorAudioScheduledSourceNode;
+Napi::FunctionReference AudioScheduledSourceNode::_ctorAudioScheduledSourceNode;
 
 
-void AudioScheduledSourceNode::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-
-	// class AudioScheduledSourceNode inherits AudioNode
-	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
-	proto->Inherit(parent);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("AudioScheduledSourceNode"));
+void AudioScheduledSourceNode::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	// -------- dynamic
@@ -124,13 +99,14 @@ void AudioScheduledSourceNode::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "AudioScheduledSourceNode", {
 	
-	_protoAudioScheduledSourceNode.Reset(proto);
-	_ctorAudioScheduledSourceNode.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("AudioScheduledSourceNode"), ctor);
+	_ctorAudioScheduledSourceNode = Napi::Persistent(ctor);
+	_ctorAudioScheduledSourceNode.SuppressDestruct();
 	
+	exports.Set("AudioScheduledSourceNode", ctor);
 	
 }
 
@@ -145,7 +121,7 @@ Napi::Object AudioScheduledSourceNode::getNew(Napi::Object context, NodePtr node
 }
 
 
-NAN_METHOD(AudioScheduledSourceNode::newCtor) {
+JS_METHOD(AudioScheduledSourceNode::newCtor) {
 	
 	CTOR_CHECK("AudioScheduledSourceNode");
 	
@@ -162,17 +138,17 @@ NAN_METHOD(AudioScheduledSourceNode::newCtor) {
 }
 
 
-NAN_METHOD(AudioScheduledSourceNode::destroy) { THIS_AUDIO_SCHEDULED_SOURCE_NODE; THIS_CHECK;
+JS_METHOD(AudioScheduledSourceNode::destroy) { THIS_AUDIO_SCHEDULED_SOURCE_NODE; THIS_CHECK;
 	
 	audioScheduledSourceNode->emit("destroy");
 	
-	audioScheduledSourceNode->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(AudioScheduledSourceNode::isDestroyedGetter) { THIS_AUDIO_SCHEDULED_SOURCE_NODE;
+JS_GETTER(AudioScheduledSourceNode::isDestroyedGetter) { THIS_AUDIO_SCHEDULED_SOURCE_NODE;
 	
-	RET_BOOL(audioScheduledSourceNode->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

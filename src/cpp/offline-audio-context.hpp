@@ -14,12 +14,12 @@ public:
 	~OfflineAudioContext();
 	
 	// Public V8 init
-	static void init(Napi::Object target);
+	static void init(Napi::Env env, Napi::Object exports);
 	
 	static bool isOfflineAudioContext(Napi::Object obj);
 	
 	// Make a new instance from C++ land
-	static Napi::Object getNew();
+	explicit OfflineAudioContext(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -30,8 +30,7 @@ protected:
 	
 	OfflineAudioContext();
 	
-	static V8_STORE_FT _protoOfflineAudioContext;
-	static V8_STORE_FUNC _ctorOfflineAudioContext;
+	static Napi::FunctionReference _ctorOfflineAudioContext;
 	
 	bool _isDestroyed;
 	
@@ -42,18 +41,18 @@ protected:
 // JS methods and props, available through V8 APIs
 private:
 	
-	static NAN_METHOD(newCtor);
+	JS_METHOD(newCtor);
 	
-	static NAN_METHOD(destroy);
-	static NAN_GETTER(isDestroyedGetter);
+	JS_METHOD(destroy);
+	JS_GETTER(isDestroyedGetter);
 	
-	static NAN_METHOD(startRendering);
-	static NAN_METHOD(suspend);
+	JS_METHOD(startRendering);
+	JS_METHOD(suspend);
 	
-	static NAN_GETTER(oncompleteGetter);
-	static NAN_SETTER(oncompleteSetter);
+	JS_GETTER(oncompleteGetter);
+	JS_SETTER(oncompleteSetter);
 	
-	static NAN_GETTER(lengthGetter);
+	JS_GETTER(lengthGetter);
 	
 };
 

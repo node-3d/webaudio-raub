@@ -1,26 +1,9 @@
-#include <cstdlib>
-
 #include <LabSound/core/AudioNode.h>
 #include <LabSound/core/AudioDestinationNode.h>
 
 #include "audio-destination-node.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
-
-
-// ------ Aux macros
-
-#define THIS_AUDIO_DESTINATION_NODE                                           \
-	AudioDestinationNode *audioDestinationNode = Nan::ObjectWrap::Unwrap<AudioDestinationNode>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                   \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
+#include "common.hpp"
 
 
 // ------ Constructor and Destructor
@@ -53,33 +36,21 @@ void AudioDestinationNode::_destroy() { DES_CHECK;
 
 
 
-NAN_GETTER(AudioDestinationNode::maxChannelCountGetter) { THIS_AUDIO_DESTINATION_NODE; THIS_CHECK;
+JS_GETTER(AudioDestinationNode::maxChannelCountGetter) { THIS_AUDIO_DESTINATION_NODE; THIS_CHECK;
 	
-	RET_NUM(audioDestinationNode->_maxChannelCount);
+	RET_NUM(_maxChannelCount);
 	
 }
 
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT AudioDestinationNode::_protoAudioDestinationNode;
-V8_STORE_FUNC AudioDestinationNode::_ctorAudioDestinationNode;
+Napi::FunctionReference AudioDestinationNode::_ctorAudioDestinationNode;
 
 
-void AudioDestinationNode::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-	
-	// class AudioDestinationNode inherits AudioNode
-	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
-	proto->Inherit(parent);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("AudioDestinationNode"));
+void AudioDestinationNode::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, maxChannelCount);
@@ -92,13 +63,14 @@ void AudioDestinationNode::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "AudioDestinationNode", {
 	
-	_protoAudioDestinationNode.Reset(proto);
-	_ctorAudioDestinationNode.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("AudioDestinationNode"), ctor);
+	_ctorAudioDestinationNode = Napi::Persistent(ctor);
+	_ctorAudioDestinationNode.SuppressDestruct();
 	
+	exports.Set("AudioDestinationNode", ctor);
 	
 }
 
@@ -113,7 +85,7 @@ Napi::Object AudioDestinationNode::getNew(Napi::Object context, DestPtr node) {
 }
 
 
-NAN_METHOD(AudioDestinationNode::newCtor) {
+JS_METHOD(AudioDestinationNode::newCtor) {
 	
 	CTOR_CHECK("AudioDestinationNode");
 	
@@ -127,21 +99,20 @@ NAN_METHOD(AudioDestinationNode::newCtor) {
 	
 	RET_VALUE(info.This());
 	
-	
 }
 
 
-NAN_METHOD(AudioDestinationNode::destroy) { THIS_AUDIO_DESTINATION_NODE; THIS_CHECK;
+JS_METHOD(AudioDestinationNode::destroy) { THIS_AUDIO_DESTINATION_NODE; THIS_CHECK;
 	
 	audioDestinationNode->emit("destroy");
 	
-	audioDestinationNode->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(AudioDestinationNode::isDestroyedGetter) { THIS_AUDIO_DESTINATION_NODE;
+JS_GETTER(AudioDestinationNode::isDestroyedGetter) { THIS_AUDIO_DESTINATION_NODE;
 	
-	RET_BOOL(audioDestinationNode->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

@@ -1,24 +1,7 @@
-#include <cstdlib>
-
 
 #include "audio-timestamp.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
-
-
-// ------ Aux macros
-
-#define THIS_AUDIO_TIMESTAMP                                                    \
-	AudioTimestamp *audioTimestamp = Nan::ObjectWrap::Unwrap<AudioTimestamp>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                           \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
+#include "common.hpp"
 
 
 // ------ Constructor and Destructor
@@ -48,13 +31,13 @@ void AudioTimestamp::_destroy() { DES_CHECK;
 
 
 
-NAN_GETTER(AudioTimestamp::contextTimeGetter) { THIS_AUDIO_TIMESTAMP; THIS_CHECK;
+JS_GETTER(AudioTimestamp::contextTimeGetter) { THIS_AUDIO_TIMESTAMP; THIS_CHECK;
 	
-	RET_NUM(audioTimestamp->_contextTime);
+	RET_NUM(_contextTime);
 	
 }
 
-NAN_SETTER(AudioTimestamp::contextTimeSetter) { THIS_AUDIO_TIMESTAMP; THIS_CHECK; SETTER_DOUBLE_ARG;
+JS_SETTER(AudioTimestamp::contextTimeSetter) { THIS_AUDIO_TIMESTAMP; THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	CACHE_CAS(_contextTime, v);
 	
@@ -63,13 +46,13 @@ NAN_SETTER(AudioTimestamp::contextTimeSetter) { THIS_AUDIO_TIMESTAMP; THIS_CHECK
 }
 
 
-NAN_GETTER(AudioTimestamp::performanceTimeGetter) { THIS_AUDIO_TIMESTAMP; THIS_CHECK;
+JS_GETTER(AudioTimestamp::performanceTimeGetter) { THIS_AUDIO_TIMESTAMP; THIS_CHECK;
 	
-	RET_NUM(audioTimestamp->_performanceTime);
+	RET_NUM(_performanceTime);
 	
 }
 
-NAN_SETTER(AudioTimestamp::performanceTimeSetter) { THIS_AUDIO_TIMESTAMP; THIS_CHECK; SETTER_DOUBLE_ARG;
+JS_SETTER(AudioTimestamp::performanceTimeSetter) { THIS_AUDIO_TIMESTAMP; THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	CACHE_CAS(_performanceTime, v);
 	
@@ -80,20 +63,12 @@ NAN_SETTER(AudioTimestamp::performanceTimeSetter) { THIS_AUDIO_TIMESTAMP; THIS_C
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT AudioTimestamp::_protoAudioTimestamp;
-V8_STORE_FUNC AudioTimestamp::_ctorAudioTimestamp;
+Napi::FunctionReference AudioTimestamp::_ctorAudioTimestamp;
 
 
-void AudioTimestamp::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("AudioTimestamp"));
+void AudioTimestamp::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_RW(obj, contextTime);
@@ -107,19 +82,20 @@ void AudioTimestamp::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "AudioTimestamp", {
 	
-	_protoAudioTimestamp.Reset(proto);
-	_ctorAudioTimestamp.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("AudioTimestamp"), ctor);
+	_ctorAudioTimestamp = Napi::Persistent(ctor);
+	_ctorAudioTimestamp.SuppressDestruct();
 	
+	exports.Set("AudioTimestamp", ctor);
 	
 }
 
 
 bool AudioTimestamp::isAudioTimestamp(Napi::Object obj) {
-	return Nan::New(_protoAudioTimestamp)->HasInstance(obj);
+	return obj.InstanceOf(_ctorAudioTimestamp.Value());
 }
 
 
@@ -132,7 +108,7 @@ Napi::Object AudioTimestamp::getNew() {
 }
 
 
-NAN_METHOD(AudioTimestamp::newCtor) {
+JS_METHOD(AudioTimestamp::newCtor) {
 	
 	CTOR_CHECK("AudioTimestamp");
 	
@@ -144,15 +120,15 @@ NAN_METHOD(AudioTimestamp::newCtor) {
 }
 
 
-NAN_METHOD(AudioTimestamp::destroy) { THIS_AUDIO_TIMESTAMP; THIS_CHECK;
+JS_METHOD(AudioTimestamp::destroy) { THIS_AUDIO_TIMESTAMP; THIS_CHECK;
 	
-	audioTimestamp->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(AudioTimestamp::isDestroyedGetter) { THIS_AUDIO_TIMESTAMP;
+JS_GETTER(AudioTimestamp::isDestroyedGetter) { THIS_AUDIO_TIMESTAMP;
 	
-	RET_BOOL(audioTimestamp->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

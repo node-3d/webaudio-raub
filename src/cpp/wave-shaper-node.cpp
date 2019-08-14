@@ -1,24 +1,7 @@
-#include <cstdlib>
-
 
 #include "wave-shaper-node.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
-
-
-// ------ Aux macros
-
-#define THIS_WAVE_SHAPER_NODE                                                    \
-	WaveShaperNode *waveShaperNode = Nan::ObjectWrap::Unwrap<WaveShaperNode>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                           \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
+#include "common.hpp"
 
 
 // ------ Constructor and Destructor
@@ -51,18 +34,18 @@ void WaveShaperNode::_destroy() { DES_CHECK;
 
 
 
-NAN_GETTER(WaveShaperNode::curveGetter) { THIS_WAVE_SHAPER_NODE; THIS_CHECK;
+JS_GETTER(WaveShaperNode::curveGetter) { THIS_WAVE_SHAPER_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_OBJ(waveShaperNode->_curve));
+	RET_VALUE(__curve.Value());
 	
 }
 
-NAN_SETTER(WaveShaperNode::curveSetter) { THIS_WAVE_SHAPER_NODE; THIS_CHECK; SETTER_OBJ_ARG;
+JS_SETTER(WaveShaperNode::curveSetter) { THIS_WAVE_SHAPER_NODE; THIS_CHECK; SETTER_OBJ_ARG;
 	
-	if (Nan::New(waveShaperNode->_curve) == v) {
+	if (Nan::New(_curve) == v) {
 		return;
 	}
-	waveShaperNode->_curve.Reset(v);
+	_curve.Reset(v);
 	
 	// TODO: may be additional actions on change?
 	
@@ -71,18 +54,18 @@ NAN_SETTER(WaveShaperNode::curveSetter) { THIS_WAVE_SHAPER_NODE; THIS_CHECK; SET
 }
 
 
-NAN_GETTER(WaveShaperNode::oversampleGetter) { THIS_WAVE_SHAPER_NODE; THIS_CHECK;
+JS_GETTER(WaveShaperNode::oversampleGetter) { THIS_WAVE_SHAPER_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_UTF8(waveShaperNode->_oversample));
+	RET_STR(__oversample);
 	
 }
 
-NAN_SETTER(WaveShaperNode::oversampleSetter) { THIS_WAVE_SHAPER_NODE; THIS_CHECK; SETTER_UTF8_ARG;
+JS_SETTER(WaveShaperNode::oversampleSetter) { THIS_WAVE_SHAPER_NODE; THIS_CHECK; SETTER_UTF8_ARG;
 	
-	if (waveShaperNode->_oversample == *v) {
+	if (_oversample == *v) {
 		return;
 	}
-	waveShaperNode->_oversample = *v;
+	_oversample = *v;
 	
 	// TODO: may be additional actions on change?
 	
@@ -93,24 +76,12 @@ NAN_SETTER(WaveShaperNode::oversampleSetter) { THIS_WAVE_SHAPER_NODE; THIS_CHECK
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT WaveShaperNode::_protoWaveShaperNode;
-V8_STORE_FUNC WaveShaperNode::_ctorWaveShaperNode;
+Napi::FunctionReference WaveShaperNode::_ctorWaveShaperNode;
 
 
-void WaveShaperNode::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-
-	// class WaveShaperNode inherits AudioNode
-	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
-	proto->Inherit(parent);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("WaveShaperNode"));
+void WaveShaperNode::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_RW(obj, curve);
@@ -124,19 +95,20 @@ void WaveShaperNode::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "WaveShaperNode", {
 	
-	_protoWaveShaperNode.Reset(proto);
-	_ctorWaveShaperNode.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("WaveShaperNode"), ctor);
+	_ctorWaveShaperNode = Napi::Persistent(ctor);
+	_ctorWaveShaperNode.SuppressDestruct();
 	
+	exports.Set("WaveShaperNode", ctor);
 	
 }
 
 
 bool WaveShaperNode::isWaveShaperNode(Napi::Object obj) {
-	return Nan::New(_protoWaveShaperNode)->HasInstance(obj);
+	return obj.InstanceOf(_ctorWaveShaperNode.Value());
 }
 
 
@@ -149,7 +121,7 @@ Napi::Object WaveShaperNode::getNew() {
 }
 
 
-NAN_METHOD(WaveShaperNode::newCtor) {
+JS_METHOD(WaveShaperNode::newCtor) {
 	
 	CTOR_CHECK("WaveShaperNode");
 	
@@ -161,17 +133,17 @@ NAN_METHOD(WaveShaperNode::newCtor) {
 }
 
 
-NAN_METHOD(WaveShaperNode::destroy) { THIS_WAVE_SHAPER_NODE; THIS_CHECK;
+JS_METHOD(WaveShaperNode::destroy) { THIS_WAVE_SHAPER_NODE; THIS_CHECK;
 	
 	waveShaperNode->emit("destroy");
 	
-	waveShaperNode->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(WaveShaperNode::isDestroyedGetter) { THIS_WAVE_SHAPER_NODE;
+JS_GETTER(WaveShaperNode::isDestroyedGetter) { THIS_WAVE_SHAPER_NODE;
 	
-	RET_BOOL(waveShaperNode->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

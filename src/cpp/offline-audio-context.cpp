@@ -1,24 +1,7 @@
-#include <cstdlib>
-
 
 #include "offline-audio-context.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
-
-
-// ------ Aux macros
-
-#define THIS_OFFLINE_AUDIO_CONTEXT                                                    \
-	OfflineAudioContext *offlineAudioContext = Nan::ObjectWrap::Unwrap<OfflineAudioContext>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                           \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
+#include "common.hpp"
 
 
 // ------ Constructor and Destructor
@@ -50,14 +33,14 @@ void OfflineAudioContext::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-NAN_METHOD(OfflineAudioContext::startRendering) { THIS_OFFLINE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(OfflineAudioContext::startRendering) { THIS_OFFLINE_AUDIO_CONTEXT; THIS_CHECK;
 	
 	// TODO: do something?
 	
 }
 
 
-NAN_METHOD(OfflineAudioContext::suspend) { THIS_OFFLINE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(OfflineAudioContext::suspend) { THIS_OFFLINE_AUDIO_CONTEXT; THIS_CHECK;
 	
 	REQ_DOUBLE_ARG(0, suspendTime);
 	
@@ -66,18 +49,18 @@ NAN_METHOD(OfflineAudioContext::suspend) { THIS_OFFLINE_AUDIO_CONTEXT; THIS_CHEC
 }
 
 
-NAN_GETTER(OfflineAudioContext::oncompleteGetter) { THIS_OFFLINE_AUDIO_CONTEXT; THIS_CHECK;
+JS_GETTER(OfflineAudioContext::oncompleteGetter) { THIS_OFFLINE_AUDIO_CONTEXT; THIS_CHECK;
 	
-	RET_VALUE(JS_FUN(offlineAudioContext->_oncomplete));
+	RET_VALUE(JS_FUN(_oncomplete));
 	
 }
 
-NAN_SETTER(OfflineAudioContext::oncompleteSetter) { THIS_OFFLINE_AUDIO_CONTEXT; THIS_CHECK; SETTER_FUN_ARG;
+JS_SETTER(OfflineAudioContext::oncompleteSetter) { THIS_OFFLINE_AUDIO_CONTEXT; THIS_CHECK; SETTER_FUN_ARG;
 	
-	if (Nan::New(offlineAudioContext->_oncomplete) == v) {
+	if (Nan::New(_oncomplete) == v) {
 		return;
 	}
-	offlineAudioContext->_oncomplete.Reset(v);
+	_oncomplete.Reset(v);
 	
 	// TODO: may be additional actions on change?
 	
@@ -86,33 +69,21 @@ NAN_SETTER(OfflineAudioContext::oncompleteSetter) { THIS_OFFLINE_AUDIO_CONTEXT; 
 }
 
 
-NAN_GETTER(OfflineAudioContext::lengthGetter) { THIS_OFFLINE_AUDIO_CONTEXT; THIS_CHECK;
+JS_GETTER(OfflineAudioContext::lengthGetter) { THIS_OFFLINE_AUDIO_CONTEXT; THIS_CHECK;
 	
-	RET_NUM(offlineAudioContext->_length);
+	RET_NUM(_length);
 	
 }
 
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT OfflineAudioContext::_protoOfflineAudioContext;
-V8_STORE_FUNC OfflineAudioContext::_ctorOfflineAudioContext;
+Napi::FunctionReference OfflineAudioContext::_ctorOfflineAudioContext;
 
 
-void OfflineAudioContext::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-
-	// class OfflineAudioContext inherits BaseAudioContext
-	V8_VAR_FT parent = Nan::New(BaseAudioContext::_protoBaseAudioContext);
-	proto->Inherit(parent);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("OfflineAudioContext"));
+void OfflineAudioContext::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_RW(obj, oncomplete);
@@ -127,19 +98,20 @@ void OfflineAudioContext::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "OfflineAudioContext", {
 	
-	_protoOfflineAudioContext.Reset(proto);
-	_ctorOfflineAudioContext.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("OfflineAudioContext"), ctor);
+	_ctorOfflineAudioContext = Napi::Persistent(ctor);
+	_ctorOfflineAudioContext.SuppressDestruct();
 	
+	exports.Set("OfflineAudioContext", ctor);
 	
 }
 
 
 bool OfflineAudioContext::isOfflineAudioContext(Napi::Object obj) {
-	return Nan::New(_protoOfflineAudioContext)->HasInstance(obj);
+	return obj.InstanceOf(_ctorOfflineAudioContext.Value());
 }
 
 
@@ -152,7 +124,7 @@ Napi::Object OfflineAudioContext::getNew() {
 }
 
 
-NAN_METHOD(OfflineAudioContext::newCtor) {
+JS_METHOD(OfflineAudioContext::newCtor) {
 	
 	CTOR_CHECK("OfflineAudioContext");
 	
@@ -164,17 +136,17 @@ NAN_METHOD(OfflineAudioContext::newCtor) {
 }
 
 
-NAN_METHOD(OfflineAudioContext::destroy) { THIS_OFFLINE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(OfflineAudioContext::destroy) { THIS_OFFLINE_AUDIO_CONTEXT; THIS_CHECK;
 	
 	offlineAudioContext->emit("destroy");
 	
-	offlineAudioContext->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(OfflineAudioContext::isDestroyedGetter) { THIS_OFFLINE_AUDIO_CONTEXT;
+JS_GETTER(OfflineAudioContext::isDestroyedGetter) { THIS_OFFLINE_AUDIO_CONTEXT;
 	
-	RET_BOOL(offlineAudioContext->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

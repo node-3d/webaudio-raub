@@ -1,26 +1,9 @@
-#include <cstdlib>
-
 #include <LabSound/core/AudioBus.h>
 
 #include "audio-buffer.hpp"
 #include "audio-context.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
-
-
-// ------ Aux macros
-
-#define THIS_AUDIO_BUFFER                                                    \
-	AudioBuffer *audioBuffer = Nan::ObjectWrap::Unwrap<AudioBuffer>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                           \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
+#include "common.hpp"
 
 
 // ------ Constructor and Destructor
@@ -67,7 +50,7 @@ void AudioBuffer::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-NAN_METHOD(AudioBuffer::getChannelData) { THIS_AUDIO_BUFFER; THIS_CHECK;
+JS_METHOD(AudioBuffer::getChannelData) { THIS_AUDIO_BUFFER; THIS_CHECK;
 	
 	REQ_UINT32_ARG(0, channelIndex);
 	
@@ -76,7 +59,7 @@ NAN_METHOD(AudioBuffer::getChannelData) { THIS_AUDIO_BUFFER; THIS_CHECK;
 }
 
 
-NAN_METHOD(AudioBuffer::copyFromChannel) { THIS_AUDIO_BUFFER; THIS_CHECK;
+JS_METHOD(AudioBuffer::copyFromChannel) { THIS_AUDIO_BUFFER; THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, destination);
 	REQ_INT32_ARG(1, channelNumber);
@@ -87,7 +70,7 @@ NAN_METHOD(AudioBuffer::copyFromChannel) { THIS_AUDIO_BUFFER; THIS_CHECK;
 }
 
 
-NAN_METHOD(AudioBuffer::copyToChannel) { THIS_AUDIO_BUFFER; THIS_CHECK;
+JS_METHOD(AudioBuffer::copyToChannel) { THIS_AUDIO_BUFFER; THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, source);
 	REQ_INT32_ARG(1, channelNumber);
@@ -98,50 +81,42 @@ NAN_METHOD(AudioBuffer::copyToChannel) { THIS_AUDIO_BUFFER; THIS_CHECK;
 }
 
 
-NAN_GETTER(AudioBuffer::lengthGetter) { THIS_AUDIO_BUFFER; THIS_CHECK;
+JS_GETTER(AudioBuffer::lengthGetter) { THIS_AUDIO_BUFFER; THIS_CHECK;
 	
-	RET_NUM(audioBuffer->_length);
-	
-}
-
-
-NAN_GETTER(AudioBuffer::durationGetter) { THIS_AUDIO_BUFFER; THIS_CHECK;
-	
-	RET_NUM(audioBuffer->_duration);
+	RET_NUM(_length);
 	
 }
 
 
-NAN_GETTER(AudioBuffer::sampleRateGetter) { THIS_AUDIO_BUFFER; THIS_CHECK;
+JS_GETTER(AudioBuffer::durationGetter) { THIS_AUDIO_BUFFER; THIS_CHECK;
 	
-	RET_NUM(audioBuffer->_sampleRate);
+	RET_NUM(_duration);
 	
 }
 
 
-NAN_GETTER(AudioBuffer::numberOfChannelsGetter) { THIS_AUDIO_BUFFER; THIS_CHECK;
+JS_GETTER(AudioBuffer::sampleRateGetter) { THIS_AUDIO_BUFFER; THIS_CHECK;
 	
-	RET_NUM(audioBuffer->_numberOfChannels);
+	RET_NUM(_sampleRate);
+	
+}
+
+
+JS_GETTER(AudioBuffer::numberOfChannelsGetter) { THIS_AUDIO_BUFFER; THIS_CHECK;
+	
+	RET_NUM(_numberOfChannels);
 	
 }
 
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT AudioBuffer::_protoAudioBuffer;
-V8_STORE_FUNC AudioBuffer::_ctorAudioBuffer;
+Napi::FunctionReference AudioBuffer::_ctorAudioBuffer;
 
 
-void AudioBuffer::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("AudioBuffer"));
+void AudioBuffer::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, length);
@@ -159,13 +134,14 @@ void AudioBuffer::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "AudioBuffer", {
 	
-	_protoAudioBuffer.Reset(proto);
-	_ctorAudioBuffer.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("AudioBuffer"), ctor);
+	_ctorAudioBuffer = Napi::Persistent(ctor);
+	_ctorAudioBuffer.SuppressDestruct();
 	
+	exports.Set("AudioBuffer", ctor);
 	
 }
 
@@ -180,7 +156,7 @@ Napi::Object AudioBuffer::getNew(BusPtr bus) {
 }
 
 
-NAN_METHOD(AudioBuffer::newCtor) {
+JS_METHOD(AudioBuffer::newCtor) {
 	
 	CTOR_CHECK("AudioBuffer");
 	
@@ -218,15 +194,15 @@ NAN_METHOD(AudioBuffer::newCtor) {
 }
 
 
-NAN_METHOD(AudioBuffer::destroy) { THIS_AUDIO_BUFFER; THIS_CHECK;
+JS_METHOD(AudioBuffer::destroy) { THIS_AUDIO_BUFFER; THIS_CHECK;
 	
-	audioBuffer->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(AudioBuffer::isDestroyedGetter) { THIS_AUDIO_BUFFER;
+JS_GETTER(AudioBuffer::isDestroyedGetter) { THIS_AUDIO_BUFFER;
 	
-	RET_BOOL(audioBuffer->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

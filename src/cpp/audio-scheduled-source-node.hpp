@@ -16,10 +16,10 @@ public:
 	~AudioScheduledSourceNode();
 	
 	// Public V8 init
-	static void init(Napi::Object target);
+	static void init(Napi::Env env, Napi::Object exports);
 	
 	// Make a new instance from C++ land
-	static Napi::Object getNew(Napi::Object context, NodePtr node);
+	explicit AudioScheduledSourceNode(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -31,8 +31,7 @@ protected:
 	AudioScheduledSourceNode() {} // fake, TODO: remove
 	AudioScheduledSourceNode(Napi::Object context, NodePtr node);
 	
-	static V8_STORE_FT _protoAudioScheduledSourceNode;
-	static V8_STORE_FUNC _ctorAudioScheduledSourceNode;
+	static Napi::FunctionReference _ctorAudioScheduledSourceNode;
 	
 	bool _isDestroyed;
 	
@@ -42,13 +41,13 @@ protected:
 // JS methods and props, available through V8 APIs
 private:
 	
-	static NAN_METHOD(newCtor);
+	JS_METHOD(newCtor);
 	
-	static NAN_METHOD(destroy);
-	static NAN_GETTER(isDestroyedGetter);
+	JS_METHOD(destroy);
+	JS_GETTER(isDestroyedGetter);
 	
-	static NAN_METHOD(start);
-	static NAN_METHOD(stop);
+	JS_METHOD(start);
+	JS_METHOD(stop);
 	
 };
 

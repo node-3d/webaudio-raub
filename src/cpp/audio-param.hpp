@@ -9,7 +9,7 @@
 namespace lab { class AudioParam; };
 
 
-class AudioParam : public Nan::ObjectWrap {
+class AudioParam : public Napi::ObjectWrap<AudioParam> {
 	
 public:
 	
@@ -18,10 +18,10 @@ public:
 	~AudioParam();
 	
 	// Public V8 init
-	static void init(Napi::Object target);
+	static void init(Napi::Env env, Napi::Object exports);
 	
 	// Make a new instance from C++ land
-	static Napi::Object getNew(Napi::Object context, ParamPtr param);
+	explicit AudioParam(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -36,39 +36,38 @@ protected:
 	
 	AudioParam(Napi::Object context, ParamPtr param);
 	
-	static V8_STORE_FT _protoAudioParam;
-	static V8_STORE_FUNC _ctorAudioParam;
+	static Napi::FunctionReference _ctorAudioParam;
 	
 	bool _isDestroyed;
 	
 	ParamPtr _impl;
-	V8_STORE_OBJ _context;
+	Napi::ObjectReference _context;
 	
 	
 // JS methods and props, available through V8 APIs
 private:
 	
-	static NAN_METHOD(newCtor);
+	JS_METHOD(newCtor);
 	
-	static NAN_METHOD(destroy);
-	static NAN_GETTER(isDestroyedGetter);
+	JS_METHOD(destroy);
+	JS_GETTER(isDestroyedGetter);
 	
-	static NAN_METHOD(setValueAtTime);
-	static NAN_METHOD(linearRampToValueAtTime);
-	static NAN_METHOD(exponentialRampToValueAtTime);
-	static NAN_METHOD(setTargetAtTime);
-	static NAN_METHOD(setValueCurveAtTime);
-	static NAN_METHOD(cancelScheduledValues);
-	static NAN_METHOD(cancelAndHoldAtTime);
+	JS_METHOD(setValueAtTime);
+	JS_METHOD(linearRampToValueAtTime);
+	JS_METHOD(exponentialRampToValueAtTime);
+	JS_METHOD(setTargetAtTime);
+	JS_METHOD(setValueCurveAtTime);
+	JS_METHOD(cancelScheduledValues);
+	JS_METHOD(cancelAndHoldAtTime);
 	
-	static NAN_GETTER(valueGetter);
-	static NAN_SETTER(valueSetter);
+	JS_GETTER(valueGetter);
+	JS_SETTER(valueSetter);
 	
-	static NAN_GETTER(defaultValueGetter);
+	JS_GETTER(defaultValueGetter);
 	
-	static NAN_GETTER(minValueGetter);
+	JS_GETTER(minValueGetter);
 	
-	static NAN_GETTER(maxValueGetter);
+	JS_GETTER(maxValueGetter);
 	
 };
 

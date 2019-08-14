@@ -1,24 +1,7 @@
-#include <cstdlib>
-
 
 #include "constant-source-node.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
-
-
-// ------ Aux macros
-
-#define THIS_CONSTANT_SOURCE_NODE                                                    \
-	ConstantSourceNode *constantSourceNode = Nan::ObjectWrap::Unwrap<ConstantSourceNode>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                           \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
+#include "common.hpp"
 
 
 // ------ Constructor and Destructor
@@ -51,33 +34,21 @@ void ConstantSourceNode::_destroy() { DES_CHECK;
 
 
 
-NAN_GETTER(ConstantSourceNode::offsetGetter) { THIS_CONSTANT_SOURCE_NODE; THIS_CHECK;
+JS_GETTER(ConstantSourceNode::offsetGetter) { THIS_CONSTANT_SOURCE_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_OBJ(constantSourceNode->_offset));
+	RET_VALUE(__offset.Value());
 	
 }
 
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT ConstantSourceNode::_protoConstantSourceNode;
-V8_STORE_FUNC ConstantSourceNode::_ctorConstantSourceNode;
+Napi::FunctionReference ConstantSourceNode::_ctorConstantSourceNode;
 
 
-void ConstantSourceNode::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-
-	// class ConstantSourceNode inherits AudioScheduledSourceNode
-	V8_VAR_FT parent = Nan::New(AudioScheduledSourceNode::_protoAudioScheduledSourceNode);
-	proto->Inherit(parent);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("ConstantSourceNode"));
+void ConstantSourceNode::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, offset);
@@ -90,19 +61,20 @@ void ConstantSourceNode::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "ConstantSourceNode", {
 	
-	_protoConstantSourceNode.Reset(proto);
-	_ctorConstantSourceNode.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("ConstantSourceNode"), ctor);
+	_ctorConstantSourceNode = Napi::Persistent(ctor);
+	_ctorConstantSourceNode.SuppressDestruct();
 	
+	exports.Set("ConstantSourceNode", ctor);
 	
 }
 
 
 bool ConstantSourceNode::isConstantSourceNode(Napi::Object obj) {
-	return Nan::New(_protoConstantSourceNode)->HasInstance(obj);
+	return obj.InstanceOf(_ctorConstantSourceNode.Value());
 }
 
 
@@ -115,7 +87,7 @@ Napi::Object ConstantSourceNode::getNew() {
 }
 
 
-NAN_METHOD(ConstantSourceNode::newCtor) {
+JS_METHOD(ConstantSourceNode::newCtor) {
 	
 	CTOR_CHECK("ConstantSourceNode");
 	
@@ -127,17 +99,17 @@ NAN_METHOD(ConstantSourceNode::newCtor) {
 }
 
 
-NAN_METHOD(ConstantSourceNode::destroy) { THIS_CONSTANT_SOURCE_NODE; THIS_CHECK;
+JS_METHOD(ConstantSourceNode::destroy) { THIS_CONSTANT_SOURCE_NODE; THIS_CHECK;
 	
 	constantSourceNode->emit("destroy");
 	
-	constantSourceNode->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(ConstantSourceNode::isDestroyedGetter) { THIS_CONSTANT_SOURCE_NODE;
+JS_GETTER(ConstantSourceNode::isDestroyedGetter) { THIS_CONSTANT_SOURCE_NODE;
 	
-	RET_BOOL(constantSourceNode->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

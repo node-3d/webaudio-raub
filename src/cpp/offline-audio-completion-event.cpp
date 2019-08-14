@@ -1,24 +1,7 @@
-#include <cstdlib>
-
 
 #include "offline-audio-completion-event.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
-
-
-// ------ Aux macros
-
-#define THIS_OFFLINE_AUDIO_COMPLETION_EVENT                                                    \
-	OfflineAudioCompletionEvent *offlineAudioCompletionEvent = Nan::ObjectWrap::Unwrap<OfflineAudioCompletionEvent>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                           \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
+#include "common.hpp"
 
 
 // ------ Constructor and Destructor
@@ -48,29 +31,21 @@ void OfflineAudioCompletionEvent::_destroy() { DES_CHECK;
 
 
 
-NAN_GETTER(OfflineAudioCompletionEvent::renderedBufferGetter) { THIS_OFFLINE_AUDIO_COMPLETION_EVENT; THIS_CHECK;
+JS_GETTER(OfflineAudioCompletionEvent::renderedBufferGetter) { THIS_OFFLINE_AUDIO_COMPLETION_EVENT; THIS_CHECK;
 	
-	RET_VALUE(JS_OBJ(offlineAudioCompletionEvent->_renderedBuffer));
+	RET_VALUE(__renderedBuffer.Value());
 	
 }
 
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT OfflineAudioCompletionEvent::_protoOfflineAudioCompletionEvent;
-V8_STORE_FUNC OfflineAudioCompletionEvent::_ctorOfflineAudioCompletionEvent;
+Napi::FunctionReference OfflineAudioCompletionEvent::_ctorOfflineAudioCompletionEvent;
 
 
-void OfflineAudioCompletionEvent::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("OfflineAudioCompletionEvent"));
+void OfflineAudioCompletionEvent::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, renderedBuffer);
@@ -83,19 +58,20 @@ void OfflineAudioCompletionEvent::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "OfflineAudioCompletionEvent", {
 	
-	_protoOfflineAudioCompletionEvent.Reset(proto);
-	_ctorOfflineAudioCompletionEvent.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("OfflineAudioCompletionEvent"), ctor);
+	_ctorOfflineAudioCompletionEvent = Napi::Persistent(ctor);
+	_ctorOfflineAudioCompletionEvent.SuppressDestruct();
 	
+	exports.Set("OfflineAudioCompletionEvent", ctor);
 	
 }
 
 
 bool OfflineAudioCompletionEvent::isOfflineAudioCompletionEvent(Napi::Object obj) {
-	return Nan::New(_protoOfflineAudioCompletionEvent)->HasInstance(obj);
+	return obj.InstanceOf(_ctorOfflineAudioCompletionEvent.Value());
 }
 
 
@@ -108,7 +84,7 @@ Napi::Object OfflineAudioCompletionEvent::getNew() {
 }
 
 
-NAN_METHOD(OfflineAudioCompletionEvent::newCtor) {
+JS_METHOD(OfflineAudioCompletionEvent::newCtor) {
 	
 	CTOR_CHECK("OfflineAudioCompletionEvent");
 	
@@ -120,15 +96,15 @@ NAN_METHOD(OfflineAudioCompletionEvent::newCtor) {
 }
 
 
-NAN_METHOD(OfflineAudioCompletionEvent::destroy) { THIS_OFFLINE_AUDIO_COMPLETION_EVENT; THIS_CHECK;
+JS_METHOD(OfflineAudioCompletionEvent::destroy) { THIS_OFFLINE_AUDIO_COMPLETION_EVENT; THIS_CHECK;
 	
-	offlineAudioCompletionEvent->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(OfflineAudioCompletionEvent::isDestroyedGetter) { THIS_OFFLINE_AUDIO_COMPLETION_EVENT;
+JS_GETTER(OfflineAudioCompletionEvent::isDestroyedGetter) { THIS_OFFLINE_AUDIO_COMPLETION_EVENT;
 	
-	RET_BOOL(offlineAudioCompletionEvent->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

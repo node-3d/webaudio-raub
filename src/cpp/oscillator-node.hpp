@@ -14,12 +14,12 @@ public:
 	~OscillatorNode();
 	
 	// Public V8 init
-	static void init(Napi::Object target);
+	static void init(Napi::Env env, Napi::Object exports);
 	
 	static bool isOscillatorNode(Napi::Object obj);
 	
 	// Make a new instance from C++ land
-	static Napi::Object getNew(Napi::Object context);
+	explicit OscillatorNode(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -30,32 +30,31 @@ protected:
 	
 	OscillatorNode(Napi::Object context, float sampleRate);
 	
-	static V8_STORE_FT _protoOscillatorNode;
-	static V8_STORE_FUNC _ctorOscillatorNode;
+	static Napi::FunctionReference _ctorOscillatorNode;
 	
 	bool _isDestroyed;
 	
 	std::string _type;
-	V8_STORE_OBJ _frequency;
-	V8_STORE_OBJ _detune;
+	Napi::ObjectReference _frequency;
+	Napi::ObjectReference _detune;
 	
 	
 // JS methods and props, available through V8 APIs
 private:
 	
-	static NAN_METHOD(newCtor);
+	JS_METHOD(newCtor);
 	
-	static NAN_METHOD(destroy);
-	static NAN_GETTER(isDestroyedGetter);
+	JS_METHOD(destroy);
+	JS_GETTER(isDestroyedGetter);
 	
-	static NAN_METHOD(setPeriodicWave);
+	JS_METHOD(setPeriodicWave);
 	
-	static NAN_GETTER(typeGetter);
-	static NAN_SETTER(typeSetter);
+	JS_GETTER(typeGetter);
+	JS_SETTER(typeSetter);
 	
-	static NAN_GETTER(frequencyGetter);
+	JS_GETTER(frequencyGetter);
 	
-	static NAN_GETTER(detuneGetter);
+	JS_GETTER(detuneGetter);
 	
 };
 

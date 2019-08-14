@@ -14,12 +14,12 @@ public:
 	~ChannelMergerNode();
 	
 	// Public V8 init
-	static void init(Napi::Object target);
+	static void init(Napi::Env env, Napi::Object exports);
 	
 	static bool isChannelMergerNode(Napi::Object obj);
 	
 	// Make a new instance from C++ land
-	static Napi::Object getNew();
+	explicit ChannelMergerNode(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -30,8 +30,7 @@ protected:
 	
 	ChannelMergerNode();
 	
-	static V8_STORE_FT _protoChannelMergerNode;
-	static V8_STORE_FUNC _ctorChannelMergerNode;
+	static Napi::FunctionReference _ctorChannelMergerNode;
 	
 	bool _isDestroyed;
 	
@@ -41,10 +40,10 @@ protected:
 // JS methods and props, available through V8 APIs
 private:
 	
-	static NAN_METHOD(newCtor);
+	JS_METHOD(newCtor);
 	
-	static NAN_METHOD(destroy);
-	static NAN_GETTER(isDestroyedGetter);
+	JS_METHOD(destroy);
+	JS_GETTER(isDestroyedGetter);
 	
 	
 	

@@ -1,5 +1,3 @@
-#include <cstdlib>
-
 #include <LabSound/core/AudioNode.h>
 #include <LabSound/core/PannerNode.h>
 #include <LabSound/core/FloatPoint3D.h>
@@ -8,25 +6,13 @@
 #include "audio-context.hpp"
 #include "audio-param.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
+#include "common.hpp"
 
 
 // ------ Aux macros
 
-#define THIS_PANNER_NODE                                                      \
-	PannerNode *pannerNode = Nan::ObjectWrap::Unwrap<PannerNode>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                             \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
-
 #define PARAM_GETTER(NAME)                                                    \
-NAN_GETTER(PannerNode::NAME ## Getter) { THIS_PANNER_NODE; THIS_CHECK;        \
+JS_GETTER(PannerNode::NAME ## Getter) { THIS_PANNER_NODE; THIS_CHECK;        \
 	RET_VALUE(JS_OBJ(pannerNode->_ ## NAME));                                 \
 }
 
@@ -116,14 +102,14 @@ void PannerNode::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-NAN_METHOD(PannerNode::setPosition) { THIS_PANNER_NODE; THIS_CHECK;
+JS_METHOD(PannerNode::setPosition) { THIS_PANNER_NODE; THIS_CHECK;
 	
 	REQ_FLOAT_ARG(0, x);
 	REQ_FLOAT_ARG(1, y);
 	REQ_FLOAT_ARG(2, z);
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
-		pannerNode->_impl.get()
+		_impl.get()
 	);
 	
 	node->setPosition(x, y, z);
@@ -131,14 +117,14 @@ NAN_METHOD(PannerNode::setPosition) { THIS_PANNER_NODE; THIS_CHECK;
 }
 
 
-NAN_METHOD(PannerNode::setOrientation) { THIS_PANNER_NODE; THIS_CHECK;
+JS_METHOD(PannerNode::setOrientation) { THIS_PANNER_NODE; THIS_CHECK;
 	
 	REQ_FLOAT_ARG(0, x);
 	REQ_FLOAT_ARG(1, y);
 	REQ_FLOAT_ARG(2, z);
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
-		pannerNode->_impl.get()
+		_impl.get()
 	);
 	
 	node->setOrientation(lab::FloatPoint3D(x, y, z));
@@ -146,34 +132,34 @@ NAN_METHOD(PannerNode::setOrientation) { THIS_PANNER_NODE; THIS_CHECK;
 }
 
 
-NAN_METHOD(PannerNode::setVelocity) { THIS_PANNER_NODE; THIS_CHECK;
+JS_METHOD(PannerNode::setVelocity) { THIS_PANNER_NODE; THIS_CHECK;
 	
 	REQ_FLOAT_ARG(0, x);
 	REQ_FLOAT_ARG(1, y);
 	REQ_FLOAT_ARG(2, z);
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
-		pannerNode->_impl.get()
+		_impl.get()
 	);
 	
 	node->setVelocity(x, y, z);
 	
 }
 
-NAN_GETTER(PannerNode::panningModelGetter) { THIS_PANNER_NODE; THIS_CHECK;
+JS_GETTER(PannerNode::panningModelGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
-		pannerNode->_impl.get()
+		_impl.get()
 	);
 	
 	RET_VALUE(JS_STR(fromPanningMode(node->panningModel())));
 	
 }
 
-NAN_SETTER(PannerNode::panningModelSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_UTF8_ARG;
+JS_SETTER(PannerNode::panningModelSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_UTF8_ARG;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
-		pannerNode->_impl.get()
+		_impl.get()
 	);
 	
 	node->setPanningModel(toPanningMode(*v));
@@ -191,20 +177,20 @@ PARAM_GETTER(orientationY);
 PARAM_GETTER(orientationZ);
 
 
-NAN_GETTER(PannerNode::distanceModelGetter) { THIS_PANNER_NODE; THIS_CHECK;
+JS_GETTER(PannerNode::distanceModelGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
-		pannerNode->_impl.get()
+		_impl.get()
 	);
 	
 	RET_VALUE(JS_STR(fromDistanceModel(node->distanceModel())));
 	
 }
 
-NAN_SETTER(PannerNode::distanceModelSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_UTF8_ARG;
+JS_SETTER(PannerNode::distanceModelSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_UTF8_ARG;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
-		pannerNode->_impl.get()
+		_impl.get()
 	);
 	
 	node->setDistanceModel(toDistanceModel(*v));
@@ -214,20 +200,20 @@ NAN_SETTER(PannerNode::distanceModelSetter) { THIS_PANNER_NODE; THIS_CHECK; SETT
 }
 
 
-NAN_GETTER(PannerNode::refDistanceGetter) { THIS_PANNER_NODE; THIS_CHECK;
+JS_GETTER(PannerNode::refDistanceGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
-		pannerNode->_impl.get()
+		_impl.get()
 	);
 	
 	RET_NUM(node->refDistance());
 	
 }
 
-NAN_SETTER(PannerNode::refDistanceSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
+JS_SETTER(PannerNode::refDistanceSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
-		pannerNode->_impl.get()
+		_impl.get()
 	);
 	
 	node->setRefDistance(static_cast<float>(v));
@@ -237,20 +223,20 @@ NAN_SETTER(PannerNode::refDistanceSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER
 }
 
 
-NAN_GETTER(PannerNode::maxDistanceGetter) { THIS_PANNER_NODE; THIS_CHECK;
+JS_GETTER(PannerNode::maxDistanceGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
-		pannerNode->_impl.get()
+		_impl.get()
 	);
 	
 	RET_NUM(node->maxDistance());
 	
 }
 
-NAN_SETTER(PannerNode::maxDistanceSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
+JS_SETTER(PannerNode::maxDistanceSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
-		pannerNode->_impl.get()
+		_impl.get()
 	);
 	
 	node->setMaxDistance(static_cast<float>(v));
@@ -260,20 +246,20 @@ NAN_SETTER(PannerNode::maxDistanceSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER
 }
 
 
-NAN_GETTER(PannerNode::rolloffFactorGetter) { THIS_PANNER_NODE; THIS_CHECK;
+JS_GETTER(PannerNode::rolloffFactorGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
-		pannerNode->_impl.get()
+		_impl.get()
 	);
 	
 	RET_NUM(node->rolloffFactor());
 	
 }
 
-NAN_SETTER(PannerNode::rolloffFactorSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
+JS_SETTER(PannerNode::rolloffFactorSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
-		pannerNode->_impl.get()
+		_impl.get()
 	);
 	
 	node->setRolloffFactor(static_cast<float>(v));
@@ -283,20 +269,20 @@ NAN_SETTER(PannerNode::rolloffFactorSetter) { THIS_PANNER_NODE; THIS_CHECK; SETT
 }
 
 
-NAN_GETTER(PannerNode::coneInnerAngleGetter) { THIS_PANNER_NODE; THIS_CHECK;
+JS_GETTER(PannerNode::coneInnerAngleGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
-		pannerNode->_impl.get()
+		_impl.get()
 	);
 	
 	RET_NUM(node->coneInnerAngle());
 	
 }
 
-NAN_SETTER(PannerNode::coneInnerAngleSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
+JS_SETTER(PannerNode::coneInnerAngleSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
-		pannerNode->_impl.get()
+		_impl.get()
 	);
 	
 	node->setConeInnerAngle(static_cast<float>(v));
@@ -306,20 +292,20 @@ NAN_SETTER(PannerNode::coneInnerAngleSetter) { THIS_PANNER_NODE; THIS_CHECK; SET
 }
 
 
-NAN_GETTER(PannerNode::coneOuterAngleGetter) { THIS_PANNER_NODE; THIS_CHECK;
+JS_GETTER(PannerNode::coneOuterAngleGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
-		pannerNode->_impl.get()
+		_impl.get()
 	);
 	
 	RET_NUM(node->coneOuterAngle());
 	
 }
 
-NAN_SETTER(PannerNode::coneOuterAngleSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
+JS_SETTER(PannerNode::coneOuterAngleSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
-		pannerNode->_impl.get()
+		_impl.get()
 	);
 	
 	node->setConeOuterAngle(static_cast<float>(v));
@@ -329,20 +315,20 @@ NAN_SETTER(PannerNode::coneOuterAngleSetter) { THIS_PANNER_NODE; THIS_CHECK; SET
 }
 
 
-NAN_GETTER(PannerNode::coneOuterGainGetter) { THIS_PANNER_NODE; THIS_CHECK;
+JS_GETTER(PannerNode::coneOuterGainGetter) { THIS_PANNER_NODE; THIS_CHECK;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
-		pannerNode->_impl.get()
+		_impl.get()
 	);
 	
 	RET_NUM(node->coneOuterGain());
 	
 }
 
-NAN_SETTER(PannerNode::coneOuterGainSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
+JS_SETTER(PannerNode::coneOuterGainSetter) { THIS_PANNER_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
-		pannerNode->_impl.get()
+		_impl.get()
 	);
 	
 	node->setConeOuterGain(static_cast<float>(v));
@@ -354,24 +340,12 @@ NAN_SETTER(PannerNode::coneOuterGainSetter) { THIS_PANNER_NODE; THIS_CHECK; SETT
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT PannerNode::_protoPannerNode;
-V8_STORE_FUNC PannerNode::_ctorPannerNode;
+Napi::FunctionReference PannerNode::_ctorPannerNode;
 
 
-void PannerNode::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-	
-	// class PannerNode inherits AudioNode
-	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
-	proto->Inherit(parent);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("PannerNode"));
+void PannerNode::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_RW(obj, panningModel);
@@ -399,19 +373,20 @@ void PannerNode::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "PannerNode", {
 	
-	_protoPannerNode.Reset(proto);
-	_ctorPannerNode.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("PannerNode"), ctor);
+	_ctorPannerNode = Napi::Persistent(ctor);
+	_ctorPannerNode.SuppressDestruct();
 	
+	exports.Set("PannerNode", ctor);
 	
 }
 
 
 bool PannerNode::isPannerNode(Napi::Object obj) {
-	return Nan::New(_protoPannerNode)->HasInstance(obj);
+	return obj.InstanceOf(_ctorPannerNode.Value());
 }
 
 
@@ -424,7 +399,7 @@ Napi::Object PannerNode::getNew(Napi::Object context) {
 }
 
 
-NAN_METHOD(PannerNode::newCtor) {
+JS_METHOD(PannerNode::newCtor) {
 	
 	CTOR_CHECK("PannerNode");
 		
@@ -441,17 +416,17 @@ NAN_METHOD(PannerNode::newCtor) {
 }
 
 
-NAN_METHOD(PannerNode::destroy) { THIS_PANNER_NODE; THIS_CHECK;
+JS_METHOD(PannerNode::destroy) { THIS_PANNER_NODE; THIS_CHECK;
 	
 	pannerNode->emit("destroy");
 	
-	pannerNode->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(PannerNode::isDestroyedGetter) { THIS_PANNER_NODE;
+JS_GETTER(PannerNode::isDestroyedGetter) { THIS_PANNER_NODE;
 	
-	RET_BOOL(pannerNode->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

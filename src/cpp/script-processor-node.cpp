@@ -1,24 +1,7 @@
-#include <cstdlib>
-
 
 #include "script-processor-node.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
-
-
-// ------ Aux macros
-
-#define THIS_SCRIPT_PROCESSOR_NODE                                                    \
-	ScriptProcessorNode *scriptProcessorNode = Nan::ObjectWrap::Unwrap<ScriptProcessorNode>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                           \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
+#include "common.hpp"
 
 
 // ------ Constructor and Destructor
@@ -51,18 +34,18 @@ void ScriptProcessorNode::_destroy() { DES_CHECK;
 
 
 
-NAN_GETTER(ScriptProcessorNode::onaudioprocessGetter) { THIS_SCRIPT_PROCESSOR_NODE; THIS_CHECK;
+JS_GETTER(ScriptProcessorNode::onaudioprocessGetter) { THIS_SCRIPT_PROCESSOR_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_FUN(scriptProcessorNode->_onaudioprocess));
+	RET_VALUE(JS_FUN(_onaudioprocess));
 	
 }
 
-NAN_SETTER(ScriptProcessorNode::onaudioprocessSetter) { THIS_SCRIPT_PROCESSOR_NODE; THIS_CHECK; SETTER_FUN_ARG;
+JS_SETTER(ScriptProcessorNode::onaudioprocessSetter) { THIS_SCRIPT_PROCESSOR_NODE; THIS_CHECK; SETTER_FUN_ARG;
 	
-	if (Nan::New(scriptProcessorNode->_onaudioprocess) == v) {
+	if (Nan::New(_onaudioprocess) == v) {
 		return;
 	}
-	scriptProcessorNode->_onaudioprocess.Reset(v);
+	_onaudioprocess.Reset(v);
 	
 	// TODO: may be additional actions on change?
 	
@@ -71,33 +54,21 @@ NAN_SETTER(ScriptProcessorNode::onaudioprocessSetter) { THIS_SCRIPT_PROCESSOR_NO
 }
 
 
-NAN_GETTER(ScriptProcessorNode::bufferSizeGetter) { THIS_SCRIPT_PROCESSOR_NODE; THIS_CHECK;
+JS_GETTER(ScriptProcessorNode::bufferSizeGetter) { THIS_SCRIPT_PROCESSOR_NODE; THIS_CHECK;
 	
-	RET_NUM(scriptProcessorNode->_bufferSize);
+	RET_NUM(_bufferSize);
 	
 }
 
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT ScriptProcessorNode::_protoScriptProcessorNode;
-V8_STORE_FUNC ScriptProcessorNode::_ctorScriptProcessorNode;
+Napi::FunctionReference ScriptProcessorNode::_ctorScriptProcessorNode;
 
 
-void ScriptProcessorNode::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-
-	// class ScriptProcessorNode inherits AudioNode
-	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
-	proto->Inherit(parent);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("ScriptProcessorNode"));
+void ScriptProcessorNode::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_RW(obj, onaudioprocess);
@@ -111,19 +82,20 @@ void ScriptProcessorNode::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "ScriptProcessorNode", {
 	
-	_protoScriptProcessorNode.Reset(proto);
-	_ctorScriptProcessorNode.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("ScriptProcessorNode"), ctor);
+	_ctorScriptProcessorNode = Napi::Persistent(ctor);
+	_ctorScriptProcessorNode.SuppressDestruct();
 	
+	exports.Set("ScriptProcessorNode", ctor);
 	
 }
 
 
 bool ScriptProcessorNode::isScriptProcessorNode(Napi::Object obj) {
-	return Nan::New(_protoScriptProcessorNode)->HasInstance(obj);
+	return obj.InstanceOf(_ctorScriptProcessorNode.Value());
 }
 
 
@@ -136,7 +108,7 @@ Napi::Object ScriptProcessorNode::getNew() {
 }
 
 
-NAN_METHOD(ScriptProcessorNode::newCtor) {
+JS_METHOD(ScriptProcessorNode::newCtor) {
 	
 	CTOR_CHECK("ScriptProcessorNode");
 	
@@ -148,17 +120,17 @@ NAN_METHOD(ScriptProcessorNode::newCtor) {
 }
 
 
-NAN_METHOD(ScriptProcessorNode::destroy) { THIS_SCRIPT_PROCESSOR_NODE; THIS_CHECK;
+JS_METHOD(ScriptProcessorNode::destroy) { THIS_SCRIPT_PROCESSOR_NODE; THIS_CHECK;
 	
 	scriptProcessorNode->emit("destroy");
 	
-	scriptProcessorNode->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(ScriptProcessorNode::isDestroyedGetter) { THIS_SCRIPT_PROCESSOR_NODE;
+JS_GETTER(ScriptProcessorNode::isDestroyedGetter) { THIS_SCRIPT_PROCESSOR_NODE;
 	
-	RET_BOOL(scriptProcessorNode->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

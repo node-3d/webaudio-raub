@@ -1,5 +1,3 @@
-#include <cstdlib>
-
 #include <LabSound/core/OscillatorNode.h>
 #include <LabSound/core/Synthesis.h>
 
@@ -7,22 +5,10 @@
 #include "audio-context.hpp"
 #include "audio-param.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
+#include "common.hpp"
 
 
 // ------ Aux macros
-
-#define THIS_OSCILLATOR_NODE                                                  \
-	OscillatorNode *oscillatorNode = Nan::ObjectWrap::Unwrap<OscillatorNode>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                         \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
 
 
 inline string fromOscillatorType(lab::OscillatorType mode) {
@@ -95,7 +81,7 @@ void OscillatorNode::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-NAN_METHOD(OscillatorNode::setPeriodicWave) { THIS_OSCILLATOR_NODE; THIS_CHECK;
+JS_METHOD(OscillatorNode::setPeriodicWave) { THIS_OSCILLATOR_NODE; THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, periodicWave);
 	
@@ -104,10 +90,10 @@ NAN_METHOD(OscillatorNode::setPeriodicWave) { THIS_OSCILLATOR_NODE; THIS_CHECK;
 }
 
 
-NAN_GETTER(OscillatorNode::typeGetter) { THIS_OSCILLATOR_NODE; THIS_CHECK;
+JS_GETTER(OscillatorNode::typeGetter) { THIS_OSCILLATOR_NODE; THIS_CHECK;
 	
 	lab::OscillatorNode *node = static_cast<lab::OscillatorNode*>(
-		oscillatorNode->_impl.get()
+		_impl.get()
 	);
 	
 	RET_VALUE(JS_STR(fromOscillatorType(node->type())));
@@ -115,10 +101,10 @@ NAN_GETTER(OscillatorNode::typeGetter) { THIS_OSCILLATOR_NODE; THIS_CHECK;
 }
 
 
-NAN_SETTER(OscillatorNode::typeSetter) { THIS_OSCILLATOR_NODE; THIS_CHECK; SETTER_UTF8_ARG;
+JS_SETTER(OscillatorNode::typeSetter) { THIS_OSCILLATOR_NODE; THIS_CHECK; SETTER_UTF8_ARG;
 	
 	lab::OscillatorNode *node = static_cast<lab::OscillatorNode*>(
-		oscillatorNode->_impl.get()
+		_impl.get()
 	);
 	
 	node->setType(toOscillatorType(*v));
@@ -128,40 +114,28 @@ NAN_SETTER(OscillatorNode::typeSetter) { THIS_OSCILLATOR_NODE; THIS_CHECK; SETTE
 }
 
 
-NAN_GETTER(OscillatorNode::frequencyGetter) { THIS_OSCILLATOR_NODE; THIS_CHECK;
+JS_GETTER(OscillatorNode::frequencyGetter) { THIS_OSCILLATOR_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_OBJ(oscillatorNode->_frequency));
+	RET_VALUE(__frequency.Value());
 	
 }
 
 
-NAN_GETTER(OscillatorNode::detuneGetter) { THIS_OSCILLATOR_NODE; THIS_CHECK;
+JS_GETTER(OscillatorNode::detuneGetter) { THIS_OSCILLATOR_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_OBJ(oscillatorNode->_detune));
+	RET_VALUE(__detune.Value());
 	
 }
 
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT OscillatorNode::_protoOscillatorNode;
-V8_STORE_FUNC OscillatorNode::_ctorOscillatorNode;
+Napi::FunctionReference OscillatorNode::_ctorOscillatorNode;
 
 
-void OscillatorNode::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-	
-	// class OscillatorNode inherits AudioScheduledSourceNode
-	V8_VAR_FT parent = Nan::New(AudioScheduledSourceNode::_protoAudioScheduledSourceNode);
-	proto->Inherit(parent);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("OscillatorNode"));
+void OscillatorNode::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_RW(obj, type);
@@ -176,19 +150,20 @@ void OscillatorNode::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "OscillatorNode", {
 	
-	_protoOscillatorNode.Reset(proto);
-	_ctorOscillatorNode.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("OscillatorNode"), ctor);
+	_ctorOscillatorNode = Napi::Persistent(ctor);
+	_ctorOscillatorNode.SuppressDestruct();
 	
+	exports.Set("OscillatorNode", ctor);
 	
 }
 
 
 bool OscillatorNode::isOscillatorNode(Napi::Object obj) {
-	return Nan::New(_protoOscillatorNode)->HasInstance(obj);
+	return obj.InstanceOf(_ctorOscillatorNode.Value());
 }
 
 
@@ -201,7 +176,7 @@ Napi::Object OscillatorNode::getNew(Napi::Object context) {
 }
 
 
-NAN_METHOD(OscillatorNode::newCtor) {
+JS_METHOD(OscillatorNode::newCtor) {
 	
 	CTOR_CHECK("OscillatorNode");
 	
@@ -217,17 +192,17 @@ NAN_METHOD(OscillatorNode::newCtor) {
 }
 
 
-NAN_METHOD(OscillatorNode::destroy) { THIS_OSCILLATOR_NODE; THIS_CHECK;
+JS_METHOD(OscillatorNode::destroy) { THIS_OSCILLATOR_NODE; THIS_CHECK;
 	
 	oscillatorNode->emit("destroy");
 	
-	oscillatorNode->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(OscillatorNode::isDestroyedGetter) { THIS_OSCILLATOR_NODE;
+JS_GETTER(OscillatorNode::isDestroyedGetter) { THIS_OSCILLATOR_NODE;
 	
-	RET_BOOL(oscillatorNode->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

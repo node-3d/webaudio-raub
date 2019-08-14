@@ -14,10 +14,10 @@ public:
 	~ConvolverNode();
 	
 	// Public V8 init
-	static void init(Napi::Object target);
+	static void init(Napi::Env env, Napi::Object exports);
 	
 	// Make a new instance from C++ land
-	static Napi::Object getNew(Napi::Object context);
+	explicit ConvolverNode(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -28,27 +28,26 @@ protected:
 	
 	explicit ConvolverNode(Napi::Object context);
 	
-	static V8_STORE_FT _protoConvolverNode;
-	static V8_STORE_FUNC _ctorConvolverNode;
+	static Napi::FunctionReference _ctorConvolverNode;
 	
 	bool _isDestroyed;
 	
-	V8_STORE_OBJ _buffer;
+	Napi::ObjectReference _buffer;
 	
 	
 // JS methods and props, available through V8 APIs
 private:
 	
-	static NAN_METHOD(newCtor);
+	JS_METHOD(newCtor);
 	
-	static NAN_METHOD(destroy);
-	static NAN_GETTER(isDestroyedGetter);
+	JS_METHOD(destroy);
+	JS_GETTER(isDestroyedGetter);
 	
-	static NAN_GETTER(bufferGetter);
-	static NAN_SETTER(bufferSetter);
+	JS_GETTER(bufferGetter);
+	JS_SETTER(bufferSetter);
 	
-	static NAN_GETTER(normalizeGetter);
-	static NAN_SETTER(normalizeSetter);
+	JS_GETTER(normalizeGetter);
+	JS_SETTER(normalizeSetter);
 	
 };
 

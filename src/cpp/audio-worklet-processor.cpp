@@ -1,24 +1,7 @@
-#include <cstdlib>
-
 
 #include "audio-worklet-processor.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
-
-
-// ------ Aux macros
-
-#define THIS_AUDIO_WORKLET_PROCESSOR                                                    \
-	AudioWorkletProcessor *audioWorkletProcessor = Nan::ObjectWrap::Unwrap<AudioWorkletProcessor>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                           \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
+#include "common.hpp"
 
 
 // ------ Constructor and Destructor
@@ -48,29 +31,21 @@ void AudioWorkletProcessor::_destroy() { DES_CHECK;
 
 
 
-NAN_GETTER(AudioWorkletProcessor::portGetter) { THIS_AUDIO_WORKLET_PROCESSOR; THIS_CHECK;
+JS_GETTER(AudioWorkletProcessor::portGetter) { THIS_AUDIO_WORKLET_PROCESSOR; THIS_CHECK;
 	
-	RET_VALUE(JS_OBJ(audioWorkletProcessor->_port));
+	RET_VALUE(__port.Value());
 	
 }
 
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT AudioWorkletProcessor::_protoAudioWorkletProcessor;
-V8_STORE_FUNC AudioWorkletProcessor::_ctorAudioWorkletProcessor;
+Napi::FunctionReference AudioWorkletProcessor::_ctorAudioWorkletProcessor;
 
 
-void AudioWorkletProcessor::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("AudioWorkletProcessor"));
+void AudioWorkletProcessor::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, port);
@@ -83,19 +58,20 @@ void AudioWorkletProcessor::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "AudioWorkletProcessor", {
 	
-	_protoAudioWorkletProcessor.Reset(proto);
-	_ctorAudioWorkletProcessor.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("AudioWorkletProcessor"), ctor);
+	_ctorAudioWorkletProcessor = Napi::Persistent(ctor);
+	_ctorAudioWorkletProcessor.SuppressDestruct();
 	
+	exports.Set("AudioWorkletProcessor", ctor);
 	
 }
 
 
 bool AudioWorkletProcessor::isAudioWorkletProcessor(Napi::Object obj) {
-	return Nan::New(_protoAudioWorkletProcessor)->HasInstance(obj);
+	return obj.InstanceOf(_ctorAudioWorkletProcessor.Value());
 }
 
 
@@ -108,7 +84,7 @@ Napi::Object AudioWorkletProcessor::getNew() {
 }
 
 
-NAN_METHOD(AudioWorkletProcessor::newCtor) {
+JS_METHOD(AudioWorkletProcessor::newCtor) {
 	
 	CTOR_CHECK("AudioWorkletProcessor");
 	
@@ -120,15 +96,15 @@ NAN_METHOD(AudioWorkletProcessor::newCtor) {
 }
 
 
-NAN_METHOD(AudioWorkletProcessor::destroy) { THIS_AUDIO_WORKLET_PROCESSOR; THIS_CHECK;
+JS_METHOD(AudioWorkletProcessor::destroy) { THIS_AUDIO_WORKLET_PROCESSOR; THIS_CHECK;
 	
-	audioWorkletProcessor->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(AudioWorkletProcessor::isDestroyedGetter) { THIS_AUDIO_WORKLET_PROCESSOR;
+JS_GETTER(AudioWorkletProcessor::isDestroyedGetter) { THIS_AUDIO_WORKLET_PROCESSOR;
 	
-	RET_BOOL(audioWorkletProcessor->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

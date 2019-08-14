@@ -5,19 +5,19 @@
 #include <addon-tools.hpp>
 
 
-class AudioWorkletNode : public Nan::ObjectWrap {
+class AudioWorkletNode : public Napi::ObjectWrap<AudioWorkletNode> {
 	
 public:
 	
 	~AudioWorkletNode();
 	
 	// Public V8 init
-	static void init(Napi::Object target);
+	static void init(Napi::Env env, Napi::Object exports);
 	
 	static bool isAudioWorkletNode(Napi::Object obj);
 	
 	// Make a new instance from C++ land
-	static Napi::Object getNew();
+	explicit AudioWorkletNode(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -28,32 +28,31 @@ protected:
 	
 	AudioWorkletNode();
 	
-	static V8_STORE_FT _protoAudioWorkletNode;
-	static V8_STORE_FUNC _ctorAudioWorkletNode;
+	static Napi::FunctionReference _ctorAudioWorkletNode;
 	
 	bool _isDestroyed;
 	
-	V8_STORE_OBJ _parameters;
-	V8_STORE_OBJ _port;
+	Napi::ObjectReference _parameters;
+	Napi::ObjectReference _port;
 	V8_STORE_FUNC _onprocessorerror;
 	
 	
 // JS methods and props, available through V8 APIs
 private:
 	
-	static NAN_METHOD(newCtor);
+	JS_METHOD(newCtor);
 	
-	static NAN_METHOD(destroy);
-	static NAN_GETTER(isDestroyedGetter);
+	JS_METHOD(destroy);
+	JS_GETTER(isDestroyedGetter);
 	
 	
 	
-	static NAN_GETTER(parametersGetter);
+	JS_GETTER(parametersGetter);
 	
-	static NAN_GETTER(portGetter);
+	JS_GETTER(portGetter);
 	
-	static NAN_GETTER(onprocessorerrorGetter);
-	static NAN_SETTER(onprocessorerrorSetter);
+	JS_GETTER(onprocessorerrorGetter);
+	JS_SETTER(onprocessorerrorSetter);
 	
 };
 

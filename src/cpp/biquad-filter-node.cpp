@@ -1,26 +1,9 @@
-#include <cstdlib>
-
 #include <LabSound/core/BiquadFilterNode.h>
 
 #include "biquad-filter-node.hpp"
 #include "audio-param.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
-
-
-// ------ Aux macros
-
-#define THIS_BIQUAD_FILTER_NODE                                                    \
-	BiquadFilterNode *biquadFilterNode = Nan::ObjectWrap::Unwrap<BiquadFilterNode>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                           \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
+#include "common.hpp"
 
 
 // ------ Constructor and Destructor
@@ -64,7 +47,7 @@ void BiquadFilterNode::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-NAN_METHOD(BiquadFilterNode::getFrequencyResponse) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
+JS_METHOD(BiquadFilterNode::getFrequencyResponse) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, frequencyHz);
 	REQ_OBJ_ARG(1, magResponse);
@@ -75,18 +58,18 @@ NAN_METHOD(BiquadFilterNode::getFrequencyResponse) { THIS_BIQUAD_FILTER_NODE; TH
 }
 
 
-NAN_GETTER(BiquadFilterNode::typeGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
+JS_GETTER(BiquadFilterNode::typeGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_UTF8(biquadFilterNode->_type));
+	RET_STR(__type);
 	
 }
 
-NAN_SETTER(BiquadFilterNode::typeSetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK; SETTER_UTF8_ARG;
+JS_SETTER(BiquadFilterNode::typeSetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK; SETTER_UTF8_ARG;
 	
-	if (biquadFilterNode->_type == *v) {
+	if (_type == *v) {
 		return;
 	}
-	biquadFilterNode->_type = *v;
+	_type = *v;
 	
 	// TODO: may be additional actions on change?
 	
@@ -95,54 +78,42 @@ NAN_SETTER(BiquadFilterNode::typeSetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK; 
 }
 
 
-NAN_GETTER(BiquadFilterNode::frequencyGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
+JS_GETTER(BiquadFilterNode::frequencyGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_OBJ(biquadFilterNode->_frequency));
-	
-}
-
-
-NAN_GETTER(BiquadFilterNode::detuneGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
-	
-	RET_VALUE(JS_OBJ(biquadFilterNode->_detune));
+	RET_VALUE(__frequency.Value());
 	
 }
 
 
-NAN_GETTER(BiquadFilterNode::QGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
+JS_GETTER(BiquadFilterNode::detuneGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_OBJ(biquadFilterNode->_Q));
+	RET_VALUE(__detune.Value());
 	
 }
 
 
-NAN_GETTER(BiquadFilterNode::gainGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
+JS_GETTER(BiquadFilterNode::QGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
 	
-	RET_VALUE(JS_OBJ(biquadFilterNode->_gain));
+	RET_VALUE(__Q.Value());
+	
+}
+
+
+JS_GETTER(BiquadFilterNode::gainGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
+	
+	RET_VALUE(__gain.Value());
 	
 }
 
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT BiquadFilterNode::_protoBiquadFilterNode;
-V8_STORE_FUNC BiquadFilterNode::_ctorBiquadFilterNode;
+Napi::FunctionReference BiquadFilterNode::_ctorBiquadFilterNode;
 
 
-void BiquadFilterNode::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-
-	// class BiquadFilterNode inherits AudioNode
-	V8_VAR_FT parent = Nan::New(AudioNode::_protoAudioNode);
-	proto->Inherit(parent);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("BiquadFilterNode"));
+void BiquadFilterNode::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_RW(obj, type);
@@ -159,19 +130,20 @@ void BiquadFilterNode::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "BiquadFilterNode", {
 	
-	_protoBiquadFilterNode.Reset(proto);
-	_ctorBiquadFilterNode.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("BiquadFilterNode"), ctor);
+	_ctorBiquadFilterNode = Napi::Persistent(ctor);
+	_ctorBiquadFilterNode.SuppressDestruct();
 	
+	exports.Set("BiquadFilterNode", ctor);
 	
 }
 
 
 bool BiquadFilterNode::isBiquadFilterNode(Napi::Object obj) {
-	return Nan::New(_protoBiquadFilterNode)->HasInstance(obj);
+	return obj.InstanceOf(_ctorBiquadFilterNode.Value());
 }
 
 
@@ -184,7 +156,7 @@ Napi::Object BiquadFilterNode::getNew(Napi::Object context) {
 }
 
 
-NAN_METHOD(BiquadFilterNode::newCtor) {
+JS_METHOD(BiquadFilterNode::newCtor) {
 	
 	CTOR_CHECK("BiquadFilterNode");
 	
@@ -198,17 +170,17 @@ NAN_METHOD(BiquadFilterNode::newCtor) {
 }
 
 
-NAN_METHOD(BiquadFilterNode::destroy) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
+JS_METHOD(BiquadFilterNode::destroy) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
 	
 	biquadFilterNode->emit("destroy");
 	
-	biquadFilterNode->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(BiquadFilterNode::isDestroyedGetter) { THIS_BIQUAD_FILTER_NODE;
+JS_GETTER(BiquadFilterNode::isDestroyedGetter) { THIS_BIQUAD_FILTER_NODE;
 	
-	RET_BOOL(biquadFilterNode->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

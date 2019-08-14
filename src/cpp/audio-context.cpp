@@ -1,23 +1,6 @@
-#include <cstdlib>
-
 #include "audio-context.hpp"
 
-
-using namespace v8;
-using namespace node;
-using namespace std;
-
-
-// ------ Aux macros
-
-#define THIS_AUDIO_CONTEXT                                                    \
-	AudioContext *audioContext = Nan::ObjectWrap::Unwrap<AudioContext>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                           \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
+#include "common.hpp"
 
 
 // ------ Constructor and Destructor
@@ -55,28 +38,28 @@ void AudioContext::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-NAN_METHOD(AudioContext::suspend) { THIS_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(AudioContext::suspend) { THIS_AUDIO_CONTEXT; THIS_CHECK;
 	
 	// TODO: do something?
 	
 }
 
 
-NAN_METHOD(AudioContext::close) { THIS_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(AudioContext::close) { THIS_AUDIO_CONTEXT; THIS_CHECK;
 	
 	// TODO: do something?
 	
 }
 
 
-NAN_METHOD(AudioContext::getOutputTimestamp) { THIS_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(AudioContext::getOutputTimestamp) { THIS_AUDIO_CONTEXT; THIS_CHECK;
 	
 	// TODO: do something?
 	
 }
 
 
-NAN_METHOD(AudioContext::createMediaElementSource) { THIS_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(AudioContext::createMediaElementSource) { THIS_AUDIO_CONTEXT; THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, mediaElement);
 	
@@ -85,7 +68,7 @@ NAN_METHOD(AudioContext::createMediaElementSource) { THIS_AUDIO_CONTEXT; THIS_CH
 }
 
 
-NAN_METHOD(AudioContext::createMediaStreamSource) { THIS_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(AudioContext::createMediaStreamSource) { THIS_AUDIO_CONTEXT; THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, mediaStream);
 	
@@ -94,40 +77,28 @@ NAN_METHOD(AudioContext::createMediaStreamSource) { THIS_AUDIO_CONTEXT; THIS_CHE
 }
 
 
-NAN_METHOD(AudioContext::createMediaStreamDestination) { THIS_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(AudioContext::createMediaStreamDestination) { THIS_AUDIO_CONTEXT; THIS_CHECK;
 	
 	// TODO: do something?
 	
 }
 
 
-NAN_GETTER(AudioContext::baseLatencyGetter) { THIS_AUDIO_CONTEXT; THIS_CHECK;
+JS_GETTER(AudioContext::baseLatencyGetter) { THIS_AUDIO_CONTEXT; THIS_CHECK;
 	
-	RET_NUM(audioContext->_baseLatency);
+	RET_NUM(_baseLatency);
 	
 }
 
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT AudioContext::_protoAudioContext;
-V8_STORE_FUNC AudioContext::_ctorAudioContext;
+Napi::FunctionReference AudioContext::_ctorAudioContext;
 
 
-void AudioContext::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-	
-	// class AudioContext inherits BaseAudioContext
-	V8_VAR_FT parent = Nan::New(BaseAudioContext::_protoBaseAudioContext);
-	proto->Inherit(parent);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("AudioContext"));
+void AudioContext::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, baseLatency);
@@ -145,18 +116,19 @@ void AudioContext::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "AudioContext", {
 	
-	_protoAudioContext.Reset(proto);
-	_ctorAudioContext.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("AudioContext"), ctor);
+	_ctorAudioContext = Napi::Persistent(ctor);
+	_ctorAudioContext.SuppressDestruct();
 	
+	exports.Set("AudioContext", ctor);
 	
 }
 
 
-NAN_METHOD(AudioContext::newCtor) {
+JS_METHOD(AudioContext::newCtor) {
 	
 	CTOR_CHECK("AudioContext");
 	
@@ -197,17 +169,17 @@ NAN_METHOD(AudioContext::newCtor) {
 }
 
 
-NAN_METHOD(AudioContext::destroy) { THIS_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(AudioContext::destroy) { THIS_AUDIO_CONTEXT; THIS_CHECK;
 	
 	audioContext->emit("destroy");
 	
-	audioContext->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(AudioContext::isDestroyedGetter) { THIS_AUDIO_CONTEXT;
+JS_GETTER(AudioContext::isDestroyedGetter) { THIS_AUDIO_CONTEXT;
 	
-	RET_BOOL(audioContext->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }

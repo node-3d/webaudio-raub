@@ -1,5 +1,3 @@
-#include <cstdlib>
-
 #include <LabSound/extended/AudioFileReader.h>
 #include <LabSound/core/AudioContext.h>
 #include <LabSound/core/DefaultAudioDestinationNode.h>
@@ -31,25 +29,13 @@
 // #include "script-processor-node.hpp"
 // #include "stereo-panner-node.hpp"
 // #include "wave-shaper-node.hpp"
-
-using namespace v8;
-using namespace node;
-using namespace std;
+#include "common.hpp"
 
 
 // ------ Aux macros
 
-#define THIS_BASE_AUDIO_CONTEXT                                               \
-	BaseAudioContext *baseAudioContext = Nan::ObjectWrap::Unwrap<BaseAudioContext>(info.This());
-
-#define CACHE_CAS(CACHE, V)                                                   \
-	if (this.CACHE == V) {                                       \
-		return;                                                               \
-	}                                                                         \
-	this.CACHE = V;
-
 #define NODE_CREATOR(M, C)                                                    \
-NAN_METHOD(BaseAudioContext::create ## M) {                                   \
+JS_METHOD(BaseAudioContext::create ## M) {                                   \
 	THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;                                      \
 	info.GetReturnValue().Set(C ## Node::getNew(info.This()));                \
 }
@@ -180,7 +166,7 @@ void BaseAudioContext::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-NAN_METHOD(BaseAudioContext::createBuffer) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(BaseAudioContext::createBuffer) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
 	REQ_INT32_ARG(0, numberOfChannels);
 	REQ_INT32_ARG(1, numberOfFrames);
@@ -191,7 +177,7 @@ NAN_METHOD(BaseAudioContext::createBuffer) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK
 }
 
 
-NAN_METHOD(BaseAudioContext::decodeAudioData) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(BaseAudioContext::decodeAudioData) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, audioData);
 	REQ_FUN_ARG(1, successCallback);
@@ -236,7 +222,7 @@ NODE_CREATOR(Oscillator, Oscillator);
 
 
 
-NAN_METHOD(BaseAudioContext::createIIRFilter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(BaseAudioContext::createIIRFilter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, feedForward);
 	REQ_OBJ_ARG(1, feedBack);
@@ -246,7 +232,7 @@ NAN_METHOD(BaseAudioContext::createIIRFilter) { THIS_BASE_AUDIO_CONTEXT; THIS_CH
 }
 
 
-NAN_METHOD(BaseAudioContext::createDelay) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(BaseAudioContext::createDelay) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
 	LET_DOUBLE_ARG(0, delay);
 	
@@ -259,7 +245,7 @@ NAN_METHOD(BaseAudioContext::createDelay) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 }
 
 
-NAN_METHOD(BaseAudioContext::createScriptProcessor) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(BaseAudioContext::createScriptProcessor) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
 	REQ_INT32_ARG(0, bufferSize);
 	REQ_INT32_ARG(1, numberOfInputChannels);
@@ -270,7 +256,7 @@ NAN_METHOD(BaseAudioContext::createScriptProcessor) { THIS_BASE_AUDIO_CONTEXT; T
 }
 
 
-NAN_METHOD(BaseAudioContext::createPeriodicWave) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(BaseAudioContext::createPeriodicWave) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, real);
 	REQ_OBJ_ARG(1, imag);
@@ -281,7 +267,7 @@ NAN_METHOD(BaseAudioContext::createPeriodicWave) { THIS_BASE_AUDIO_CONTEXT; THIS
 }
 
 
-NAN_METHOD(BaseAudioContext::createChannelSplitter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(BaseAudioContext::createChannelSplitter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
 	REQ_INT32_ARG(0, numberOfOutputs);
 	
@@ -290,7 +276,7 @@ NAN_METHOD(BaseAudioContext::createChannelSplitter) { THIS_BASE_AUDIO_CONTEXT; T
 }
 
 
-NAN_METHOD(BaseAudioContext::createChannelMerger) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(BaseAudioContext::createChannelMerger) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
 	REQ_INT32_ARG(0, numberOfInputs);
 	
@@ -299,21 +285,21 @@ NAN_METHOD(BaseAudioContext::createChannelMerger) { THIS_BASE_AUDIO_CONTEXT; THI
 }
 
 
-NAN_METHOD(BaseAudioContext::update) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(BaseAudioContext::update) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
-	baseAudioContext->_impl->dispatchEvents();
+	_impl->dispatchEvents();
 	
 }
 
 
-NAN_METHOD(BaseAudioContext::resume) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(BaseAudioContext::resume) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
 	// TODO: do something?
 	
 }
 
 
-NAN_METHOD(BaseAudioContext::createMediaElementSource) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(BaseAudioContext::createMediaElementSource) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, mediaElement);
 	
@@ -322,7 +308,7 @@ NAN_METHOD(BaseAudioContext::createMediaElementSource) { THIS_BASE_AUDIO_CONTEXT
 }
 
 
-NAN_METHOD(BaseAudioContext::createMediaStreamSource) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(BaseAudioContext::createMediaStreamSource) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, mediaStream);
 	
@@ -331,68 +317,56 @@ NAN_METHOD(BaseAudioContext::createMediaStreamSource) { THIS_BASE_AUDIO_CONTEXT;
 }
 
 
-NAN_METHOD(BaseAudioContext::createMediaStreamDestination) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(BaseAudioContext::createMediaStreamDestination) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
 	// TODO: do something?
 	
 }
 
 
-NAN_GETTER(BaseAudioContext::destinationGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_GETTER(BaseAudioContext::destinationGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
-	RET_VALUE(JS_OBJ(baseAudioContext->_destination));
-	
-}
-
-
-NAN_GETTER(BaseAudioContext::currentTimeGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
-	
-	RET_NUM(baseAudioContext->_impl->currentTime());
+	RET_VALUE(__destination.Value());
 	
 }
 
 
-NAN_GETTER(BaseAudioContext::sampleRateGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_GETTER(BaseAudioContext::currentTimeGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
-	RET_NUM(baseAudioContext->_impl->sampleRate());
-	
-}
-
-
-NAN_GETTER(BaseAudioContext::listenerGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
-	
-	RET_VALUE(JS_OBJ(baseAudioContext->_listener));
+	RET_NUM(_impl->currentTime());
 	
 }
 
 
-NAN_GETTER(BaseAudioContext::stateGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_GETTER(BaseAudioContext::sampleRateGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
-	RET_VALUE(JS_UTF8(baseAudioContext->_state));
+	RET_NUM(_impl->sampleRate());
+	
+}
+
+
+JS_GETTER(BaseAudioContext::listenerGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+	
+	RET_VALUE(__listener.Value());
+	
+}
+
+
+JS_GETTER(BaseAudioContext::stateGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+	
+	RET_STR(__state);
 	
 }
 
 
 // ------ System methods and props for ObjectWrap
 
-V8_STORE_FT BaseAudioContext::_protoBaseAudioContext;
-V8_STORE_FUNC BaseAudioContext::_ctorBaseAudioContext;
+Napi::FunctionReference BaseAudioContext::_ctorBaseAudioContext;
 
 
-void BaseAudioContext::init(Napi::Object target) {
-	
-	V8_VAR_FT proto = Nan::New<FunctionTemplate>(newCtor);
-	
-	// class BaseAudioContext inherits EventEmitter
-	V8_VAR_FT parent = Nan::New(EventEmitter::_protoEventEmitter);
-	proto->Inherit(parent);
-	
-	proto->InstanceTemplate()->SetInternalFieldCount(1);
-	proto->SetClassName(JS_STR("BaseAudioContext"));
+void BaseAudioContext::init(Napi::Env env, Napi::Object exports) {
 	
 	
-	// Accessors
-	V8_VAR_OT obj = proto->PrototypeTemplate();
 	ACCESSOR_R(obj, isDestroyed);
 	
 	ACCESSOR_R(obj, destination);
@@ -433,35 +407,36 @@ void BaseAudioContext::init(Napi::Object target) {
 	
 	// -------- static
 	
-	V8_VAR_FUNC ctor = Nan::GetFunction(proto).ToLocalChecked();
+	Napi::Function ctor = DefineClass(env, "BaseAudioContext", {
 	
-	_protoBaseAudioContext.Reset(proto);
-	_ctorBaseAudioContext.Reset(ctor);
+	});
 	
-	Nan::Set(target, JS_STR("BaseAudioContext"), ctor);
+	_ctorBaseAudioContext = Napi::Persistent(ctor);
+	_ctorBaseAudioContext.SuppressDestruct();
 	
+	exports.Set("BaseAudioContext", ctor);
 	
 }
 
 
-NAN_METHOD(BaseAudioContext::newCtor) {
+JS_METHOD(BaseAudioContext::newCtor) {
 	
 	Nan::ThrowTypeError("Use 'AudioContext' or 'OfflineAudioContext' instead.");
 	
 }
 
 
-NAN_METHOD(BaseAudioContext::destroy) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(BaseAudioContext::destroy) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 	
 	baseAudioContext->emit("destroy");
 	
-	baseAudioContext->_destroy();
+	_destroy();
 	
 }
 
 
-NAN_GETTER(BaseAudioContext::isDestroyedGetter) { THIS_BASE_AUDIO_CONTEXT;
+JS_GETTER(BaseAudioContext::isDestroyedGetter) { THIS_BASE_AUDIO_CONTEXT;
 	
-	RET_BOOL(baseAudioContext->_isDestroyed);
+	RET_BOOL(_isDestroyed);
 	
 }
