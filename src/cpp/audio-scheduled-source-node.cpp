@@ -54,7 +54,7 @@ void AudioScheduledSourceNode::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-JS_METHOD(AudioScheduledSourceNode::start) { THIS_AUDIO_SCHEDULED_SOURCE_NODE; THIS_CHECK;
+JS_METHOD(AudioScheduledSourceNode::start) { THIS_CHECK;
 	
 	REQ_DOUBLE_ARG(0, when);
 	
@@ -67,7 +67,7 @@ JS_METHOD(AudioScheduledSourceNode::start) { THIS_AUDIO_SCHEDULED_SOURCE_NODE; T
 }
 
 
-JS_METHOD(AudioScheduledSourceNode::stop) { THIS_AUDIO_SCHEDULED_SOURCE_NODE; THIS_CHECK;
+JS_METHOD(AudioScheduledSourceNode::stop) { THIS_CHECK;
 	
 	REQ_DOUBLE_ARG(0, when);
 	
@@ -87,19 +87,11 @@ Napi::FunctionReference AudioScheduledSourceNode::_ctorAudioScheduledSourceNode;
 
 void AudioScheduledSourceNode::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	Nan::SetPrototypeMethod(proto, "start", start);
-	Nan::SetPrototypeMethod(proto, "stop", stop);
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "AudioScheduledSourceNode", {
+		ACCESSOR_M(AudioScheduledSourceNode, stop),
+		ACCESSOR_M(AudioScheduledSourceNode, start),
+		ACCESSOR_M(AudioScheduledSourceNode, destroy),
+		ACCESSOR_R(AudioScheduledSourceNode, isDestroyed),
 	
 	});
 	
@@ -121,7 +113,7 @@ Napi::Object AudioScheduledSourceNode::getNew(Napi::Object context, NodePtr node
 }
 
 
-JS_METHOD(AudioScheduledSourceNode::newCtor) {
+AudioScheduledSourceNode::AudioScheduledSourceNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<AudioScheduledSourceNode>(info) {
 	
 	CTOR_CHECK("AudioScheduledSourceNode");
 	
@@ -131,23 +123,20 @@ JS_METHOD(AudioScheduledSourceNode::newCtor) {
 	NodePtr *node = reinterpret_cast<NodePtr *>(extNode->Value());
 	
 	AudioScheduledSourceNode *audioScheduledSourceNode = new AudioScheduledSourceNode(context, *node);
-	audioScheduledSourceNode->Wrap(info.This());
-	
-	RET_VALUE(info.This());
 	
 }
 
 
-JS_METHOD(AudioScheduledSourceNode::destroy) { THIS_AUDIO_SCHEDULED_SOURCE_NODE; THIS_CHECK;
+JS_METHOD(AudioScheduledSourceNode::destroy) { THIS_CHECK;
 	
-	audioScheduledSourceNode->emit("destroy");
+	emit("destroy");
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(AudioScheduledSourceNode::isDestroyedGetter) { THIS_AUDIO_SCHEDULED_SOURCE_NODE;
+JS_GETTER(AudioScheduledSourceNode::isDestroyedGetter) {
 	
 	RET_BOOL(_isDestroyed);
 	

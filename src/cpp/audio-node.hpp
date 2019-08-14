@@ -35,12 +35,11 @@ protected:
 	AudioNode() {} // fake, TODO: remove
 	AudioNode(Napi::Object context, NodePtr node);
 	
-	static V8_STORE_FT _protoAudioNode; // for inheritance
 	static Napi::FunctionReference _ctorAudioNode;
 	
 	bool _isDestroyed;
 	
-	unsigned int _channelCount;
+	uint32_t _channelCount;
 	std::string _channelCountMode;
 	std::string _channelInterpretation;
 	

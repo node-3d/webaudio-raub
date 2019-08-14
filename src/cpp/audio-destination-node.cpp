@@ -36,7 +36,7 @@ void AudioDestinationNode::_destroy() { DES_CHECK;
 
 
 
-JS_GETTER(AudioDestinationNode::maxChannelCountGetter) { THIS_AUDIO_DESTINATION_NODE; THIS_CHECK;
+JS_GETTER(AudioDestinationNode::maxChannelCountGetter) { THIS_CHECK;
 	
 	RET_NUM(_maxChannelCount);
 	
@@ -50,20 +50,10 @@ Napi::FunctionReference AudioDestinationNode::_ctorAudioDestinationNode;
 
 void AudioDestinationNode::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_R(obj, maxChannelCount);
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "AudioDestinationNode", {
+		ACCESSOR_M(AudioDestinationNode, destroy),
+		ACCESSOR_R(AudioDestinationNode, maxChannelCount),
+		ACCESSOR_R(AudioDestinationNode, isDestroyed),
 	
 	});
 	
@@ -85,7 +75,7 @@ Napi::Object AudioDestinationNode::getNew(Napi::Object context, DestPtr node) {
 }
 
 
-JS_METHOD(AudioDestinationNode::newCtor) {
+AudioDestinationNode::AudioDestinationNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<AudioDestinationNode>(info) {
 	
 	CTOR_CHECK("AudioDestinationNode");
 	
@@ -95,23 +85,20 @@ JS_METHOD(AudioDestinationNode::newCtor) {
 	DestPtr *node = reinterpret_cast<DestPtr *>(extNode->Value());
 	
 	AudioDestinationNode *audioDestinationNode = new AudioDestinationNode(context, *node);
-	audioDestinationNode->Wrap(info.This());
-	
-	RET_VALUE(info.This());
 	
 }
 
 
-JS_METHOD(AudioDestinationNode::destroy) { THIS_AUDIO_DESTINATION_NODE; THIS_CHECK;
+JS_METHOD(AudioDestinationNode::destroy) { THIS_CHECK;
 	
-	audioDestinationNode->emit("destroy");
+	emit("destroy");
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(AudioDestinationNode::isDestroyedGetter) { THIS_AUDIO_DESTINATION_NODE;
+JS_GETTER(AudioDestinationNode::isDestroyedGetter) {
 	
 	RET_BOOL(_isDestroyed);
 	

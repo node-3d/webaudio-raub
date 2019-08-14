@@ -81,7 +81,7 @@ void OscillatorNode::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-JS_METHOD(OscillatorNode::setPeriodicWave) { THIS_OSCILLATOR_NODE; THIS_CHECK;
+JS_METHOD(OscillatorNode::setPeriodicWave) { THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, periodicWave);
 	
@@ -90,7 +90,7 @@ JS_METHOD(OscillatorNode::setPeriodicWave) { THIS_OSCILLATOR_NODE; THIS_CHECK;
 }
 
 
-JS_GETTER(OscillatorNode::typeGetter) { THIS_OSCILLATOR_NODE; THIS_CHECK;
+JS_GETTER(OscillatorNode::typeGetter) { THIS_CHECK;
 	
 	lab::OscillatorNode *node = static_cast<lab::OscillatorNode*>(
 		_impl.get()
@@ -101,7 +101,7 @@ JS_GETTER(OscillatorNode::typeGetter) { THIS_OSCILLATOR_NODE; THIS_CHECK;
 }
 
 
-JS_SETTER(OscillatorNode::typeSetter) { THIS_OSCILLATOR_NODE; THIS_CHECK; SETTER_UTF8_ARG;
+JS_SETTER(OscillatorNode::typeSetter) { THIS_CHECK; SETTER_UTF8_ARG;
 	
 	lab::OscillatorNode *node = static_cast<lab::OscillatorNode*>(
 		_impl.get()
@@ -109,19 +109,19 @@ JS_SETTER(OscillatorNode::typeSetter) { THIS_OSCILLATOR_NODE; THIS_CHECK; SETTER
 	
 	node->setType(toOscillatorType(*v));
 	
-	oscillatorNode->emit("type", 1, &value);
+	emit("type", 1, &value);
 	
 }
 
 
-JS_GETTER(OscillatorNode::frequencyGetter) { THIS_OSCILLATOR_NODE; THIS_CHECK;
+JS_GETTER(OscillatorNode::frequencyGetter) { THIS_CHECK;
 	
 	RET_VALUE(__frequency.Value());
 	
 }
 
 
-JS_GETTER(OscillatorNode::detuneGetter) { THIS_OSCILLATOR_NODE; THIS_CHECK;
+JS_GETTER(OscillatorNode::detuneGetter) { THIS_CHECK;
 	
 	RET_VALUE(__detune.Value());
 	
@@ -135,22 +135,13 @@ Napi::FunctionReference OscillatorNode::_ctorOscillatorNode;
 
 void OscillatorNode::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_RW(obj, type);
-	ACCESSOR_R(obj, frequency);
-	ACCESSOR_R(obj, detune);
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	Nan::SetPrototypeMethod(proto, "setPeriodicWave", setPeriodicWave);
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "OscillatorNode", {
+		ACCESSOR_RW(OscillatorNode, type),
+		ACCESSOR_M(OscillatorNode, setPeriodicWave),
+		ACCESSOR_M(OscillatorNode, destroy),
+		ACCESSOR_R(OscillatorNode, detune),
+		ACCESSOR_R(OscillatorNode, frequency),
+		ACCESSOR_R(OscillatorNode, isDestroyed),
 	
 	});
 	
@@ -176,7 +167,7 @@ Napi::Object OscillatorNode::getNew(Napi::Object context) {
 }
 
 
-JS_METHOD(OscillatorNode::newCtor) {
+OscillatorNode::OscillatorNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<OscillatorNode>(info) {
 	
 	CTOR_CHECK("OscillatorNode");
 	
@@ -185,23 +176,20 @@ JS_METHOD(OscillatorNode::newCtor) {
 	AudioContext *audioContext = Nan::ObjectWrap::Unwrap<AudioContext>(context);
 	
 	OscillatorNode *oscillatorNode = new OscillatorNode(context, audioContext->getContext()->sampleRate());
-	oscillatorNode->Wrap(info.This());
-	
-	RET_VALUE(info.This());
 	
 }
 
 
-JS_METHOD(OscillatorNode::destroy) { THIS_OSCILLATOR_NODE; THIS_CHECK;
+JS_METHOD(OscillatorNode::destroy) { THIS_CHECK;
 	
-	oscillatorNode->emit("destroy");
+	emit("destroy");
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(OscillatorNode::isDestroyedGetter) { THIS_OSCILLATOR_NODE;
+JS_GETTER(OscillatorNode::isDestroyedGetter) {
 	
 	RET_BOOL(_isDestroyed);
 	

@@ -33,7 +33,7 @@ void IIRFilterNode::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-JS_METHOD(IIRFilterNode::getFrequencyResponse) { THIS_IIR_FILTER_NODE; THIS_CHECK;
+JS_METHOD(IIRFilterNode::getFrequencyResponse) { THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, frequencyHz);
 	REQ_OBJ_ARG(1, magResponse);
@@ -52,20 +52,10 @@ Napi::FunctionReference IIRFilterNode::_ctorIIRFilterNode;
 
 void IIRFilterNode::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	Nan::SetPrototypeMethod(proto, "getFrequencyResponse", getFrequencyResponse);
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "IIRFilterNode", {
+		ACCESSOR_M(IIRFilterNode, getFrequencyResponse),
+		ACCESSOR_M(IIRFilterNode, destroy),
+		ACCESSOR_R(IIRFilterNode, isDestroyed),
 	
 	});
 	
@@ -91,28 +81,25 @@ Napi::Object IIRFilterNode::getNew() {
 }
 
 
-JS_METHOD(IIRFilterNode::newCtor) {
+IIRFilterNode::IIRFilterNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<IIRFilterNode>(info) {
 	
 	CTOR_CHECK("IIRFilterNode");
 	
 	IIRFilterNode *iIRFilterNode = new IIRFilterNode();
-	iIRFilterNode->Wrap(info.This());
-	
-	RET_VALUE(info.This());
 	
 }
 
 
-JS_METHOD(IIRFilterNode::destroy) { THIS_IIR_FILTER_NODE; THIS_CHECK;
+JS_METHOD(IIRFilterNode::destroy) { THIS_CHECK;
 	
-	iIRFilterNode->emit("destroy");
+	emit("destroy");
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(IIRFilterNode::isDestroyedGetter) { THIS_IIR_FILTER_NODE;
+JS_GETTER(IIRFilterNode::isDestroyedGetter) {
 	
 	RET_BOOL(_isDestroyed);
 	

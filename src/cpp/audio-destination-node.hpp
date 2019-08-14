@@ -36,7 +36,7 @@ protected:
 	
 	bool _isDestroyed;
 	
-	unsigned int _maxChannelCount;
+	uint32_t _maxChannelCount;
 	
 	DestPtr _impl;
 	Napi::ObjectReference _context;

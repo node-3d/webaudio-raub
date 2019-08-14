@@ -74,7 +74,7 @@ void AudioBufferSourceNode::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-JS_METHOD(AudioBufferSourceNode::start) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
+JS_METHOD(AudioBufferSourceNode::start) { THIS_CHECK;
 	
 	LET_DOUBLE_ARG(0, when);
 	LET_DOUBLE_ARG(1, grainOffset);
@@ -125,26 +125,26 @@ JS_SETTER(AudioBufferSourceNode::bufferSetter) {
 	);
 	node->setBus(r, bus);
 	
-	audioBufferSourceNode->emit("buffer", 1, &value);
+	emit("buffer", 1, &value);
 	
 }
 
 
-JS_GETTER(AudioBufferSourceNode::playbackRateGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
+JS_GETTER(AudioBufferSourceNode::playbackRateGetter) { THIS_CHECK;
 	
 	RET_VALUE(__playbackRate.Value());
 	
 }
 
 
-JS_GETTER(AudioBufferSourceNode::detuneGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
+JS_GETTER(AudioBufferSourceNode::detuneGetter) { THIS_CHECK;
 	
 	RET_VALUE(__detune.Value());
 	
 }
 
 
-JS_GETTER(AudioBufferSourceNode::loopGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
+JS_GETTER(AudioBufferSourceNode::loopGetter) { THIS_CHECK;
 	
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
 		_impl.get()
@@ -163,12 +163,12 @@ JS_SETTER(AudioBufferSourceNode::loopSetter) {
 	
 	node->setLoop(v);
 	
-	audioBufferSourceNode->emit("loop", 1, &value);
+	emit("loop", 1, &value);
 	
 }
 
 
-JS_GETTER(AudioBufferSourceNode::loopStartGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
+JS_GETTER(AudioBufferSourceNode::loopStartGetter) { THIS_CHECK;
 	
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
 		_impl.get()
@@ -187,12 +187,12 @@ JS_SETTER(AudioBufferSourceNode::loopStartSetter) {
 	
 	node->setLoopStart(v);
 	
-	audioBufferSourceNode->emit("loopStart", 1, &value);
+	emit("loopStart", 1, &value);
 	
 }
 
 
-JS_GETTER(AudioBufferSourceNode::loopEndGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
+JS_GETTER(AudioBufferSourceNode::loopEndGetter) { THIS_CHECK;
 	
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
 		_impl.get()
@@ -211,7 +211,7 @@ JS_SETTER(AudioBufferSourceNode::loopEndSetter) {
 	
 	node->setLoopEnd(v);
 	
-	audioBufferSourceNode->emit("loopEnd", 1, &value);
+	emit("loopEnd", 1, &value);
 	
 }
 
@@ -223,25 +223,16 @@ Napi::FunctionReference AudioBufferSourceNode::_ctorAudioBufferSourceNode;
 
 void AudioBufferSourceNode::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_RW(obj, buffer);
-	ACCESSOR_R(obj, playbackRate);
-	ACCESSOR_R(obj, detune);
-	ACCESSOR_RW(obj, loop);
-	ACCESSOR_RW(obj, loopStart);
-	ACCESSOR_RW(obj, loopEnd);
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	Nan::SetPrototypeMethod(proto, "start", start);
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "AudioBufferSourceNode", {
+		ACCESSOR_RW(AudioBufferSourceNode, loopEnd),
+		ACCESSOR_RW(AudioBufferSourceNode, loopStart),
+		ACCESSOR_RW(AudioBufferSourceNode, loop),
+		ACCESSOR_RW(AudioBufferSourceNode, buffer),
+		ACCESSOR_M(AudioBufferSourceNode, start),
+		ACCESSOR_M(AudioBufferSourceNode, destroy),
+		ACCESSOR_R(AudioBufferSourceNode, detune),
+		ACCESSOR_R(AudioBufferSourceNode, playbackRate),
+		ACCESSOR_R(AudioBufferSourceNode, isDestroyed),
 	
 	});
 	
@@ -262,30 +253,27 @@ Napi::Object AudioBufferSourceNode::getNew(Napi::Object context) {
 }
 
 
-JS_METHOD(AudioBufferSourceNode::newCtor) {
+AudioBufferSourceNode::AudioBufferSourceNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<AudioBufferSourceNode>(info) {
 	
 	CTOR_CHECK("AudioBufferSourceNode");
 	
 	REQ_OBJ_ARG(0, context);
 	
 	AudioBufferSourceNode *audioBufferSourceNode = new AudioBufferSourceNode(context);
-	audioBufferSourceNode->Wrap(info.This());
-	
-	RET_VALUE(info.This());
 	
 }
 
 
-JS_METHOD(AudioBufferSourceNode::destroy) { THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
+JS_METHOD(AudioBufferSourceNode::destroy) { THIS_CHECK;
 	
-	audioBufferSourceNode->emit("destroy");
+	emit("destroy");
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(AudioBufferSourceNode::isDestroyedGetter) { THIS_AUDIO_BUFFER_SOURCE_NODE;
+JS_GETTER(AudioBufferSourceNode::isDestroyedGetter) {
 	
 	RET_BOOL(_isDestroyed);
 	

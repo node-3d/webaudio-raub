@@ -38,28 +38,28 @@ void AudioContext::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-JS_METHOD(AudioContext::suspend) { THIS_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(AudioContext::suspend) { THIS_CHECK;
 	
 	// TODO: do something?
 	
 }
 
 
-JS_METHOD(AudioContext::close) { THIS_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(AudioContext::close) { THIS_CHECK;
 	
 	// TODO: do something?
 	
 }
 
 
-JS_METHOD(AudioContext::getOutputTimestamp) { THIS_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(AudioContext::getOutputTimestamp) { THIS_CHECK;
 	
 	// TODO: do something?
 	
 }
 
 
-JS_METHOD(AudioContext::createMediaElementSource) { THIS_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(AudioContext::createMediaElementSource) { THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, mediaElement);
 	
@@ -68,7 +68,7 @@ JS_METHOD(AudioContext::createMediaElementSource) { THIS_AUDIO_CONTEXT; THIS_CHE
 }
 
 
-JS_METHOD(AudioContext::createMediaStreamSource) { THIS_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(AudioContext::createMediaStreamSource) { THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, mediaStream);
 	
@@ -77,14 +77,14 @@ JS_METHOD(AudioContext::createMediaStreamSource) { THIS_AUDIO_CONTEXT; THIS_CHEC
 }
 
 
-JS_METHOD(AudioContext::createMediaStreamDestination) { THIS_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(AudioContext::createMediaStreamDestination) { THIS_CHECK;
 	
 	// TODO: do something?
 	
 }
 
 
-JS_GETTER(AudioContext::baseLatencyGetter) { THIS_AUDIO_CONTEXT; THIS_CHECK;
+JS_GETTER(AudioContext::baseLatencyGetter) { THIS_CHECK;
 	
 	RET_NUM(_baseLatency);
 	
@@ -98,26 +98,17 @@ Napi::FunctionReference AudioContext::_ctorAudioContext;
 
 void AudioContext::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_R(obj, baseLatency);
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	Nan::SetPrototypeMethod(proto, "suspend", suspend);
-	Nan::SetPrototypeMethod(proto, "close", close);
-	Nan::SetPrototypeMethod(proto, "getOutputTimestamp", getOutputTimestamp);
-	Nan::SetPrototypeMethod(proto, "createMediaElementSource", createMediaElementSource);
-	Nan::SetPrototypeMethod(proto, "createMediaStreamSource", createMediaStreamSource);
-	Nan::SetPrototypeMethod(proto, "createMediaStreamDestination", createMediaStreamDestination);
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "AudioContext", {
-	
+		ACCESSOR_M(AudioContext, createMediaStreamDestination),
+		ACCESSOR_M(AudioContext, createMediaStreamSource),
+		ACCESSOR_M(AudioContext, createMediaElementSource),
+		ACCESSOR_M(AudioContext, getOutputTimestamp),
+		ACCESSOR_M(AudioContext, close),
+		ACCESSOR_M(AudioContext, suspend),
+		ACCESSOR_M(AudioContext, destroy),
+		ACCESSOR_R(AudioContext, baseLatency),
+		ACCESSOR_R(AudioContext, isDestroyed),
+		
 	});
 	
 	_ctorAudioContext = Napi::Persistent(ctor);
@@ -128,7 +119,7 @@ void AudioContext::init(Napi::Env env, Napi::Object exports) {
 }
 
 
-JS_METHOD(AudioContext::newCtor) {
+AudioContext::AudioContext(const Napi::CallbackInfo &info): Napi::ObjectWrap<AudioContext>(info) {
 	
 	CTOR_CHECK("AudioContext");
 	
@@ -160,25 +151,22 @@ JS_METHOD(AudioContext::newCtor) {
 		audioContext = new AudioContext();
 	}
 	
-	audioContext->Wrap(info.This());
 	
 	audioContext->finishNew(info.This());
-	
-	RET_VALUE(info.This());
 	
 }
 
 
-JS_METHOD(AudioContext::destroy) { THIS_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(AudioContext::destroy) { THIS_CHECK;
 	
-	audioContext->emit("destroy");
+	emit("destroy");
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(AudioContext::isDestroyedGetter) { THIS_AUDIO_CONTEXT;
+JS_GETTER(AudioContext::isDestroyedGetter) {
 	
 	RET_BOOL(_isDestroyed);
 	

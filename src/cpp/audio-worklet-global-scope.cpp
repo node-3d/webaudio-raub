@@ -81,22 +81,13 @@ Napi::FunctionReference AudioWorkletGlobalScope::_ctorAudioWorkletGlobalScope;
 
 void AudioWorkletGlobalScope::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_R(obj, currentFrame);
-	ACCESSOR_R(obj, currentTime);
-	ACCESSOR_R(obj, sampleRate);
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	Nan::SetPrototypeMethod(proto, "registerProcessor", registerProcessor);
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "AudioWorkletGlobalScope", {
+		ACCESSOR_M(AudioWorkletGlobalScope, registerProcessor),
+		ACCESSOR_M(AudioWorkletGlobalScope, destroy),
+		ACCESSOR_R(AudioWorkletGlobalScope, sampleRate),
+		ACCESSOR_R(AudioWorkletGlobalScope, currentTime),
+		ACCESSOR_R(AudioWorkletGlobalScope, currentFrame),
+		ACCESSOR_R(AudioWorkletGlobalScope, isDestroyed),
 	
 	});
 	
@@ -122,14 +113,11 @@ Napi::Object AudioWorkletGlobalScope::getNew() {
 }
 
 
-JS_METHOD(AudioWorkletGlobalScope::newCtor) {
+AudioWorkletGlobalScope::AudioWorkletGlobalScope(const Napi::CallbackInfo &info): Napi::ObjectWrap<AudioWorkletGlobalScope>(info) {
 	
 	CTOR_CHECK("AudioWorkletGlobalScope");
 	
 	AudioWorkletGlobalScope *audioWorkletGlobalScope = new AudioWorkletGlobalScope();
-	audioWorkletGlobalScope->Wrap(info.This());
-	
-	RET_VALUE(info.This());
 	
 }
 

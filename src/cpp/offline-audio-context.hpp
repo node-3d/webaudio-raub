@@ -35,7 +35,7 @@ protected:
 	bool _isDestroyed;
 	
 	V8_STORE_FUNC _oncomplete;
-	unsigned int _length;
+	uint32_t _length;
 	
 	
 // JS methods and props, available through V8 APIs

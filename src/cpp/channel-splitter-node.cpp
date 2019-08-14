@@ -42,20 +42,9 @@ Napi::FunctionReference ChannelSplitterNode::_ctorChannelSplitterNode;
 
 void ChannelSplitterNode::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "ChannelSplitterNode", {
+		ACCESSOR_M(ChannelSplitterNode, destroy),
+		ACCESSOR_R(ChannelSplitterNode, isDestroyed),
 	
 	});
 	
@@ -81,28 +70,25 @@ Napi::Object ChannelSplitterNode::getNew() {
 }
 
 
-JS_METHOD(ChannelSplitterNode::newCtor) {
+ChannelSplitterNode::ChannelSplitterNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<ChannelSplitterNode>(info) {
 	
 	CTOR_CHECK("ChannelSplitterNode");
 	
 	ChannelSplitterNode *channelSplitterNode = new ChannelSplitterNode();
-	channelSplitterNode->Wrap(info.This());
-	
-	RET_VALUE(info.This());
 	
 }
 
 
-JS_METHOD(ChannelSplitterNode::destroy) { THIS_CHANNEL_SPLITTER_NODE; THIS_CHECK;
+JS_METHOD(ChannelSplitterNode::destroy) { THIS_CHECK;
 	
-	channelSplitterNode->emit("destroy");
+	emit("destroy");
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(ChannelSplitterNode::isDestroyedGetter) { THIS_CHANNEL_SPLITTER_NODE;
+JS_GETTER(ChannelSplitterNode::isDestroyedGetter) {
 	
 	RET_BOOL(_isDestroyed);
 	

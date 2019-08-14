@@ -31,7 +31,7 @@ void OfflineAudioCompletionEvent::_destroy() { DES_CHECK;
 
 
 
-JS_GETTER(OfflineAudioCompletionEvent::renderedBufferGetter) { THIS_OFFLINE_AUDIO_COMPLETION_EVENT; THIS_CHECK;
+JS_GETTER(OfflineAudioCompletionEvent::renderedBufferGetter) { THIS_CHECK;
 	
 	RET_VALUE(__renderedBuffer.Value());
 	
@@ -45,20 +45,10 @@ Napi::FunctionReference OfflineAudioCompletionEvent::_ctorOfflineAudioCompletion
 
 void OfflineAudioCompletionEvent::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_R(obj, renderedBuffer);
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "OfflineAudioCompletionEvent", {
+		ACCESSOR_M(OfflineAudioCompletionEvent, destroy),
+		ACCESSOR_R(OfflineAudioCompletionEvent, renderedBuffer),
+		ACCESSOR_R(OfflineAudioCompletionEvent, isDestroyed),
 	
 	});
 	
@@ -84,26 +74,23 @@ Napi::Object OfflineAudioCompletionEvent::getNew() {
 }
 
 
-JS_METHOD(OfflineAudioCompletionEvent::newCtor) {
+OfflineAudioCompletionEvent::OfflineAudioCompletionEvent(const Napi::CallbackInfo &info): Napi::ObjectWrap<OfflineAudioCompletionEvent>(info) {
 	
 	CTOR_CHECK("OfflineAudioCompletionEvent");
 	
 	OfflineAudioCompletionEvent *offlineAudioCompletionEvent = new OfflineAudioCompletionEvent();
-	offlineAudioCompletionEvent->Wrap(info.This());
-	
-	RET_VALUE(info.This());
 	
 }
 
 
-JS_METHOD(OfflineAudioCompletionEvent::destroy) { THIS_OFFLINE_AUDIO_COMPLETION_EVENT; THIS_CHECK;
+JS_METHOD(OfflineAudioCompletionEvent::destroy) { THIS_CHECK;
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(OfflineAudioCompletionEvent::isDestroyedGetter) { THIS_OFFLINE_AUDIO_COMPLETION_EVENT;
+JS_GETTER(OfflineAudioCompletionEvent::isDestroyedGetter) {
 	
 	RET_BOOL(_isDestroyed);
 	

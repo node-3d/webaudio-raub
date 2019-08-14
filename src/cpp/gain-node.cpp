@@ -42,7 +42,7 @@ void GainNode::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-JS_GETTER(GainNode::gainGetter) { THIS_GAIN_NODE; THIS_CHECK;
+JS_GETTER(GainNode::gainGetter) { THIS_CHECK;
 	
 	RET_VALUE(__gain.Value());
 	
@@ -56,19 +56,10 @@ Napi::FunctionReference GainNode::_ctorGainNode;
 
 void GainNode::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_R(obj, gain);
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "GainNode", {
+		ACCESSOR_M(GainNode, destroy),
+		ACCESSOR_R(GainNode, gain),
+		ACCESSOR_R(GainNode, isDestroyed),
 	
 	});
 	
@@ -89,30 +80,27 @@ Napi::Object GainNode::getNew(Napi::Object context) {
 }
 
 
-JS_METHOD(GainNode::newCtor) {
+GainNode::GainNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<GainNode>(info) {
 	
 	CTOR_CHECK("GainNode");
 	
 	REQ_OBJ_ARG(0, context);
 	
 	GainNode *gainNode = new GainNode(context);
-	gainNode->Wrap(info.This());
-	
-	RET_VALUE(info.This());
 	
 }
 
 
-JS_METHOD(GainNode::destroy) { THIS_GAIN_NODE; THIS_CHECK;
+JS_METHOD(GainNode::destroy) { THIS_CHECK;
 	
-	gainNode->emit("destroy");
+	emit("destroy");
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(GainNode::isDestroyedGetter) { THIS_GAIN_NODE;
+JS_GETTER(GainNode::isDestroyedGetter) {
 	
 	RET_BOOL(_isDestroyed);
 	

@@ -12,7 +12,7 @@
 // ------ Aux macros
 
 #define PARAM_GETTER(NAME)                                                    \
-JS_GETTER(AudioListener::NAME ## Getter) { THIS_AUDIO_LISTENER; THIS_CHECK;  \
+JS_GETTER(AudioListener::NAME ## Getter) { THIS_CHECK;  \
 	RET_VALUE(JS_OBJ(audioListener->_ ## NAME));                              \
 }
 
@@ -68,7 +68,7 @@ void AudioListener::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-JS_METHOD(AudioListener::setPosition) { THIS_AUDIO_LISTENER; THIS_CHECK;
+JS_METHOD(AudioListener::setPosition) { THIS_CHECK;
 	
 	REQ_FLOAT_ARG(0, x);
 	REQ_FLOAT_ARG(1, y);
@@ -79,7 +79,7 @@ JS_METHOD(AudioListener::setPosition) { THIS_AUDIO_LISTENER; THIS_CHECK;
 }
 
 
-JS_METHOD(AudioListener::setOrientation) { THIS_AUDIO_LISTENER; THIS_CHECK;
+JS_METHOD(AudioListener::setOrientation) { THIS_CHECK;
 	
 	REQ_FLOAT_ARG(0, x);
 	REQ_FLOAT_ARG(1, y);
@@ -111,29 +111,20 @@ Napi::FunctionReference AudioListener::_ctorAudioListener;
 
 void AudioListener::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_R(obj, positionX);
-	ACCESSOR_R(obj, positionY);
-	ACCESSOR_R(obj, positionZ);
-	ACCESSOR_R(obj, forwardX);
-	ACCESSOR_R(obj, forwardY);
-	ACCESSOR_R(obj, forwardZ);
-	ACCESSOR_R(obj, upX);
-	ACCESSOR_R(obj, upY);
-	ACCESSOR_R(obj, upZ);
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	Nan::SetPrototypeMethod(proto, "setPosition", setPosition);
-	Nan::SetPrototypeMethod(proto, "setOrientation", setOrientation);
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "AudioListener", {
+		ACCESSOR_M(AudioListener, setOrientation),
+		ACCESSOR_M(AudioListener, setPosition),
+		ACCESSOR_M(AudioListener, destroy),
+		ACCESSOR_R(AudioListener, upZ),
+		ACCESSOR_R(AudioListener, upY),
+		ACCESSOR_R(AudioListener, upX),
+		ACCESSOR_R(AudioListener, forwardZ),
+		ACCESSOR_R(AudioListener, forwardY),
+		ACCESSOR_R(AudioListener, forwardX),
+		ACCESSOR_R(AudioListener, positionZ),
+		ACCESSOR_R(AudioListener, positionY),
+		ACCESSOR_R(AudioListener, positionX),
+		ACCESSOR_R(AudioListener, isDestroyed),
 	
 	});
 	
@@ -160,7 +151,7 @@ Napi::Object AudioListener::getNew(Napi::Object context, ListenerPtr listener) {
 }
 
 
-JS_METHOD(AudioListener::newCtor) {
+AudioListener::AudioListener(const Napi::CallbackInfo &info): Napi::ObjectWrap<AudioListener>(info) {
 	
 	CTOR_CHECK("AudioListener");
 	
@@ -170,21 +161,18 @@ JS_METHOD(AudioListener::newCtor) {
 	ListenerPtr *listener = reinterpret_cast<ListenerPtr *>(extListener->Value());
 	
 	AudioListener *audioListener = new AudioListener(context, *listener);
-	audioListener->Wrap(info.This());
-	
-	RET_VALUE(info.This());
 	
 }
 
 
-JS_METHOD(AudioListener::destroy) { THIS_AUDIO_LISTENER; THIS_CHECK;
+JS_METHOD(AudioListener::destroy) { THIS_CHECK;
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(AudioListener::isDestroyedGetter) { THIS_AUDIO_LISTENER;
+JS_GETTER(AudioListener::isDestroyedGetter) {
 	
 	RET_BOOL(_isDestroyed);
 	

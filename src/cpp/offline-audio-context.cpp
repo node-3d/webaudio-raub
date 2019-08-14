@@ -33,14 +33,14 @@ void OfflineAudioContext::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-JS_METHOD(OfflineAudioContext::startRendering) { THIS_OFFLINE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(OfflineAudioContext::startRendering) { THIS_CHECK;
 	
 	// TODO: do something?
 	
 }
 
 
-JS_METHOD(OfflineAudioContext::suspend) { THIS_OFFLINE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(OfflineAudioContext::suspend) { THIS_CHECK;
 	
 	REQ_DOUBLE_ARG(0, suspendTime);
 	
@@ -49,13 +49,13 @@ JS_METHOD(OfflineAudioContext::suspend) { THIS_OFFLINE_AUDIO_CONTEXT; THIS_CHECK
 }
 
 
-JS_GETTER(OfflineAudioContext::oncompleteGetter) { THIS_OFFLINE_AUDIO_CONTEXT; THIS_CHECK;
+JS_GETTER(OfflineAudioContext::oncompleteGetter) { THIS_CHECK;
 	
 	RET_VALUE(JS_FUN(_oncomplete));
 	
 }
 
-JS_SETTER(OfflineAudioContext::oncompleteSetter) { THIS_OFFLINE_AUDIO_CONTEXT; THIS_CHECK; SETTER_FUN_ARG;
+JS_SETTER(OfflineAudioContext::oncompleteSetter) { THIS_CHECK; SETTER_FUN_ARG;
 	
 	if (Nan::New(_oncomplete) == v) {
 		return;
@@ -64,12 +64,12 @@ JS_SETTER(OfflineAudioContext::oncompleteSetter) { THIS_OFFLINE_AUDIO_CONTEXT; T
 	
 	// TODO: may be additional actions on change?
 	
-	offlineAudioContext->emit("oncomplete", 1, &value);
+	emit("oncomplete", 1, &value);
 	
 }
 
 
-JS_GETTER(OfflineAudioContext::lengthGetter) { THIS_OFFLINE_AUDIO_CONTEXT; THIS_CHECK;
+JS_GETTER(OfflineAudioContext::lengthGetter) { THIS_CHECK;
 	
 	RET_NUM(_length);
 	
@@ -83,22 +83,13 @@ Napi::FunctionReference OfflineAudioContext::_ctorOfflineAudioContext;
 
 void OfflineAudioContext::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_RW(obj, oncomplete);
-	ACCESSOR_R(obj, length);
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	Nan::SetPrototypeMethod(proto, "startRendering", startRendering);
-	Nan::SetPrototypeMethod(proto, "suspend", suspend);
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "OfflineAudioContext", {
+		ACCESSOR_RW(OfflineAudioContext, oncomplete),
+		ACCESSOR_M(OfflineAudioContext, suspend),
+		ACCESSOR_M(OfflineAudioContext, startRendering),
+		ACCESSOR_M(OfflineAudioContext, destroy),
+		ACCESSOR_R(OfflineAudioContext, length),
+		ACCESSOR_R(OfflineAudioContext, isDestroyed),
 	
 	});
 	
@@ -124,28 +115,25 @@ Napi::Object OfflineAudioContext::getNew() {
 }
 
 
-JS_METHOD(OfflineAudioContext::newCtor) {
+OfflineAudioContext::OfflineAudioContext(const Napi::CallbackInfo &info): Napi::ObjectWrap<OfflineAudioContext>(info) {
 	
 	CTOR_CHECK("OfflineAudioContext");
 	
 	OfflineAudioContext *offlineAudioContext = new OfflineAudioContext();
-	offlineAudioContext->Wrap(info.This());
-	
-	RET_VALUE(info.This());
 	
 }
 
 
-JS_METHOD(OfflineAudioContext::destroy) { THIS_OFFLINE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(OfflineAudioContext::destroy) { THIS_CHECK;
 	
-	offlineAudioContext->emit("destroy");
+	emit("destroy");
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(OfflineAudioContext::isDestroyedGetter) { THIS_OFFLINE_AUDIO_CONTEXT;
+JS_GETTER(OfflineAudioContext::isDestroyedGetter) {
 	
 	RET_BOOL(_isDestroyed);
 	

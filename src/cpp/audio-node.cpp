@@ -106,7 +106,7 @@ void AudioNode::_destroy() { DES_CHECK;
 // node2 node1.connect(node2, output, input);
 // undefined node1.connect(param);
 // undefined node1.connect(param, output);
-JS_METHOD(AudioNode::connect) { THIS_AUDIO_NODE; THIS_CHECK;
+JS_METHOD(AudioNode::connect) { THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, destination);
 	
@@ -141,7 +141,7 @@ JS_METHOD(AudioNode::connect) { THIS_AUDIO_NODE; THIS_CHECK;
 // undefined node1.disconnect(node2);
 // undefined node1.disconnect(node2, output);
 // undefined node1.disconnect(node2, output, input);
-JS_METHOD(AudioNode::disconnect) { THIS_AUDIO_NODE; THIS_CHECK;
+JS_METHOD(AudioNode::disconnect) { THIS_CHECK;
 	
 	int output = 0;
 	int input = 0;
@@ -210,35 +210,35 @@ JS_METHOD(AudioNode::disconnect) { THIS_AUDIO_NODE; THIS_CHECK;
 }
 
 
-JS_GETTER(AudioNode::contextGetter) { THIS_AUDIO_NODE; THIS_CHECK;
+JS_GETTER(AudioNode::contextGetter) { THIS_CHECK;
 	
 	RET_VALUE(__context.Value());
 	
 }
 
 
-JS_GETTER(AudioNode::numberOfInputsGetter) { THIS_AUDIO_NODE; THIS_CHECK;
+JS_GETTER(AudioNode::numberOfInputsGetter) { THIS_CHECK;
 	
 	RET_NUM(static_cast<uint32_t>(_impl->numberOfInputs()));
 	
 }
 
 
-JS_GETTER(AudioNode::numberOfOutputsGetter) { THIS_AUDIO_NODE; THIS_CHECK;
+JS_GETTER(AudioNode::numberOfOutputsGetter) { THIS_CHECK;
 	
 	RET_NUM(static_cast<uint32_t>(_impl->numberOfOutputs()));
 	
 }
 
 
-JS_GETTER(AudioNode::channelCountGetter) { THIS_AUDIO_NODE; THIS_CHECK;
+JS_GETTER(AudioNode::channelCountGetter) { THIS_CHECK;
 	
 	RET_NUM(static_cast<uint32_t>(_impl->channelCount()));
 	
 }
 
 
-JS_SETTER(AudioNode::channelCountSetter) { THIS_AUDIO_NODE; THIS_CHECK; SETTER_UINT32_ARG;
+JS_SETTER(AudioNode::channelCountSetter) { THIS_CHECK; SETTER_UINT32_ARG;
 	
 	CACHE_CAS(_channelCount, v);
 	
@@ -248,18 +248,18 @@ JS_SETTER(AudioNode::channelCountSetter) { THIS_AUDIO_NODE; THIS_CHECK; SETTER_U
 	lab::ContextGraphLock graphLock(audioContext->getContext().get(), "AudioNode::channelCountSetter");
 	_impl->setChannelCount(graphLock, _channelCount);
 	
-	audioNode->emit("channelCount", 1, &value);
+	emit("channelCount", 1, &value);
 	
 }
 
 
-JS_GETTER(AudioNode::channelCountModeGetter) { THIS_AUDIO_NODE; THIS_CHECK;
+JS_GETTER(AudioNode::channelCountModeGetter) { THIS_CHECK;
 	
 	RET_STR(__channelCountMode);
 	
 }
 
-JS_SETTER(AudioNode::channelCountModeSetter) { THIS_AUDIO_NODE; THIS_CHECK; SETTER_UTF8_ARG;
+JS_SETTER(AudioNode::channelCountModeSetter) { THIS_CHECK; SETTER_UTF8_ARG;
 	
 	if (_channelCountMode == *v) {
 		return;
@@ -268,18 +268,18 @@ JS_SETTER(AudioNode::channelCountModeSetter) { THIS_AUDIO_NODE; THIS_CHECK; SETT
 	
 	// TODO: may be additional actions on change?
 	
-	audioNode->emit("channelCountMode", 1, &value);
+	emit("channelCountMode", 1, &value);
 	
 }
 
 
-JS_GETTER(AudioNode::channelInterpretationGetter) { THIS_AUDIO_NODE; THIS_CHECK;
+JS_GETTER(AudioNode::channelInterpretationGetter) { THIS_CHECK;
 	
 	RET_STR(__channelInterpretation);
 	
 }
 
-JS_SETTER(AudioNode::channelInterpretationSetter) { THIS_AUDIO_NODE; THIS_CHECK; SETTER_UTF8_ARG;
+JS_SETTER(AudioNode::channelInterpretationSetter) { THIS_CHECK; SETTER_UTF8_ARG;
 	
 	if (_channelInterpretation == *v) {
 		return;
@@ -288,7 +288,7 @@ JS_SETTER(AudioNode::channelInterpretationSetter) { THIS_AUDIO_NODE; THIS_CHECK;
 	
 	// TODO: may be additional actions on change?
 	
-	audioNode->emit("channelInterpretation", 1, &value);
+	emit("channelInterpretation", 1, &value);
 	
 }
 
@@ -300,26 +300,17 @@ Napi::FunctionReference AudioNode::_ctorAudioNode;
 
 void AudioNode::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_R(obj, context);
-	ACCESSOR_R(obj, numberOfInputs);
-	ACCESSOR_R(obj, numberOfOutputs);
-	ACCESSOR_RW(obj, channelCount);
-	ACCESSOR_RW(obj, channelCountMode);
-	ACCESSOR_RW(obj, channelInterpretation);
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	Nan::SetPrototypeMethod(proto, "connect", connect);
-	Nan::SetPrototypeMethod(proto, "disconnect", disconnect);
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "AudioNode", {
+		ACCESSOR_RW(AudioNode, channelInterpretation),
+		ACCESSOR_RW(AudioNode, channelCountMode),
+		ACCESSOR_RW(AudioNode, channelCount),
+		ACCESSOR_M(AudioNode, disconnect),
+		ACCESSOR_M(AudioNode, connect),
+		ACCESSOR_M(AudioNode, destroy),
+		ACCESSOR_R(AudioNode, numberOfOutputs),
+		ACCESSOR_R(AudioNode, numberOfInputs),
+		ACCESSOR_R(AudioNode, context),
+		ACCESSOR_R(AudioNode, isDestroyed),
 	
 	});
 	
@@ -336,23 +327,23 @@ bool AudioNode::isAudioNode(Napi::Object obj) {
 }
 
 
-JS_METHOD(AudioNode::newCtor) {
+AudioNode::AudioNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<AudioNode>(info) {
 	
 	Nan::ThrowTypeError("'AudioNode' is abstract, use a specific node class.");
 	
 }
 
 
-JS_METHOD(AudioNode::destroy) { THIS_AUDIO_NODE; THIS_CHECK;
+JS_METHOD(AudioNode::destroy) { THIS_CHECK;
 	
-	audioNode->emit("destroy");
+	emit("destroy");
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(AudioNode::isDestroyedGetter) { THIS_AUDIO_NODE;
+JS_GETTER(AudioNode::isDestroyedGetter) {
 	
 	RET_BOOL(_isDestroyed);
 	

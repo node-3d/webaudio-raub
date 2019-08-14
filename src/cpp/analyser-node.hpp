@@ -34,8 +34,8 @@ protected:
 	
 	bool _isDestroyed;
 	
-	unsigned int _frequencyBinCount;
-	unsigned int _fftSize;
+	uint32_t _frequencyBinCount;
+	uint32_t _fftSize;
 	double _minDecibels;
 	double _maxDecibels;
 	double _smoothingTimeConstant;

@@ -42,7 +42,7 @@ void DelayNode::_destroy() { DES_CHECK;
 
 
 
-JS_GETTER(DelayNode::delayTimeGetter) { THIS_DELAY_NODE; THIS_CHECK;
+JS_GETTER(DelayNode::delayTimeGetter) { THIS_CHECK;
 	
 	RET_VALUE(__delayTime.Value());
 	
@@ -56,20 +56,10 @@ Napi::FunctionReference DelayNode::_ctorDelayNode;
 
 void DelayNode::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_R(obj, delayTime);
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "DelayNode", {
+		ACCESSOR_M(DelayNode, destroy),
+		ACCESSOR_R(DelayNode, delayTime),
+		ACCESSOR_R(DelayNode, isDestroyed),
 	
 	});
 	
@@ -95,7 +85,7 @@ Napi::Object DelayNode::getNew(Napi::Object context, double delay) {
 }
 
 
-JS_METHOD(DelayNode::newCtor) {
+DelayNode::DelayNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<DelayNode>(info) {
 	
 	CTOR_CHECK("DelayNode");
 	
@@ -105,23 +95,20 @@ JS_METHOD(DelayNode::newCtor) {
 	AudioContext *audioContext = Nan::ObjectWrap::Unwrap<AudioContext>(context);
 	
 	DelayNode *delayNode = new DelayNode(context, audioContext->getContext()->sampleRate(), delay);
-	delayNode->Wrap(info.This());
-	
-	RET_VALUE(info.This());
 	
 }
 
 
-JS_METHOD(DelayNode::destroy) { THIS_DELAY_NODE; THIS_CHECK;
+JS_METHOD(DelayNode::destroy) { THIS_CHECK;
 	
-	delayNode->emit("destroy");
+	emit("destroy");
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(DelayNode::isDestroyedGetter) { THIS_DELAY_NODE;
+JS_GETTER(DelayNode::isDestroyedGetter) {
 	
 	RET_BOOL(_isDestroyed);
 	

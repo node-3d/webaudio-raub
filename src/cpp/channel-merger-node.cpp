@@ -42,20 +42,9 @@ Napi::FunctionReference ChannelMergerNode::_ctorChannelMergerNode;
 
 void ChannelMergerNode::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "ChannelMergerNode", {
+		ACCESSOR_M(ChannelMergerNode, destroy),
+		ACCESSOR_R(ChannelMergerNode, isDestroyed),
 	
 	});
 	
@@ -81,28 +70,25 @@ Napi::Object ChannelMergerNode::getNew() {
 }
 
 
-JS_METHOD(ChannelMergerNode::newCtor) {
+ChannelMergerNode::ChannelMergerNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<ChannelMergerNode>(info) {
 	
 	CTOR_CHECK("ChannelMergerNode");
 	
 	ChannelMergerNode *channelMergerNode = new ChannelMergerNode();
-	channelMergerNode->Wrap(info.This());
-	
-	RET_VALUE(info.This());
 	
 }
 
 
-JS_METHOD(ChannelMergerNode::destroy) { THIS_CHANNEL_MERGER_NODE; THIS_CHECK;
+JS_METHOD(ChannelMergerNode::destroy) { THIS_CHECK;
 	
-	channelMergerNode->emit("destroy");
+	emit("destroy");
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(ChannelMergerNode::isDestroyedGetter) { THIS_CHANNEL_MERGER_NODE;
+JS_GETTER(ChannelMergerNode::isDestroyedGetter) {
 	
 	RET_BOOL(_isDestroyed);
 	

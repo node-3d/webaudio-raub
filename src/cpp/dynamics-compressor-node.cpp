@@ -100,25 +100,15 @@ Napi::FunctionReference DynamicsCompressorNode::_ctorDynamicsCompressorNode;
 
 void DynamicsCompressorNode::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_R(obj, threshold);
-	ACCESSOR_R(obj, knee);
-	ACCESSOR_R(obj, ratio);
-	ACCESSOR_R(obj, reduction);
-	ACCESSOR_R(obj, attack);
-	ACCESSOR_R(obj, release);
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "DynamicsCompressorNode", {
+		ACCESSOR_M(DynamicsCompressorNode, destroy),
+		ACCESSOR_R(DynamicsCompressorNode, release),
+		ACCESSOR_R(DynamicsCompressorNode, attack),
+		ACCESSOR_R(DynamicsCompressorNode, reduction),
+		ACCESSOR_R(DynamicsCompressorNode, ratio),
+		ACCESSOR_R(DynamicsCompressorNode, knee),
+		ACCESSOR_R(DynamicsCompressorNode, threshold),
+		ACCESSOR_R(DynamicsCompressorNode, isDestroyed),
 	
 	});
 	
@@ -144,14 +134,11 @@ Napi::Object DynamicsCompressorNode::getNew() {
 }
 
 
-JS_METHOD(DynamicsCompressorNode::newCtor) {
+DynamicsCompressorNode::DynamicsCompressorNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<DynamicsCompressorNode>(info) {
 	
 	CTOR_CHECK("DynamicsCompressorNode");
 	
 	DynamicsCompressorNode *dynamicsCompressorNode = new DynamicsCompressorNode();
-	dynamicsCompressorNode->Wrap(info.This());
-	
-	RET_VALUE(info.This());
 	
 }
 
@@ -160,7 +147,7 @@ JS_METHOD(DynamicsCompressorNode::destroy) {
 	
 	THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
 	
-	dynamicsCompressorNode->emit("destroy");
+	emit("destroy");
 	
 	_destroy();
 	

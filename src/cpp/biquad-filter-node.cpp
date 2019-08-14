@@ -47,7 +47,7 @@ void BiquadFilterNode::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-JS_METHOD(BiquadFilterNode::getFrequencyResponse) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
+JS_METHOD(BiquadFilterNode::getFrequencyResponse) { THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, frequencyHz);
 	REQ_OBJ_ARG(1, magResponse);
@@ -58,13 +58,13 @@ JS_METHOD(BiquadFilterNode::getFrequencyResponse) { THIS_BIQUAD_FILTER_NODE; THI
 }
 
 
-JS_GETTER(BiquadFilterNode::typeGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
+JS_GETTER(BiquadFilterNode::typeGetter) { THIS_CHECK;
 	
 	RET_STR(__type);
 	
 }
 
-JS_SETTER(BiquadFilterNode::typeSetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK; SETTER_UTF8_ARG;
+JS_SETTER(BiquadFilterNode::typeSetter) { THIS_CHECK; SETTER_UTF8_ARG;
 	
 	if (_type == *v) {
 		return;
@@ -73,33 +73,33 @@ JS_SETTER(BiquadFilterNode::typeSetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK; S
 	
 	// TODO: may be additional actions on change?
 	
-	biquadFilterNode->emit("type", 1, &value);
+	emit("type", 1, &value);
 	
 }
 
 
-JS_GETTER(BiquadFilterNode::frequencyGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
+JS_GETTER(BiquadFilterNode::frequencyGetter) { THIS_CHECK;
 	
 	RET_VALUE(__frequency.Value());
 	
 }
 
 
-JS_GETTER(BiquadFilterNode::detuneGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
+JS_GETTER(BiquadFilterNode::detuneGetter) { THIS_CHECK;
 	
 	RET_VALUE(__detune.Value());
 	
 }
 
 
-JS_GETTER(BiquadFilterNode::QGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
+JS_GETTER(BiquadFilterNode::QGetter) { THIS_CHECK;
 	
 	RET_VALUE(__Q.Value());
 	
 }
 
 
-JS_GETTER(BiquadFilterNode::gainGetter) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
+JS_GETTER(BiquadFilterNode::gainGetter) { THIS_CHECK;
 	
 	RET_VALUE(__gain.Value());
 	
@@ -113,24 +113,15 @@ Napi::FunctionReference BiquadFilterNode::_ctorBiquadFilterNode;
 
 void BiquadFilterNode::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_RW(obj, type);
-	ACCESSOR_R(obj, frequency);
-	ACCESSOR_R(obj, detune);
-	ACCESSOR_R(obj, Q);
-	ACCESSOR_R(obj, gain);
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	Nan::SetPrototypeMethod(proto, "getFrequencyResponse", getFrequencyResponse);
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "BiquadFilterNode", {
+		ACCESSOR_RW(BiquadFilterNode, type),
+		ACCESSOR_M(BiquadFilterNode, getFrequencyResponse),
+		ACCESSOR_M(BiquadFilterNode, destroy),
+		ACCESSOR_R(BiquadFilterNode, gain),
+		ACCESSOR_R(BiquadFilterNode, Q),
+		ACCESSOR_R(BiquadFilterNode, detune),
+		ACCESSOR_R(BiquadFilterNode, frequency),
+		ACCESSOR_R(BiquadFilterNode, isDestroyed),
 	
 	});
 	
@@ -156,30 +147,27 @@ Napi::Object BiquadFilterNode::getNew(Napi::Object context) {
 }
 
 
-JS_METHOD(BiquadFilterNode::newCtor) {
+BiquadFilterNode::BiquadFilterNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<BiquadFilterNode>(info) {
 	
 	CTOR_CHECK("BiquadFilterNode");
 	
 	REQ_OBJ_ARG(0, context);
 	
 	BiquadFilterNode *biquadFilterNode = new BiquadFilterNode(context);
-	biquadFilterNode->Wrap(info.This());
-	
-	RET_VALUE(info.This());
 	
 }
 
 
-JS_METHOD(BiquadFilterNode::destroy) { THIS_BIQUAD_FILTER_NODE; THIS_CHECK;
+JS_METHOD(BiquadFilterNode::destroy) { THIS_CHECK;
 	
-	biquadFilterNode->emit("destroy");
+	emit("destroy");
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(BiquadFilterNode::isDestroyedGetter) { THIS_BIQUAD_FILTER_NODE;
+JS_GETTER(BiquadFilterNode::isDestroyedGetter) {
 	
 	RET_BOOL(_isDestroyed);
 	

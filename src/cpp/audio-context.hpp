@@ -29,7 +29,6 @@ protected:
 	AudioContext();
 	explicit AudioContext(float sampleRate);
 	
-	static V8_STORE_FT _protoAudioContext; // for inheritance
 	static Napi::FunctionReference _ctorAudioContext;
 	
 	bool _isDestroyed;

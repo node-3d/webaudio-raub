@@ -39,20 +39,9 @@ Napi::FunctionReference AudioWorklet::_ctorAudioWorklet;
 
 void AudioWorklet::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "AudioWorklet", {
+		ACCESSOR_M(AudioWorklet, destroy),
+		ACCESSOR_R(AudioWorklet, isDestroyed),
 	
 	});
 	
@@ -78,26 +67,23 @@ Napi::Object AudioWorklet::getNew() {
 }
 
 
-JS_METHOD(AudioWorklet::newCtor) {
+AudioWorklet::AudioWorklet(const Napi::CallbackInfo &info): Napi::ObjectWrap<AudioWorklet>(info) {
 	
 	CTOR_CHECK("AudioWorklet");
 	
 	AudioWorklet *audioWorklet = new AudioWorklet();
-	audioWorklet->Wrap(info.This());
-	
-	RET_VALUE(info.This());
 	
 }
 
 
-JS_METHOD(AudioWorklet::destroy) { THIS_AUDIO_WORKLET; THIS_CHECK;
+JS_METHOD(AudioWorklet::destroy) { THIS_CHECK;
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(AudioWorklet::isDestroyedGetter) { THIS_AUDIO_WORKLET;
+JS_GETTER(AudioWorklet::isDestroyedGetter) {
 	
 	RET_BOOL(_isDestroyed);
 	

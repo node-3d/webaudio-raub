@@ -34,13 +34,13 @@ void WaveShaperNode::_destroy() { DES_CHECK;
 
 
 
-JS_GETTER(WaveShaperNode::curveGetter) { THIS_WAVE_SHAPER_NODE; THIS_CHECK;
+JS_GETTER(WaveShaperNode::curveGetter) { THIS_CHECK;
 	
 	RET_VALUE(__curve.Value());
 	
 }
 
-JS_SETTER(WaveShaperNode::curveSetter) { THIS_WAVE_SHAPER_NODE; THIS_CHECK; SETTER_OBJ_ARG;
+JS_SETTER(WaveShaperNode::curveSetter) { THIS_CHECK; SETTER_OBJ_ARG;
 	
 	if (Nan::New(_curve) == v) {
 		return;
@@ -49,18 +49,18 @@ JS_SETTER(WaveShaperNode::curveSetter) { THIS_WAVE_SHAPER_NODE; THIS_CHECK; SETT
 	
 	// TODO: may be additional actions on change?
 	
-	waveShaperNode->emit("curve", 1, &value);
+	emit("curve", 1, &value);
 	
 }
 
 
-JS_GETTER(WaveShaperNode::oversampleGetter) { THIS_WAVE_SHAPER_NODE; THIS_CHECK;
+JS_GETTER(WaveShaperNode::oversampleGetter) { THIS_CHECK;
 	
 	RET_STR(__oversample);
 	
 }
 
-JS_SETTER(WaveShaperNode::oversampleSetter) { THIS_WAVE_SHAPER_NODE; THIS_CHECK; SETTER_UTF8_ARG;
+JS_SETTER(WaveShaperNode::oversampleSetter) { THIS_CHECK; SETTER_UTF8_ARG;
 	
 	if (_oversample == *v) {
 		return;
@@ -69,7 +69,7 @@ JS_SETTER(WaveShaperNode::oversampleSetter) { THIS_WAVE_SHAPER_NODE; THIS_CHECK;
 	
 	// TODO: may be additional actions on change?
 	
-	waveShaperNode->emit("oversample", 1, &value);
+	emit("oversample", 1, &value);
 	
 }
 
@@ -81,21 +81,11 @@ Napi::FunctionReference WaveShaperNode::_ctorWaveShaperNode;
 
 void WaveShaperNode::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_RW(obj, curve);
-	ACCESSOR_RW(obj, oversample);
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "WaveShaperNode", {
+		ACCESSOR_RW(WaveShaperNode, oversample),
+		ACCESSOR_RW(WaveShaperNode, curve),
+		ACCESSOR_M(WaveShaperNode, destroy),
+		ACCESSOR_R(WaveShaperNode, isDestroyed),
 	
 	});
 	
@@ -121,28 +111,25 @@ Napi::Object WaveShaperNode::getNew() {
 }
 
 
-JS_METHOD(WaveShaperNode::newCtor) {
+WaveShaperNode::WaveShaperNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<WaveShaperNode>(info) {
 	
 	CTOR_CHECK("WaveShaperNode");
 	
 	WaveShaperNode *waveShaperNode = new WaveShaperNode();
-	waveShaperNode->Wrap(info.This());
-	
-	RET_VALUE(info.This());
 	
 }
 
 
-JS_METHOD(WaveShaperNode::destroy) { THIS_WAVE_SHAPER_NODE; THIS_CHECK;
+JS_METHOD(WaveShaperNode::destroy) { THIS_CHECK;
 	
-	waveShaperNode->emit("destroy");
+	emit("destroy");
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(WaveShaperNode::isDestroyedGetter) { THIS_WAVE_SHAPER_NODE;
+JS_GETTER(WaveShaperNode::isDestroyedGetter) {
 	
 	RET_BOOL(_isDestroyed);
 	

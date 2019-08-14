@@ -34,7 +34,7 @@ void MediaStreamAudioSourceNode::_destroy() { DES_CHECK;
 
 
 
-JS_GETTER(MediaStreamAudioSourceNode::mediaStreamGetter) { THIS_MEDIA_STREAM_AUDIO_SOURCE_NODE; THIS_CHECK;
+JS_GETTER(MediaStreamAudioSourceNode::mediaStreamGetter) { THIS_CHECK;
 	
 	RET_VALUE(__mediaStream.Value());
 	
@@ -48,20 +48,10 @@ Napi::FunctionReference MediaStreamAudioSourceNode::_ctorMediaStreamAudioSourceN
 
 void MediaStreamAudioSourceNode::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_R(obj, mediaStream);
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "MediaStreamAudioSourceNode", {
+		ACCESSOR_M(MediaStreamAudioSourceNode, destroy),
+		ACCESSOR_R(MediaStreamAudioSourceNode, mediaStream),
+		ACCESSOR_R(MediaStreamAudioSourceNode, isDestroyed),
 	
 	});
 	
@@ -87,28 +77,25 @@ Napi::Object MediaStreamAudioSourceNode::getNew() {
 }
 
 
-JS_METHOD(MediaStreamAudioSourceNode::newCtor) {
+MediaStreamAudioSourceNode::MediaStreamAudioSourceNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<MediaStreamAudioSourceNode>(info) {
 	
 	CTOR_CHECK("MediaStreamAudioSourceNode");
 	
 	MediaStreamAudioSourceNode *mediaStreamAudioSourceNode = new MediaStreamAudioSourceNode();
-	mediaStreamAudioSourceNode->Wrap(info.This());
-	
-	RET_VALUE(info.This());
 	
 }
 
 
-JS_METHOD(MediaStreamAudioSourceNode::destroy) { THIS_MEDIA_STREAM_AUDIO_SOURCE_NODE; THIS_CHECK;
+JS_METHOD(MediaStreamAudioSourceNode::destroy) { THIS_CHECK;
 	
-	mediaStreamAudioSourceNode->emit("destroy");
+	emit("destroy");
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(MediaStreamAudioSourceNode::isDestroyedGetter) { THIS_MEDIA_STREAM_AUDIO_SOURCE_NODE;
+JS_GETTER(MediaStreamAudioSourceNode::isDestroyedGetter) {
 	
 	RET_BOOL(_isDestroyed);
 	

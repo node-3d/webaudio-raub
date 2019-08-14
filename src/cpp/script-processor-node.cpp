@@ -34,13 +34,13 @@ void ScriptProcessorNode::_destroy() { DES_CHECK;
 
 
 
-JS_GETTER(ScriptProcessorNode::onaudioprocessGetter) { THIS_SCRIPT_PROCESSOR_NODE; THIS_CHECK;
+JS_GETTER(ScriptProcessorNode::onaudioprocessGetter) { THIS_CHECK;
 	
 	RET_VALUE(JS_FUN(_onaudioprocess));
 	
 }
 
-JS_SETTER(ScriptProcessorNode::onaudioprocessSetter) { THIS_SCRIPT_PROCESSOR_NODE; THIS_CHECK; SETTER_FUN_ARG;
+JS_SETTER(ScriptProcessorNode::onaudioprocessSetter) { THIS_CHECK; SETTER_FUN_ARG;
 	
 	if (Nan::New(_onaudioprocess) == v) {
 		return;
@@ -49,12 +49,12 @@ JS_SETTER(ScriptProcessorNode::onaudioprocessSetter) { THIS_SCRIPT_PROCESSOR_NOD
 	
 	// TODO: may be additional actions on change?
 	
-	scriptProcessorNode->emit("onaudioprocess", 1, &value);
+	emit("onaudioprocess", 1, &value);
 	
 }
 
 
-JS_GETTER(ScriptProcessorNode::bufferSizeGetter) { THIS_SCRIPT_PROCESSOR_NODE; THIS_CHECK;
+JS_GETTER(ScriptProcessorNode::bufferSizeGetter) { THIS_CHECK;
 	
 	RET_NUM(_bufferSize);
 	
@@ -68,21 +68,11 @@ Napi::FunctionReference ScriptProcessorNode::_ctorScriptProcessorNode;
 
 void ScriptProcessorNode::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_RW(obj, onaudioprocess);
-	ACCESSOR_R(obj, bufferSize);
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "ScriptProcessorNode", {
+		ACCESSOR_RW(ScriptProcessorNode, onaudioprocess),
+		ACCESSOR_M(ScriptProcessorNode, destroy),
+		ACCESSOR_R(ScriptProcessorNode, bufferSize),
+		ACCESSOR_R(ScriptProcessorNode, isDestroyed),
 	
 	});
 	
@@ -108,28 +98,25 @@ Napi::Object ScriptProcessorNode::getNew() {
 }
 
 
-JS_METHOD(ScriptProcessorNode::newCtor) {
+ScriptProcessorNode::ScriptProcessorNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<ScriptProcessorNode>(info) {
 	
 	CTOR_CHECK("ScriptProcessorNode");
 	
 	ScriptProcessorNode *scriptProcessorNode = new ScriptProcessorNode();
-	scriptProcessorNode->Wrap(info.This());
-	
-	RET_VALUE(info.This());
 	
 }
 
 
-JS_METHOD(ScriptProcessorNode::destroy) { THIS_SCRIPT_PROCESSOR_NODE; THIS_CHECK;
+JS_METHOD(ScriptProcessorNode::destroy) { THIS_CHECK;
 	
-	scriptProcessorNode->emit("destroy");
+	emit("destroy");
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(ScriptProcessorNode::isDestroyedGetter) { THIS_SCRIPT_PROCESSOR_NODE;
+JS_GETTER(ScriptProcessorNode::isDestroyedGetter) {
 	
 	RET_BOOL(_isDestroyed);
 	

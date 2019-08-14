@@ -50,7 +50,7 @@ void AudioBuffer::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-JS_METHOD(AudioBuffer::getChannelData) { THIS_AUDIO_BUFFER; THIS_CHECK;
+JS_METHOD(AudioBuffer::getChannelData) { THIS_CHECK;
 	
 	REQ_UINT32_ARG(0, channelIndex);
 	
@@ -59,7 +59,7 @@ JS_METHOD(AudioBuffer::getChannelData) { THIS_AUDIO_BUFFER; THIS_CHECK;
 }
 
 
-JS_METHOD(AudioBuffer::copyFromChannel) { THIS_AUDIO_BUFFER; THIS_CHECK;
+JS_METHOD(AudioBuffer::copyFromChannel) { THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, destination);
 	REQ_INT32_ARG(1, channelNumber);
@@ -70,7 +70,7 @@ JS_METHOD(AudioBuffer::copyFromChannel) { THIS_AUDIO_BUFFER; THIS_CHECK;
 }
 
 
-JS_METHOD(AudioBuffer::copyToChannel) { THIS_AUDIO_BUFFER; THIS_CHECK;
+JS_METHOD(AudioBuffer::copyToChannel) { THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, source);
 	REQ_INT32_ARG(1, channelNumber);
@@ -81,28 +81,28 @@ JS_METHOD(AudioBuffer::copyToChannel) { THIS_AUDIO_BUFFER; THIS_CHECK;
 }
 
 
-JS_GETTER(AudioBuffer::lengthGetter) { THIS_AUDIO_BUFFER; THIS_CHECK;
+JS_GETTER(AudioBuffer::lengthGetter) { THIS_CHECK;
 	
 	RET_NUM(_length);
 	
 }
 
 
-JS_GETTER(AudioBuffer::durationGetter) { THIS_AUDIO_BUFFER; THIS_CHECK;
+JS_GETTER(AudioBuffer::durationGetter) { THIS_CHECK;
 	
 	RET_NUM(_duration);
 	
 }
 
 
-JS_GETTER(AudioBuffer::sampleRateGetter) { THIS_AUDIO_BUFFER; THIS_CHECK;
+JS_GETTER(AudioBuffer::sampleRateGetter) { THIS_CHECK;
 	
 	RET_NUM(_sampleRate);
 	
 }
 
 
-JS_GETTER(AudioBuffer::numberOfChannelsGetter) { THIS_AUDIO_BUFFER; THIS_CHECK;
+JS_GETTER(AudioBuffer::numberOfChannelsGetter) { THIS_CHECK;
 	
 	RET_NUM(_numberOfChannels);
 	
@@ -116,25 +116,16 @@ Napi::FunctionReference AudioBuffer::_ctorAudioBuffer;
 
 void AudioBuffer::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_R(obj, length);
-	ACCESSOR_R(obj, duration);
-	ACCESSOR_R(obj, sampleRate);
-	ACCESSOR_R(obj, numberOfChannels);
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	Nan::SetPrototypeMethod(proto, "getChannelData", getChannelData);
-	Nan::SetPrototypeMethod(proto, "copyFromChannel", copyFromChannel);
-	Nan::SetPrototypeMethod(proto, "copyToChannel", copyToChannel);
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "AudioBuffer", {
+		ACCESSOR_M(AudioBuffer, copyToChannel),
+		ACCESSOR_M(AudioBuffer, copyFromChannel),
+		ACCESSOR_M(AudioBuffer, getChannelData),
+		ACCESSOR_M(AudioBuffer, destroy),
+		ACCESSOR_R(AudioBuffer, numberOfChannels),
+		ACCESSOR_R(AudioBuffer, sampleRate),
+		ACCESSOR_R(AudioBuffer, duration),
+		ACCESSOR_R(AudioBuffer, length),
+		ACCESSOR_R(AudioBuffer, isDestroyed),
 	
 	});
 	
@@ -156,7 +147,7 @@ Napi::Object AudioBuffer::getNew(BusPtr bus) {
 }
 
 
-JS_METHOD(AudioBuffer::newCtor) {
+AudioBuffer::AudioBuffer(const Napi::CallbackInfo &info): Napi::ObjectWrap<AudioBuffer>(info) {
 	
 	CTOR_CHECK("AudioBuffer");
 	
@@ -187,21 +178,18 @@ JS_METHOD(AudioBuffer::newCtor) {
 		
 	}
 	
-	audioBuffer->Wrap(info.This());
-	
-	RET_VALUE(info.This());
 	
 }
 
 
-JS_METHOD(AudioBuffer::destroy) { THIS_AUDIO_BUFFER; THIS_CHECK;
+JS_METHOD(AudioBuffer::destroy) { THIS_CHECK;
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(AudioBuffer::isDestroyedGetter) { THIS_AUDIO_BUFFER;
+JS_GETTER(AudioBuffer::isDestroyedGetter) {
 	
 	RET_BOOL(_isDestroyed);
 	

@@ -42,7 +42,7 @@ protected:
 	int _length;
 	double _duration;
 	float _sampleRate;
-	unsigned int _numberOfChannels;
+	uint32_t _numberOfChannels;
 	
 	BusPtr _impl;
 	

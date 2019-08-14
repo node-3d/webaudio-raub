@@ -39,20 +39,9 @@ Napi::FunctionReference PeriodicWave::_ctorPeriodicWave;
 
 void PeriodicWave::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "PeriodicWave", {
+		ACCESSOR_M(PeriodicWave, destroy),
+		ACCESSOR_R(PeriodicWave, isDestroyed),
 	
 	});
 	
@@ -78,26 +67,23 @@ Napi::Object PeriodicWave::getNew() {
 }
 
 
-JS_METHOD(PeriodicWave::newCtor) {
+PeriodicWave::PeriodicWave(const Napi::CallbackInfo &info): Napi::ObjectWrap<PeriodicWave>(info) {
 	
 	CTOR_CHECK("PeriodicWave");
 	
 	PeriodicWave *periodicWave = new PeriodicWave();
-	periodicWave->Wrap(info.This());
-	
-	RET_VALUE(info.This());
 	
 }
 
 
-JS_METHOD(PeriodicWave::destroy) { THIS_PERIODIC_WAVE; THIS_CHECK;
+JS_METHOD(PeriodicWave::destroy) { THIS_CHECK;
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(PeriodicWave::isDestroyedGetter) { THIS_PERIODIC_WAVE;
+JS_GETTER(PeriodicWave::isDestroyedGetter) {
 	
 	RET_BOOL(_isDestroyed);
 	

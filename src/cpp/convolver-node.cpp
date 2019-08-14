@@ -40,13 +40,13 @@ void ConvolverNode::_destroy() { DES_CHECK;
 
 
 
-JS_GETTER(ConvolverNode::bufferGetter) { THIS_CONVOLVER_NODE; THIS_CHECK;
+JS_GETTER(ConvolverNode::bufferGetter) { THIS_CHECK;
 	
 	RET_VALUE(__buffer.Value());
 	
 }
 
-JS_SETTER(ConvolverNode::bufferSetter) { THIS_CONVOLVER_NODE; THIS_CHECK; SETTER_OBJ_ARG;
+JS_SETTER(ConvolverNode::bufferSetter) { THIS_CHECK; SETTER_OBJ_ARG;
 	
 	if (Nan::New(_buffer) == v) {
 		return;
@@ -67,12 +67,12 @@ JS_SETTER(ConvolverNode::bufferSetter) { THIS_CONVOLVER_NODE; THIS_CHECK; SETTER
 	);
 	node->setImpulse(bus);
 	
-	convolverNode->emit("buffer", 1, &value);
+	emit("buffer", 1, &value);
 	
 }
 
 
-JS_GETTER(ConvolverNode::normalizeGetter) { THIS_CONVOLVER_NODE; THIS_CHECK;
+JS_GETTER(ConvolverNode::normalizeGetter) { THIS_CHECK;
 	
 	lab::ConvolverNode *node = static_cast<lab::ConvolverNode*>(
 		_impl.get()
@@ -82,7 +82,7 @@ JS_GETTER(ConvolverNode::normalizeGetter) { THIS_CONVOLVER_NODE; THIS_CHECK;
 	
 }
 
-JS_SETTER(ConvolverNode::normalizeSetter) { THIS_CONVOLVER_NODE; THIS_CHECK; SETTER_BOOL_ARG;
+JS_SETTER(ConvolverNode::normalizeSetter) { THIS_CHECK; SETTER_BOOL_ARG;
 	
 	lab::ConvolverNode *node = static_cast<lab::ConvolverNode*>(
 		_impl.get()
@@ -90,7 +90,7 @@ JS_SETTER(ConvolverNode::normalizeSetter) { THIS_CONVOLVER_NODE; THIS_CHECK; SET
 	
 	node->setNormalize(v);
 	
-	convolverNode->emit("normalize", 1, &value);
+	emit("normalize", 1, &value);
 	
 }
 
@@ -102,20 +102,11 @@ Napi::FunctionReference ConvolverNode::_ctorConvolverNode;
 
 void ConvolverNode::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_RW(obj, buffer);
-	ACCESSOR_RW(obj, normalize);
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "ConvolverNode", {
+		ACCESSOR_RW(ConvolverNode, normalize),
+		ACCESSOR_RW(ConvolverNode, buffer),
+		ACCESSOR_M(ConvolverNode, destroy),
+		ACCESSOR_R(ConvolverNode, isDestroyed),
 	
 	});
 	
@@ -136,30 +127,27 @@ Napi::Object ConvolverNode::getNew(Napi::Object context) {
 }
 
 
-JS_METHOD(ConvolverNode::newCtor) {
+ConvolverNode::ConvolverNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<ConvolverNode>(info) {
 	
 	CTOR_CHECK("ConvolverNode");
 	
 	REQ_OBJ_ARG(0, context);
 	
 	ConvolverNode *convolverNode = new ConvolverNode(context);
-	convolverNode->Wrap(info.This());
-	
-	RET_VALUE(info.This());
 	
 }
 
 
-JS_METHOD(ConvolverNode::destroy) { THIS_CONVOLVER_NODE; THIS_CHECK;
+JS_METHOD(ConvolverNode::destroy) { THIS_CHECK;
 	
-	convolverNode->emit("destroy");
+	emit("destroy");
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(ConvolverNode::isDestroyedGetter) { THIS_CONVOLVER_NODE;
+JS_GETTER(ConvolverNode::isDestroyedGetter) {
 	
 	RET_BOOL(_isDestroyed);
 	

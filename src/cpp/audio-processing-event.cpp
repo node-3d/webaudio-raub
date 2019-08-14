@@ -31,21 +31,21 @@ void AudioProcessingEvent::_destroy() { DES_CHECK;
 
 
 
-JS_GETTER(AudioProcessingEvent::playbackTimeGetter) { THIS_AUDIO_PROCESSING_EVENT; THIS_CHECK;
+JS_GETTER(AudioProcessingEvent::playbackTimeGetter) { THIS_CHECK;
 	
 	RET_NUM(_playbackTime);
 	
 }
 
 
-JS_GETTER(AudioProcessingEvent::inputBufferGetter) { THIS_AUDIO_PROCESSING_EVENT; THIS_CHECK;
+JS_GETTER(AudioProcessingEvent::inputBufferGetter) { THIS_CHECK;
 	
 	RET_VALUE(__inputBuffer.Value());
 	
 }
 
 
-JS_GETTER(AudioProcessingEvent::outputBufferGetter) { THIS_AUDIO_PROCESSING_EVENT; THIS_CHECK;
+JS_GETTER(AudioProcessingEvent::outputBufferGetter) { THIS_CHECK;
 	
 	RET_VALUE(__outputBuffer.Value());
 	
@@ -59,22 +59,12 @@ Napi::FunctionReference AudioProcessingEvent::_ctorAudioProcessingEvent;
 
 void AudioProcessingEvent::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_R(obj, playbackTime);
-	ACCESSOR_R(obj, inputBuffer);
-	ACCESSOR_R(obj, outputBuffer);
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "AudioProcessingEvent", {
+		ACCESSOR_M(AudioProcessingEvent, destroy),
+		ACCESSOR_R(AudioProcessingEvent, outputBuffer),
+		ACCESSOR_R(AudioProcessingEvent, inputBuffer),
+		ACCESSOR_R(AudioProcessingEvent, playbackTime),
+		ACCESSOR_R(AudioProcessingEvent, isDestroyed),
 	
 	});
 	
@@ -100,26 +90,23 @@ Napi::Object AudioProcessingEvent::getNew() {
 }
 
 
-JS_METHOD(AudioProcessingEvent::newCtor) {
+AudioProcessingEvent::AudioProcessingEvent(const Napi::CallbackInfo &info): Napi::ObjectWrap<AudioProcessingEvent>(info) {
 	
 	CTOR_CHECK("AudioProcessingEvent");
 	
 	AudioProcessingEvent *audioProcessingEvent = new AudioProcessingEvent();
-	audioProcessingEvent->Wrap(info.This());
-	
-	RET_VALUE(info.This());
 	
 }
 
 
-JS_METHOD(AudioProcessingEvent::destroy) { THIS_AUDIO_PROCESSING_EVENT; THIS_CHECK;
+JS_METHOD(AudioProcessingEvent::destroy) { THIS_CHECK;
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(AudioProcessingEvent::isDestroyedGetter) { THIS_AUDIO_PROCESSING_EVENT;
+JS_GETTER(AudioProcessingEvent::isDestroyedGetter) {
 	
 	RET_BOOL(_isDestroyed);
 	

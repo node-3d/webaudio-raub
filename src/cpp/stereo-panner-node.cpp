@@ -34,7 +34,7 @@ void StereoPannerNode::_destroy() { DES_CHECK;
 
 
 
-JS_GETTER(StereoPannerNode::panGetter) { THIS_STEREO_PANNER_NODE; THIS_CHECK;
+JS_GETTER(StereoPannerNode::panGetter) { THIS_CHECK;
 	
 	RET_VALUE(__pan.Value());
 	
@@ -48,20 +48,10 @@ Napi::FunctionReference StereoPannerNode::_ctorStereoPannerNode;
 
 void StereoPannerNode::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_R(obj, pan);
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "StereoPannerNode", {
+		ACCESSOR_M(StereoPannerNode, destroy),
+		ACCESSOR_R(StereoPannerNode, pan),
+		ACCESSOR_R(StereoPannerNode, isDestroyed),
 	
 	});
 	
@@ -87,28 +77,25 @@ Napi::Object StereoPannerNode::getNew() {
 }
 
 
-JS_METHOD(StereoPannerNode::newCtor) {
+StereoPannerNode::StereoPannerNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<StereoPannerNode>(info) {
 	
 	CTOR_CHECK("StereoPannerNode");
 	
 	StereoPannerNode *stereoPannerNode = new StereoPannerNode();
-	stereoPannerNode->Wrap(info.This());
-	
-	RET_VALUE(info.This());
 	
 }
 
 
-JS_METHOD(StereoPannerNode::destroy) { THIS_STEREO_PANNER_NODE; THIS_CHECK;
+JS_METHOD(StereoPannerNode::destroy) { THIS_CHECK;
 	
-	stereoPannerNode->emit("destroy");
+	emit("destroy");
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(StereoPannerNode::isDestroyedGetter) { THIS_STEREO_PANNER_NODE;
+JS_GETTER(StereoPannerNode::isDestroyedGetter) {
 	
 	RET_BOOL(_isDestroyed);
 	

@@ -34,7 +34,7 @@ void ConstantSourceNode::_destroy() { DES_CHECK;
 
 
 
-JS_GETTER(ConstantSourceNode::offsetGetter) { THIS_CONSTANT_SOURCE_NODE; THIS_CHECK;
+JS_GETTER(ConstantSourceNode::offsetGetter) { THIS_CHECK;
 	
 	RET_VALUE(__offset.Value());
 	
@@ -48,20 +48,10 @@ Napi::FunctionReference ConstantSourceNode::_ctorConstantSourceNode;
 
 void ConstantSourceNode::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_R(obj, offset);
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "ConstantSourceNode", {
+		ACCESSOR_M(ConstantSourceNode, destroy),
+		ACCESSOR_R(ConstantSourceNode, offset),
+		ACCESSOR_R(ConstantSourceNode, isDestroyed),
 	
 	});
 	
@@ -87,28 +77,25 @@ Napi::Object ConstantSourceNode::getNew() {
 }
 
 
-JS_METHOD(ConstantSourceNode::newCtor) {
+ConstantSourceNode::ConstantSourceNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<ConstantSourceNode>(info) {
 	
 	CTOR_CHECK("ConstantSourceNode");
 	
 	ConstantSourceNode *constantSourceNode = new ConstantSourceNode();
-	constantSourceNode->Wrap(info.This());
-	
-	RET_VALUE(info.This());
 	
 }
 
 
-JS_METHOD(ConstantSourceNode::destroy) { THIS_CONSTANT_SOURCE_NODE; THIS_CHECK;
+JS_METHOD(ConstantSourceNode::destroy) { THIS_CHECK;
 	
-	constantSourceNode->emit("destroy");
+	emit("destroy");
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(ConstantSourceNode::isDestroyedGetter) { THIS_CONSTANT_SOURCE_NODE;
+JS_GETTER(ConstantSourceNode::isDestroyedGetter) {
 	
 	RET_BOOL(_isDestroyed);
 	

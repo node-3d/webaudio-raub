@@ -31,13 +31,13 @@ void AudioTimestamp::_destroy() { DES_CHECK;
 
 
 
-JS_GETTER(AudioTimestamp::contextTimeGetter) { THIS_AUDIO_TIMESTAMP; THIS_CHECK;
+JS_GETTER(AudioTimestamp::contextTimeGetter) { THIS_CHECK;
 	
 	RET_NUM(_contextTime);
 	
 }
 
-JS_SETTER(AudioTimestamp::contextTimeSetter) { THIS_AUDIO_TIMESTAMP; THIS_CHECK; SETTER_DOUBLE_ARG;
+JS_SETTER(AudioTimestamp::contextTimeSetter) { THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	CACHE_CAS(_contextTime, v);
 	
@@ -46,13 +46,13 @@ JS_SETTER(AudioTimestamp::contextTimeSetter) { THIS_AUDIO_TIMESTAMP; THIS_CHECK;
 }
 
 
-JS_GETTER(AudioTimestamp::performanceTimeGetter) { THIS_AUDIO_TIMESTAMP; THIS_CHECK;
+JS_GETTER(AudioTimestamp::performanceTimeGetter) { THIS_CHECK;
 	
 	RET_NUM(_performanceTime);
 	
 }
 
-JS_SETTER(AudioTimestamp::performanceTimeSetter) { THIS_AUDIO_TIMESTAMP; THIS_CHECK; SETTER_DOUBLE_ARG;
+JS_SETTER(AudioTimestamp::performanceTimeSetter) { THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	CACHE_CAS(_performanceTime, v);
 	
@@ -68,21 +68,11 @@ Napi::FunctionReference AudioTimestamp::_ctorAudioTimestamp;
 
 void AudioTimestamp::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_RW(obj, contextTime);
-	ACCESSOR_RW(obj, performanceTime);
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "AudioTimestamp", {
+		ACCESSOR_RW(AudioTimestamp, performanceTime),
+		ACCESSOR_RW(AudioTimestamp, contextTime),
+		ACCESSOR_M(AudioTimestamp, destroy),
+		ACCESSOR_R(AudioTimestamp, isDestroyed),
 	
 	});
 	
@@ -108,26 +98,23 @@ Napi::Object AudioTimestamp::getNew() {
 }
 
 
-JS_METHOD(AudioTimestamp::newCtor) {
+AudioTimestamp::AudioTimestamp(const Napi::CallbackInfo &info): Napi::ObjectWrap<AudioTimestamp>(info) {
 	
 	CTOR_CHECK("AudioTimestamp");
 	
 	AudioTimestamp *audioTimestamp = new AudioTimestamp();
-	audioTimestamp->Wrap(info.This());
-	
-	RET_VALUE(info.This());
 	
 }
 
 
-JS_METHOD(AudioTimestamp::destroy) { THIS_AUDIO_TIMESTAMP; THIS_CHECK;
+JS_METHOD(AudioTimestamp::destroy) { THIS_CHECK;
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(AudioTimestamp::isDestroyedGetter) { THIS_AUDIO_TIMESTAMP;
+JS_GETTER(AudioTimestamp::isDestroyedGetter) {
 	
 	RET_BOOL(_isDestroyed);
 	

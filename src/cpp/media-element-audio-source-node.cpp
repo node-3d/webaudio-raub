@@ -55,20 +55,10 @@ Napi::FunctionReference MediaElementAudioSourceNode::_ctorMediaElementAudioSourc
 
 void MediaElementAudioSourceNode::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_R(obj, mediaElement);
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "MediaElementAudioSourceNode", {
+		ACCESSOR_M(MediaElementAudioSourceNode, destroy),
+		ACCESSOR_R(MediaElementAudioSourceNode, mediaElement),
+		ACCESSOR_R(MediaElementAudioSourceNode, isDestroyed),
 	
 	});
 	
@@ -94,15 +84,12 @@ Napi::Object MediaElementAudioSourceNode::getNew() {
 }
 
 
-JS_METHOD(MediaElementAudioSourceNode::newCtor) {
+MediaElementAudioSourceNode::MediaElementAudioSourceNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<MediaElementAudioSourceNode>(info) {
 	
 	CTOR_CHECK("MediaElementAudioSourceNode");
 	
 	MediaElementAudioSourceNode *mediaElementAudioSourceNode =
 		new MediaElementAudioSourceNode();
-	mediaElementAudioSourceNode->Wrap(info.This());
-	
-	RET_VALUE(info.This());
 	
 }
 
@@ -111,7 +98,7 @@ JS_METHOD(MediaElementAudioSourceNode::destroy) {
 	
 	THIS_MEDIA_ELEMENT_AUDIO_SOURCE_NODE; THIS_CHECK;
 	
-	mediaElementAudioSourceNode->emit("destroy");
+	emit("destroy");
 	
 	_destroy();
 	

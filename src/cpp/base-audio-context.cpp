@@ -166,7 +166,7 @@ void BaseAudioContext::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-JS_METHOD(BaseAudioContext::createBuffer) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(BaseAudioContext::createBuffer) { THIS_CHECK;
 	
 	REQ_INT32_ARG(0, numberOfChannels);
 	REQ_INT32_ARG(1, numberOfFrames);
@@ -177,7 +177,7 @@ JS_METHOD(BaseAudioContext::createBuffer) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 }
 
 
-JS_METHOD(BaseAudioContext::decodeAudioData) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(BaseAudioContext::decodeAudioData) { THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, audioData);
 	REQ_FUN_ARG(1, successCallback);
@@ -222,7 +222,7 @@ NODE_CREATOR(Oscillator, Oscillator);
 
 
 
-JS_METHOD(BaseAudioContext::createIIRFilter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(BaseAudioContext::createIIRFilter) { THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, feedForward);
 	REQ_OBJ_ARG(1, feedBack);
@@ -232,7 +232,7 @@ JS_METHOD(BaseAudioContext::createIIRFilter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHE
 }
 
 
-JS_METHOD(BaseAudioContext::createDelay) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(BaseAudioContext::createDelay) { THIS_CHECK;
 	
 	LET_DOUBLE_ARG(0, delay);
 	
@@ -245,7 +245,7 @@ JS_METHOD(BaseAudioContext::createDelay) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
 }
 
 
-JS_METHOD(BaseAudioContext::createScriptProcessor) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(BaseAudioContext::createScriptProcessor) { THIS_CHECK;
 	
 	REQ_INT32_ARG(0, bufferSize);
 	REQ_INT32_ARG(1, numberOfInputChannels);
@@ -256,7 +256,7 @@ JS_METHOD(BaseAudioContext::createScriptProcessor) { THIS_BASE_AUDIO_CONTEXT; TH
 }
 
 
-JS_METHOD(BaseAudioContext::createPeriodicWave) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(BaseAudioContext::createPeriodicWave) { THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, real);
 	REQ_OBJ_ARG(1, imag);
@@ -267,7 +267,7 @@ JS_METHOD(BaseAudioContext::createPeriodicWave) { THIS_BASE_AUDIO_CONTEXT; THIS_
 }
 
 
-JS_METHOD(BaseAudioContext::createChannelSplitter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(BaseAudioContext::createChannelSplitter) { THIS_CHECK;
 	
 	REQ_INT32_ARG(0, numberOfOutputs);
 	
@@ -276,7 +276,7 @@ JS_METHOD(BaseAudioContext::createChannelSplitter) { THIS_BASE_AUDIO_CONTEXT; TH
 }
 
 
-JS_METHOD(BaseAudioContext::createChannelMerger) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(BaseAudioContext::createChannelMerger) { THIS_CHECK;
 	
 	REQ_INT32_ARG(0, numberOfInputs);
 	
@@ -285,21 +285,21 @@ JS_METHOD(BaseAudioContext::createChannelMerger) { THIS_BASE_AUDIO_CONTEXT; THIS
 }
 
 
-JS_METHOD(BaseAudioContext::update) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(BaseAudioContext::update) { THIS_CHECK;
 	
 	_impl->dispatchEvents();
 	
 }
 
 
-JS_METHOD(BaseAudioContext::resume) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(BaseAudioContext::resume) { THIS_CHECK;
 	
 	// TODO: do something?
 	
 }
 
 
-JS_METHOD(BaseAudioContext::createMediaElementSource) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(BaseAudioContext::createMediaElementSource) { THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, mediaElement);
 	
@@ -308,7 +308,7 @@ JS_METHOD(BaseAudioContext::createMediaElementSource) { THIS_BASE_AUDIO_CONTEXT;
 }
 
 
-JS_METHOD(BaseAudioContext::createMediaStreamSource) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(BaseAudioContext::createMediaStreamSource) { THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, mediaStream);
 	
@@ -317,42 +317,42 @@ JS_METHOD(BaseAudioContext::createMediaStreamSource) { THIS_BASE_AUDIO_CONTEXT; 
 }
 
 
-JS_METHOD(BaseAudioContext::createMediaStreamDestination) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(BaseAudioContext::createMediaStreamDestination) { THIS_CHECK;
 	
 	// TODO: do something?
 	
 }
 
 
-JS_GETTER(BaseAudioContext::destinationGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_GETTER(BaseAudioContext::destinationGetter) { THIS_CHECK;
 	
 	RET_VALUE(__destination.Value());
 	
 }
 
 
-JS_GETTER(BaseAudioContext::currentTimeGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_GETTER(BaseAudioContext::currentTimeGetter) { THIS_CHECK;
 	
 	RET_NUM(_impl->currentTime());
 	
 }
 
 
-JS_GETTER(BaseAudioContext::sampleRateGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_GETTER(BaseAudioContext::sampleRateGetter) { THIS_CHECK;
 	
 	RET_NUM(_impl->sampleRate());
 	
 }
 
 
-JS_GETTER(BaseAudioContext::listenerGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_GETTER(BaseAudioContext::listenerGetter) { THIS_CHECK;
 	
 	RET_VALUE(__listener.Value());
 	
 }
 
 
-JS_GETTER(BaseAudioContext::stateGetter) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_GETTER(BaseAudioContext::stateGetter) { THIS_CHECK;
 	
 	RET_STR(__state);
 	
@@ -366,48 +366,38 @@ Napi::FunctionReference BaseAudioContext::_ctorBaseAudioContext;
 
 void BaseAudioContext::init(Napi::Env env, Napi::Object exports) {
 	
-	
-	ACCESSOR_R(obj, isDestroyed);
-	
-	ACCESSOR_R(obj, destination);
-	ACCESSOR_R(obj, currentTime);
-	ACCESSOR_R(obj, sampleRate);
-	ACCESSOR_R(obj, listener);
-	ACCESSOR_R(obj, state);
-	
-	// -------- dynamic
-	
-	Nan::SetPrototypeMethod(proto, "destroy", destroy);
-	
-	Nan::SetPrototypeMethod(proto, "update", update);
-	
-	Nan::SetPrototypeMethod(proto, "createBuffer", createBuffer);
-	Nan::SetPrototypeMethod(proto, "decodeAudioData", decodeAudioData);
-	Nan::SetPrototypeMethod(proto, "createBufferSource", createBufferSource);
-	// Nan::SetPrototypeMethod(proto, "createConstantSource", createConstantSource);
-	Nan::SetPrototypeMethod(proto, "createGain", createGain);
-	Nan::SetPrototypeMethod(proto, "createDelay", createDelay);
-	Nan::SetPrototypeMethod(proto, "createBiquadFilter", createBiquadFilter);
-	Nan::SetPrototypeMethod(proto, "createIIRFilter", createIIRFilter);
-	// Nan::SetPrototypeMethod(proto, "createWaveShaper", createWaveShaper);
-	Nan::SetPrototypeMethod(proto, "createPanner", createPanner);
-	Nan::SetPrototypeMethod(proto, "createConvolver", createConvolver);
-	// Nan::SetPrototypeMethod(proto, "createDynamicsCompressor", createDynamicsCompressor);
-	// Nan::SetPrototypeMethod(proto, "createAnalyser", createAnalyser);
-	Nan::SetPrototypeMethod(proto, "createScriptProcessor", createScriptProcessor);
-	// Nan::SetPrototypeMethod(proto, "createStereoPanner", createStereoPanner);
-	Nan::SetPrototypeMethod(proto, "createOscillator", createOscillator);
-	Nan::SetPrototypeMethod(proto, "createPeriodicWave", createPeriodicWave);
-	Nan::SetPrototypeMethod(proto, "createChannelSplitter", createChannelSplitter);
-	Nan::SetPrototypeMethod(proto, "createChannelMerger", createChannelMerger);
-	Nan::SetPrototypeMethod(proto, "createMediaElementSource", createMediaElementSource);
-	Nan::SetPrototypeMethod(proto, "createMediaStreamSource", createMediaStreamSource);
-	Nan::SetPrototypeMethod(proto, "createMediaStreamDestination", createMediaStreamDestination);
-	Nan::SetPrototypeMethod(proto, "resume", resume);
-	
-	// -------- static
-	
 	Napi::Function ctor = DefineClass(env, "BaseAudioContext", {
+		ACCESSOR_M(BaseAudioContext, resume),
+		ACCESSOR_M(BaseAudioContext, createMediaStreamDestination),
+		ACCESSOR_M(BaseAudioContext, createMediaStreamSource),
+		ACCESSOR_M(BaseAudioContext, createMediaElementSource),
+		ACCESSOR_M(BaseAudioContext, createChannelMerger),
+		ACCESSOR_M(BaseAudioContext, createChannelSplitter),
+		ACCESSOR_M(BaseAudioContext, createPeriodicWave),
+		ACCESSOR_M(BaseAudioContext, createOscillator),
+		ACCESSOR_M(BaseAudioContext, createStereoPanner),
+		ACCESSOR_M(BaseAudioContext, createScriptProcessor),
+		ACCESSOR_M(BaseAudioContext, createAnalyser),
+		ACCESSOR_M(BaseAudioContext, createDynamicsCompressor),
+		ACCESSOR_M(BaseAudioContext, createConvolver),
+		ACCESSOR_M(BaseAudioContext, createPanner),
+		ACCESSOR_M(BaseAudioContext, createWaveShaper),
+		ACCESSOR_M(BaseAudioContext, createIIRFilter),
+		ACCESSOR_M(BaseAudioContext, createBiquadFilter),
+		ACCESSOR_M(BaseAudioContext, createDelay),
+		ACCESSOR_M(BaseAudioContext, createGain),
+		ACCESSOR_M(BaseAudioContext, createConstantSource),
+		ACCESSOR_M(BaseAudioContext, createBufferSource),
+		ACCESSOR_M(BaseAudioContext, decodeAudioData),
+		ACCESSOR_M(BaseAudioContext, createBuffer),
+		ACCESSOR_M(BaseAudioContext, update),
+		ACCESSOR_M(BaseAudioContext, destroy),
+		ACCESSOR_R(BaseAudioContext, state),
+		ACCESSOR_R(BaseAudioContext, listener),
+		ACCESSOR_R(BaseAudioContext, sampleRate),
+		ACCESSOR_R(BaseAudioContext, currentTime),
+		ACCESSOR_R(BaseAudioContext, destination),
+		ACCESSOR_R(BaseAudioContext, isDestroyed),
 	
 	});
 	
@@ -419,23 +409,23 @@ void BaseAudioContext::init(Napi::Env env, Napi::Object exports) {
 }
 
 
-JS_METHOD(BaseAudioContext::newCtor) {
+BaseAudioContext::BaseAudioContext(const Napi::CallbackInfo &info): Napi::ObjectWrap<BaseAudioContext>(info) {
 	
 	Nan::ThrowTypeError("Use 'AudioContext' or 'OfflineAudioContext' instead.");
 	
 }
 
 
-JS_METHOD(BaseAudioContext::destroy) { THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;
+JS_METHOD(BaseAudioContext::destroy) { THIS_CHECK;
 	
-	baseAudioContext->emit("destroy");
+	emit("destroy");
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(BaseAudioContext::isDestroyedGetter) { THIS_BASE_AUDIO_CONTEXT;
+JS_GETTER(BaseAudioContext::isDestroyedGetter) {
 	
 	RET_BOOL(_isDestroyed);
 	

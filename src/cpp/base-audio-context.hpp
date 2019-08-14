@@ -35,7 +35,6 @@ protected:
 	
 	explicit BaseAudioContext(bool isOffline = false, float sampleRate = 44100.f);
 	
-	static V8_STORE_FT _protoBaseAudioContext; // for inheritance
 	static Napi::FunctionReference _ctorBaseAudioContext;
 	
 	bool _isDestroyed;
