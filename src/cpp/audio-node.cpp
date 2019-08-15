@@ -10,9 +10,6 @@
 #include "common.hpp"
 
 
-// ------ Aux macros
-
-
 inline string fromChannelCountMode(lab::ChannelCountMode mode) {
 	if (mode == lab::ChannelCountMode::ClampedMax) {
 		return "clamped-max";

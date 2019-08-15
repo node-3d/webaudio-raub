@@ -7,11 +7,12 @@
 #include "audio-node.hpp"
 
 
-class WaveShaperNode : public AudioNode {
+class WaveShaperNode : public Napi::ObjectWrap<WaveShaperNode> {
 	
 public:
 	
 	~WaveShaperNode();
+	WaveShaperNode(const Napi::CallbackInfo &info);
 	
 	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
@@ -25,7 +26,6 @@ public:
 	void _destroy();
 	
 	
-// Methods and props, available for children
 protected:
 	
 	WaveShaperNode();
@@ -38,7 +38,6 @@ protected:
 	std::string _oversample;
 	
 	
-// JS methods and props, available through V8 APIs
 private:
 	
 	JS_METHOD(destroy);

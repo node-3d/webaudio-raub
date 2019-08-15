@@ -7,11 +7,12 @@
 #include "audio-node.hpp"
 
 
-class IIRFilterNode : public AudioNode {
+class IIRFilterNode : public Napi::ObjectWrap<IIRFilterNode> {
 	
 public:
 	
 	~IIRFilterNode();
+	IIRFilterNode(const Napi::CallbackInfo &info);
 	
 	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
@@ -25,7 +26,6 @@ public:
 	void _destroy();
 	
 	
-// Methods and props, available for children
 protected:
 	
 	IIRFilterNode();
@@ -37,7 +37,6 @@ protected:
 	
 	
 	
-// JS methods and props, available through V8 APIs
 private:
 	
 	JS_METHOD(destroy);

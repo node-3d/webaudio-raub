@@ -51,8 +51,7 @@ void ConstantSourceNode::init(Napi::Env env, Napi::Object exports) {
 	Napi::Function ctor = DefineClass(env, "ConstantSourceNode", {
 		ACCESSOR_M(ConstantSourceNode, destroy),
 		ACCESSOR_R(ConstantSourceNode, offset),
-		ACCESSOR_R(ConstantSourceNode, isDestroyed),
-	
+		ACCESSOR_R(ConstantSourceNode, isDestroyed)
 	});
 	
 	_ctorConstantSourceNode = Napi::Persistent(ctor);

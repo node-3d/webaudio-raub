@@ -44,8 +44,7 @@ void ChannelSplitterNode::init(Napi::Env env, Napi::Object exports) {
 	
 	Napi::Function ctor = DefineClass(env, "ChannelSplitterNode", {
 		ACCESSOR_M(ChannelSplitterNode, destroy),
-		ACCESSOR_R(ChannelSplitterNode, isDestroyed),
-	
+		ACCESSOR_R(ChannelSplitterNode, isDestroyed)
 	});
 	
 	_ctorChannelSplitterNode = Napi::Persistent(ctor);

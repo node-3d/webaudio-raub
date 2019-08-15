@@ -5,11 +5,6 @@
 #include "common.hpp"
 
 
-// ------ Aux macros
-
-		Nan::ObjectWrap::Unwrap<AudioScheduledSourceNode>(info.This());
-
-
 // ------ Constructor and Destructor
 
 AudioScheduledSourceNode::AudioScheduledSourceNode(Napi::Object context, NodePtr node) :
@@ -91,8 +86,7 @@ void AudioScheduledSourceNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_M(AudioScheduledSourceNode, stop),
 		ACCESSOR_M(AudioScheduledSourceNode, start),
 		ACCESSOR_M(AudioScheduledSourceNode, destroy),
-		ACCESSOR_R(AudioScheduledSourceNode, isDestroyed),
-	
+		ACCESSOR_R(AudioScheduledSourceNode, isDestroyed)
 	});
 	
 	_ctorAudioScheduledSourceNode = Napi::Persistent(ctor);

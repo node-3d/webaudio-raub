@@ -17,6 +17,7 @@ public:
 	typedef std::shared_ptr<lab::AudioNode> NodePtr;
 	
 	~AudioNode();
+	AudioNode(const Napi::CallbackInfo &info);
 	
 	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
@@ -29,7 +30,6 @@ public:
 	NodePtr getNode() const;
 	
 	
-// Methods and props, available for children
 protected:
 	
 	AudioNode() {} // fake, TODO: remove
@@ -47,7 +47,6 @@ protected:
 	Napi::ObjectReference _context;
 	
 	
-// JS methods and props, available through V8 APIs
 private:
 	
 	JS_METHOD(destroy);

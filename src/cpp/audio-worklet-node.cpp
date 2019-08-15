@@ -75,8 +75,7 @@ void AudioWorkletNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_M(AudioWorkletNode, destroy),
 		ACCESSOR_R(AudioWorkletNode, port),
 		ACCESSOR_R(AudioWorkletNode, parameters),
-		ACCESSOR_R(AudioWorkletNode, isDestroyed),
-	
+		ACCESSOR_R(AudioWorkletNode, isDestroyed)
 	});
 	
 	_ctorAudioWorkletNode = Napi::Persistent(ctor);

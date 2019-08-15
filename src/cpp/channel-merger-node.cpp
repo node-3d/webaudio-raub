@@ -44,8 +44,7 @@ void ChannelMergerNode::init(Napi::Env env, Napi::Object exports) {
 	
 	Napi::Function ctor = DefineClass(env, "ChannelMergerNode", {
 		ACCESSOR_M(ChannelMergerNode, destroy),
-		ACCESSOR_R(ChannelMergerNode, isDestroyed),
-	
+		ACCESSOR_R(ChannelMergerNode, isDestroyed)
 	});
 	
 	_ctorChannelMergerNode = Napi::Persistent(ctor);

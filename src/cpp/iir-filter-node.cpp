@@ -55,8 +55,7 @@ void IIRFilterNode::init(Napi::Env env, Napi::Object exports) {
 	Napi::Function ctor = DefineClass(env, "IIRFilterNode", {
 		ACCESSOR_M(IIRFilterNode, getFrequencyResponse),
 		ACCESSOR_M(IIRFilterNode, destroy),
-		ACCESSOR_R(IIRFilterNode, isDestroyed),
-	
+		ACCESSOR_R(IIRFilterNode, isDestroyed)
 	});
 	
 	_ctorIIRFilterNode = Napi::Persistent(ctor);

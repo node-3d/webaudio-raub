@@ -106,8 +106,7 @@ void ConvolverNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_RW(ConvolverNode, normalize),
 		ACCESSOR_RW(ConvolverNode, buffer),
 		ACCESSOR_M(ConvolverNode, destroy),
-		ACCESSOR_R(ConvolverNode, isDestroyed),
-	
+		ACCESSOR_R(ConvolverNode, isDestroyed)
 	});
 	
 	_ctorConvolverNode = Napi::Persistent(ctor);

@@ -72,8 +72,7 @@ void ScriptProcessorNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_RW(ScriptProcessorNode, onaudioprocess),
 		ACCESSOR_M(ScriptProcessorNode, destroy),
 		ACCESSOR_R(ScriptProcessorNode, bufferSize),
-		ACCESSOR_R(ScriptProcessorNode, isDestroyed),
-	
+		ACCESSOR_R(ScriptProcessorNode, isDestroyed)
 	});
 	
 	_ctorScriptProcessorNode = Napi::Persistent(ctor);

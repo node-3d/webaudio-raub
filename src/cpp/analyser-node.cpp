@@ -162,8 +162,7 @@ void AnalyserNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_M(AnalyserNode, getFloatFrequencyData),
 		ACCESSOR_M(AnalyserNode, destroy),
 		ACCESSOR_R(AnalyserNode, frequencyBinCount),
-		ACCESSOR_R(AnalyserNode, isDestroyed),
-	
+		ACCESSOR_R(AnalyserNode, isDestroyed)
 	});
 	
 	_ctorAnalyserNode = Napi::Persistent(ctor);
@@ -176,15 +175,6 @@ void AnalyserNode::init(Napi::Env env, Napi::Object exports) {
 
 bool AnalyserNode::isAnalyserNode(Napi::Object obj) {
 	return obj.InstanceOf(_ctorAnalyserNode.Value());
-}
-
-
-Napi::Object AnalyserNode::getNew() {
-	
-	Napi::Function ctor = Nan::New(_ctorAnalyserNode);
-	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
-	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
-	
 }
 
 

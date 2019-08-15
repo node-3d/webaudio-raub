@@ -16,6 +16,7 @@ public:
 	typedef std::shared_ptr<lab::AudioBus> BusPtr;
 	
 	~AudioBuffer();
+	AudioBuffer(const Napi::CallbackInfo &info);
 	
 	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
@@ -29,7 +30,6 @@ public:
 	BusPtr getBus() const;
 	
 	
-// Methods and props, available for children
 protected:
 	
 	AudioBuffer();
@@ -47,7 +47,6 @@ protected:
 	BusPtr _impl;
 	
 	
-// JS methods and props, available through V8 APIs
 private:
 	
 	JS_METHOD(destroy);

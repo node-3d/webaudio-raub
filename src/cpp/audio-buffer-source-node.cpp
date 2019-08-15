@@ -230,8 +230,7 @@ void AudioBufferSourceNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_M(AudioBufferSourceNode, destroy),
 		ACCESSOR_R(AudioBufferSourceNode, detune),
 		ACCESSOR_R(AudioBufferSourceNode, playbackRate),
-		ACCESSOR_R(AudioBufferSourceNode, isDestroyed),
-	
+		ACCESSOR_R(AudioBufferSourceNode, isDestroyed)
 	});
 	
 	_ctorAudioBufferSourceNode = Napi::Persistent(ctor);

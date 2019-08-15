@@ -10,6 +10,7 @@ class AudioWorkletProcessor : public Napi::ObjectWrap<AudioWorkletProcessor> {
 public:
 	
 	~AudioWorkletProcessor();
+	AudioWorkletProcessor(const Napi::CallbackInfo &info);
 	
 	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
@@ -23,7 +24,6 @@ public:
 	void _destroy();
 	
 	
-// Methods and props, available for children
 protected:
 	
 	AudioWorkletProcessor();
@@ -35,7 +35,6 @@ protected:
 	Napi::ObjectReference _port;
 	
 	
-// JS methods and props, available through V8 APIs
 private:
 	
 	JS_METHOD(destroy);

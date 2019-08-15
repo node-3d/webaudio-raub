@@ -64,8 +64,7 @@ void AudioProcessingEvent::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(AudioProcessingEvent, outputBuffer),
 		ACCESSOR_R(AudioProcessingEvent, inputBuffer),
 		ACCESSOR_R(AudioProcessingEvent, playbackTime),
-		ACCESSOR_R(AudioProcessingEvent, isDestroyed),
-	
+		ACCESSOR_R(AudioProcessingEvent, isDestroyed)
 	});
 	
 	_ctorAudioProcessingEvent = Napi::Persistent(ctor);

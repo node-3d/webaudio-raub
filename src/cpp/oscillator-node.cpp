@@ -7,9 +7,6 @@
 #include "common.hpp"
 
 
-// ------ Aux macros
-
-
 inline string fromOscillatorType(lab::OscillatorType mode) {
 	if (mode == lab::OscillatorType::SINE) {
 		return "sine";
@@ -140,8 +137,7 @@ void OscillatorNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_M(OscillatorNode, destroy),
 		ACCESSOR_R(OscillatorNode, detune),
 		ACCESSOR_R(OscillatorNode, frequency),
-		ACCESSOR_R(OscillatorNode, isDestroyed),
-	
+		ACCESSOR_R(OscillatorNode, isDestroyed)
 	});
 	
 	_ctorOscillatorNode = Napi::Persistent(ctor);

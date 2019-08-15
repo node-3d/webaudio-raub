@@ -72,8 +72,7 @@ void AudioTimestamp::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_RW(AudioTimestamp, performanceTime),
 		ACCESSOR_RW(AudioTimestamp, contextTime),
 		ACCESSOR_M(AudioTimestamp, destroy),
-		ACCESSOR_R(AudioTimestamp, isDestroyed),
-	
+		ACCESSOR_R(AudioTimestamp, isDestroyed)
 	});
 	
 	_ctorAudioTimestamp = Napi::Persistent(ctor);

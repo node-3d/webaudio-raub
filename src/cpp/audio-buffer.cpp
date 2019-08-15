@@ -140,8 +140,7 @@ void AudioBuffer::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(AudioBuffer, sampleRate),
 		ACCESSOR_R(AudioBuffer, duration),
 		ACCESSOR_R(AudioBuffer, length),
-		ACCESSOR_R(AudioBuffer, isDestroyed),
-	
+		ACCESSOR_R(AudioBuffer, isDestroyed)
 	});
 	
 	_ctorAudioBuffer = Napi::Persistent(ctor);

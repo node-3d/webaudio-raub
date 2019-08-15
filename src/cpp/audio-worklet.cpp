@@ -41,8 +41,7 @@ void AudioWorklet::init(Napi::Env env, Napi::Object exports) {
 	
 	Napi::Function ctor = DefineClass(env, "AudioWorklet", {
 		ACCESSOR_M(AudioWorklet, destroy),
-		ACCESSOR_R(AudioWorklet, isDestroyed),
-	
+		ACCESSOR_R(AudioWorklet, isDestroyed)
 	});
 	
 	_ctorAudioWorklet = Napi::Persistent(ctor);

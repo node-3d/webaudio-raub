@@ -16,6 +16,7 @@ public:
 	typedef std::shared_ptr<lab::AudioParam> ParamPtr;
 	
 	~AudioParam();
+	AudioParam(const Napi::CallbackInfo &info);
 	
 	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
@@ -31,7 +32,6 @@ public:
 	static bool isAudioParam(Napi::Object obj);
 	
 	
-// Methods and props, available for children
 protected:
 	
 	AudioParam(Napi::Object context, ParamPtr param);
@@ -44,7 +44,6 @@ protected:
 	Napi::ObjectReference _context;
 	
 	
-// JS methods and props, available through V8 APIs
 private:
 	
 	JS_METHOD(destroy);

@@ -51,8 +51,7 @@ void StereoPannerNode::init(Napi::Env env, Napi::Object exports) {
 	Napi::Function ctor = DefineClass(env, "StereoPannerNode", {
 		ACCESSOR_M(StereoPannerNode, destroy),
 		ACCESSOR_R(StereoPannerNode, pan),
-		ACCESSOR_R(StereoPannerNode, isDestroyed),
-	
+		ACCESSOR_R(StereoPannerNode, isDestroyed)
 	});
 	
 	_ctorStereoPannerNode = Napi::Persistent(ctor);

@@ -4,11 +4,6 @@
 #include "common.hpp"
 
 
-// ------ Aux macros
-
-	Nan::ObjectWrap::Unwrap<MediaElementAudioSourceNode>(info.This());
-
-
 // ------ Constructor and Destructor
 
 MediaElementAudioSourceNode::MediaElementAudioSourceNode() :
@@ -56,8 +51,7 @@ void MediaElementAudioSourceNode::init(Napi::Env env, Napi::Object exports) {
 	Napi::Function ctor = DefineClass(env, "MediaElementAudioSourceNode", {
 		ACCESSOR_M(MediaElementAudioSourceNode, destroy),
 		ACCESSOR_R(MediaElementAudioSourceNode, mediaElement),
-		ACCESSOR_R(MediaElementAudioSourceNode, isDestroyed),
-	
+		ACCESSOR_R(MediaElementAudioSourceNode, isDestroyed)
 	});
 	
 	_ctorMediaElementAudioSourceNode = Napi::Persistent(ctor);

@@ -7,11 +7,12 @@
 #include "audio-node.hpp"
 
 
-class DynamicsCompressorNode : public AudioNode {
+class DynamicsCompressorNode : public Napi::ObjectWrap<DynamicsCompressorNode> {
 	
 public:
 	
 	~DynamicsCompressorNode();
+	DynamicsCompressorNode(const Napi::CallbackInfo &info);
 	
 	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
@@ -25,7 +26,6 @@ public:
 	void _destroy();
 	
 	
-// Methods and props, available for children
 protected:
 	
 	DynamicsCompressorNode();
@@ -42,7 +42,6 @@ protected:
 	Napi::ObjectReference _release;
 	
 	
-// JS methods and props, available through V8 APIs
 private:
 	
 	JS_METHOD(destroy);

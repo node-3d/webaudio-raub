@@ -4,11 +4,6 @@
 #include "common.hpp"
 
 
-// ------ Aux macros
-
-	Nan::ObjectWrap::Unwrap<DynamicsCompressorNode>(info.This());
-
-
 // ------ Constructor and Destructor
 
 DynamicsCompressorNode::DynamicsCompressorNode() :
@@ -96,8 +91,7 @@ void DynamicsCompressorNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(DynamicsCompressorNode, ratio),
 		ACCESSOR_R(DynamicsCompressorNode, knee),
 		ACCESSOR_R(DynamicsCompressorNode, threshold),
-		ACCESSOR_R(DynamicsCompressorNode, isDestroyed),
-	
+		ACCESSOR_R(DynamicsCompressorNode, isDestroyed)
 	});
 	
 	_ctorDynamicsCompressorNode = Napi::Persistent(ctor);

@@ -7,11 +7,12 @@
 #include "audio-node.hpp"
 
 
-class MediaStreamAudioDestinationNode : public AudioNode {
+class MediaStreamAudioDestinationNode : public Napi::ObjectWrap<MediaStreamAudioDestinationNode> {
 	
 public:
 	
 	~MediaStreamAudioDestinationNode();
+	MediaStreamAudioDestinationNode(const Napi::CallbackInfo &info);
 	
 	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
@@ -25,7 +26,6 @@ public:
 	void _destroy();
 	
 	
-// Methods and props, available for children
 protected:
 	
 	MediaStreamAudioDestinationNode();
@@ -37,7 +37,6 @@ protected:
 	Napi::ObjectReference _stream;
 	
 	
-// JS methods and props, available through V8 APIs
 private:
 	
 	JS_METHOD(destroy);

@@ -9,14 +9,6 @@
 #include "common.hpp"
 
 
-// ------ Aux macros
-
-#define PARAM_GETTER(NAME)                                                    \
-JS_GETTER(PannerNode::NAME ## Getter) { THIS_CHECK;        \
-	RET_VALUE(JS_OBJ(pannerNode->_ ## NAME));                                 \
-}
-
-
 inline string fromDistanceModel(uint16_t mode) {
 	if (mode == lab::PannerNode::LINEAR_DISTANCE) {
 		return "linear";
@@ -183,12 +175,12 @@ JS_SETTER(PannerNode::panningModelSetter) { THIS_CHECK; SETTER_STR_ARG;
 }
 
 
-PARAM_GETTER(positionX);
-PARAM_GETTER(positionY);
-PARAM_GETTER(positionZ);
-PARAM_GETTER(orientationX);
-PARAM_GETTER(orientationY);
-PARAM_GETTER(orientationZ);
+PARAM_GETTER(PannerNode, positionX);
+PARAM_GETTER(PannerNode, positionY);
+PARAM_GETTER(PannerNode, positionZ);
+PARAM_GETTER(PannerNode, orientationX);
+PARAM_GETTER(PannerNode, orientationY);
+PARAM_GETTER(PannerNode, orientationZ);
 
 
 JS_GETTER(PannerNode::distanceModelGetter) { THIS_CHECK;

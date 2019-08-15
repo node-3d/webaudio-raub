@@ -53,8 +53,7 @@ void AudioDestinationNode::init(Napi::Env env, Napi::Object exports) {
 	Napi::Function ctor = DefineClass(env, "AudioDestinationNode", {
 		ACCESSOR_M(AudioDestinationNode, destroy),
 		ACCESSOR_R(AudioDestinationNode, maxChannelCount),
-		ACCESSOR_R(AudioDestinationNode, isDestroyed),
-	
+		ACCESSOR_R(AudioDestinationNode, isDestroyed)
 	});
 	
 	_ctorAudioDestinationNode = Napi::Persistent(ctor);

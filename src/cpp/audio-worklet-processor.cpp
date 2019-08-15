@@ -48,8 +48,7 @@ void AudioWorkletProcessor::init(Napi::Env env, Napi::Object exports) {
 	Napi::Function ctor = DefineClass(env, "AudioWorkletProcessor", {
 		ACCESSOR_M(AudioWorkletProcessor, destroy),
 		ACCESSOR_R(AudioWorkletProcessor, port),
-		ACCESSOR_R(AudioWorkletProcessor, isDestroyed),
-	
+		ACCESSOR_R(AudioWorkletProcessor, isDestroyed)
 	});
 	
 	_ctorAudioWorkletProcessor = Napi::Persistent(ctor);

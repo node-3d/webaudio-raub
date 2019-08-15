@@ -7,11 +7,12 @@
 #include "audio-node.hpp"
 
 
-class ConvolverNode : public AudioNode {
+class ConvolverNode : public Napi::ObjectWrap<ConvolverNode> {
 	
 public:
 	
 	~ConvolverNode();
+	ConvolverNode(const Napi::CallbackInfo &info);
 	
 	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
@@ -23,7 +24,6 @@ public:
 	void _destroy();
 	
 	
-// Methods and props, available for children
 protected:
 	
 	explicit ConvolverNode(Napi::Object context);
@@ -35,7 +35,6 @@ protected:
 	Napi::ObjectReference _buffer;
 	
 	
-// JS methods and props, available through V8 APIs
 private:
 	
 	JS_METHOD(destroy);

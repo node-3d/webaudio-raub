@@ -89,8 +89,7 @@ void OfflineAudioContext::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_M(OfflineAudioContext, startRendering),
 		ACCESSOR_M(OfflineAudioContext, destroy),
 		ACCESSOR_R(OfflineAudioContext, length),
-		ACCESSOR_R(OfflineAudioContext, isDestroyed),
-	
+		ACCESSOR_R(OfflineAudioContext, isDestroyed)
 	});
 	
 	_ctorOfflineAudioContext = Napi::Persistent(ctor);

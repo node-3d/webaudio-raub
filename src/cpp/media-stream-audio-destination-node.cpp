@@ -4,11 +4,6 @@
 #include "common.hpp"
 
 
-// ------ Aux macros
-
-	Nan::ObjectWrap::Unwrap<MediaStreamAudioDestinationNode>(info.This());
-
-
 // ------ Constructor and Destructor
 
 MediaStreamAudioDestinationNode::MediaStreamAudioDestinationNode() :
@@ -56,8 +51,7 @@ void MediaStreamAudioDestinationNode::init(Napi::Env env, Napi::Object exports) 
 	Napi::Function ctor = DefineClass(env, "MediaStreamAudioDestinationNode", {
 		ACCESSOR_M(MediaStreamAudioDestinationNode, destroy),
 		ACCESSOR_R(MediaStreamAudioDestinationNode, stream),
-		ACCESSOR_R(MediaStreamAudioDestinationNode, isDestroyed),
-	
+		ACCESSOR_R(MediaStreamAudioDestinationNode, isDestroyed)
 	});
 	
 	_ctorMediaStreamAudioDestinationNode = Napi::Persistent(ctor);

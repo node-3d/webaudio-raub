@@ -48,8 +48,7 @@ void OfflineAudioCompletionEvent::init(Napi::Env env, Napi::Object exports) {
 	Napi::Function ctor = DefineClass(env, "OfflineAudioCompletionEvent", {
 		ACCESSOR_M(OfflineAudioCompletionEvent, destroy),
 		ACCESSOR_R(OfflineAudioCompletionEvent, renderedBuffer),
-		ACCESSOR_R(OfflineAudioCompletionEvent, isDestroyed),
-	
+		ACCESSOR_R(OfflineAudioCompletionEvent, isDestroyed)
 	});
 	
 	_ctorOfflineAudioCompletionEvent = Napi::Persistent(ctor);

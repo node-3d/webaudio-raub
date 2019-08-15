@@ -7,11 +7,12 @@
 #include "audio-node.hpp"
 
 
-class DelayNode : public AudioNode {
+class DelayNode : public Napi::ObjectWrap<DelayNode> {
 	
 public:
 	
 	~DelayNode();
+	DelayNode(const Napi::CallbackInfo &info);
 	
 	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
@@ -25,7 +26,6 @@ public:
 	void _destroy();
 	
 	
-// Methods and props, available for children
 protected:
 	
 	DelayNode(Napi::Object context, float sampleRate, double delay);
@@ -37,7 +37,6 @@ protected:
 	Napi::ObjectReference _delayTime;
 	
 	
-// JS methods and props, available through V8 APIs
 private:
 	
 	JS_METHOD(destroy);

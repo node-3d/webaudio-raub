@@ -7,11 +7,12 @@
 #include "audio-param.hpp"
 
 
-class PannerNode : public AudioNode {
+class PannerNode : public Napi::ObjectWrap<PannerNode> {
 	
 public:
 	
 	~PannerNode();
+	PannerNode(const Napi::CallbackInfo &info);
 	
 	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
@@ -25,7 +26,6 @@ public:
 	void _destroy();
 	
 	
-// Methods and props, available for children
 protected:
 	
 	PannerNode(Napi::Object context, float sampleRate, const std::string &hrtf);
@@ -42,7 +42,6 @@ protected:
 	Napi::ObjectReference _orientationZ;
 	
 	
-// JS methods and props, available through V8 APIs
 private:
 	
 	JS_METHOD(destroy);

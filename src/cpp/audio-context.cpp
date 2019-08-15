@@ -107,8 +107,7 @@ void AudioContext::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_M(AudioContext, suspend),
 		ACCESSOR_M(AudioContext, destroy),
 		ACCESSOR_R(AudioContext, baseLatency),
-		ACCESSOR_R(AudioContext, isDestroyed),
-		
+		ACCESSOR_R(AudioContext, isDestroyed)
 	});
 	
 	_ctorAudioContext = Napi::Persistent(ctor);

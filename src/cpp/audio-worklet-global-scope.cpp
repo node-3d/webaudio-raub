@@ -4,11 +4,6 @@
 #include "common.hpp"
 
 
-// ------ Aux macros
-
-	Nan::ObjectWrap::Unwrap<AudioWorkletGlobalScope>(info.This());
-
-
 // ------ Constructor and Destructor
 
 AudioWorkletGlobalScope::AudioWorkletGlobalScope() {
@@ -79,8 +74,7 @@ void AudioWorkletGlobalScope::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(AudioWorkletGlobalScope, sampleRate),
 		ACCESSOR_R(AudioWorkletGlobalScope, currentTime),
 		ACCESSOR_R(AudioWorkletGlobalScope, currentFrame),
-		ACCESSOR_R(AudioWorkletGlobalScope, isDestroyed),
-	
+		ACCESSOR_R(AudioWorkletGlobalScope, isDestroyed)
 	});
 	
 	_ctorAudioWorkletGlobalScope = Napi::Persistent(ctor);

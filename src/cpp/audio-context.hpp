@@ -12,6 +12,7 @@ class AudioContext : public BaseAudioContext {
 public:
 	
 	~AudioContext();
+	AudioContext(const Napi::CallbackInfo &info);
 	
 	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);

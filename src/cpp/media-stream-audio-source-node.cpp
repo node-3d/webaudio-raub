@@ -51,8 +51,7 @@ void MediaStreamAudioSourceNode::init(Napi::Env env, Napi::Object exports) {
 	Napi::Function ctor = DefineClass(env, "MediaStreamAudioSourceNode", {
 		ACCESSOR_M(MediaStreamAudioSourceNode, destroy),
 		ACCESSOR_R(MediaStreamAudioSourceNode, mediaStream),
-		ACCESSOR_R(MediaStreamAudioSourceNode, isDestroyed),
-	
+		ACCESSOR_R(MediaStreamAudioSourceNode, isDestroyed)
 	});
 	
 	_ctorMediaStreamAudioSourceNode = Napi::Persistent(ctor);

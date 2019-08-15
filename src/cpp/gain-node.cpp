@@ -59,8 +59,7 @@ void GainNode::init(Napi::Env env, Napi::Object exports) {
 	Napi::Function ctor = DefineClass(env, "GainNode", {
 		ACCESSOR_M(GainNode, destroy),
 		ACCESSOR_R(GainNode, gain),
-		ACCESSOR_R(GainNode, isDestroyed),
-	
+		ACCESSOR_R(GainNode, isDestroyed)
 	});
 	
 	_ctorGainNode = Napi::Persistent(ctor);

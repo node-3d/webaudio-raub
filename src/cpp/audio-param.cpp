@@ -182,8 +182,7 @@ void AudioParam::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(AudioParam, maxValue),
 		ACCESSOR_R(AudioParam, minValue),
 		ACCESSOR_R(AudioParam, defaultValue),
-		ACCESSOR_R(AudioParam, isDestroyed),
-	
+		ACCESSOR_R(AudioParam, isDestroyed)
 	});
 	
 	_ctorAudioParam = Napi::Persistent(ctor);

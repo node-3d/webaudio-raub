@@ -7,11 +7,12 @@
 #include "audio-node.hpp"
 
 
-class BiquadFilterNode : public AudioNode {
+class BiquadFilterNode : public Napi::ObjectWrap<BiquadFilterNode> {
 	
 public:
 	
 	~BiquadFilterNode();
+	BiquadFilterNode(const Napi::CallbackInfo &info);
 	
 	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
@@ -25,7 +26,6 @@ public:
 	void _destroy();
 	
 	
-// Methods and props, available for children
 protected:
 	
 	explicit BiquadFilterNode(Napi::Object context);
@@ -41,7 +41,6 @@ protected:
 	Napi::ObjectReference _gain;
 	
 	
-// JS methods and props, available through V8 APIs
 private:
 	
 	JS_METHOD(destroy);

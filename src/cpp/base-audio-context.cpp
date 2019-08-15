@@ -35,9 +35,8 @@
 // ------ Aux macros
 
 #define NODE_CREATOR(M, C)                                                    \
-JS_METHOD(BaseAudioContext::create ## M) {                                   \
-	THIS_BASE_AUDIO_CONTEXT; THIS_CHECK;                                      \
-	info.GetReturnValue().Set(C ## Node::getNew(info.This()));                \
+JS_METHOD(BaseAudioContext::create ## M) { THIS_CHECK;                        \
+	RET_VALUE(C ## Node::create(this));                                       \
 }
 
 
@@ -397,8 +396,7 @@ void BaseAudioContext::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(BaseAudioContext, sampleRate),
 		ACCESSOR_R(BaseAudioContext, currentTime),
 		ACCESSOR_R(BaseAudioContext, destination),
-		ACCESSOR_R(BaseAudioContext, isDestroyed),
-	
+		ACCESSOR_R(BaseAudioContext, isDestroyed)
 	});
 	
 	_ctorBaseAudioContext = Napi::Persistent(ctor);

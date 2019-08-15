@@ -7,11 +7,12 @@
 #include "audio-node.hpp"
 
 
-class ScriptProcessorNode : public AudioNode {
+class ScriptProcessorNode : public Napi::ObjectWrap<ScriptProcessorNode> {
 	
 public:
 	
 	~ScriptProcessorNode();
+	ScriptProcessorNode(const Napi::CallbackInfo &info);
 	
 	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
@@ -25,7 +26,6 @@ public:
 	void _destroy();
 	
 	
-// Methods and props, available for children
 protected:
 	
 	ScriptProcessorNode();
@@ -38,7 +38,6 @@ protected:
 	int _bufferSize;
 	
 	
-// JS methods and props, available through V8 APIs
 private:
 	
 	JS_METHOD(destroy);

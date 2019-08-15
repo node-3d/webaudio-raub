@@ -7,11 +7,12 @@
 #include "audio-node.hpp"
 
 
-class AnalyserNode : public AudioNode {
+class AnalyserNode : public Napi::ObjectWrap<AnalyserNode> {
 	
 public:
 	
 	~AnalyserNode();
+	AnalyserNode(const Napi::CallbackInfo &info);
 	
 	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
@@ -25,7 +26,6 @@ public:
 	void _destroy();
 	
 	
-// Methods and props, available for children
 protected:
 	
 	AnalyserNode();
@@ -41,7 +41,6 @@ protected:
 	double _smoothingTimeConstant;
 	
 	
-// JS methods and props, available through V8 APIs
 private:
 	
 	JS_METHOD(destroy);

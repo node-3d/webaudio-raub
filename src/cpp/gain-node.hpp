@@ -7,11 +7,12 @@
 #include "audio-node.hpp"
 
 
-class GainNode : public AudioNode {
+class GainNode : public Napi::ObjectWrap<GainNode> {
 	
 public:
 	
 	~GainNode();
+	GainNode(const Napi::CallbackInfo &info);
 	
 	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
@@ -23,7 +24,6 @@ public:
 	void _destroy();
 	
 	
-// Methods and props, available for children
 protected:
 	
 	explicit GainNode(Napi::Object context);
@@ -35,7 +35,6 @@ protected:
 	Napi::ObjectReference _gain;
 	
 	
-// JS methods and props, available through V8 APIs
 private:
 	
 	JS_METHOD(destroy);

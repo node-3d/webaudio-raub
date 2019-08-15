@@ -41,8 +41,7 @@ void PeriodicWave::init(Napi::Env env, Napi::Object exports) {
 	
 	Napi::Function ctor = DefineClass(env, "PeriodicWave", {
 		ACCESSOR_M(PeriodicWave, destroy),
-		ACCESSOR_R(PeriodicWave, isDestroyed),
-	
+		ACCESSOR_R(PeriodicWave, isDestroyed)
 	});
 	
 	_ctorPeriodicWave = Napi::Persistent(ctor);

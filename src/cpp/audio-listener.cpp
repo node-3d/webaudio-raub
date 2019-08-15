@@ -9,14 +9,6 @@
 #include "common.hpp"
 
 
-// ------ Aux macros
-
-#define PARAM_GETTER(NAME)                                                    \
-JS_GETTER(AudioListener::NAME ## Getter) { THIS_CHECK;  \
-	RET_VALUE(JS_OBJ(audioListener->_ ## NAME));                              \
-}
-
-
 // ------ Constructor and Destructor
 
 AudioListener::AudioListener(Napi::Object context, ListenerPtr listener) {
@@ -93,15 +85,15 @@ JS_METHOD(AudioListener::setOrientation) { THIS_CHECK;
 }
 
 
-PARAM_GETTER(positionX);
-PARAM_GETTER(positionY);
-PARAM_GETTER(positionZ);
-PARAM_GETTER(forwardX);
-PARAM_GETTER(forwardY);
-PARAM_GETTER(forwardZ);
-PARAM_GETTER(upX);
-PARAM_GETTER(upY);
-PARAM_GETTER(upZ);
+PARAM_GETTER(AudioListener, positionX);
+PARAM_GETTER(AudioListener, positionY);
+PARAM_GETTER(AudioListener, positionZ);
+PARAM_GETTER(AudioListener, forwardX);
+PARAM_GETTER(AudioListener, forwardY);
+PARAM_GETTER(AudioListener, forwardZ);
+PARAM_GETTER(AudioListener, upX);
+PARAM_GETTER(AudioListener, upY);
+PARAM_GETTER(AudioListener, upZ);
 
 
 // ------ System methods and props for ObjectWrap
@@ -124,8 +116,7 @@ void AudioListener::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(AudioListener, positionZ),
 		ACCESSOR_R(AudioListener, positionY),
 		ACCESSOR_R(AudioListener, positionX),
-		ACCESSOR_R(AudioListener, isDestroyed),
-	
+		ACCESSOR_R(AudioListener, isDestroyed)
 	});
 	
 	_ctorAudioListener = Napi::Persistent(ctor);

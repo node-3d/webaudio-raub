@@ -121,8 +121,7 @@ void BiquadFilterNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(BiquadFilterNode, Q),
 		ACCESSOR_R(BiquadFilterNode, detune),
 		ACCESSOR_R(BiquadFilterNode, frequency),
-		ACCESSOR_R(BiquadFilterNode, isDestroyed),
-	
+		ACCESSOR_R(BiquadFilterNode, isDestroyed)
 	});
 	
 	_ctorBiquadFilterNode = Napi::Persistent(ctor);
