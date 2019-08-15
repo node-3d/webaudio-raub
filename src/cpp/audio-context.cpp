@@ -132,7 +132,7 @@ AudioContext::AudioContext(const Napi::CallbackInfo &info): Napi::ObjectWrap<Aud
 		if (opts->Has(JS_STR("sampleRate"))) {
 			
 			if ( !opts->Get(JS_STR("sampleRate"))->IsNumber() ) {
-				return Nan::ThrowTypeError("Type of 'opts.sampleRate' must be 'number'.");
+				return JS_THROW("Type of 'opts.sampleRate' must be 'number'.");
 			}
 			
 			float sampleRate = static_cast<float>(
@@ -166,7 +166,7 @@ JS_METHOD(AudioContext::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(AudioContext::isDestroyedGetter) {
+JS_GETTER(AudioContext::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

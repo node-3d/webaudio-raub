@@ -1,5 +1,4 @@
 #include <LabSound/core/OscillatorNode.h>
-#include <LabSound/core/Synthesis.h>
 
 #include "oscillator-node.hpp"
 #include "audio-context.hpp"
@@ -101,7 +100,7 @@ JS_GETTER(OscillatorNode::typeGetter) { THIS_CHECK;
 }
 
 
-JS_SETTER(OscillatorNode::typeSetter) { THIS_CHECK; SETTER_UTF8_ARG;
+JS_SETTER(OscillatorNode::typeSetter) { THIS_CHECK; SETTER_STR_ARG;
 	
 	lab::OscillatorNode *node = static_cast<lab::OscillatorNode*>(
 		_impl.get()
@@ -116,14 +115,14 @@ JS_SETTER(OscillatorNode::typeSetter) { THIS_CHECK; SETTER_UTF8_ARG;
 
 JS_GETTER(OscillatorNode::frequencyGetter) { THIS_CHECK;
 	
-	RET_VALUE(__frequency.Value());
+	RET_VALUE(_frequency.Value());
 	
 }
 
 
 JS_GETTER(OscillatorNode::detuneGetter) { THIS_CHECK;
 	
-	RET_VALUE(__detune.Value());
+	RET_VALUE(_detune.Value());
 	
 }
 
@@ -160,8 +159,8 @@ bool OscillatorNode::isOscillatorNode(Napi::Object obj) {
 
 Napi::Object OscillatorNode::getNew(Napi::Object context) {
 	
-	V8_VAR_FUNC ctor = Nan::New(_ctorOscillatorNode);
-	V8_VAR_VAL argv[] = { context };
+	Napi::Function ctor = Nan::New(_ctorOscillatorNode);
+	Napi::Value argv[] = { context };
 	return Nan::NewInstance(ctor, 1, argv).ToLocalChecked();
 	
 }
@@ -173,7 +172,7 @@ OscillatorNode::OscillatorNode(const Napi::CallbackInfo &info): Napi::ObjectWrap
 	
 	REQ_OBJ_ARG(0, context);
 	
-	AudioContext *audioContext = Nan::ObjectWrap::Unwrap<AudioContext>(context);
+	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
 	
 	OscillatorNode *oscillatorNode = new OscillatorNode(context, audioContext->getContext()->sampleRate());
 	
@@ -189,7 +188,7 @@ JS_METHOD(OscillatorNode::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(OscillatorNode::isDestroyedGetter) {
+JS_GETTER(OscillatorNode::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

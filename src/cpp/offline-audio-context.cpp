@@ -108,8 +108,8 @@ bool OfflineAudioContext::isOfflineAudioContext(Napi::Object obj) {
 
 Napi::Object OfflineAudioContext::getNew() {
 	
-	V8_VAR_FUNC ctor = Nan::New(_ctorOfflineAudioContext);
-	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
+	Napi::Function ctor = Nan::New(_ctorOfflineAudioContext);
+	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
@@ -133,7 +133,7 @@ JS_METHOD(OfflineAudioContext::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(OfflineAudioContext::isDestroyedGetter) {
+JS_GETTER(OfflineAudioContext::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

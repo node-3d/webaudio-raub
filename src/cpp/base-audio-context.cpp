@@ -125,14 +125,14 @@ void BaseAudioContext::finishNew(Napi::Object context) {
 	);
 	_listener.Reset(listener);
 	
-	V8_VAR_FUNC startUpdater = V8_VAR_FUNC::Cast(
-		V8_VAR_FUNC::Cast(Nan::New(_ctorBaseAudioContext))->Get(
+	Napi::Function startUpdater = Napi::Function::Cast(
+		Napi::Function::Cast(Nan::New(_ctorBaseAudioContext))->Get(
 			JS_STR("startUpdater")
 		)
 	);
 	Nan::Callback startUpdaterCb(startUpdater);
 	
-	V8_VAR_VAL argv = context;
+	Napi::Value argv = context;
 	Nan::AsyncResource async("BaseAudioContext::finishNew()");
 	startUpdaterCb.Call(1, &argv, &async);
 	
@@ -141,14 +141,14 @@ void BaseAudioContext::finishNew(Napi::Object context) {
 
 void BaseAudioContext::_destroy() { DES_CHECK;
 	
-	V8_VAR_FUNC stopUpdater = V8_VAR_FUNC::Cast(
-		V8_VAR_FUNC::Cast(Nan::New(_ctorBaseAudioContext))->Get(
+	Napi::Function stopUpdater = Napi::Function::Cast(
+		Napi::Function::Cast(Nan::New(_ctorBaseAudioContext))->Get(
 			JS_STR("stopUpdater")
 		)
 	);
 	Nan::Callback stopUpdaterCb(stopUpdater);
 	
-	V8_VAR_VAL argv = handle();
+	Napi::Value argv = handle();
 	Nan::AsyncResource async("BaseAudioContext::_destroy()");
 	stopUpdaterCb.Call(1, &argv, &async);
 	
@@ -196,7 +196,7 @@ JS_METHOD(BaseAudioContext::decodeAudioData) { THIS_CHECK;
 	
 	AudioBuffer::BusPtr bus = lab::MakeBusFromMemory(dataVec, ext, false);
 	
-	V8_VAR_VAL buffer = AudioBuffer::getNew(bus);
+	Napi::Value buffer = AudioBuffer::getNew(bus);
 	
 	Nan::Callback callback(successCallback);
 	
@@ -326,7 +326,7 @@ JS_METHOD(BaseAudioContext::createMediaStreamDestination) { THIS_CHECK;
 
 JS_GETTER(BaseAudioContext::destinationGetter) { THIS_CHECK;
 	
-	RET_VALUE(__destination.Value());
+	RET_VALUE(_destination.Value());
 	
 }
 
@@ -347,7 +347,7 @@ JS_GETTER(BaseAudioContext::sampleRateGetter) { THIS_CHECK;
 
 JS_GETTER(BaseAudioContext::listenerGetter) { THIS_CHECK;
 	
-	RET_VALUE(__listener.Value());
+	RET_VALUE(_listener.Value());
 	
 }
 
@@ -411,7 +411,7 @@ void BaseAudioContext::init(Napi::Env env, Napi::Object exports) {
 
 BaseAudioContext::BaseAudioContext(const Napi::CallbackInfo &info): Napi::ObjectWrap<BaseAudioContext>(info) {
 	
-	Nan::ThrowTypeError("Use 'AudioContext' or 'OfflineAudioContext' instead.");
+	JS_THROW("Use 'AudioContext' or 'OfflineAudioContext' instead.");
 	
 }
 
@@ -425,7 +425,7 @@ JS_METHOD(BaseAudioContext::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(BaseAudioContext::isDestroyedGetter) {
+JS_GETTER(BaseAudioContext::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

@@ -91,8 +91,8 @@ bool ScriptProcessorNode::isScriptProcessorNode(Napi::Object obj) {
 
 Napi::Object ScriptProcessorNode::getNew() {
 	
-	V8_VAR_FUNC ctor = Nan::New(_ctorScriptProcessorNode);
-	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
+	Napi::Function ctor = Nan::New(_ctorScriptProcessorNode);
+	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
@@ -116,7 +116,7 @@ JS_METHOD(ScriptProcessorNode::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(ScriptProcessorNode::isDestroyedGetter) {
+JS_GETTER(ScriptProcessorNode::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

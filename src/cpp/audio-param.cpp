@@ -196,9 +196,9 @@ void AudioParam::init(Napi::Env env, Napi::Object exports) {
 
 Napi::Object AudioParam::getNew(Napi::Object context, ParamPtr param) {
 	
-	V8_VAR_FUNC ctor = Nan::New(_ctorAudioParam);
+	Napi::Function ctor = Nan::New(_ctorAudioParam);
 	V8_VAR_EXT extParam = JS_EXT(&param);
-	V8_VAR_VAL argv[] = { context, extParam };
+	Napi::Value argv[] = { context, extParam };
 	return Nan::NewInstance(ctor, 2, argv).ToLocalChecked();
 	
 }
@@ -225,7 +225,7 @@ JS_METHOD(AudioParam::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(AudioParam::isDestroyedGetter) {
+JS_GETTER(AudioParam::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

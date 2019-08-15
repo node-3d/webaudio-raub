@@ -93,11 +93,9 @@ JS_METHOD(AudioBufferSourceNode::start) { THIS_CHECK;
 }
 
 
-JS_GETTER(AudioBufferSourceNode::bufferGetter) {
+JS_GETTER(AudioBufferSourceNode::bufferGetter) { THIS_CHECK;
 	
-	THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK;
-	
-	RET_VALUE(__buffer.Value());
+	RET_VALUE(_buffer.Value());
 	
 }
 
@@ -132,14 +130,14 @@ JS_SETTER(AudioBufferSourceNode::bufferSetter) {
 
 JS_GETTER(AudioBufferSourceNode::playbackRateGetter) { THIS_CHECK;
 	
-	RET_VALUE(__playbackRate.Value());
+	RET_VALUE(_playbackRate.Value());
 	
 }
 
 
 JS_GETTER(AudioBufferSourceNode::detuneGetter) { THIS_CHECK;
 	
-	RET_VALUE(__detune.Value());
+	RET_VALUE(_detune.Value());
 	
 }
 
@@ -246,8 +244,8 @@ void AudioBufferSourceNode::init(Napi::Env env, Napi::Object exports) {
 
 Napi::Object AudioBufferSourceNode::getNew(Napi::Object context) {
 	
-	V8_VAR_FUNC ctor = Nan::New(_ctorAudioBufferSourceNode);
-	V8_VAR_VAL argv[] = { context };
+	Napi::Function ctor = Nan::New(_ctorAudioBufferSourceNode);
+	Napi::Value argv[] = { context };
 	return Nan::NewInstance(ctor, 1, argv).ToLocalChecked();
 	
 }
@@ -273,7 +271,7 @@ JS_METHOD(AudioBufferSourceNode::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(AudioBufferSourceNode::isDestroyedGetter) {
+JS_GETTER(AudioBufferSourceNode::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

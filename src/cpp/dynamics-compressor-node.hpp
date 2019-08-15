@@ -45,8 +45,6 @@ protected:
 // JS methods and props, available through V8 APIs
 private:
 	
-	JS_METHOD(newCtor);
-	
 	JS_METHOD(destroy);
 	JS_GETTER(isDestroyedGetter);
 	

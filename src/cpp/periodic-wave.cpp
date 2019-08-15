@@ -60,8 +60,8 @@ bool PeriodicWave::isPeriodicWave(Napi::Object obj) {
 
 Napi::Object PeriodicWave::getNew() {
 	
-	V8_VAR_FUNC ctor = Nan::New(_ctorPeriodicWave);
-	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
+	Napi::Function ctor = Nan::New(_ctorPeriodicWave);
+	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
@@ -83,7 +83,7 @@ JS_METHOD(PeriodicWave::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(PeriodicWave::isDestroyedGetter) {
+JS_GETTER(PeriodicWave::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

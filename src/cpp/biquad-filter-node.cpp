@@ -64,7 +64,7 @@ JS_GETTER(BiquadFilterNode::typeGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(BiquadFilterNode::typeSetter) { THIS_CHECK; SETTER_UTF8_ARG;
+JS_SETTER(BiquadFilterNode::typeSetter) { THIS_CHECK; SETTER_STR_ARG;
 	
 	if (_type == *v) {
 		return;
@@ -80,28 +80,28 @@ JS_SETTER(BiquadFilterNode::typeSetter) { THIS_CHECK; SETTER_UTF8_ARG;
 
 JS_GETTER(BiquadFilterNode::frequencyGetter) { THIS_CHECK;
 	
-	RET_VALUE(__frequency.Value());
+	RET_VALUE(_frequency.Value());
 	
 }
 
 
 JS_GETTER(BiquadFilterNode::detuneGetter) { THIS_CHECK;
 	
-	RET_VALUE(__detune.Value());
+	RET_VALUE(_detune.Value());
 	
 }
 
 
 JS_GETTER(BiquadFilterNode::QGetter) { THIS_CHECK;
 	
-	RET_VALUE(__Q.Value());
+	RET_VALUE(_Q.Value());
 	
 }
 
 
 JS_GETTER(BiquadFilterNode::gainGetter) { THIS_CHECK;
 	
-	RET_VALUE(__gain.Value());
+	RET_VALUE(_gain.Value());
 	
 }
 
@@ -140,8 +140,8 @@ bool BiquadFilterNode::isBiquadFilterNode(Napi::Object obj) {
 
 Napi::Object BiquadFilterNode::getNew(Napi::Object context) {
 	
-	V8_VAR_FUNC ctor = Nan::New(_ctorBiquadFilterNode);
-	V8_VAR_VAL argv[] = { context };
+	Napi::Function ctor = Nan::New(_ctorBiquadFilterNode);
+	Napi::Value argv[] = { context };
 	return Nan::NewInstance(ctor, 1, argv).ToLocalChecked();
 	
 }
@@ -167,7 +167,7 @@ JS_METHOD(BiquadFilterNode::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(BiquadFilterNode::isDestroyedGetter) {
+JS_GETTER(BiquadFilterNode::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

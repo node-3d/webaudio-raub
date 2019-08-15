@@ -181,8 +181,8 @@ bool AnalyserNode::isAnalyserNode(Napi::Object obj) {
 
 Napi::Object AnalyserNode::getNew() {
 	
-	V8_VAR_FUNC ctor = Nan::New(_ctorAnalyserNode);
-	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
+	Napi::Function ctor = Nan::New(_ctorAnalyserNode);
+	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
@@ -206,7 +206,7 @@ JS_METHOD(AnalyserNode::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(AnalyserNode::isDestroyedGetter) {
+JS_GETTER(AnalyserNode::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

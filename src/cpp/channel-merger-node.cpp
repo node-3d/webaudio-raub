@@ -63,8 +63,8 @@ bool ChannelMergerNode::isChannelMergerNode(Napi::Object obj) {
 
 Napi::Object ChannelMergerNode::getNew() {
 	
-	V8_VAR_FUNC ctor = Nan::New(_ctorChannelMergerNode);
-	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
+	Napi::Function ctor = Nan::New(_ctorChannelMergerNode);
+	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
@@ -88,7 +88,7 @@ JS_METHOD(ChannelMergerNode::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(ChannelMergerNode::isDestroyedGetter) {
+JS_GETTER(ChannelMergerNode::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

@@ -35,9 +35,7 @@ void AudioWorkletGlobalScope::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-JS_METHOD(AudioWorkletGlobalScope::registerProcessor) {
-	
-	THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK;
+JS_METHOD(AudioWorkletGlobalScope::registerProcessor) { THIS_CHECK;
 	
 	REQ_UTF8_ARG(0, name);
 	REQ_FUN_ARG(1, processorConstructor);
@@ -47,27 +45,21 @@ JS_METHOD(AudioWorkletGlobalScope::registerProcessor) {
 }
 
 
-JS_GETTER(AudioWorkletGlobalScope::currentFrameGetter) {
-	
-	THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK;
+JS_GETTER(AudioWorkletGlobalScope::currentFrameGetter) { THIS_CHECK;
 	
 	RET_VALUE(JS_OFFS(_currentFrame));
 	
 }
 
 
-JS_GETTER(AudioWorkletGlobalScope::currentTimeGetter) {
-	
-	THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK;
+JS_GETTER(AudioWorkletGlobalScope::currentTimeGetter) { THIS_CHECK;
 	
 	RET_NUM(_currentTime);
 	
 }
 
 
-JS_GETTER(AudioWorkletGlobalScope::sampleRateGetter) {
-	
-	THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK;
+JS_GETTER(AudioWorkletGlobalScope::sampleRateGetter) { THIS_CHECK;
 	
 	RET_NUM(_sampleRate);
 	
@@ -106,8 +98,8 @@ bool AudioWorkletGlobalScope::isAudioWorkletGlobalScope(Napi::Object obj) {
 
 Napi::Object AudioWorkletGlobalScope::getNew() {
 	
-	V8_VAR_FUNC ctor = Nan::New(_ctorAudioWorkletGlobalScope);
-	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
+	Napi::Function ctor = Nan::New(_ctorAudioWorkletGlobalScope);
+	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
@@ -122,16 +114,14 @@ AudioWorkletGlobalScope::AudioWorkletGlobalScope(const Napi::CallbackInfo &info)
 }
 
 
-JS_METHOD(AudioWorkletGlobalScope::destroy) {
-	
-	THIS_AUDIO_WORKLET_GLOBAL_SCOPE; THIS_CHECK;
+JS_METHOD(AudioWorkletGlobalScope::destroy) { THIS_CHECK;
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(AudioWorkletGlobalScope::isDestroyedGetter) {
+JS_GETTER(AudioWorkletGlobalScope::isDestroyedGetter) { NAPI_ENV;
 	
 	THIS_AUDIO_WORKLET_GLOBAL_SCOPE;
 	

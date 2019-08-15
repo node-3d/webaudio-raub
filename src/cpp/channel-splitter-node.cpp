@@ -63,8 +63,8 @@ bool ChannelSplitterNode::isChannelSplitterNode(Napi::Object obj) {
 
 Napi::Object ChannelSplitterNode::getNew() {
 	
-	V8_VAR_FUNC ctor = Nan::New(_ctorChannelSplitterNode);
-	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
+	Napi::Function ctor = Nan::New(_ctorChannelSplitterNode);
+	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
@@ -88,7 +88,7 @@ JS_METHOD(ChannelSplitterNode::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(ChannelSplitterNode::isDestroyedGetter) {
+JS_GETTER(ChannelSplitterNode::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

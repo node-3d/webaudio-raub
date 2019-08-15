@@ -36,7 +36,7 @@ void StereoPannerNode::_destroy() { DES_CHECK;
 
 JS_GETTER(StereoPannerNode::panGetter) { THIS_CHECK;
 	
-	RET_VALUE(__pan.Value());
+	RET_VALUE(_pan.Value());
 	
 }
 
@@ -70,8 +70,8 @@ bool StereoPannerNode::isStereoPannerNode(Napi::Object obj) {
 
 Napi::Object StereoPannerNode::getNew() {
 	
-	V8_VAR_FUNC ctor = Nan::New(_ctorStereoPannerNode);
-	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
+	Napi::Function ctor = Nan::New(_ctorStereoPannerNode);
+	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
@@ -95,7 +95,7 @@ JS_METHOD(StereoPannerNode::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(StereoPannerNode::isDestroyedGetter) {
+JS_GETTER(StereoPannerNode::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

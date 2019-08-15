@@ -143,9 +143,9 @@ bool AudioListener::isAudioListener(Napi::Object obj) {
 
 Napi::Object AudioListener::getNew(Napi::Object context, ListenerPtr listener) {
 	
-	V8_VAR_FUNC ctor = Nan::New(_ctorAudioListener);
+	Napi::Function ctor = Nan::New(_ctorAudioListener);
 	V8_VAR_EXT extListener = JS_EXT(&listener);
-	V8_VAR_VAL argv[] = { context, extListener };
+	Napi::Value argv[] = { context, extListener };
 	return Nan::NewInstance(ctor, 2, argv).ToLocalChecked();
 	
 }
@@ -172,7 +172,7 @@ JS_METHOD(AudioListener::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(AudioListener::isDestroyedGetter) {
+JS_GETTER(AudioListener::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

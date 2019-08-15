@@ -1,3 +1,5 @@
+#include <memory>
+
 #include <LabSound/core/AudioBus.h>
 
 #include "audio-buffer.hpp"
@@ -8,20 +10,33 @@
 
 // ------ Constructor and Destructor
 
-AudioBuffer::AudioBuffer() {
-	
-	_isDestroyed = false;
-	
-	_impl = make_shared<lab::AudioBus>(1, 1, false);
-	
-}
 
-
-AudioBuffer::AudioBuffer(BusPtr bus) {
+AudioBuffer::AudioBuffer(const Napi::CallbackInfo &info): Napi::ObjectWrap<AudioBuffer>(info) {
 	
-	_isDestroyed = false;
+	CTOR_CHECK("AudioBuffer");
 	
-	_impl = bus;
+	if (info.Length() > 0) {
+		
+		if (info[0].IsExternal()) {
+			
+			REQ_EXT_ARG(0, extBus);
+			
+			BusPtr *bus = reinterpret_cast<BusPtr *>(extBus->Value());
+			_impl = bus;
+			
+		} else if (info[0].IsObject()) {
+			
+			REQ_OBJ_ARG(0, opts);
+			
+			_impl = make_shared<lab::AudioBus>(1, 1, false);
+			
+		}
+		
+	} else {
+		
+		_impl = make_shared<lab::AudioBus>(1, 1, false);
+		
+	}
 	
 }
 
@@ -137,51 +152,6 @@ void AudioBuffer::init(Napi::Env env, Napi::Object exports) {
 }
 
 
-Napi::Object AudioBuffer::getNew(BusPtr bus) {
-	
-	V8_VAR_FUNC ctor = Nan::New(_ctorAudioBuffer);
-	V8_VAR_EXT extBus = JS_EXT(&bus);
-	V8_VAR_VAL argv[] = { extBus };
-	return Nan::NewInstance(ctor, 1, argv).ToLocalChecked();
-	
-}
-
-
-AudioBuffer::AudioBuffer(const Napi::CallbackInfo &info): Napi::ObjectWrap<AudioBuffer>(info) {
-	
-	CTOR_CHECK("AudioBuffer");
-	
-	AudioBuffer *audioBuffer = nullptr;
-	
-	if (info.Length() > 0) {
-		
-		
-		if (info[0]->IsExternal()) {
-			
-			REQ_EXT_ARG(0, extBus);
-			
-			BusPtr *bus = reinterpret_cast<BusPtr *>(extBus->Value());
-			
-			audioBuffer = new AudioBuffer(*bus);
-			
-		} else if (info[0]->IsObject()) {
-			
-			REQ_OBJ_ARG(0, opts);
-			
-			audioBuffer = new AudioBuffer();
-			
-		}
-		
-	} else {
-		
-		audioBuffer = new AudioBuffer();
-		
-	}
-	
-	
-}
-
-
 JS_METHOD(AudioBuffer::destroy) { THIS_CHECK;
 	
 	_destroy();
@@ -189,7 +159,7 @@ JS_METHOD(AudioBuffer::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(AudioBuffer::isDestroyedGetter) {
+JS_GETTER(AudioBuffer::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

@@ -6,8 +6,10 @@
 
 // ------ Constructor and Destructor
 
-WaveShaperNode::WaveShaperNode() :
+WaveShaperNode::WaveShaperNode(const Napi::CallbackInfo &info) :
 AudioNode() {
+	
+	CTOR_CHECK("WaveShaperNode");
 	
 	_isDestroyed = false;
 	
@@ -36,7 +38,7 @@ void WaveShaperNode::_destroy() { DES_CHECK;
 
 JS_GETTER(WaveShaperNode::curveGetter) { THIS_CHECK;
 	
-	RET_VALUE(__curve.Value());
+	RET_VALUE(_curve.Value());
 	
 }
 
@@ -60,12 +62,9 @@ JS_GETTER(WaveShaperNode::oversampleGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(WaveShaperNode::oversampleSetter) { THIS_CHECK; SETTER_UTF8_ARG;
+JS_SETTER(WaveShaperNode::oversampleSetter) { THIS_CHECK; SETTER_STR_ARG;
 	
-	if (_oversample == *v) {
-		return;
-	}
-	_oversample = *v;
+	CACHE_CAS(_oversample, v)
 	
 	// TODO: may be additional actions on change?
 	
@@ -85,8 +84,7 @@ void WaveShaperNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_RW(WaveShaperNode, oversample),
 		ACCESSOR_RW(WaveShaperNode, curve),
 		ACCESSOR_M(WaveShaperNode, destroy),
-		ACCESSOR_R(WaveShaperNode, isDestroyed),
-	
+		ACCESSOR_R(WaveShaperNode, isDestroyed)
 	});
 	
 	_ctorWaveShaperNode = Napi::Persistent(ctor);
@@ -102,24 +100,6 @@ bool WaveShaperNode::isWaveShaperNode(Napi::Object obj) {
 }
 
 
-Napi::Object WaveShaperNode::getNew() {
-	
-	V8_VAR_FUNC ctor = Nan::New(_ctorWaveShaperNode);
-	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
-	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
-	
-}
-
-
-WaveShaperNode::WaveShaperNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<WaveShaperNode>(info) {
-	
-	CTOR_CHECK("WaveShaperNode");
-	
-	WaveShaperNode *waveShaperNode = new WaveShaperNode();
-	
-}
-
-
 JS_METHOD(WaveShaperNode::destroy) { THIS_CHECK;
 	
 	emit("destroy");
@@ -129,7 +109,7 @@ JS_METHOD(WaveShaperNode::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(WaveShaperNode::isDestroyedGetter) {
+JS_GETTER(WaveShaperNode::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

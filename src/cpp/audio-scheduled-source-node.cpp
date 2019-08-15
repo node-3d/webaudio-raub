@@ -105,9 +105,9 @@ void AudioScheduledSourceNode::init(Napi::Env env, Napi::Object exports) {
 
 Napi::Object AudioScheduledSourceNode::getNew(Napi::Object context, NodePtr node) {
 	
-	V8_VAR_FUNC ctor = Nan::New(_ctorAudioScheduledSourceNode);
+	Napi::Function ctor = Nan::New(_ctorAudioScheduledSourceNode);
 	V8_VAR_EXT extNode = JS_EXT(&node);
-	V8_VAR_VAL argv[] = { context, extNode };
+	Napi::Value argv[] = { context, extNode };
 	return Nan::NewInstance(ctor, 2, argv).ToLocalChecked();
 	
 }
@@ -136,7 +136,7 @@ JS_METHOD(AudioScheduledSourceNode::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(AudioScheduledSourceNode::isDestroyedGetter) {
+JS_GETTER(AudioScheduledSourceNode::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

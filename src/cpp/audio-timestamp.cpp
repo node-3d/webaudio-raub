@@ -91,8 +91,8 @@ bool AudioTimestamp::isAudioTimestamp(Napi::Object obj) {
 
 Napi::Object AudioTimestamp::getNew() {
 	
-	V8_VAR_FUNC ctor = Nan::New(_ctorAudioTimestamp);
-	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
+	Napi::Function ctor = Nan::New(_ctorAudioTimestamp);
+	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
@@ -114,7 +114,7 @@ JS_METHOD(AudioTimestamp::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(AudioTimestamp::isDestroyedGetter) {
+JS_GETTER(AudioTimestamp::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

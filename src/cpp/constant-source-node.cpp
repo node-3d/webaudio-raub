@@ -36,7 +36,7 @@ void ConstantSourceNode::_destroy() { DES_CHECK;
 
 JS_GETTER(ConstantSourceNode::offsetGetter) { THIS_CHECK;
 	
-	RET_VALUE(__offset.Value());
+	RET_VALUE(_offset.Value());
 	
 }
 
@@ -70,8 +70,8 @@ bool ConstantSourceNode::isConstantSourceNode(Napi::Object obj) {
 
 Napi::Object ConstantSourceNode::getNew() {
 	
-	V8_VAR_FUNC ctor = Nan::New(_ctorConstantSourceNode);
-	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
+	Napi::Function ctor = Nan::New(_ctorConstantSourceNode);
+	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
@@ -95,7 +95,7 @@ JS_METHOD(ConstantSourceNode::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(ConstantSourceNode::isDestroyedGetter) {
+JS_GETTER(ConstantSourceNode::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

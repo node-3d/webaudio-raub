@@ -39,56 +39,44 @@ void DynamicsCompressorNode::_destroy() { DES_CHECK;
 
 
 
-JS_GETTER(DynamicsCompressorNode::thresholdGetter) {
+JS_GETTER(DynamicsCompressorNode::thresholdGetter) { THIS_CHECK;
 	
-	THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
-	
-	RET_VALUE(__threshold.Value());
+	RET_VALUE(_threshold.Value());
 	
 }
 
 
-JS_GETTER(DynamicsCompressorNode::kneeGetter) {
+JS_GETTER(DynamicsCompressorNode::kneeGetter) { THIS_CHECK;
 	
-	THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
-	
-	RET_VALUE(__knee.Value());
+	RET_VALUE(_knee.Value());
 	
 }
 
 
-JS_GETTER(DynamicsCompressorNode::ratioGetter) {
+JS_GETTER(DynamicsCompressorNode::ratioGetter) { THIS_CHECK;
 	
-	THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
-	
-	RET_VALUE(__ratio.Value());
+	RET_VALUE(_ratio.Value());
 	
 }
 
 
-JS_GETTER(DynamicsCompressorNode::reductionGetter) {
-	
-	THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
+JS_GETTER(DynamicsCompressorNode::reductionGetter) { THIS_CHECK;
 	
 	RET_NUM(_reduction);
 	
 }
 
 
-JS_GETTER(DynamicsCompressorNode::attackGetter) {
+JS_GETTER(DynamicsCompressorNode::attackGetter) { THIS_CHECK;
 	
-	THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
-	
-	RET_VALUE(__attack.Value());
+	RET_VALUE(_attack.Value());
 	
 }
 
 
-JS_GETTER(DynamicsCompressorNode::releaseGetter) {
+JS_GETTER(DynamicsCompressorNode::releaseGetter) { THIS_CHECK;
 	
-	THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
-	
-	RET_VALUE(__release.Value());
+	RET_VALUE(_release.Value());
 	
 }
 
@@ -127,8 +115,8 @@ bool DynamicsCompressorNode::isDynamicsCompressorNode(Napi::Object obj) {
 
 Napi::Object DynamicsCompressorNode::getNew() {
 	
-	V8_VAR_FUNC ctor = Nan::New(_ctorDynamicsCompressorNode);
-	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
+	Napi::Function ctor = Nan::New(_ctorDynamicsCompressorNode);
+	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
@@ -143,9 +131,7 @@ DynamicsCompressorNode::DynamicsCompressorNode(const Napi::CallbackInfo &info): 
 }
 
 
-JS_METHOD(DynamicsCompressorNode::destroy) {
-	
-	THIS_DYNAMICS_COMPRESSOR_NODE; THIS_CHECK;
+JS_METHOD(DynamicsCompressorNode::destroy) { THIS_CHECK;
 	
 	emit("destroy");
 	
@@ -154,7 +140,7 @@ JS_METHOD(DynamicsCompressorNode::destroy) {
 }
 
 
-JS_GETTER(DynamicsCompressorNode::isDestroyedGetter) {
+JS_GETTER(DynamicsCompressorNode::isDestroyedGetter) { NAPI_ENV;
 	
 	THIS_DYNAMICS_COMPRESSOR_NODE;
 	

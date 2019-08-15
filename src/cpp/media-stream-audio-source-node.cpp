@@ -36,7 +36,7 @@ void MediaStreamAudioSourceNode::_destroy() { DES_CHECK;
 
 JS_GETTER(MediaStreamAudioSourceNode::mediaStreamGetter) { THIS_CHECK;
 	
-	RET_VALUE(__mediaStream.Value());
+	RET_VALUE(_mediaStream.Value());
 	
 }
 
@@ -70,8 +70,8 @@ bool MediaStreamAudioSourceNode::isMediaStreamAudioSourceNode(Napi::Object obj) 
 
 Napi::Object MediaStreamAudioSourceNode::getNew() {
 	
-	V8_VAR_FUNC ctor = Nan::New(_ctorMediaStreamAudioSourceNode);
-	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
+	Napi::Function ctor = Nan::New(_ctorMediaStreamAudioSourceNode);
+	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
@@ -95,7 +95,7 @@ JS_METHOD(MediaStreamAudioSourceNode::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(MediaStreamAudioSourceNode::isDestroyedGetter) {
+JS_GETTER(MediaStreamAudioSourceNode::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

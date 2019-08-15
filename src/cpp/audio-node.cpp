@@ -153,11 +153,11 @@ JS_METHOD(AudioNode::disconnect) { THIS_CHECK;
 	
 	if (info.Length() == 1) {
 		
-		if (info[0]->IsObject()) {
+		if (info[0].IsObject()) {
 			
 			REQ_OBJ_ARG(0, destArg);
 			
-		} else if (info[0]->IsNumber()) {
+		} else if (info[0].IsNumber()) {
 			
 			REQ_INT_ARG(0, outputArg);
 			output = outputArg;
@@ -212,7 +212,7 @@ JS_METHOD(AudioNode::disconnect) { THIS_CHECK;
 
 JS_GETTER(AudioNode::contextGetter) { THIS_CHECK;
 	
-	RET_VALUE(__context.Value());
+	RET_VALUE(_context.Value());
 	
 }
 
@@ -259,7 +259,7 @@ JS_GETTER(AudioNode::channelCountModeGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(AudioNode::channelCountModeSetter) { THIS_CHECK; SETTER_UTF8_ARG;
+JS_SETTER(AudioNode::channelCountModeSetter) { THIS_CHECK; SETTER_STR_ARG;
 	
 	if (_channelCountMode == *v) {
 		return;
@@ -279,7 +279,7 @@ JS_GETTER(AudioNode::channelInterpretationGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(AudioNode::channelInterpretationSetter) { THIS_CHECK; SETTER_UTF8_ARG;
+JS_SETTER(AudioNode::channelInterpretationSetter) { THIS_CHECK; SETTER_STR_ARG;
 	
 	if (_channelInterpretation == *v) {
 		return;
@@ -310,8 +310,7 @@ void AudioNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(AudioNode, numberOfOutputs),
 		ACCESSOR_R(AudioNode, numberOfInputs),
 		ACCESSOR_R(AudioNode, context),
-		ACCESSOR_R(AudioNode, isDestroyed),
-	
+		ACCESSOR_R(AudioNode, isDestroyed)
 	});
 	
 	_ctorAudioNode = Napi::Persistent(ctor);
@@ -329,7 +328,7 @@ bool AudioNode::isAudioNode(Napi::Object obj) {
 
 AudioNode::AudioNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<AudioNode>(info) {
 	
-	Nan::ThrowTypeError("'AudioNode' is abstract, use a specific node class.");
+	JS_THROW("'AudioNode' is abstract, use a specific node class.");
 	
 }
 
@@ -343,7 +342,7 @@ JS_METHOD(AudioNode::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(AudioNode::isDestroyedGetter) {
+JS_GETTER(AudioNode::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

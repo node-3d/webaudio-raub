@@ -67,9 +67,9 @@ void AudioDestinationNode::init(Napi::Env env, Napi::Object exports) {
 
 Napi::Object AudioDestinationNode::getNew(Napi::Object context, DestPtr node) {
 	
-	V8_VAR_FUNC ctor = Nan::New(_ctorAudioDestinationNode);
+	Napi::Function ctor = Nan::New(_ctorAudioDestinationNode);
 	V8_VAR_EXT extNode = JS_EXT(&node);
-	V8_VAR_VAL argv[] = { context, extNode };
+	Napi::Value argv[] = { context, extNode };
 	return Nan::NewInstance(ctor, 2, argv).ToLocalChecked();
 	
 }
@@ -98,7 +98,7 @@ JS_METHOD(AudioDestinationNode::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(AudioDestinationNode::isDestroyedGetter) {
+JS_GETTER(AudioDestinationNode::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

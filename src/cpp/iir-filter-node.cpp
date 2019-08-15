@@ -74,8 +74,8 @@ bool IIRFilterNode::isIIRFilterNode(Napi::Object obj) {
 
 Napi::Object IIRFilterNode::getNew() {
 	
-	V8_VAR_FUNC ctor = Nan::New(_ctorIIRFilterNode);
-	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
+	Napi::Function ctor = Nan::New(_ctorIIRFilterNode);
+	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
@@ -99,7 +99,7 @@ JS_METHOD(IIRFilterNode::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(IIRFilterNode::isDestroyedGetter) {
+JS_GETTER(IIRFilterNode::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

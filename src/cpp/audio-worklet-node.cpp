@@ -33,14 +33,14 @@ void AudioWorkletNode::_destroy() { DES_CHECK;
 
 JS_GETTER(AudioWorkletNode::parametersGetter) { THIS_CHECK;
 	
-	RET_VALUE(__parameters.Value());
+	RET_VALUE(_parameters.Value());
 	
 }
 
 
 JS_GETTER(AudioWorkletNode::portGetter) { THIS_CHECK;
 	
-	RET_VALUE(__port.Value());
+	RET_VALUE(_port.Value());
 	
 }
 
@@ -94,8 +94,8 @@ bool AudioWorkletNode::isAudioWorkletNode(Napi::Object obj) {
 
 Napi::Object AudioWorkletNode::getNew() {
 	
-	V8_VAR_FUNC ctor = Nan::New(_ctorAudioWorkletNode);
-	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
+	Napi::Function ctor = Nan::New(_ctorAudioWorkletNode);
+	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
@@ -117,7 +117,7 @@ JS_METHOD(AudioWorkletNode::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(AudioWorkletNode::isDestroyedGetter) {
+JS_GETTER(AudioWorkletNode::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

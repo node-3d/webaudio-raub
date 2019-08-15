@@ -49,8 +49,6 @@ protected:
 // System methods and props for ObjectWrap
 private:
 	
-	JS_METHOD(newCtor);
-	
 	JS_METHOD(destroy);
 	JS_GETTER(isDestroyedGetter);
 	

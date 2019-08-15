@@ -44,7 +44,7 @@ void GainNode::_destroy() { DES_CHECK;
 
 JS_GETTER(GainNode::gainGetter) { THIS_CHECK;
 	
-	RET_VALUE(__gain.Value());
+	RET_VALUE(_gain.Value());
 	
 }
 
@@ -73,8 +73,8 @@ void GainNode::init(Napi::Env env, Napi::Object exports) {
 
 Napi::Object GainNode::getNew(Napi::Object context) {
 	
-	V8_VAR_FUNC ctor = Nan::New(_ctorGainNode);
-	V8_VAR_VAL argv[] = { context };
+	Napi::Function ctor = Nan::New(_ctorGainNode);
+	Napi::Value argv[] = { context };
 	return Nan::NewInstance(ctor, 1, argv).ToLocalChecked();
 	
 }
@@ -100,7 +100,7 @@ JS_METHOD(GainNode::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(GainNode::isDestroyedGetter) {
+JS_GETTER(GainNode::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

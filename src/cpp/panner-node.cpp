@@ -58,9 +58,23 @@ inline lab::PanningMode toPanningMode(const string &mode) {
 
 
 // ------ Constructor and Destructor
-
+//const Napi::CallbackInfo &info
 PannerNode::PannerNode(Napi::Object context, float sampleRate, const string &hrtf) :
 AudioNode(context, NodePtr(new lab::PannerNode(sampleRate, hrtf))) {
+	
+	CTOR_CHECK("PannerNode");
+	
+	REQ_OBJ_ARG(0, context);
+	
+	float sampleRate = audioContext->getContext()->sampleRate();
+	Napi::Value hrtfValue = _ctorPannerNode.Value().As<Napi::Object>().Get("hrtf");
+	std::string hrtf = hrtfValue.As<Napi::String>().Utf8Value();
+	
+	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
+	
+	Nan::Utf8String hrtf(Napi::Object::Cast(Nan::New(_ctorPannerNode))->Get(JS_STR("hrtf")));
+	PannerNode *pannerNode = new PannerNode(context, audioContext->getContext()->sampleRate(), *hrtf);
+	
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(_impl.get());
 	
@@ -156,7 +170,7 @@ JS_GETTER(PannerNode::panningModelGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(PannerNode::panningModelSetter) { THIS_CHECK; SETTER_UTF8_ARG;
+JS_SETTER(PannerNode::panningModelSetter) { THIS_CHECK; SETTER_STR_ARG;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
 		_impl.get()
@@ -187,7 +201,7 @@ JS_GETTER(PannerNode::distanceModelGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(PannerNode::distanceModelSetter) { THIS_CHECK; SETTER_UTF8_ARG;
+JS_SETTER(PannerNode::distanceModelSetter) { THIS_CHECK; SETTER_STR_ARG;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
 		_impl.get()
@@ -364,8 +378,7 @@ void PannerNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(PannerNode, positionZ),
 		ACCESSOR_R(PannerNode, positionY),
 		ACCESSOR_R(PannerNode, positionX),
-		ACCESSOR_R(PannerNode, isDestroyed),
-	
+		ACCESSOR_R(PannerNode, isDestroyed)
 	});
 	
 	_ctorPannerNode = Napi::Persistent(ctor);
@@ -381,22 +394,13 @@ bool PannerNode::isPannerNode(Napi::Object obj) {
 }
 
 
-Napi::Object PannerNode::getNew(Napi::Object context) {
-	
-	V8_VAR_FUNC ctor = Nan::New(_ctorPannerNode);
-	V8_VAR_VAL argv[] = { context };
-	return Nan::NewInstance(ctor, 1, argv).ToLocalChecked();
-	
-}
-
-
 PannerNode::PannerNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<PannerNode>(info) {
 	
 	CTOR_CHECK("PannerNode");
 		
 	REQ_OBJ_ARG(0, context);
 	
-	AudioContext *audioContext = Nan::ObjectWrap::Unwrap<AudioContext>(context);
+	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
 	
 	Nan::Utf8String hrtf(Napi::Object::Cast(Nan::New(_ctorPannerNode))->Get(JS_STR("hrtf")));
 	PannerNode *pannerNode = new PannerNode(context, audioContext->getContext()->sampleRate(), *hrtf);
@@ -413,7 +417,7 @@ JS_METHOD(PannerNode::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(PannerNode::isDestroyedGetter) {
+JS_GETTER(PannerNode::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

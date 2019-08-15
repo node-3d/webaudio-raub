@@ -33,7 +33,7 @@ void OfflineAudioCompletionEvent::_destroy() { DES_CHECK;
 
 JS_GETTER(OfflineAudioCompletionEvent::renderedBufferGetter) { THIS_CHECK;
 	
-	RET_VALUE(__renderedBuffer.Value());
+	RET_VALUE(_renderedBuffer.Value());
 	
 }
 
@@ -67,8 +67,8 @@ bool OfflineAudioCompletionEvent::isOfflineAudioCompletionEvent(Napi::Object obj
 
 Napi::Object OfflineAudioCompletionEvent::getNew() {
 	
-	V8_VAR_FUNC ctor = Nan::New(_ctorOfflineAudioCompletionEvent);
-	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
+	Napi::Function ctor = Nan::New(_ctorOfflineAudioCompletionEvent);
+	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
@@ -90,7 +90,7 @@ JS_METHOD(OfflineAudioCompletionEvent::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(OfflineAudioCompletionEvent::isDestroyedGetter) {
+JS_GETTER(OfflineAudioCompletionEvent::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

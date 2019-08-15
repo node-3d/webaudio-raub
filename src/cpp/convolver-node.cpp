@@ -42,7 +42,7 @@ void ConvolverNode::_destroy() { DES_CHECK;
 
 JS_GETTER(ConvolverNode::bufferGetter) { THIS_CHECK;
 	
-	RET_VALUE(__buffer.Value());
+	RET_VALUE(_buffer.Value());
 	
 }
 
@@ -120,8 +120,8 @@ void ConvolverNode::init(Napi::Env env, Napi::Object exports) {
 
 Napi::Object ConvolverNode::getNew(Napi::Object context) {
 	
-	V8_VAR_FUNC ctor = Nan::New(_ctorConvolverNode);
-	V8_VAR_VAL argv[] = { context };
+	Napi::Function ctor = Nan::New(_ctorConvolverNode);
+	Napi::Value argv[] = { context };
 	return Nan::NewInstance(ctor, 1, argv).ToLocalChecked();
 	
 }
@@ -147,7 +147,7 @@ JS_METHOD(ConvolverNode::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(ConvolverNode::isDestroyedGetter) {
+JS_GETTER(ConvolverNode::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

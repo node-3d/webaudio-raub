@@ -40,14 +40,14 @@ JS_GETTER(AudioProcessingEvent::playbackTimeGetter) { THIS_CHECK;
 
 JS_GETTER(AudioProcessingEvent::inputBufferGetter) { THIS_CHECK;
 	
-	RET_VALUE(__inputBuffer.Value());
+	RET_VALUE(_inputBuffer.Value());
 	
 }
 
 
 JS_GETTER(AudioProcessingEvent::outputBufferGetter) { THIS_CHECK;
 	
-	RET_VALUE(__outputBuffer.Value());
+	RET_VALUE(_outputBuffer.Value());
 	
 }
 
@@ -83,8 +83,8 @@ bool AudioProcessingEvent::isAudioProcessingEvent(Napi::Object obj) {
 
 Napi::Object AudioProcessingEvent::getNew() {
 	
-	V8_VAR_FUNC ctor = Nan::New(_ctorAudioProcessingEvent);
-	// V8_VAR_VAL argv[] = { /* arg1, arg2, ... */ };
+	Napi::Function ctor = Nan::New(_ctorAudioProcessingEvent);
+	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
 }
@@ -106,7 +106,7 @@ JS_METHOD(AudioProcessingEvent::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(AudioProcessingEvent::isDestroyedGetter) {
+JS_GETTER(AudioProcessingEvent::isDestroyedGetter) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	
