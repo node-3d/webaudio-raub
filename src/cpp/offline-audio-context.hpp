@@ -30,7 +30,7 @@ protected:
 	
 	OfflineAudioContext();
 	
-	static Napi::FunctionReference _ctorOfflineAudioContext;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

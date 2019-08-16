@@ -30,7 +30,7 @@ protected:
 	
 	StereoPannerNode();
 	
-	static Napi::FunctionReference _ctorStereoPannerNode;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

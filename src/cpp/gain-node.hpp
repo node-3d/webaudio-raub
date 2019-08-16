@@ -28,7 +28,7 @@ protected:
 	
 	explicit GainNode(Napi::Object context);
 	
-	static Napi::FunctionReference _ctorGainNode;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

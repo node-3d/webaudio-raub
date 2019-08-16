@@ -47,7 +47,7 @@ JS_METHOD(IIRFilterNode::getFrequencyResponse) { THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference IIRFilterNode::_ctorIIRFilterNode;
+Napi::FunctionReference IIRFilterNode::_constructor;
 
 
 void IIRFilterNode::init(Napi::Env env, Napi::Object exports) {
@@ -58,8 +58,8 @@ void IIRFilterNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(IIRFilterNode, isDestroyed)
 	});
 	
-	_ctorIIRFilterNode = Napi::Persistent(ctor);
-	_ctorIIRFilterNode.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("IIRFilterNode", ctor);
 	
@@ -67,13 +67,13 @@ void IIRFilterNode::init(Napi::Env env, Napi::Object exports) {
 
 
 bool IIRFilterNode::isIIRFilterNode(Napi::Object obj) {
-	return obj.InstanceOf(_ctorIIRFilterNode.Value());
+	return obj.InstanceOf(_constructor.Value());
 }
 
 
 Napi::Object IIRFilterNode::getNew() {
 	
-	Napi::Function ctor = Nan::New(_ctorIIRFilterNode);
+	Napi::Function ctor = Nan::New(_constructor);
 	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	

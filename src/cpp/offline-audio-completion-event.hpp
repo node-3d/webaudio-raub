@@ -28,7 +28,7 @@ protected:
 	
 	OfflineAudioCompletionEvent();
 	
-	static Napi::FunctionReference _ctorOfflineAudioCompletionEvent;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

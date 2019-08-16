@@ -28,7 +28,7 @@ protected:
 	
 	AudioWorkletNode();
 	
-	static Napi::FunctionReference _ctorAudioWorkletNode;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

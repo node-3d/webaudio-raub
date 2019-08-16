@@ -30,7 +30,7 @@ protected:
 	AudioContext();
 	explicit AudioContext(float sampleRate);
 	
-	static Napi::FunctionReference _ctorAudioContext;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

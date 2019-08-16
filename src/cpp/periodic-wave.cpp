@@ -34,7 +34,7 @@ void PeriodicWave::_destroy() { DES_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference PeriodicWave::_ctorPeriodicWave;
+Napi::FunctionReference PeriodicWave::_constructor;
 
 
 void PeriodicWave::init(Napi::Env env, Napi::Object exports) {
@@ -44,8 +44,8 @@ void PeriodicWave::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(PeriodicWave, isDestroyed)
 	});
 	
-	_ctorPeriodicWave = Napi::Persistent(ctor);
-	_ctorPeriodicWave.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("PeriodicWave", ctor);
 	
@@ -53,13 +53,13 @@ void PeriodicWave::init(Napi::Env env, Napi::Object exports) {
 
 
 bool PeriodicWave::isPeriodicWave(Napi::Object obj) {
-	return obj.InstanceOf(_ctorPeriodicWave.Value());
+	return obj.InstanceOf(_constructor.Value());
 }
 
 
 Napi::Object PeriodicWave::getNew() {
 	
-	Napi::Function ctor = Nan::New(_ctorPeriodicWave);
+	Napi::Function ctor = Nan::New(_constructor);
 	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	

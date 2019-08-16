@@ -40,7 +40,7 @@ JS_GETTER(AudioWorkletProcessor::portGetter) { THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference AudioWorkletProcessor::_ctorAudioWorkletProcessor;
+Napi::FunctionReference AudioWorkletProcessor::_constructor;
 
 
 void AudioWorkletProcessor::init(Napi::Env env, Napi::Object exports) {
@@ -51,8 +51,8 @@ void AudioWorkletProcessor::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(AudioWorkletProcessor, isDestroyed)
 	});
 	
-	_ctorAudioWorkletProcessor = Napi::Persistent(ctor);
-	_ctorAudioWorkletProcessor.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("AudioWorkletProcessor", ctor);
 	
@@ -60,13 +60,13 @@ void AudioWorkletProcessor::init(Napi::Env env, Napi::Object exports) {
 
 
 bool AudioWorkletProcessor::isAudioWorkletProcessor(Napi::Object obj) {
-	return obj.InstanceOf(_ctorAudioWorkletProcessor.Value());
+	return obj.InstanceOf(_constructor.Value());
 }
 
 
 Napi::Object AudioWorkletProcessor::getNew() {
 	
-	Napi::Function ctor = Nan::New(_ctorAudioWorkletProcessor);
+	Napi::Function ctor = Nan::New(_constructor);
 	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	

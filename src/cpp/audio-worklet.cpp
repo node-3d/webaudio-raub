@@ -34,7 +34,7 @@ void AudioWorklet::_destroy() { DES_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference AudioWorklet::_ctorAudioWorklet;
+Napi::FunctionReference AudioWorklet::_constructor;
 
 
 void AudioWorklet::init(Napi::Env env, Napi::Object exports) {
@@ -44,8 +44,8 @@ void AudioWorklet::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(AudioWorklet, isDestroyed)
 	});
 	
-	_ctorAudioWorklet = Napi::Persistent(ctor);
-	_ctorAudioWorklet.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("AudioWorklet", ctor);
 	
@@ -53,13 +53,13 @@ void AudioWorklet::init(Napi::Env env, Napi::Object exports) {
 
 
 bool AudioWorklet::isAudioWorklet(Napi::Object obj) {
-	return obj.InstanceOf(_ctorAudioWorklet.Value());
+	return obj.InstanceOf(_constructor.Value());
 }
 
 
 Napi::Object AudioWorklet::getNew() {
 	
-	Napi::Function ctor = Nan::New(_ctorAudioWorklet);
+	Napi::Function ctor = Nan::New(_constructor);
 	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	

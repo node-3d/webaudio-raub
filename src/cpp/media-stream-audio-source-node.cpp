@@ -43,7 +43,7 @@ JS_GETTER(MediaStreamAudioSourceNode::mediaStreamGetter) { THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference MediaStreamAudioSourceNode::_ctorMediaStreamAudioSourceNode;
+Napi::FunctionReference MediaStreamAudioSourceNode::_constructor;
 
 
 void MediaStreamAudioSourceNode::init(Napi::Env env, Napi::Object exports) {
@@ -54,8 +54,8 @@ void MediaStreamAudioSourceNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(MediaStreamAudioSourceNode, isDestroyed)
 	});
 	
-	_ctorMediaStreamAudioSourceNode = Napi::Persistent(ctor);
-	_ctorMediaStreamAudioSourceNode.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("MediaStreamAudioSourceNode", ctor);
 	
@@ -63,13 +63,13 @@ void MediaStreamAudioSourceNode::init(Napi::Env env, Napi::Object exports) {
 
 
 bool MediaStreamAudioSourceNode::isMediaStreamAudioSourceNode(Napi::Object obj) {
-	return obj.InstanceOf(_ctorMediaStreamAudioSourceNode.Value());
+	return obj.InstanceOf(_constructor.Value());
 }
 
 
 Napi::Object MediaStreamAudioSourceNode::getNew() {
 	
-	Napi::Function ctor = Nan::New(_ctorMediaStreamAudioSourceNode);
+	Napi::Function ctor = Nan::New(_constructor);
 	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	

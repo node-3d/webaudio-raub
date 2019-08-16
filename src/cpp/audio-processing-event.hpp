@@ -28,7 +28,7 @@ protected:
 	
 	AudioProcessingEvent();
 	
-	static Napi::FunctionReference _ctorAudioProcessingEvent;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

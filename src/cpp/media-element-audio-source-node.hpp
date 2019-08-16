@@ -30,7 +30,7 @@ protected:
 	
 	MediaElementAudioSourceNode();
 	
-	static Napi::FunctionReference _ctorMediaElementAudioSourceNode;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

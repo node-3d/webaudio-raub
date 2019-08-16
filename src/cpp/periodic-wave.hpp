@@ -28,7 +28,7 @@ protected:
 	
 	PeriodicWave();
 	
-	static Napi::FunctionReference _ctorPeriodicWave;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

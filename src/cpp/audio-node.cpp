@@ -51,19 +51,18 @@ inline lab::ChannelInterpretation toChannelInterpretation(const string &io) {
 
 
 // ------ Constructor and Destructor
-
-AudioNode::AudioNode(Napi::Object context, NodePtr node) : EventEmitter() {
+AudioNode::AudioNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<AudioNode>(info) {
+	
+	REQ_OBJ_ARG(0, context);
+	REQ_EXT_ARG(0, node);
 	
 	_isDestroyed = false;
-	
 	_context.Reset(context);
-	_impl = node;
-	NodePtr *nn = new NodePtr(node);
+	_impl = *reinterpret_cast<NodePtr>(node);
 	
-	
-	_channelCount = node->channelCount();
-	_channelCountMode = fromChannelCountMode(node->channelCountMode());
-	_channelInterpretation = fromChannelInterpretation(node->channelInterpretation());
+	_channelCount = _impl->channelCount();
+	_channelCountMode = fromChannelCountMode(_impl->channelCountMode());
+	_channelInterpretation = fromChannelInterpretation(_impl->channelInterpretation());
 	
 }
 
@@ -82,8 +81,7 @@ AudioNode::NodePtr AudioNode::getNode() const {
 
 void AudioNode::_destroy() { DES_CHECK;
 	
-	Napi::Object context = JS_OBJ(_context);
-	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
+	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context.Value());
 	lab::AudioContext *ctx = audioContext->getContext().get();
 	ctx->disconnect(_impl, nullptr);
 	
@@ -107,7 +105,7 @@ JS_METHOD(AudioNode::connect) { THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, destination);
 	
-	Napi::Object context = JS_OBJ(_context);
+	Napi::Object context = _context.Value();
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	
 	lab::AudioContext *ctx = audioContext->getContext().get();
@@ -144,7 +142,7 @@ JS_METHOD(AudioNode::disconnect) { THIS_CHECK;
 	int input = 0;
 	Napi::Object destination;
 	
-	Napi::Object context = JS_OBJ(_context);
+	Napi::Object context = _context.Value();
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	lab::AudioContext *ctx = audioContext->getContext().get();
 	
@@ -239,7 +237,7 @@ JS_SETTER(AudioNode::channelCountSetter) { THIS_CHECK; SETTER_UINT32_ARG;
 	
 	CACHE_CAS(_channelCount, v);
 	
-	Napi::Object context = JS_OBJ(_context);
+	Napi::Object context = _context.Value();
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	
 	lab::ContextGraphLock graphLock(audioContext->getContext().get(), "AudioNode::channelCountSetter");
@@ -292,7 +290,7 @@ JS_SETTER(AudioNode::channelInterpretationSetter) { THIS_CHECK; SETTER_STR_ARG;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference AudioNode::_ctorAudioNode;
+Napi::FunctionReference AudioNode::_constructor;
 
 
 void AudioNode::init(Napi::Env env, Napi::Object exports) {
@@ -310,8 +308,8 @@ void AudioNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(AudioNode, isDestroyed)
 	});
 	
-	_ctorAudioNode = Napi::Persistent(ctor);
-	_ctorAudioNode.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("AudioNode", ctor);
 	
@@ -319,14 +317,7 @@ void AudioNode::init(Napi::Env env, Napi::Object exports) {
 
 
 bool AudioNode::isAudioNode(Napi::Object obj) {
-	return obj.InstanceOf(_ctorAudioNode.Value());
-}
-
-
-AudioNode::AudioNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<AudioNode>(info) {
-	
-	JS_THROW("'AudioNode' is abstract, use a specific node class.");
-	
+	return obj.InstanceOf(_constructor.Value());
 }
 
 

@@ -45,7 +45,7 @@ JS_GETTER(AudioDestinationNode::maxChannelCountGetter) { THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference AudioDestinationNode::_ctorAudioDestinationNode;
+Napi::FunctionReference AudioDestinationNode::_constructor;
 
 
 void AudioDestinationNode::init(Napi::Env env, Napi::Object exports) {
@@ -56,8 +56,8 @@ void AudioDestinationNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(AudioDestinationNode, isDestroyed)
 	});
 	
-	_ctorAudioDestinationNode = Napi::Persistent(ctor);
-	_ctorAudioDestinationNode.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("AudioDestinationNode", ctor);
 	
@@ -66,7 +66,7 @@ void AudioDestinationNode::init(Napi::Env env, Napi::Object exports) {
 
 Napi::Object AudioDestinationNode::getNew(Napi::Object context, DestPtr node) {
 	
-	Napi::Function ctor = Nan::New(_ctorAudioDestinationNode);
+	Napi::Function ctor = Nan::New(_constructor);
 	V8_VAR_EXT extNode = JS_EXT(&node);
 	Napi::Value argv[] = { context, extNode };
 	return Nan::NewInstance(ctor, 2, argv).ToLocalChecked();

@@ -26,7 +26,7 @@ protected:
 	
 	explicit AudioBufferSourceNode(Napi::Object context);
 	
-	static Napi::FunctionReference _ctorAudioBufferSourceNode;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

@@ -146,7 +146,7 @@ JS_SETTER(AnalyserNode::smoothingTimeConstantSetter) { THIS_CHECK; SETTER_DOUBLE
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference AnalyserNode::_ctorAnalyserNode;
+Napi::FunctionReference AnalyserNode::_constructor;
 
 
 void AnalyserNode::init(Napi::Env env, Napi::Object exports) {
@@ -165,8 +165,8 @@ void AnalyserNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(AnalyserNode, isDestroyed)
 	});
 	
-	_ctorAnalyserNode = Napi::Persistent(ctor);
-	_ctorAnalyserNode.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("AnalyserNode", ctor);
 	
@@ -174,7 +174,7 @@ void AnalyserNode::init(Napi::Env env, Napi::Object exports) {
 
 
 bool AnalyserNode::isAnalyserNode(Napi::Object obj) {
-	return obj.InstanceOf(_ctorAnalyserNode.Value());
+	return obj.InstanceOf(_constructor.Value());
 }
 
 

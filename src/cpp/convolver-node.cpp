@@ -54,7 +54,7 @@ JS_SETTER(ConvolverNode::bufferSetter) { THIS_CHECK; SETTER_OBJ_ARG;
 	
 	_buffer.Reset(v);
 	
-	Napi::Object context = JS_OBJ(_context);
+	Napi::Object context = _context.Value();
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	
 	lab::AudioContext *ctx = audioContext->getContext().get();
@@ -97,7 +97,7 @@ JS_SETTER(ConvolverNode::normalizeSetter) { THIS_CHECK; SETTER_BOOL_ARG;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference ConvolverNode::_ctorConvolverNode;
+Napi::FunctionReference ConvolverNode::_constructor;
 
 
 void ConvolverNode::init(Napi::Env env, Napi::Object exports) {
@@ -109,8 +109,8 @@ void ConvolverNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(ConvolverNode, isDestroyed)
 	});
 	
-	_ctorConvolverNode = Napi::Persistent(ctor);
-	_ctorConvolverNode.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("ConvolverNode", ctor);
 	
@@ -119,7 +119,7 @@ void ConvolverNode::init(Napi::Env env, Napi::Object exports) {
 
 Napi::Object ConvolverNode::getNew(Napi::Object context) {
 	
-	Napi::Function ctor = Nan::New(_ctorConvolverNode);
+	Napi::Function ctor = Nan::New(_constructor);
 	Napi::Value argv[] = { context };
 	return Nan::NewInstance(ctor, 1, argv).ToLocalChecked();
 	

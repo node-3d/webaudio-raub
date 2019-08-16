@@ -30,7 +30,7 @@ protected:
 	
 	ChannelSplitterNode();
 	
-	static Napi::FunctionReference _ctorChannelSplitterNode;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

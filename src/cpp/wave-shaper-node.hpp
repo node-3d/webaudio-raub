@@ -30,7 +30,7 @@ protected:
 	
 	WaveShaperNode();
 	
-	static Napi::FunctionReference _ctorWaveShaperNode;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

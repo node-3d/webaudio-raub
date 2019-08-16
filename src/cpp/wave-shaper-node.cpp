@@ -75,7 +75,7 @@ JS_SETTER(WaveShaperNode::oversampleSetter) { THIS_CHECK; SETTER_STR_ARG;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference WaveShaperNode::_ctorWaveShaperNode;
+Napi::FunctionReference WaveShaperNode::_constructor;
 
 
 void WaveShaperNode::init(Napi::Env env, Napi::Object exports) {
@@ -87,8 +87,8 @@ void WaveShaperNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(WaveShaperNode, isDestroyed)
 	});
 	
-	_ctorWaveShaperNode = Napi::Persistent(ctor);
-	_ctorWaveShaperNode.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("WaveShaperNode", ctor);
 	
@@ -96,7 +96,7 @@ void WaveShaperNode::init(Napi::Env env, Napi::Object exports) {
 
 
 bool WaveShaperNode::isWaveShaperNode(Napi::Object obj) {
-	return obj.InstanceOf(_ctorWaveShaperNode.Value());
+	return obj.InstanceOf(_constructor.Value());
 }
 
 

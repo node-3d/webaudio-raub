@@ -43,7 +43,7 @@ JS_GETTER(MediaElementAudioSourceNode::mediaElementGetter) { THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference MediaElementAudioSourceNode::_ctorMediaElementAudioSourceNode;
+Napi::FunctionReference MediaElementAudioSourceNode::_constructor;
 
 
 void MediaElementAudioSourceNode::init(Napi::Env env, Napi::Object exports) {
@@ -54,8 +54,8 @@ void MediaElementAudioSourceNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(MediaElementAudioSourceNode, isDestroyed)
 	});
 	
-	_ctorMediaElementAudioSourceNode = Napi::Persistent(ctor);
-	_ctorMediaElementAudioSourceNode.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("MediaElementAudioSourceNode", ctor);
 	
@@ -63,13 +63,13 @@ void MediaElementAudioSourceNode::init(Napi::Env env, Napi::Object exports) {
 
 
 bool MediaElementAudioSourceNode::isMediaElementAudioSourceNode(Napi::Object obj) {
-	return obj.InstanceOf(_ctorMediaElementAudioSourceNode.Value());
+	return obj.InstanceOf(_constructor.Value());
 }
 
 
 Napi::Object MediaElementAudioSourceNode::getNew() {
 	
-	Napi::Function ctor = Nan::New(_ctorMediaElementAudioSourceNode);
+	Napi::Function ctor = Nan::New(_constructor);
 	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	

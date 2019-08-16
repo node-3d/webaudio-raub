@@ -30,7 +30,7 @@ protected:
 	
 	DelayNode(Napi::Object context, float sampleRate, double delay);
 	
-	static Napi::FunctionReference _ctorDelayNode;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

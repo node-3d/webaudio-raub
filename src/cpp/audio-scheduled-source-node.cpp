@@ -77,7 +77,7 @@ JS_METHOD(AudioScheduledSourceNode::stop) { THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference AudioScheduledSourceNode::_ctorAudioScheduledSourceNode;
+Napi::FunctionReference AudioScheduledSourceNode::_constructor;
 
 
 void AudioScheduledSourceNode::init(Napi::Env env, Napi::Object exports) {
@@ -89,8 +89,8 @@ void AudioScheduledSourceNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(AudioScheduledSourceNode, isDestroyed)
 	});
 	
-	_ctorAudioScheduledSourceNode = Napi::Persistent(ctor);
-	_ctorAudioScheduledSourceNode.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("AudioScheduledSourceNode", ctor);
 	
@@ -99,7 +99,7 @@ void AudioScheduledSourceNode::init(Napi::Env env, Napi::Object exports) {
 
 Napi::Object AudioScheduledSourceNode::getNew(Napi::Object context, NodePtr node) {
 	
-	Napi::Function ctor = Nan::New(_ctorAudioScheduledSourceNode);
+	Napi::Function ctor = Nan::New(_constructor);
 	V8_VAR_EXT extNode = JS_EXT(&node);
 	Napi::Value argv[] = { context, extNode };
 	return Nan::NewInstance(ctor, 2, argv).ToLocalChecked();

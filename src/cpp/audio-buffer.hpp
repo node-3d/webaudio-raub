@@ -35,7 +35,7 @@ protected:
 	AudioBuffer();
 	explicit AudioBuffer(BusPtr bus);
 	
-	static Napi::FunctionReference _ctorAudioBuffer;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

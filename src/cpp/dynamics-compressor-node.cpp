@@ -78,7 +78,7 @@ JS_GETTER(DynamicsCompressorNode::releaseGetter) { THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference DynamicsCompressorNode::_ctorDynamicsCompressorNode;
+Napi::FunctionReference DynamicsCompressorNode::_constructor;
 
 
 void DynamicsCompressorNode::init(Napi::Env env, Napi::Object exports) {
@@ -94,8 +94,8 @@ void DynamicsCompressorNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(DynamicsCompressorNode, isDestroyed)
 	});
 	
-	_ctorDynamicsCompressorNode = Napi::Persistent(ctor);
-	_ctorDynamicsCompressorNode.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("DynamicsCompressorNode", ctor);
 	
@@ -103,13 +103,13 @@ void DynamicsCompressorNode::init(Napi::Env env, Napi::Object exports) {
 
 
 bool DynamicsCompressorNode::isDynamicsCompressorNode(Napi::Object obj) {
-	return obj.InstanceOf(_ctorDynamicsCompressorNode.Value());
+	return obj.InstanceOf(_constructor.Value());
 }
 
 
 Napi::Object DynamicsCompressorNode::getNew() {
 	
-	Napi::Function ctor = Nan::New(_ctorDynamicsCompressorNode);
+	Napi::Function ctor = Nan::New(_constructor);
 	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	

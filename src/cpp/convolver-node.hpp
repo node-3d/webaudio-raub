@@ -28,7 +28,7 @@ protected:
 	
 	explicit ConvolverNode(Napi::Object context);
 	
-	static Napi::FunctionReference _ctorConvolverNode;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

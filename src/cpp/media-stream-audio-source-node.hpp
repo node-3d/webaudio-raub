@@ -30,7 +30,7 @@ protected:
 	
 	MediaStreamAudioSourceNode();
 	
-	static Napi::FunctionReference _ctorMediaStreamAudioSourceNode;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

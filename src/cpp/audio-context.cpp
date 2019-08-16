@@ -93,7 +93,7 @@ JS_GETTER(AudioContext::baseLatencyGetter) { THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference AudioContext::_ctorAudioContext;
+Napi::FunctionReference AudioContext::_constructor;
 
 
 void AudioContext::init(Napi::Env env, Napi::Object exports) {
@@ -110,8 +110,8 @@ void AudioContext::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(AudioContext, isDestroyed)
 	});
 	
-	_ctorAudioContext = Napi::Persistent(ctor);
-	_ctorAudioContext.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("AudioContext", ctor);
 	

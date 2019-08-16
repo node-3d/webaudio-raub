@@ -59,7 +59,7 @@ JS_GETTER(DelayNode::delayTimeGetter) { THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference DelayNode::_ctorDelayNode;
+Napi::FunctionReference DelayNode::_constructor;
 
 
 void DelayNode::init(Napi::Env env, Napi::Object exports) {
@@ -70,8 +70,8 @@ void DelayNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(DelayNode, isDestroyed)
 	});
 	
-	_ctorDelayNode = Napi::Persistent(ctor);
-	_ctorDelayNode.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("DelayNode", ctor);
 	
@@ -79,7 +79,7 @@ void DelayNode::init(Napi::Env env, Napi::Object exports) {
 
 
 bool DelayNode::isDelayNode(Napi::Object obj) {
-	return obj.InstanceOf(_ctorDelayNode.Value());
+	return obj.InstanceOf(_constructor.Value());
 }
 
 

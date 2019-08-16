@@ -30,7 +30,7 @@ protected:
 	
 	DynamicsCompressorNode();
 	
-	static Napi::FunctionReference _ctorDynamicsCompressorNode;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

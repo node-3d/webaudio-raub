@@ -120,7 +120,7 @@ JS_METHOD(AudioParam::cancelAndHoldAtTime) { THIS_CHECK;
 
 JS_GETTER(AudioParam::valueGetter) { THIS_CHECK;
 	
-	Napi::Object context = JS_OBJ(_context);
+	Napi::Object context = _context.Value();
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	
 	lab::ContextRenderLock renderLock(audioContext->getContext().get(), "AudioParam::valueGetter");
@@ -159,11 +159,11 @@ JS_GETTER(AudioParam::maxValueGetter) { THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference AudioParam::_ctorAudioParam;
+Napi::FunctionReference AudioParam::_constructor;
 
 
 bool AudioParam::isAudioParam(Napi::Object obj) {
-	return obj.InstanceOf(_ctorAudioParam.Value());
+	return obj.InstanceOf(_constructor.Value());
 }
 
 
@@ -185,8 +185,8 @@ void AudioParam::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(AudioParam, isDestroyed)
 	});
 	
-	_ctorAudioParam = Napi::Persistent(ctor);
-	_ctorAudioParam.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("AudioParam", ctor);
 	
@@ -195,7 +195,7 @@ void AudioParam::init(Napi::Env env, Napi::Object exports) {
 
 Napi::Object AudioParam::getNew(Napi::Object context, ParamPtr param) {
 	
-	Napi::Function ctor = Nan::New(_ctorAudioParam);
+	Napi::Function ctor = Nan::New(_constructor);
 	V8_VAR_EXT extParam = JS_EXT(&param);
 	Napi::Value argv[] = { context, extParam };
 	return Nan::NewInstance(ctor, 2, argv).ToLocalChecked();

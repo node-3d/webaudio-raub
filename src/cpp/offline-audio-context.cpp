@@ -78,7 +78,7 @@ JS_GETTER(OfflineAudioContext::lengthGetter) { THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference OfflineAudioContext::_ctorOfflineAudioContext;
+Napi::FunctionReference OfflineAudioContext::_constructor;
 
 
 void OfflineAudioContext::init(Napi::Env env, Napi::Object exports) {
@@ -92,8 +92,8 @@ void OfflineAudioContext::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(OfflineAudioContext, isDestroyed)
 	});
 	
-	_ctorOfflineAudioContext = Napi::Persistent(ctor);
-	_ctorOfflineAudioContext.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("OfflineAudioContext", ctor);
 	
@@ -101,13 +101,13 @@ void OfflineAudioContext::init(Napi::Env env, Napi::Object exports) {
 
 
 bool OfflineAudioContext::isOfflineAudioContext(Napi::Object obj) {
-	return obj.InstanceOf(_ctorOfflineAudioContext.Value());
+	return obj.InstanceOf(_constructor.Value());
 }
 
 
 Napi::Object OfflineAudioContext::getNew() {
 	
-	Napi::Function ctor = Nan::New(_ctorOfflineAudioContext);
+	Napi::Function ctor = Nan::New(_constructor);
 	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	

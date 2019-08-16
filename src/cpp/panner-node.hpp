@@ -30,7 +30,7 @@ protected:
 	
 	PannerNode(Napi::Object context, float sampleRate, const std::string &hrtf);
 	
-	static Napi::FunctionReference _ctorPannerNode;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

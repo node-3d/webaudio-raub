@@ -32,7 +32,7 @@ protected:
 	
 	explicit AudioListener(Napi::Object context, ListenerPtr listener);
 	
-	static Napi::FunctionReference _ctorAudioListener;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

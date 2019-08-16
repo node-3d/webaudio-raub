@@ -32,10 +32,7 @@ public:
 	
 protected:
 	
-	AudioNode() {} // fake, TODO: remove
-	AudioNode(Napi::Object context, NodePtr node);
-	
-	static Napi::FunctionReference _ctorAudioNode;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

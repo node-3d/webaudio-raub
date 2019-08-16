@@ -63,7 +63,7 @@ JS_SETTER(AudioTimestamp::performanceTimeSetter) { THIS_CHECK; SETTER_DOUBLE_ARG
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference AudioTimestamp::_ctorAudioTimestamp;
+Napi::FunctionReference AudioTimestamp::_constructor;
 
 
 void AudioTimestamp::init(Napi::Env env, Napi::Object exports) {
@@ -75,8 +75,8 @@ void AudioTimestamp::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(AudioTimestamp, isDestroyed)
 	});
 	
-	_ctorAudioTimestamp = Napi::Persistent(ctor);
-	_ctorAudioTimestamp.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("AudioTimestamp", ctor);
 	
@@ -84,13 +84,13 @@ void AudioTimestamp::init(Napi::Env env, Napi::Object exports) {
 
 
 bool AudioTimestamp::isAudioTimestamp(Napi::Object obj) {
-	return obj.InstanceOf(_ctorAudioTimestamp.Value());
+	return obj.InstanceOf(_constructor.Value());
 }
 
 
 Napi::Object AudioTimestamp::getNew() {
 	
-	Napi::Function ctor = Nan::New(_ctorAudioTimestamp);
+	Napi::Function ctor = Nan::New(_constructor);
 	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	

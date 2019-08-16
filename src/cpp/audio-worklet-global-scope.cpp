@@ -63,7 +63,7 @@ JS_GETTER(AudioWorkletGlobalScope::sampleRateGetter) { THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference AudioWorkletGlobalScope::_ctorAudioWorkletGlobalScope;
+Napi::FunctionReference AudioWorkletGlobalScope::_constructor;
 
 
 void AudioWorkletGlobalScope::init(Napi::Env env, Napi::Object exports) {
@@ -77,8 +77,8 @@ void AudioWorkletGlobalScope::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(AudioWorkletGlobalScope, isDestroyed)
 	});
 	
-	_ctorAudioWorkletGlobalScope = Napi::Persistent(ctor);
-	_ctorAudioWorkletGlobalScope.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("AudioWorkletGlobalScope", ctor);
 	
@@ -86,13 +86,13 @@ void AudioWorkletGlobalScope::init(Napi::Env env, Napi::Object exports) {
 
 
 bool AudioWorkletGlobalScope::isAudioWorkletGlobalScope(Napi::Object obj) {
-	return obj.InstanceOf(_ctorAudioWorkletGlobalScope.Value());
+	return obj.InstanceOf(_constructor.Value());
 }
 
 
 Napi::Object AudioWorkletGlobalScope::getNew() {
 	
-	Napi::Function ctor = Nan::New(_ctorAudioWorkletGlobalScope);
+	Napi::Function ctor = Nan::New(_constructor);
 	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	

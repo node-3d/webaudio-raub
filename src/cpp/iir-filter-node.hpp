@@ -30,7 +30,7 @@ protected:
 	
 	IIRFilterNode();
 	
-	static Napi::FunctionReference _ctorIIRFilterNode;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

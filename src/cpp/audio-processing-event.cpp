@@ -54,7 +54,7 @@ JS_GETTER(AudioProcessingEvent::outputBufferGetter) { THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference AudioProcessingEvent::_ctorAudioProcessingEvent;
+Napi::FunctionReference AudioProcessingEvent::_constructor;
 
 
 void AudioProcessingEvent::init(Napi::Env env, Napi::Object exports) {
@@ -67,8 +67,8 @@ void AudioProcessingEvent::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(AudioProcessingEvent, isDestroyed)
 	});
 	
-	_ctorAudioProcessingEvent = Napi::Persistent(ctor);
-	_ctorAudioProcessingEvent.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("AudioProcessingEvent", ctor);
 	
@@ -76,13 +76,13 @@ void AudioProcessingEvent::init(Napi::Env env, Napi::Object exports) {
 
 
 bool AudioProcessingEvent::isAudioProcessingEvent(Napi::Object obj) {
-	return obj.InstanceOf(_ctorAudioProcessingEvent.Value());
+	return obj.InstanceOf(_constructor.Value());
 }
 
 
 Napi::Object AudioProcessingEvent::getNew() {
 	
-	Napi::Function ctor = Nan::New(_ctorAudioProcessingEvent);
+	Napi::Function ctor = Nan::New(_constructor);
 	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	

@@ -63,7 +63,7 @@ JS_GETTER(ScriptProcessorNode::bufferSizeGetter) { THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference ScriptProcessorNode::_ctorScriptProcessorNode;
+Napi::FunctionReference ScriptProcessorNode::_constructor;
 
 
 void ScriptProcessorNode::init(Napi::Env env, Napi::Object exports) {
@@ -75,8 +75,8 @@ void ScriptProcessorNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(ScriptProcessorNode, isDestroyed)
 	});
 	
-	_ctorScriptProcessorNode = Napi::Persistent(ctor);
-	_ctorScriptProcessorNode.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("ScriptProcessorNode", ctor);
 	
@@ -84,13 +84,13 @@ void ScriptProcessorNode::init(Napi::Env env, Napi::Object exports) {
 
 
 bool ScriptProcessorNode::isScriptProcessorNode(Napi::Object obj) {
-	return obj.InstanceOf(_ctorScriptProcessorNode.Value());
+	return obj.InstanceOf(_constructor.Value());
 }
 
 
 Napi::Object ScriptProcessorNode::getNew() {
 	
-	Napi::Function ctor = Nan::New(_ctorScriptProcessorNode);
+	Napi::Function ctor = Nan::New(_constructor);
 	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	

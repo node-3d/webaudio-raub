@@ -126,7 +126,7 @@ JS_GETTER(AudioBuffer::numberOfChannelsGetter) { THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference AudioBuffer::_ctorAudioBuffer;
+Napi::FunctionReference AudioBuffer::_constructor;
 
 
 void AudioBuffer::init(Napi::Env env, Napi::Object exports) {
@@ -143,8 +143,8 @@ void AudioBuffer::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(AudioBuffer, isDestroyed)
 	});
 	
-	_ctorAudioBuffer = Napi::Persistent(ctor);
-	_ctorAudioBuffer.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("AudioBuffer", ctor);
 	

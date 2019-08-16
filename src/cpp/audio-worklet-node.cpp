@@ -65,7 +65,7 @@ JS_SETTER(AudioWorkletNode::onprocessorerrorSetter) { THIS_CHECK; SETTER_FUN_ARG
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference AudioWorkletNode::_ctorAudioWorkletNode;
+Napi::FunctionReference AudioWorkletNode::_constructor;
 
 
 void AudioWorkletNode::init(Napi::Env env, Napi::Object exports) {
@@ -78,8 +78,8 @@ void AudioWorkletNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(AudioWorkletNode, isDestroyed)
 	});
 	
-	_ctorAudioWorkletNode = Napi::Persistent(ctor);
-	_ctorAudioWorkletNode.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("AudioWorkletNode", ctor);
 	
@@ -87,13 +87,13 @@ void AudioWorkletNode::init(Napi::Env env, Napi::Object exports) {
 
 
 bool AudioWorkletNode::isAudioWorkletNode(Napi::Object obj) {
-	return obj.InstanceOf(_ctorAudioWorkletNode.Value());
+	return obj.InstanceOf(_constructor.Value());
 }
 
 
 Napi::Object AudioWorkletNode::getNew() {
 	
-	Napi::Function ctor = Nan::New(_ctorAudioWorkletNode);
+	Napi::Function ctor = Nan::New(_constructor);
 	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	

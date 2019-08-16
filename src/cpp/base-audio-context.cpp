@@ -125,7 +125,7 @@ void BaseAudioContext::finishNew(Napi::Object context) {
 	_listener.Reset(listener);
 	
 	Napi::Function startUpdater = Napi::Function::Cast(
-		Napi::Function::Cast(Nan::New(_ctorBaseAudioContext))->Get(
+		Napi::Function::Cast(Nan::New(_constructor))->Get(
 			JS_STR("startUpdater")
 		)
 	);
@@ -141,7 +141,7 @@ void BaseAudioContext::finishNew(Napi::Object context) {
 void BaseAudioContext::_destroy() { DES_CHECK;
 	
 	Napi::Function stopUpdater = Napi::Function::Cast(
-		Napi::Function::Cast(Nan::New(_ctorBaseAudioContext))->Get(
+		Napi::Function::Cast(Nan::New(_constructor))->Get(
 			JS_STR("stopUpdater")
 		)
 	);
@@ -360,7 +360,7 @@ JS_GETTER(BaseAudioContext::stateGetter) { THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference BaseAudioContext::_ctorBaseAudioContext;
+Napi::FunctionReference BaseAudioContext::_constructor;
 
 
 void BaseAudioContext::init(Napi::Env env, Napi::Object exports) {
@@ -399,8 +399,8 @@ void BaseAudioContext::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(BaseAudioContext, isDestroyed)
 	});
 	
-	_ctorBaseAudioContext = Napi::Persistent(ctor);
-	_ctorBaseAudioContext.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("BaseAudioContext", ctor);
 	

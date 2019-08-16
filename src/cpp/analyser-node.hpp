@@ -30,7 +30,7 @@ protected:
 	
 	AnalyserNode();
 	
-	static Napi::FunctionReference _ctorAnalyserNode;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

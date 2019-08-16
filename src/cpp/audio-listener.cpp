@@ -98,7 +98,7 @@ PARAM_GETTER(AudioListener, upZ);
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference AudioListener::_ctorAudioListener;
+Napi::FunctionReference AudioListener::_constructor;
 
 
 void AudioListener::init(Napi::Env env, Napi::Object exports) {
@@ -119,8 +119,8 @@ void AudioListener::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(AudioListener, isDestroyed)
 	});
 	
-	_ctorAudioListener = Napi::Persistent(ctor);
-	_ctorAudioListener.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("AudioListener", ctor);
 	
@@ -128,13 +128,13 @@ void AudioListener::init(Napi::Env env, Napi::Object exports) {
 
 
 bool AudioListener::isAudioListener(Napi::Object obj) {
-	return obj.InstanceOf(_ctorAudioListener.Value());
+	return obj.InstanceOf(_constructor.Value());
 }
 
 
 Napi::Object AudioListener::getNew(Napi::Object context, ListenerPtr listener) {
 	
-	Napi::Function ctor = Nan::New(_ctorAudioListener);
+	Napi::Function ctor = Nan::New(_constructor);
 	V8_VAR_EXT extListener = JS_EXT(&listener);
 	Napi::Value argv[] = { context, extListener };
 	return Nan::NewInstance(ctor, 2, argv).ToLocalChecked();

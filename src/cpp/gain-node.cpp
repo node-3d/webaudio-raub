@@ -51,7 +51,7 @@ JS_GETTER(GainNode::gainGetter) { THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference GainNode::_ctorGainNode;
+Napi::FunctionReference GainNode::_constructor;
 
 
 void GainNode::init(Napi::Env env, Napi::Object exports) {
@@ -62,8 +62,8 @@ void GainNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(GainNode, isDestroyed)
 	});
 	
-	_ctorGainNode = Napi::Persistent(ctor);
-	_ctorGainNode.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("GainNode", ctor);
 	
@@ -72,7 +72,7 @@ void GainNode::init(Napi::Env env, Napi::Object exports) {
 
 Napi::Object GainNode::getNew(Napi::Object context) {
 	
-	Napi::Function ctor = Nan::New(_ctorGainNode);
+	Napi::Function ctor = Nan::New(_constructor);
 	Napi::Value argv[] = { context };
 	return Nan::NewInstance(ctor, 1, argv).ToLocalChecked();
 	

@@ -36,7 +36,7 @@ protected:
 	
 	AudioParam(Napi::Object context, ParamPtr param);
 	
-	static Napi::FunctionReference _ctorAudioParam;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

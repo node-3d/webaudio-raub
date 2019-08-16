@@ -126,7 +126,7 @@ JS_GETTER(OscillatorNode::detuneGetter) { THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference OscillatorNode::_ctorOscillatorNode;
+Napi::FunctionReference OscillatorNode::_constructor;
 
 
 void OscillatorNode::init(Napi::Env env, Napi::Object exports) {
@@ -140,8 +140,8 @@ void OscillatorNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(OscillatorNode, isDestroyed)
 	});
 	
-	_ctorOscillatorNode = Napi::Persistent(ctor);
-	_ctorOscillatorNode.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("OscillatorNode", ctor);
 	
@@ -149,13 +149,13 @@ void OscillatorNode::init(Napi::Env env, Napi::Object exports) {
 
 
 bool OscillatorNode::isOscillatorNode(Napi::Object obj) {
-	return obj.InstanceOf(_ctorOscillatorNode.Value());
+	return obj.InstanceOf(_constructor.Value());
 }
 
 
 Napi::Object OscillatorNode::getNew(Napi::Object context) {
 	
-	Napi::Function ctor = Nan::New(_ctorOscillatorNode);
+	Napi::Function ctor = Nan::New(_constructor);
 	Napi::Value argv[] = { context };
 	return Nan::NewInstance(ctor, 1, argv).ToLocalChecked();
 	

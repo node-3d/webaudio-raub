@@ -108,7 +108,7 @@ JS_GETTER(BiquadFilterNode::gainGetter) { THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference BiquadFilterNode::_ctorBiquadFilterNode;
+Napi::FunctionReference BiquadFilterNode::_constructor;
 
 
 void BiquadFilterNode::init(Napi::Env env, Napi::Object exports) {
@@ -124,8 +124,8 @@ void BiquadFilterNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(BiquadFilterNode, isDestroyed)
 	});
 	
-	_ctorBiquadFilterNode = Napi::Persistent(ctor);
-	_ctorBiquadFilterNode.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("BiquadFilterNode", ctor);
 	
@@ -133,13 +133,13 @@ void BiquadFilterNode::init(Napi::Env env, Napi::Object exports) {
 
 
 bool BiquadFilterNode::isBiquadFilterNode(Napi::Object obj) {
-	return obj.InstanceOf(_ctorBiquadFilterNode.Value());
+	return obj.InstanceOf(_constructor.Value());
 }
 
 
 Napi::Object BiquadFilterNode::getNew(Napi::Object context) {
 	
-	Napi::Function ctor = Nan::New(_ctorBiquadFilterNode);
+	Napi::Function ctor = Nan::New(_constructor);
 	Napi::Value argv[] = { context };
 	return Nan::NewInstance(ctor, 1, argv).ToLocalChecked();
 	

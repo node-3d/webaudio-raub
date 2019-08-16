@@ -31,7 +31,7 @@ protected:
 	AudioScheduledSourceNode() {} // fake, TODO: remove
 	AudioScheduledSourceNode(Napi::Object context, NodePtr node);
 	
-	static Napi::FunctionReference _ctorAudioScheduledSourceNode;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

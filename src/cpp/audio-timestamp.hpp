@@ -28,7 +28,7 @@ protected:
 	
 	AudioTimestamp();
 	
-	static Napi::FunctionReference _ctorAudioTimestamp;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

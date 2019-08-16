@@ -30,7 +30,7 @@ protected:
 	
 	explicit BiquadFilterNode(Napi::Object context);
 	
-	static Napi::FunctionReference _ctorBiquadFilterNode;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

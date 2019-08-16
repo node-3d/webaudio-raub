@@ -30,7 +30,7 @@ protected:
 	
 	ScriptProcessorNode();
 	
-	static Napi::FunctionReference _ctorScriptProcessorNode;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

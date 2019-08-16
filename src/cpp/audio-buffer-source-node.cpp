@@ -50,7 +50,7 @@ void AudioBufferSourceNode::_destroy() { DES_CHECK;
 		_impl.get()
 	);
 	
-	Napi::Object context = JS_OBJ(_context);
+	Napi::Object context = _context.Value();
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	
 	lab::AudioContext *ctx = audioContext->getContext().get();
@@ -108,7 +108,8 @@ JS_SETTER(AudioBufferSourceNode::bufferSetter) {
 	}
 	_buffer.Reset(v);
 	
-	Napi::Object context = JS_OBJ(_context);
+	Napi::Object context = _context.Value()
+	});;
 	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
 	
 	lab::AudioContext *ctx = audioContext->getContext().get();
@@ -216,7 +217,7 @@ JS_SETTER(AudioBufferSourceNode::loopEndSetter) {
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference AudioBufferSourceNode::_ctorAudioBufferSourceNode;
+Napi::FunctionReference AudioBufferSourceNode::_constructor;
 
 
 void AudioBufferSourceNode::init(Napi::Env env, Napi::Object exports) {
@@ -233,8 +234,8 @@ void AudioBufferSourceNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(AudioBufferSourceNode, isDestroyed)
 	});
 	
-	_ctorAudioBufferSourceNode = Napi::Persistent(ctor);
-	_ctorAudioBufferSourceNode.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("AudioBufferSourceNode", ctor);
 	
@@ -243,7 +244,7 @@ void AudioBufferSourceNode::init(Napi::Env env, Napi::Object exports) {
 
 Napi::Object AudioBufferSourceNode::getNew(Napi::Object context) {
 	
-	Napi::Function ctor = Nan::New(_ctorAudioBufferSourceNode);
+	Napi::Function ctor = Nan::New(_constructor);
 	Napi::Value argv[] = { context };
 	return Nan::NewInstance(ctor, 1, argv).ToLocalChecked();
 	

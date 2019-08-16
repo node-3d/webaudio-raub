@@ -30,7 +30,7 @@ protected:
 	
 	ChannelMergerNode();
 	
-	static Napi::FunctionReference _ctorChannelMergerNode;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

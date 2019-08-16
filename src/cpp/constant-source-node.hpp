@@ -30,7 +30,7 @@ protected:
 	
 	ConstantSourceNode();
 	
-	static Napi::FunctionReference _ctorConstantSourceNode;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

@@ -37,7 +37,7 @@ void ChannelMergerNode::_destroy() { DES_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference ChannelMergerNode::_ctorChannelMergerNode;
+Napi::FunctionReference ChannelMergerNode::_constructor;
 
 
 void ChannelMergerNode::init(Napi::Env env, Napi::Object exports) {
@@ -47,8 +47,8 @@ void ChannelMergerNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(ChannelMergerNode, isDestroyed)
 	});
 	
-	_ctorChannelMergerNode = Napi::Persistent(ctor);
-	_ctorChannelMergerNode.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("ChannelMergerNode", ctor);
 	
@@ -56,13 +56,13 @@ void ChannelMergerNode::init(Napi::Env env, Napi::Object exports) {
 
 
 bool ChannelMergerNode::isChannelMergerNode(Napi::Object obj) {
-	return obj.InstanceOf(_ctorChannelMergerNode.Value());
+	return obj.InstanceOf(_constructor.Value());
 }
 
 
 Napi::Object ChannelMergerNode::getNew() {
 	
-	Napi::Function ctor = Nan::New(_ctorChannelMergerNode);
+	Napi::Function ctor = Nan::New(_constructor);
 	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	

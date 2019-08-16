@@ -37,7 +37,7 @@ void ChannelSplitterNode::_destroy() { DES_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference ChannelSplitterNode::_ctorChannelSplitterNode;
+Napi::FunctionReference ChannelSplitterNode::_constructor;
 
 
 void ChannelSplitterNode::init(Napi::Env env, Napi::Object exports) {
@@ -47,8 +47,8 @@ void ChannelSplitterNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(ChannelSplitterNode, isDestroyed)
 	});
 	
-	_ctorChannelSplitterNode = Napi::Persistent(ctor);
-	_ctorChannelSplitterNode.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("ChannelSplitterNode", ctor);
 	
@@ -56,13 +56,13 @@ void ChannelSplitterNode::init(Napi::Env env, Napi::Object exports) {
 
 
 bool ChannelSplitterNode::isChannelSplitterNode(Napi::Object obj) {
-	return obj.InstanceOf(_ctorChannelSplitterNode.Value());
+	return obj.InstanceOf(_constructor.Value());
 }
 
 
 Napi::Object ChannelSplitterNode::getNew() {
 	
-	Napi::Function ctor = Nan::New(_ctorChannelSplitterNode);
+	Napi::Function ctor = Nan::New(_constructor);
 	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	

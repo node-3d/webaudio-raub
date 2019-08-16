@@ -43,7 +43,7 @@ JS_GETTER(ConstantSourceNode::offsetGetter) { THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference ConstantSourceNode::_ctorConstantSourceNode;
+Napi::FunctionReference ConstantSourceNode::_constructor;
 
 
 void ConstantSourceNode::init(Napi::Env env, Napi::Object exports) {
@@ -54,8 +54,8 @@ void ConstantSourceNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(ConstantSourceNode, isDestroyed)
 	});
 	
-	_ctorConstantSourceNode = Napi::Persistent(ctor);
-	_ctorConstantSourceNode.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("ConstantSourceNode", ctor);
 	
@@ -63,13 +63,13 @@ void ConstantSourceNode::init(Napi::Env env, Napi::Object exports) {
 
 
 bool ConstantSourceNode::isConstantSourceNode(Napi::Object obj) {
-	return obj.InstanceOf(_ctorConstantSourceNode.Value());
+	return obj.InstanceOf(_constructor.Value());
 }
 
 
 Napi::Object ConstantSourceNode::getNew() {
 	
-	Napi::Function ctor = Nan::New(_ctorConstantSourceNode);
+	Napi::Function ctor = Nan::New(_constructor);
 	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	

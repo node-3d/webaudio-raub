@@ -30,7 +30,7 @@ protected:
 	
 	OscillatorNode(Napi::Object context, float sampleRate);
 	
-	static Napi::FunctionReference _ctorOscillatorNode;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

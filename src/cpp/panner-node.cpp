@@ -59,12 +59,12 @@ AudioNode(context, NodePtr(new lab::PannerNode(sampleRate, hrtf))) {
 	REQ_OBJ_ARG(0, context);
 	
 	float sampleRate = audioContext->getContext()->sampleRate();
-	Napi::Value hrtfValue = _ctorPannerNode.Value().As<Napi::Object>().Get("hrtf");
+	Napi::Value hrtfValue = _constructor.Value().As<Napi::Object>().Get("hrtf");
 	std::string hrtf = hrtfValue.As<Napi::String>().Utf8Value();
 	
 	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
 	
-	Nan::Utf8String hrtf(Napi::Object::Cast(Nan::New(_ctorPannerNode))->Get(JS_STR("hrtf")));
+	Nan::Utf8String hrtf(Napi::Object::Cast(Nan::New(_constructor))->Get(JS_STR("hrtf")));
 	PannerNode *pannerNode = new PannerNode(context, audioContext->getContext()->sampleRate(), *hrtf);
 	
 	
@@ -346,7 +346,7 @@ JS_SETTER(PannerNode::coneOuterGainSetter) { THIS_CHECK; SETTER_DOUBLE_ARG;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference PannerNode::_ctorPannerNode;
+Napi::FunctionReference PannerNode::_constructor;
 
 
 void PannerNode::init(Napi::Env env, Napi::Object exports) {
@@ -373,8 +373,8 @@ void PannerNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(PannerNode, isDestroyed)
 	});
 	
-	_ctorPannerNode = Napi::Persistent(ctor);
-	_ctorPannerNode.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("PannerNode", ctor);
 	
@@ -382,7 +382,7 @@ void PannerNode::init(Napi::Env env, Napi::Object exports) {
 
 
 bool PannerNode::isPannerNode(Napi::Object obj) {
-	return obj.InstanceOf(_ctorPannerNode.Value());
+	return obj.InstanceOf(_constructor.Value());
 }
 
 
@@ -394,7 +394,7 @@ PannerNode::PannerNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<PannerN
 	
 	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
 	
-	Nan::Utf8String hrtf(Napi::Object::Cast(Nan::New(_ctorPannerNode))->Get(JS_STR("hrtf")));
+	Nan::Utf8String hrtf(Napi::Object::Cast(Nan::New(_constructor))->Get(JS_STR("hrtf")));
 	PannerNode *pannerNode = new PannerNode(context, audioContext->getContext()->sampleRate(), *hrtf);
 	
 }

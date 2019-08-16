@@ -32,7 +32,7 @@ protected:
 	
 	AudioDestinationNode(Napi::Object context, DestPtr node);
 	
-	static Napi::FunctionReference _ctorAudioDestinationNode;
+	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
 	

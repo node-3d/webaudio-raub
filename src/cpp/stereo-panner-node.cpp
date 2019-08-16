@@ -43,7 +43,7 @@ JS_GETTER(StereoPannerNode::panGetter) { THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference StereoPannerNode::_ctorStereoPannerNode;
+Napi::FunctionReference StereoPannerNode::_constructor;
 
 
 void StereoPannerNode::init(Napi::Env env, Napi::Object exports) {
@@ -54,8 +54,8 @@ void StereoPannerNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(StereoPannerNode, isDestroyed)
 	});
 	
-	_ctorStereoPannerNode = Napi::Persistent(ctor);
-	_ctorStereoPannerNode.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("StereoPannerNode", ctor);
 	
@@ -63,13 +63,13 @@ void StereoPannerNode::init(Napi::Env env, Napi::Object exports) {
 
 
 bool StereoPannerNode::isStereoPannerNode(Napi::Object obj) {
-	return obj.InstanceOf(_ctorStereoPannerNode.Value());
+	return obj.InstanceOf(_constructor.Value());
 }
 
 
 Napi::Object StereoPannerNode::getNew() {
 	
-	Napi::Function ctor = Nan::New(_ctorStereoPannerNode);
+	Napi::Function ctor = Nan::New(_constructor);
 	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	

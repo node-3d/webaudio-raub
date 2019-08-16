@@ -40,7 +40,7 @@ JS_GETTER(OfflineAudioCompletionEvent::renderedBufferGetter) { THIS_CHECK;
 
 // ------ System methods and props for ObjectWrap
 
-Napi::FunctionReference OfflineAudioCompletionEvent::_ctorOfflineAudioCompletionEvent;
+Napi::FunctionReference OfflineAudioCompletionEvent::_constructor;
 
 
 void OfflineAudioCompletionEvent::init(Napi::Env env, Napi::Object exports) {
@@ -51,8 +51,8 @@ void OfflineAudioCompletionEvent::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_R(OfflineAudioCompletionEvent, isDestroyed)
 	});
 	
-	_ctorOfflineAudioCompletionEvent = Napi::Persistent(ctor);
-	_ctorOfflineAudioCompletionEvent.SuppressDestruct();
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
 	
 	exports.Set("OfflineAudioCompletionEvent", ctor);
 	
@@ -60,13 +60,13 @@ void OfflineAudioCompletionEvent::init(Napi::Env env, Napi::Object exports) {
 
 
 bool OfflineAudioCompletionEvent::isOfflineAudioCompletionEvent(Napi::Object obj) {
-	return obj.InstanceOf(_ctorOfflineAudioCompletionEvent.Value());
+	return obj.InstanceOf(_constructor.Value());
 }
 
 
 Napi::Object OfflineAudioCompletionEvent::getNew() {
 	
-	Napi::Function ctor = Nan::New(_ctorOfflineAudioCompletionEvent);
+	Napi::Function ctor = Nan::New(_constructor);
 	// Napi::Value argv[] = { /* arg1, arg2, ... */ };
 	return Nan::NewInstance(ctor, 0/*argc*/, nullptr/*argv*/).ToLocalChecked();
 	
