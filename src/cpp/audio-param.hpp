@@ -11,10 +11,10 @@ class AudioParam : public Napi::ObjectWrap<AudioParam>, private CommonParam {
 public:
 	
 	static void init(Napi::Env env, Napi::Object exports);
+	static bool isAudioParam(Napi::Object obj);
 	
 	explicit AudioParam(const Napi::CallbackInfo &info);
 	~AudioParam();
-	
 	
 private:
 	

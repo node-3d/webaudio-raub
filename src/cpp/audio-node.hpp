@@ -14,15 +14,11 @@ class AudioNode : public Napi::ObjectWrap<AudioNode>, private CommonNode {
 	
 public:
 	
-	typedef std::shared_ptr<lab::AudioNode> NodePtr;
+	static void init(Napi::Env env, Napi::Object exports);
+	static bool isAudioNode(Napi::Object obj);
 	
 	~AudioNode();
 	explicit AudioNode(const Napi::CallbackInfo &info);
-	
-	static void init(Napi::Env env, Napi::Object exports);
-	
-	static bool isAudioNode(Napi::Object obj);
-	
 	
 private:
 	

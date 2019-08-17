@@ -55,25 +55,25 @@ void CommonNode::_destroy() { DES_CHECK;
 	
 	_impl.reset();
 	
-	Common::_destroy()
+	Common::_destroy();
 	
 }
 
 
 void CommonParam::_destroy() { DES_CHECK;
 	
-	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(_context.Value());
-	lab::AudioContext *ctx = audioContext->getContext().get();
-	ctx->disconnect(_impl, nullptr);
+	// AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(_context.Value());
+	// lab::AudioContext *ctx = audioContext->getContext().get();
+	// ctx->disconnect(_impl, nullptr);
 	
 	_impl.reset();
 	
-	Common::_destroy()
+	Common::_destroy();
 	
 }
 
 
-void CommonNode::emit(
+void Common::emit(
 	const Napi::CallbackInfo& info,
 	const char* name,
 	int argc,

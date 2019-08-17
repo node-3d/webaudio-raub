@@ -35,15 +35,16 @@ void AudioParam::init(Napi::Env env, Napi::Object exports) {
 	
 }
 
-
-AudioParam::AudioParam(Napi::Object context, ParamPtr param) {
-	
-	_impl = param;
-	_context.Reset(context);
-	
-	_isDestroyed = false;
-	
+bool AudioNode::isAudioNode(Napi::Object obj) {
+	return obj.InstanceOf(_constructor.Value());
 }
+
+
+AudioNode::AudioNode(const Napi::CallbackInfo &info):
+Napi::ObjectWrap<AudioNode>(info) { NAPI_ENV;
+
+}
+
 
 
 JS_METHOD(AudioParam::setValueAtTime) { THIS_CHECK;

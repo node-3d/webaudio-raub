@@ -22,6 +22,11 @@ void GainNode::init(Napi::Env env, Napi::Object exports) {
 	
 }
 
+GainNode *GainNode::create(Napi::Env env) {
+	Napi::Function ctor = _constructor.Value().As<Napi::Function>();
+	return ctor.New();
+}
+
 
 GainNode::GainNode(const Napi::CallbackInfo &info):
 Napi::ObjectWrap<GainNode>(info) { NAPI_ENV;

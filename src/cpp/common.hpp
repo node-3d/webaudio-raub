@@ -59,13 +59,15 @@ struct CommonNode: public Common {
 	
 	NodePtr getNode() const;
 	
+	void _destroy();
+	
 	~CommonNode();
 	CommonNode();
 	void reset(Napi::Object context, NodePtr node);
 	
 };
 
-struct CommonParam {
+struct CommonParam: public Common {
 	
 	typedef std::shared_ptr<lab::AudioParam> ParamPtr;
 	
@@ -73,6 +75,8 @@ struct CommonParam {
 	Napi::ObjectReference _context;
 	
 	ParamPtr getParam() const;
+	
+	void _destroy();
 	
 	~CommonParam();
 	CommonParam();

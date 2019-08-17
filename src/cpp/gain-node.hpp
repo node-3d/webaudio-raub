@@ -11,6 +11,7 @@ class GainNode : public Napi::ObjectWrap<GainNode>, private CommonNode {
 public:
 	
 	static void init(Napi::Env env, Napi::Object exports);
+	static GainNode *create();
 	
 	explicit GainNode(const Napi::CallbackInfo &info);
 	~GainNode();
