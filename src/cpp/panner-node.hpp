@@ -7,20 +7,16 @@
 #include "audio-param.hpp"
 
 
-class PannerNode : public Napi::ObjectWrap<PannerNode> {
+class PannerNode : public Napi::ObjectWrap<PannerNode>, private CommonNode {
 	
 public:
 	
 	~PannerNode();
-	PannerNode(const Napi::CallbackInfo &info);
+	explicit PannerNode(const Napi::CallbackInfo &info);
 	
-	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
 	
 	static bool isPannerNode(Napi::Object obj);
-	
-	// Make a new instance from C++ land
-	explicit PannerNode(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();

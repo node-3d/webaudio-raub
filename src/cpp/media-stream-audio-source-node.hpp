@@ -2,25 +2,21 @@
 #define _MEDIA_STREAM_AUDIO_SOURCE_NODE_HPP_
 
 
-#include <addon-tools.hpp>
+#include "common.hpp"
 
 #include "audio-node.hpp"
 
 
-class MediaStreamAudioSourceNode : public Napi::ObjectWrap<MediaStreamAudioSourceNode> {
+class MediaStreamAudioSourceNode : public Napi::ObjectWrap<MediaStreamAudioSourceNode>, private CommonNode {
 	
 public:
 	
 	~MediaStreamAudioSourceNode();
-	MediaStreamAudioSourceNode(const Napi::CallbackInfo &info);
+	explicit MediaStreamAudioSourceNode(const Napi::CallbackInfo &info);
 	
-	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
 	
 	static bool isMediaStreamAudioSourceNode(Napi::Object obj);
-	
-	// Make a new instance from C++ land
-	explicit MediaStreamAudioSourceNode(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();

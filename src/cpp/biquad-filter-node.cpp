@@ -60,7 +60,7 @@ JS_METHOD(BiquadFilterNode::getFrequencyResponse) { THIS_CHECK;
 
 JS_GETTER(BiquadFilterNode::typeGetter) { THIS_CHECK;
 	
-	RET_STR(__type);
+	RET_STR(_type);
 	
 }
 
@@ -106,7 +106,7 @@ JS_GETTER(BiquadFilterNode::gainGetter) { THIS_CHECK;
 }
 
 
-// ------ System methods and props for ObjectWrap
+// ------ System methods and props for Napi::ObjectWrap
 
 Napi::FunctionReference BiquadFilterNode::_constructor;
 

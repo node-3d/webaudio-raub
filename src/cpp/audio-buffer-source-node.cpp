@@ -10,11 +10,6 @@
 #include "common.hpp"
 
 
-// ------ Aux macros
-
-	Nan::ObjectWrap::Unwrap<AudioBufferSourceNode>(info.This());
-
-
 // ------ Constructor and Destructor
 
 int num = 0;
@@ -51,7 +46,7 @@ void AudioBufferSourceNode::_destroy() { DES_CHECK;
 	);
 	
 	Napi::Object context = _context.Value();
-	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
+	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
 	
 	lab::AudioContext *ctx = audioContext->getContext().get();
 	
@@ -110,13 +105,13 @@ JS_SETTER(AudioBufferSourceNode::bufferSetter) {
 	
 	Napi::Object context = _context.Value()
 	});;
-	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
+	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
 	
 	lab::AudioContext *ctx = audioContext->getContext().get();
 	
 	lab::ContextRenderLock r(ctx, "AudioBufferSourceNode::bufferSetter");
 	
-	AudioBuffer *audioBuffer = ObjectWrap::Unwrap<AudioBuffer>(v);
+	AudioBuffer *audioBuffer = Napi::ObjectWrap<AudioBuffer>::Unwrap(v);
 	AudioBuffer::BusPtr bus = audioBuffer->getBus();
 	
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
@@ -215,7 +210,7 @@ JS_SETTER(AudioBufferSourceNode::loopEndSetter) {
 }
 
 
-// ------ System methods and props for ObjectWrap
+// ------ System methods and props for Napi::ObjectWrap
 
 Napi::FunctionReference AudioBufferSourceNode::_constructor;
 

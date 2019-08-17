@@ -75,7 +75,7 @@ JS_METHOD(AudioScheduledSourceNode::stop) { THIS_CHECK;
 }
 
 
-// ------ System methods and props for ObjectWrap
+// ------ System methods and props for Napi::ObjectWrap
 
 Napi::FunctionReference AudioScheduledSourceNode::_constructor;
 

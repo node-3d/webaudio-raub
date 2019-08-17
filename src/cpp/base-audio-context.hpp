@@ -4,25 +4,21 @@
 
 #include <memory>
 
-#include <addon-tools.hpp>
+#include "common.hpp"
 
 namespace lab { class AudioContext; };
 
 
-class BaseAudioContext : public Napi::ObjectWrap<BaseAudioContext> {
+class BaseAudioContext : public Napi::ObjectWrap<BaseAudioContext>, private CommonNode {
 	
 public:
 	
 	typedef std::shared_ptr<lab::AudioContext> CtxPtr;
 	
 	~BaseAudioContext();
-	BaseAudioContext(const Napi::CallbackInfo &info);
+	explicit BaseAudioContext(const Napi::CallbackInfo &info);
 	
-	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
-	
-	// Make a new instance from C++ land
-	explicit BaseAudioContext(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -47,7 +43,6 @@ protected:
 	CtxPtr _impl;
 	
 	
-// System methods and props for ObjectWrap
 private:
 	
 	JS_METHOD(destroy);

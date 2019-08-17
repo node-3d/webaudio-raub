@@ -41,7 +41,7 @@ JS_GETTER(MediaStreamAudioDestinationNode::streamGetter) { THIS_CHECK;
 }
 
 
-// ------ System methods and props for ObjectWrap
+// ------ System methods and props for Napi::ObjectWrap
 
 Napi::FunctionReference MediaStreamAudioDestinationNode::_constructor;
 

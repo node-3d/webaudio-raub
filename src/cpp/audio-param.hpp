@@ -1,53 +1,24 @@
 #ifndef _AUDIO_PARAM_HPP_
 #define _AUDIO_PARAM_HPP_
 
-
-#include <memory>
-
-#include <addon-tools.hpp>
+#include "common.hpp"
 
 namespace lab { class AudioParam; };
 
 
-class AudioParam : public Napi::ObjectWrap<AudioParam> {
+class AudioParam : public Napi::ObjectWrap<AudioParam>, private CommonParam {
 	
 public:
 	
-	typedef std::shared_ptr<lab::AudioParam> ParamPtr;
-	
-	~AudioParam();
-	AudioParam(const Napi::CallbackInfo &info);
-	
-	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
 	
-	// Make a new instance from C++ land
-	explicit AudioParam(const Napi::CallbackInfo& info);
-	
-	// Destroy an instance from C++ land
-	void _destroy();
-	
-	ParamPtr getParam() const;
-	
-	static bool isAudioParam(Napi::Object obj);
-	
-	
-protected:
-	
-	AudioParam(Napi::Object context, ParamPtr param);
-	
-	static Napi::FunctionReference _constructor;
-	
-	bool _isDestroyed;
-	
-	ParamPtr _impl;
-	Napi::ObjectReference _context;
+	explicit AudioParam(const Napi::CallbackInfo &info);
+	~AudioParam();
 	
 	
 private:
 	
-	JS_METHOD(destroy);
-	JS_GETTER(isDestroyedGetter);
+	static Napi::FunctionReference _constructor;
 	
 	JS_METHOD(setValueAtTime);
 	JS_METHOD(linearRampToValueAtTime);

@@ -16,22 +16,6 @@ AudioNode() {
 }
 
 
-WaveShaperNode::~WaveShaperNode() {
-	
-	_destroy();
-	
-}
-
-
-void WaveShaperNode::_destroy() { DES_CHECK;
-	
-	_isDestroyed = true;
-	
-	AudioNode::_destroy();
-	
-}
-
-
 // ------ Methods and props
 
 
@@ -58,7 +42,7 @@ JS_SETTER(WaveShaperNode::curveSetter) { THIS_CHECK; SETTER_OBJ_ARG;
 
 JS_GETTER(WaveShaperNode::oversampleGetter) { THIS_CHECK;
 	
-	RET_STR(__oversample);
+	RET_STR(_oversample);
 	
 }
 
@@ -73,7 +57,7 @@ JS_SETTER(WaveShaperNode::oversampleSetter) { THIS_CHECK; SETTER_STR_ARG;
 }
 
 
-// ------ System methods and props for ObjectWrap
+// ------ System methods and props for Napi::ObjectWrap
 
 Napi::FunctionReference WaveShaperNode::_constructor;
 
@@ -97,20 +81,4 @@ void WaveShaperNode::init(Napi::Env env, Napi::Object exports) {
 
 bool WaveShaperNode::isWaveShaperNode(Napi::Object obj) {
 	return obj.InstanceOf(_constructor.Value());
-}
-
-
-JS_METHOD(WaveShaperNode::destroy) { THIS_CHECK;
-	
-	emit("destroy");
-	
-	_destroy();
-	
-}
-
-
-JS_GETTER(WaveShaperNode::isDestroyedGetter) { NAPI_ENV;
-	
-	RET_BOOL(_isDestroyed);
-	
 }

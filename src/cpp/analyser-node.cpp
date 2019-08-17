@@ -4,28 +4,43 @@
 #include "common.hpp"
 
 
-// ------ Constructor and Destructor
+Napi::FunctionReference AnalyserNode::_constructor;
 
-AnalyserNode::AnalyserNode() :
-AudioNode() {
+void AnalyserNode::init(Napi::Env env, Napi::Object exports) {
 	
-	_isDestroyed = false;
+	Napi::Function ctor = DefineClass(env, "AnalyserNode", {
+		ACCESSOR_RW(AnalyserNode, smoothingTimeConstant),
+		ACCESSOR_RW(AnalyserNode, maxDecibels),
+		ACCESSOR_RW(AnalyserNode, minDecibels),
+		ACCESSOR_RW(AnalyserNode, fftSize),
+		ACCESSOR_M(AnalyserNode, getByteTimeDomainData),
+		ACCESSOR_M(AnalyserNode, getFloatTimeDomainData),
+		ACCESSOR_M(AnalyserNode, getByteFrequencyData),
+		ACCESSOR_M(AnalyserNode, getFloatFrequencyData),
+		ACCESSOR_M(AnalyserNode, destroy),
+		ACCESSOR_R(AnalyserNode, frequencyBinCount),
+		ACCESSOR_R(AnalyserNode, isDestroyed)
+	});
+	
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
+	
+	exports.Set("AnalyserNode", ctor);
 	
 }
 
-
-AnalyserNode::~AnalyserNode() {
+// Image.prototype.__proto__ = EventEmitter.prototype;
+AnalyserNode::AnalyserNode(const Napi::CallbackInfo &info):
+Napi::ObjectWrap<AnalyserNode>(info) {
 	
-	_destroy();
+	CTOR_CHECK("AnalyserNode");
 	
-}
-
-
-void AnalyserNode::_destroy() { DES_CHECK;
+	std::make_shared<lab::AnalyserNode>()
 	
-	_isDestroyed = true;
-	
-	AudioNode::_destroy();
+	Napi::Object that = info.This().As<Napi::Object>();
+	Napi::Function ctor = _constructor.Value().As<Napi::Function>();
+	Napi::Function _Super = ctor.Get("_Super").As<Napi::Function>();
+	_Super.Call(that, 2, {  });
 	
 }
 
@@ -140,64 +155,5 @@ JS_SETTER(AnalyserNode::smoothingTimeConstantSetter) { THIS_CHECK; SETTER_DOUBLE
 	// TODO: may be additional actions on change?
 	
 	emit("smoothingTimeConstant", 1, &value);
-	
-}
-
-
-// ------ System methods and props for ObjectWrap
-
-Napi::FunctionReference AnalyserNode::_constructor;
-
-
-void AnalyserNode::init(Napi::Env env, Napi::Object exports) {
-	
-	Napi::Function ctor = DefineClass(env, "AnalyserNode", {
-		ACCESSOR_RW(AnalyserNode, smoothingTimeConstant),
-		ACCESSOR_RW(AnalyserNode, maxDecibels),
-		ACCESSOR_RW(AnalyserNode, minDecibels),
-		ACCESSOR_RW(AnalyserNode, fftSize),
-		ACCESSOR_M(AnalyserNode, getByteTimeDomainData),
-		ACCESSOR_M(AnalyserNode, getFloatTimeDomainData),
-		ACCESSOR_M(AnalyserNode, getByteFrequencyData),
-		ACCESSOR_M(AnalyserNode, getFloatFrequencyData),
-		ACCESSOR_M(AnalyserNode, destroy),
-		ACCESSOR_R(AnalyserNode, frequencyBinCount),
-		ACCESSOR_R(AnalyserNode, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
-	
-	exports.Set("AnalyserNode", ctor);
-	
-}
-
-
-bool AnalyserNode::isAnalyserNode(Napi::Object obj) {
-	return obj.InstanceOf(_constructor.Value());
-}
-
-
-AnalyserNode::AnalyserNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<AnalyserNode>(info) {
-	
-	CTOR_CHECK("AnalyserNode");
-	
-	AnalyserNode *analyserNode = new AnalyserNode();
-	
-}
-
-
-JS_METHOD(AnalyserNode::destroy) { THIS_CHECK;
-	
-	emit("destroy");
-	
-	_destroy();
-	
-}
-
-
-JS_GETTER(AnalyserNode::isDestroyedGetter) { NAPI_ENV;
-	
-	RET_BOOL(_isDestroyed);
 	
 }

@@ -61,7 +61,7 @@ JS_SETTER(AudioTimestamp::performanceTimeSetter) { THIS_CHECK; SETTER_DOUBLE_ARG
 }
 
 
-// ------ System methods and props for ObjectWrap
+// ------ System methods and props for Napi::ObjectWrap
 
 Napi::FunctionReference AudioTimestamp::_constructor;
 

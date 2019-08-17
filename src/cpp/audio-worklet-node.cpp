@@ -63,7 +63,7 @@ JS_SETTER(AudioWorkletNode::onprocessorerrorSetter) { THIS_CHECK; SETTER_FUN_ARG
 }
 
 
-// ------ System methods and props for ObjectWrap
+// ------ System methods and props for Napi::ObjectWrap
 
 Napi::FunctionReference AudioWorkletNode::_constructor;
 

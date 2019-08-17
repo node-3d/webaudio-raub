@@ -41,7 +41,7 @@ JS_GETTER(StereoPannerNode::panGetter) { THIS_CHECK;
 }
 
 
-// ------ System methods and props for ObjectWrap
+// ------ System methods and props for Napi::ObjectWrap
 
 Napi::FunctionReference StereoPannerNode::_constructor;
 

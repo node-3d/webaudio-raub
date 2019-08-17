@@ -38,7 +38,7 @@ JS_GETTER(AudioWorkletProcessor::portGetter) { THIS_CHECK;
 }
 
 
-// ------ System methods and props for ObjectWrap
+// ------ System methods and props for Napi::ObjectWrap
 
 Napi::FunctionReference AudioWorkletProcessor::_constructor;
 

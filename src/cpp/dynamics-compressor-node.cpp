@@ -76,7 +76,7 @@ JS_GETTER(DynamicsCompressorNode::releaseGetter) { THIS_CHECK;
 }
 
 
-// ------ System methods and props for ObjectWrap
+// ------ System methods and props for Napi::ObjectWrap
 
 Napi::FunctionReference DynamicsCompressorNode::_constructor;
 

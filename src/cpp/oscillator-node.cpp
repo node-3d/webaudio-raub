@@ -7,7 +7,7 @@
 #include "common.hpp"
 
 
-inline string fromOscillatorType(lab::OscillatorType mode) {
+inline std::string fromOscillatorType(lab::OscillatorType mode) {
 	if (mode == lab::OscillatorType::SINE) {
 		return "sine";
 	} else if (mode == lab::OscillatorType::SQUARE) {
@@ -22,7 +22,7 @@ inline string fromOscillatorType(lab::OscillatorType mode) {
 }
 
 
-inline lab::OscillatorType toOscillatorType(const string &mode) {
+inline lab::OscillatorType toOscillatorType(const std::string &mode) {
 	if (mode == "sine") {
 		return lab::OscillatorType::SINE;
 	} else if (mode == "square") {
@@ -124,7 +124,7 @@ JS_GETTER(OscillatorNode::detuneGetter) { THIS_CHECK;
 }
 
 
-// ------ System methods and props for ObjectWrap
+// ------ System methods and props for Napi::ObjectWrap
 
 Napi::FunctionReference OscillatorNode::_constructor;
 

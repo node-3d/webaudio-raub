@@ -1,44 +1,27 @@
 #ifndef _GAIN_NODE_HPP_
 #define _GAIN_NODE_HPP_
 
-
-#include <addon-tools.hpp>
+#include "common.hpp"
 
 #include "audio-node.hpp"
 
 
-class GainNode : public Napi::ObjectWrap<GainNode> {
+class GainNode : public Napi::ObjectWrap<GainNode>, private CommonNode {
 	
 public:
 	
-	~GainNode();
-	GainNode(const Napi::CallbackInfo &info);
-	
-	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
 	
-	// Make a new instance from C++ land
-	explicit GainNode(const Napi::CallbackInfo& info);
+	explicit GainNode(const Napi::CallbackInfo &info);
+	~GainNode();
 	
-	// Destroy an instance from C++ land
 	void _destroy();
-	
-	
-protected:
-	
-	explicit GainNode(Napi::Object context);
-	
-	static Napi::FunctionReference _constructor;
-	
-	bool _isDestroyed;
-	
-	Napi::ObjectReference _gain;
-	
 	
 private:
 	
-	JS_METHOD(destroy);
-	JS_GETTER(isDestroyedGetter);
+	static Napi::FunctionReference _constructor;
+	
+	Napi::ObjectReference _gain;
 	
 	JS_GETTER(gainGetter);
 	

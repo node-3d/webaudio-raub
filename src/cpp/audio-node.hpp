@@ -4,50 +4,33 @@
 
 #include <memory>
 
-#include <addon-tools.hpp>
+#include "common.hpp"
 
 namespace lab { class AudioNode; };
 #include <LabSound/core/AudioNode.h>
 
 
-class AudioNode : public Napi::ObjectWrap<AudioNode> {
+class AudioNode : public Napi::ObjectWrap<AudioNode>, private CommonNode {
 	
 public:
 	
 	typedef std::shared_ptr<lab::AudioNode> NodePtr;
 	
 	~AudioNode();
-	AudioNode(const Napi::CallbackInfo &info);
+	explicit AudioNode(const Napi::CallbackInfo &info);
 	
-	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
 	
 	static bool isAudioNode(Napi::Object obj);
 	
-	// Destroy an instance from C++ land
-	void _destroy();
 	
-	NodePtr getNode() const;
-	
-	
-protected:
+private:
 	
 	static Napi::FunctionReference _constructor;
-	
-	bool _isDestroyed;
 	
 	uint32_t _channelCount;
 	std::string _channelCountMode;
 	std::string _channelInterpretation;
-	
-	NodePtr _impl;
-	Napi::ObjectReference _context;
-	
-	
-private:
-	
-	JS_METHOD(destroy);
-	JS_GETTER(isDestroyedGetter);
 	
 	JS_METHOD(connect);
 	JS_METHOD(disconnect);

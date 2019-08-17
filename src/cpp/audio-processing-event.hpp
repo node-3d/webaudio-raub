@@ -2,23 +2,19 @@
 #define _AUDIO_PROCESSING_EVENT_HPP_
 
 
-#include <addon-tools.hpp>
+#include "common.hpp"
 
 
-class AudioProcessingEvent : public Napi::ObjectWrap<AudioProcessingEvent> {
+class AudioProcessingEvent : public Napi::ObjectWrap<AudioProcessingEvent>, private CommonNode {
 	
 public:
 	
 	~AudioProcessingEvent();
-	AudioProcessingEvent(const Napi::CallbackInfo &info);
+	explicit AudioProcessingEvent(const Napi::CallbackInfo &info);
 	
-	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
 	
 	static bool isAudioProcessingEvent(Napi::Object obj);
-	
-	// Make a new instance from C++ land
-	explicit AudioProcessingEvent(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();

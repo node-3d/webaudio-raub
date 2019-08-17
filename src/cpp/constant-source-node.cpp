@@ -41,7 +41,7 @@ JS_GETTER(ConstantSourceNode::offsetGetter) { THIS_CHECK;
 }
 
 
-// ------ System methods and props for ObjectWrap
+// ------ System methods and props for Napi::ObjectWrap
 
 Napi::FunctionReference ConstantSourceNode::_constructor;
 

@@ -8,7 +8,33 @@
 #include "common.hpp"
 
 
-// ------ Constructor and Destructor
+Napi::FunctionReference AudioParam::_constructor;
+
+void AudioParam::init(Napi::Env env, Napi::Object exports) {
+	
+	Napi::Function ctor = DefineClass(env, "AudioParam", {
+		ACCESSOR_RW(AudioParam, value),
+		ACCESSOR_M(AudioParam, cancelAndHoldAtTime),
+		ACCESSOR_M(AudioParam, cancelScheduledValues),
+		ACCESSOR_M(AudioParam, setValueCurveAtTime),
+		ACCESSOR_M(AudioParam, setTargetAtTime),
+		ACCESSOR_M(AudioParam, exponentialRampToValueAtTime),
+		ACCESSOR_M(AudioParam, linearRampToValueAtTime),
+		ACCESSOR_M(AudioParam, setValueAtTime),
+		ACCESSOR_M(AudioParam, destroy),
+		ACCESSOR_R(AudioParam, maxValue),
+		ACCESSOR_R(AudioParam, minValue),
+		ACCESSOR_R(AudioParam, defaultValue),
+		ACCESSOR_R(AudioParam, isDestroyed)
+	});
+	
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
+	
+	exports.Set("AudioParam", ctor);
+	
+}
+
 
 AudioParam::AudioParam(Napi::Object context, ParamPtr param) {
 	
@@ -18,30 +44,6 @@ AudioParam::AudioParam(Napi::Object context, ParamPtr param) {
 	_isDestroyed = false;
 	
 }
-
-
-AudioParam::~AudioParam() {
-	
-	_destroy();
-	
-}
-
-
-AudioParam::ParamPtr AudioParam::getParam() const {
-	return _impl;
-}
-
-
-void AudioParam::_destroy() { DES_CHECK;
-	
-	_context.Reset();
-	
-	_isDestroyed = true;
-	
-}
-
-
-// ------ Methods and props
 
 
 JS_METHOD(AudioParam::setValueAtTime) { THIS_CHECK;
@@ -121,7 +123,7 @@ JS_METHOD(AudioParam::cancelAndHoldAtTime) { THIS_CHECK;
 JS_GETTER(AudioParam::valueGetter) { THIS_CHECK;
 	
 	Napi::Object context = _context.Value();
-	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
+	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
 	
 	lab::ContextRenderLock renderLock(audioContext->getContext().get(), "AudioParam::valueGetter");
 	
@@ -153,79 +155,5 @@ JS_GETTER(AudioParam::minValueGetter) { THIS_CHECK;
 JS_GETTER(AudioParam::maxValueGetter) { THIS_CHECK;
 	
 	RET_NUM(_impl->maxValue());
-	
-}
-
-
-// ------ System methods and props for ObjectWrap
-
-Napi::FunctionReference AudioParam::_constructor;
-
-
-bool AudioParam::isAudioParam(Napi::Object obj) {
-	return obj.InstanceOf(_constructor.Value());
-}
-
-
-void AudioParam::init(Napi::Env env, Napi::Object exports) {
-	
-	Napi::Function ctor = DefineClass(env, "AudioParam", {
-		ACCESSOR_RW(AudioParam, value),
-		ACCESSOR_M(AudioParam, cancelAndHoldAtTime),
-		ACCESSOR_M(AudioParam, cancelScheduledValues),
-		ACCESSOR_M(AudioParam, setValueCurveAtTime),
-		ACCESSOR_M(AudioParam, setTargetAtTime),
-		ACCESSOR_M(AudioParam, exponentialRampToValueAtTime),
-		ACCESSOR_M(AudioParam, linearRampToValueAtTime),
-		ACCESSOR_M(AudioParam, setValueAtTime),
-		ACCESSOR_M(AudioParam, destroy),
-		ACCESSOR_R(AudioParam, maxValue),
-		ACCESSOR_R(AudioParam, minValue),
-		ACCESSOR_R(AudioParam, defaultValue),
-		ACCESSOR_R(AudioParam, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
-	
-	exports.Set("AudioParam", ctor);
-	
-}
-
-
-Napi::Object AudioParam::getNew(Napi::Object context, ParamPtr param) {
-	
-	Napi::Function ctor = Nan::New(_constructor);
-	V8_VAR_EXT extParam = JS_EXT(&param);
-	Napi::Value argv[] = { context, extParam };
-	return Nan::NewInstance(ctor, 2, argv).ToLocalChecked();
-	
-}
-
-
-AudioParam::AudioParam(const Napi::CallbackInfo &info): Napi::ObjectWrap<AudioParam>(info) {
-	
-	CTOR_CHECK("AudioParam");
-	
-	REQ_OBJ_ARG(0, context);
-	REQ_EXT_ARG(1, extParam);
-	
-	ParamPtr *param = reinterpret_cast<ParamPtr *>(extParam->Value());
-	
-	AudioParam *audioParam = new AudioParam(context, *param);
-	
-}
-
-
-JS_METHOD(AudioParam::destroy) { THIS_CHECK;
-	
-	_destroy();
-	
-}
-
-
-JS_GETTER(AudioParam::isDestroyedGetter) { NAPI_ENV;
-	
-	RET_BOOL(_isDestroyed);
 	
 }

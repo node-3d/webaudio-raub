@@ -2,23 +2,19 @@
 #define _AUDIO_WORKLET_GLOBAL_SCOPE_HPP_
 
 
-#include <addon-tools.hpp>
+#include "common.hpp"
 
 
-class AudioWorkletGlobalScope : public Napi::ObjectWrap<AudioWorkletGlobalScope> {
+class AudioWorkletGlobalScope : public Napi::ObjectWrap<AudioWorkletGlobalScope>, private CommonNode {
 	
 public:
 	
 	~AudioWorkletGlobalScope();
-	AudioWorkletGlobalScope(const Napi::CallbackInfo &info);
+	explicit AudioWorkletGlobalScope(const Napi::CallbackInfo &info);
 	
-	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
 	
 	static bool isAudioWorkletGlobalScope(Napi::Object obj);
-	
-	// Make a new instance from C++ land
-	explicit AudioWorkletGlobalScope(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();

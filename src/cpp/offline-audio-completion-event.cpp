@@ -38,7 +38,7 @@ JS_GETTER(OfflineAudioCompletionEvent::renderedBufferGetter) { THIS_CHECK;
 }
 
 
-// ------ System methods and props for ObjectWrap
+// ------ System methods and props for Napi::ObjectWrap
 
 Napi::FunctionReference OfflineAudioCompletionEvent::_constructor;
 

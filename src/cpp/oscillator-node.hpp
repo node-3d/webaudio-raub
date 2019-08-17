@@ -2,7 +2,7 @@
 #define _OSCILLATOR_NODE_HPP_
 
 
-#include <addon-tools.hpp>
+#include "common.hpp"
 
 #include "audio-scheduled-source-node.hpp"
 
@@ -12,15 +12,11 @@ class OscillatorNode : public AudioScheduledSourceNode {
 public:
 	
 	~OscillatorNode();
-	OscillatorNode(const Napi::CallbackInfo &info);
+	explicit OscillatorNode(const Napi::CallbackInfo &info);
 	
-	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
 	
 	static bool isOscillatorNode(Napi::Object obj);
-	
-	// Make a new instance from C++ land
-	explicit OscillatorNode(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();

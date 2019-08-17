@@ -2,25 +2,21 @@
 #define _BIQUAD_FILTER_NODE_HPP_
 
 
-#include <addon-tools.hpp>
+#include "common.hpp"
 
 #include "audio-node.hpp"
 
 
-class BiquadFilterNode : public Napi::ObjectWrap<BiquadFilterNode> {
+class BiquadFilterNode : public Napi::ObjectWrap<BiquadFilterNode>, private CommonNode {
 	
 public:
 	
 	~BiquadFilterNode();
-	BiquadFilterNode(const Napi::CallbackInfo &info);
+	explicit BiquadFilterNode(const Napi::CallbackInfo &info);
 	
-	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
 	
 	static bool isBiquadFilterNode(Napi::Object obj);
-	
-	// Make a new instance from C++ land
-	explicit BiquadFilterNode(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();

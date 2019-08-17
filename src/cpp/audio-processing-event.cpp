@@ -52,7 +52,7 @@ JS_GETTER(AudioProcessingEvent::outputBufferGetter) { THIS_CHECK;
 }
 
 
-// ------ System methods and props for ObjectWrap
+// ------ System methods and props for Napi::ObjectWrap
 
 Napi::FunctionReference AudioProcessingEvent::_constructor;
 

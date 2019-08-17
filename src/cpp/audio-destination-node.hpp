@@ -2,27 +2,23 @@
 #define _AUDIO_DESTINATION_NODE_HPP_
 
 
-#include <addon-tools.hpp>
+#include "common.hpp"
 
 #include "audio-node.hpp"
 
 namespace lab { class AudioDestinationNode; };
 
 
-class AudioDestinationNode : public Napi::ObjectWrap<AudioDestinationNode> {
+class AudioDestinationNode : public Napi::ObjectWrap<AudioDestinationNode>, private CommonNode {
 	
 public:
 	
 	typedef std::shared_ptr<lab::AudioDestinationNode> DestPtr;
 	
 	~AudioDestinationNode();
-	AudioDestinationNode(const Napi::CallbackInfo &info);
+	explicit AudioDestinationNode(const Napi::CallbackInfo &info);
 	
-	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
-	
-	// Make a new instance from C++ land
-	explicit AudioDestinationNode(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();

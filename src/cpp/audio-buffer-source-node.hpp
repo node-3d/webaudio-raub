@@ -10,13 +10,9 @@ class AudioBufferSourceNode : public AudioScheduledSourceNode {
 public:
 	
 	~AudioBufferSourceNode();
-	AudioBufferSourceNode(const Napi::CallbackInfo &info);
+	explicit AudioBufferSourceNode(const Napi::CallbackInfo &info);
 	
-	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
-	
-	// Make a new instance from C++ land
-	explicit AudioBufferSourceNode(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();

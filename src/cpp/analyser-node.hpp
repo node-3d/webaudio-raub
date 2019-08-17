@@ -2,37 +2,22 @@
 #define _ANALYSER_NODE_HPP_
 
 
-#include <addon-tools.hpp>
+#include "common.hpp"
 
 #include "audio-node.hpp"
 
 
-class AnalyserNode : public Napi::ObjectWrap<AnalyserNode> {
+class AnalyserNode : public Napi::ObjectWrap<AnalyserNode>, private CommonNode, private CommonNode {
 	
 public:
 	
 	~AnalyserNode();
-	AnalyserNode(const Napi::CallbackInfo &info);
+	explicit AnalyserNode(const Napi::CallbackInfo &info);
 	
-	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
-	
-	static bool isAnalyserNode(Napi::Object obj);
-	
-	// Make a new instance from C++ land
-	explicit AnalyserNode(const Napi::CallbackInfo& info);
-	
-	// Destroy an instance from C++ land
-	void _destroy();
 	
 	
 protected:
-	
-	AnalyserNode();
-	
-	static Napi::FunctionReference _constructor;
-	
-	bool _isDestroyed;
 	
 	uint32_t _frequencyBinCount;
 	uint32_t _fftSize;
@@ -42,9 +27,6 @@ protected:
 	
 	
 private:
-	
-	JS_METHOD(destroy);
-	JS_GETTER(isDestroyedGetter);
 	
 	JS_METHOD(getFloatFrequencyData);
 	JS_METHOD(getByteFrequencyData);

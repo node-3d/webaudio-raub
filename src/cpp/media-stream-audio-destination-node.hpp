@@ -2,25 +2,21 @@
 #define _MEDIA_STREAM_AUDIO_DESTINATION_NODE_HPP_
 
 
-#include <addon-tools.hpp>
+#include "common.hpp"
 
 #include "audio-node.hpp"
 
 
-class MediaStreamAudioDestinationNode : public Napi::ObjectWrap<MediaStreamAudioDestinationNode> {
+class MediaStreamAudioDestinationNode : public Napi::ObjectWrap<MediaStreamAudioDestinationNode>, private CommonNode {
 	
 public:
 	
 	~MediaStreamAudioDestinationNode();
-	MediaStreamAudioDestinationNode(const Napi::CallbackInfo &info);
+	explicit MediaStreamAudioDestinationNode(const Napi::CallbackInfo &info);
 	
-	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
 	
 	static bool isMediaStreamAudioDestinationNode(Napi::Object obj);
-	
-	// Make a new instance from C++ land
-	explicit MediaStreamAudioDestinationNode(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();

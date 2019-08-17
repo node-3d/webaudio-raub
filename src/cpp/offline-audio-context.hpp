@@ -2,7 +2,7 @@
 #define _OFFLINE_AUDIO_CONTEXT_HPP_
 
 
-#include <addon-tools.hpp>
+#include "common.hpp"
 
 #include "base-audio-context.hpp"
 
@@ -12,15 +12,11 @@ class OfflineAudioContext : public BaseAudioContext {
 public:
 	
 	~OfflineAudioContext();
-	OfflineAudioContext(const Napi::CallbackInfo &info);
+	explicit OfflineAudioContext(const Napi::CallbackInfo &info);
 	
-	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
 	
 	static bool isOfflineAudioContext(Napi::Object obj);
-	
-	// Make a new instance from C++ land
-	explicit OfflineAudioContext(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();

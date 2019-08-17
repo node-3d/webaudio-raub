@@ -9,7 +9,7 @@
 #include "common.hpp"
 
 
-inline string fromDistanceModel(uint16_t mode) {
+inline std::string fromDistanceModel(uint16_t mode) {
 	if (mode == lab::PannerNode::LINEAR_DISTANCE) {
 		return "linear";
 	} else if (mode == lab::PannerNode::INVERSE_DISTANCE) {
@@ -20,7 +20,7 @@ inline string fromDistanceModel(uint16_t mode) {
 }
 
 
-inline uint16_t toDistanceModel(const string &mode) {
+inline uint16_t toDistanceModel(const std::string &mode) {
 	if (mode == "linear") {
 		return lab::PannerNode::LINEAR_DISTANCE;
 	} else if (mode == "inverse") {
@@ -31,7 +31,7 @@ inline uint16_t toDistanceModel(const string &mode) {
 }
 
 
-inline string fromPanningMode(lab::PanningMode mode) {
+inline std::string fromPanningMode(lab::PanningMode mode) {
 	if (mode == lab::PanningMode::EQUALPOWER) {
 		return "equalpower";
 	} else {
@@ -40,7 +40,7 @@ inline string fromPanningMode(lab::PanningMode mode) {
 }
 
 
-inline lab::PanningMode toPanningMode(const string &mode) {
+inline lab::PanningMode toPanningMode(const std::string &mode) {
 	if (mode == "equalpower") {
 		return lab::PanningMode::EQUALPOWER;
 	} else {
@@ -51,7 +51,7 @@ inline lab::PanningMode toPanningMode(const string &mode) {
 
 // ------ Constructor and Destructor
 //const Napi::CallbackInfo &info
-PannerNode::PannerNode(Napi::Object context, float sampleRate, const string &hrtf) :
+PannerNode::PannerNode(Napi::Object context, float sampleRate, const std::string &hrtf) :
 AudioNode(context, NodePtr(new lab::PannerNode(sampleRate, hrtf))) {
 	
 	CTOR_CHECK("PannerNode");
@@ -344,7 +344,7 @@ JS_SETTER(PannerNode::coneOuterGainSetter) { THIS_CHECK; SETTER_DOUBLE_ARG;
 }
 
 
-// ------ System methods and props for ObjectWrap
+// ------ System methods and props for Napi::ObjectWrap
 
 Napi::FunctionReference PannerNode::_constructor;
 

@@ -41,7 +41,7 @@ JS_GETTER(MediaElementAudioSourceNode::mediaElementGetter) { THIS_CHECK;
 }
 
 
-// ------ System methods and props for ObjectWrap
+// ------ System methods and props for Napi::ObjectWrap
 
 Napi::FunctionReference MediaElementAudioSourceNode::_constructor;
 

@@ -61,7 +61,7 @@ JS_GETTER(ScriptProcessorNode::bufferSizeGetter) { THIS_CHECK;
 }
 
 
-// ------ System methods and props for ObjectWrap
+// ------ System methods and props for Napi::ObjectWrap
 
 Napi::FunctionReference ScriptProcessorNode::_constructor;
 

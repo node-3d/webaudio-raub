@@ -54,7 +54,7 @@ bool compareMagic(const uint8_t *data, const int16_t *magic) {
 	
 }
 
-string getExtension(const uint8_t *data) {
+std::string getExtension(const uint8_t *data) {
 	
 	static const int16_t wv[] = { 'w', 'v', 'p', 'k', -2 };
 	static const int16_t wav[] = { 0x52, 0x49, 0x46, 0x46, -1, -1, -1, -1, 0x57, 0x41, 0x56, 0x45, -2 };
@@ -191,7 +191,7 @@ JS_METHOD(BaseAudioContext::decodeAudioData) { THIS_CHECK;
 	uint8_t *data = reinterpret_cast<uint8_t *>(node::Buffer::Data(audioData));
 	vector<uint8_t> dataVec(data, data + len);
 	
-	string ext = getExtension(data);
+	std::string ext = getExtension(data);
 	
 	AudioBuffer::BusPtr bus = lab::MakeBusFromMemory(dataVec, ext, false);
 	
@@ -353,12 +353,12 @@ JS_GETTER(BaseAudioContext::listenerGetter) { THIS_CHECK;
 
 JS_GETTER(BaseAudioContext::stateGetter) { THIS_CHECK;
 	
-	RET_STR(__state);
+	RET_STR(_state);
 	
 }
 
 
-// ------ System methods and props for ObjectWrap
+// ------ System methods and props for Napi::ObjectWrap
 
 Napi::FunctionReference BaseAudioContext::_constructor;
 

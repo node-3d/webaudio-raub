@@ -96,7 +96,7 @@ PARAM_GETTER(AudioListener, upY);
 PARAM_GETTER(AudioListener, upZ);
 
 
-// ------ System methods and props for ObjectWrap
+// ------ System methods and props for Napi::ObjectWrap
 
 Napi::FunctionReference AudioListener::_constructor;
 

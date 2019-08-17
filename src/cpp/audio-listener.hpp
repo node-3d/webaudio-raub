@@ -2,27 +2,23 @@
 #define _AUDIO_LISTENER_HPP_
 
 
-#include <addon-tools.hpp>
+#include "common.hpp"
 
 namespace lab { class AudioListener; };
 
 
-class AudioListener : public Napi::ObjectWrap<AudioListener> {
+class AudioListener : public Napi::ObjectWrap<AudioListener>, private CommonNode {
 	
 public:
 	
 	typedef std::shared_ptr<lab::AudioListener> ListenerPtr;
 	
 	~AudioListener();
-	AudioListener(const Napi::CallbackInfo &info);
+	explicit AudioListener(const Napi::CallbackInfo &info);
 	
-	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
 	
 	static bool isAudioListener(Napi::Object obj);
-	
-	// Make a new instance from C++ land
-	explicit AudioListener(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();

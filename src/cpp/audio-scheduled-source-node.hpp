@@ -7,20 +7,16 @@
 namespace lab { class AudioScheduledSourceNode; };
 
 
-class AudioScheduledSourceNode : public Napi::ObjectWrap<AudioScheduledSourceNode> {
+class AudioScheduledSourceNode : public Napi::ObjectWrap<AudioScheduledSourceNode>, private CommonNode {
 	
 public:
 	
 	typedef std::shared_ptr<lab::AudioScheduledSourceNode> NodePtr;
 	
 	~AudioScheduledSourceNode();
-	AudioScheduledSourceNode(const Napi::CallbackInfo &info);
+	explicit AudioScheduledSourceNode(const Napi::CallbackInfo &info);
 	
-	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
-	
-	// Make a new instance from C++ land
-	explicit AudioScheduledSourceNode(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();

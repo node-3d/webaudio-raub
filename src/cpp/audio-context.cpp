@@ -91,7 +91,7 @@ JS_GETTER(AudioContext::baseLatencyGetter) { THIS_CHECK;
 }
 
 
-// ------ System methods and props for ObjectWrap
+// ------ System methods and props for Napi::ObjectWrap
 
 Napi::FunctionReference AudioContext::_constructor;
 

@@ -76,7 +76,7 @@ JS_GETTER(OfflineAudioContext::lengthGetter) { THIS_CHECK;
 }
 
 
-// ------ System methods and props for ObjectWrap
+// ------ System methods and props for Napi::ObjectWrap
 
 Napi::FunctionReference OfflineAudioContext::_constructor;
 

@@ -2,7 +2,7 @@
 #define _AUDIO_CONTEXT_HPP_
 
 
-#include <addon-tools.hpp>
+#include "common.hpp"
 
 #include "base-audio-context.hpp"
 
@@ -12,13 +12,9 @@ class AudioContext : public BaseAudioContext {
 public:
 	
 	~AudioContext();
-	AudioContext(const Napi::CallbackInfo &info);
+	explicit AudioContext(const Napi::CallbackInfo &info);
 	
-	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
-	
-	// Make a new instance from C++ land
-	explicit AudioContext(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -37,7 +33,6 @@ protected:
 	double _baseLatency;
 	
 	
-// System methods and props for ObjectWrap
 private:
 	
 	JS_METHOD(destroy);

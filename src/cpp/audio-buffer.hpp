@@ -4,25 +4,21 @@
 
 #include <memory>
 
-#include <addon-tools.hpp>
+#include "common.hpp"
 
 namespace lab { class AudioBus; };
 
 
-class AudioBuffer : public Napi::ObjectWrap<AudioBuffer> {
+class AudioBuffer : public Napi::ObjectWrap<AudioBuffer>, private CommonNode {
 	
 public:
 	
 	typedef std::shared_ptr<lab::AudioBus> BusPtr;
 	
 	~AudioBuffer();
-	AudioBuffer(const Napi::CallbackInfo &info);
+	explicit AudioBuffer(const Napi::CallbackInfo &info);
 	
-	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
-	
-	// Make a new instance from C++ land
-	explicit AudioBuffer(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
@@ -35,10 +31,6 @@ protected:
 	AudioBuffer();
 	explicit AudioBuffer(BusPtr bus);
 	
-	static Napi::FunctionReference _constructor;
-	
-	bool _isDestroyed;
-	
 	int _length;
 	double _duration;
 	float _sampleRate;
@@ -48,9 +40,6 @@ protected:
 	
 	
 private:
-	
-	JS_METHOD(destroy);
-	JS_GETTER(isDestroyedGetter);
 	
 	JS_METHOD(getChannelData);
 	JS_METHOD(copyFromChannel);

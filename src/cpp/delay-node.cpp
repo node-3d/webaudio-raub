@@ -57,7 +57,7 @@ JS_GETTER(DelayNode::delayTimeGetter) { THIS_CHECK;
 }
 
 
-// ------ System methods and props for ObjectWrap
+// ------ System methods and props for Napi::ObjectWrap
 
 Napi::FunctionReference DelayNode::_constructor;
 

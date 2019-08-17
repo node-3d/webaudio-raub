@@ -2,23 +2,19 @@
 #define _AUDIO_WORKLET_HPP_
 
 
-#include <addon-tools.hpp>
+#include "common.hpp"
 
 
-class AudioWorklet : public Napi::ObjectWrap<AudioWorklet> {
+class AudioWorklet : public Napi::ObjectWrap<AudioWorklet>, private CommonNode {
 	
 public:
 	
 	~AudioWorklet();
-	AudioWorklet(const Napi::CallbackInfo &info);
+	explicit AudioWorklet(const Napi::CallbackInfo &info);
 	
-	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
 	
 	static bool isAudioWorklet(Napi::Object obj);
-	
-	// Make a new instance from C++ land
-	explicit AudioWorklet(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();

@@ -55,11 +55,11 @@ JS_SETTER(ConvolverNode::bufferSetter) { THIS_CHECK; SETTER_OBJ_ARG;
 	_buffer.Reset(v);
 	
 	Napi::Object context = _context.Value();
-	AudioContext *audioContext = ObjectWrap::Unwrap<AudioContext>(context);
+	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
 	
 	lab::AudioContext *ctx = audioContext->getContext().get();
 	
-	AudioBuffer *audioBuffer = ObjectWrap::Unwrap<AudioBuffer>(v);
+	AudioBuffer *audioBuffer = Napi::ObjectWrap<AudioBuffer>::Unwrap(v);
 	AudioBuffer::BusPtr bus = audioBuffer->getBus();
 	
 	lab::ConvolverNode *node = static_cast<lab::ConvolverNode*>(
@@ -95,7 +95,7 @@ JS_SETTER(ConvolverNode::normalizeSetter) { THIS_CHECK; SETTER_BOOL_ARG;
 }
 
 
-// ------ System methods and props for ObjectWrap
+// ------ System methods and props for Napi::ObjectWrap
 
 Napi::FunctionReference ConvolverNode::_constructor;
 

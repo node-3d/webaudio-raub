@@ -43,7 +43,7 @@ JS_GETTER(AudioDestinationNode::maxChannelCountGetter) { THIS_CHECK;
 }
 
 
-// ------ System methods and props for ObjectWrap
+// ------ System methods and props for Napi::ObjectWrap
 
 Napi::FunctionReference AudioDestinationNode::_constructor;
 

@@ -2,25 +2,21 @@
 #define _DYNAMICS_COMPRESSOR_NODE_HPP_
 
 
-#include <addon-tools.hpp>
+#include "common.hpp"
 
 #include "audio-node.hpp"
 
 
-class DynamicsCompressorNode : public Napi::ObjectWrap<DynamicsCompressorNode> {
+class DynamicsCompressorNode : public Napi::ObjectWrap<DynamicsCompressorNode>, private CommonNode {
 	
 public:
 	
 	~DynamicsCompressorNode();
-	DynamicsCompressorNode(const Napi::CallbackInfo &info);
+	explicit DynamicsCompressorNode(const Napi::CallbackInfo &info);
 	
-	// Public V8 init
 	static void init(Napi::Env env, Napi::Object exports);
 	
 	static bool isDynamicsCompressorNode(Napi::Object obj);
-	
-	// Make a new instance from C++ land
-	explicit DynamicsCompressorNode(const Napi::CallbackInfo& info);
 	
 	// Destroy an instance from C++ land
 	void _destroy();
