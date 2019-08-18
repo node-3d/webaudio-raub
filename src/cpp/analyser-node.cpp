@@ -35,7 +35,7 @@ Napi::ObjectWrap<AnalyserNode>(info) {
 	
 	CTOR_CHECK("AnalyserNode");
 	
-	std::make_shared<lab::AnalyserNode>()
+	std::make_shared<lab::AnalyserNode>();
 	
 	Napi::Object that = info.This().As<Napi::Object>();
 	Napi::Function ctor = _constructor.Value().As<Napi::Function>();

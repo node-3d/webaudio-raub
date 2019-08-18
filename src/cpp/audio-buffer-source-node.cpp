@@ -14,6 +14,53 @@
 
 int num = 0;
 
+
+Napi::FunctionReference AudioBufferSourceNode::_constructor;
+
+
+void AudioBufferSourceNode::init(Napi::Env env, Napi::Object exports) {
+	
+	Napi::Function ctor = DefineClass(env, "AudioBufferSourceNode", {
+		ACCESSOR_RW(AudioBufferSourceNode, loopEnd),
+		ACCESSOR_RW(AudioBufferSourceNode, loopStart),
+		ACCESSOR_RW(AudioBufferSourceNode, loop),
+		ACCESSOR_RW(AudioBufferSourceNode, buffer),
+		ACCESSOR_M(AudioBufferSourceNode, start),
+		ACCESSOR_M(AudioBufferSourceNode, destroy),
+		ACCESSOR_R(AudioBufferSourceNode, detune),
+		ACCESSOR_R(AudioBufferSourceNode, playbackRate),
+		ACCESSOR_R(AudioBufferSourceNode, isDestroyed)
+	});
+	
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
+	
+	exports.Set("AudioBufferSourceNode", ctor);
+	
+}
+
+
+Napi::Object AudioBufferSourceNode::getNew(Napi::Object context) {
+	
+	Napi::Function ctor = Nan::New(_constructor);
+	Napi::Value argv[] = { context };
+	return Nan::NewInstance(ctor, 1, argv).ToLocalChecked();
+	
+}
+
+
+AudioBufferSourceNode::AudioBufferSourceNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<AudioBufferSourceNode>(info) {
+	
+	CTOR_CHECK("AudioBufferSourceNode");
+	
+	REQ_OBJ_ARG(0, context);
+	
+	AudioBufferSourceNode *audioBufferSourceNode = new AudioBufferSourceNode(context);
+	
+}
+
+
+
 AudioBufferSourceNode::AudioBufferSourceNode(Napi::Object context) :
 AudioScheduledSourceNode(
 	context,
@@ -103,8 +150,7 @@ JS_SETTER(AudioBufferSourceNode::bufferSetter) {
 	}
 	_buffer.Reset(v);
 	
-	Napi::Object context = _context.Value()
-	});;
+	Napi::Object context = _context.Value();
 	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
 	
 	lab::AudioContext *ctx = audioContext->getContext().get();
@@ -206,68 +252,5 @@ JS_SETTER(AudioBufferSourceNode::loopEndSetter) {
 	node->setLoopEnd(v);
 	
 	emit("loopEnd", 1, &value);
-	
-}
-
-
-// ------ System methods and props for Napi::ObjectWrap
-
-Napi::FunctionReference AudioBufferSourceNode::_constructor;
-
-
-void AudioBufferSourceNode::init(Napi::Env env, Napi::Object exports) {
-	
-	Napi::Function ctor = DefineClass(env, "AudioBufferSourceNode", {
-		ACCESSOR_RW(AudioBufferSourceNode, loopEnd),
-		ACCESSOR_RW(AudioBufferSourceNode, loopStart),
-		ACCESSOR_RW(AudioBufferSourceNode, loop),
-		ACCESSOR_RW(AudioBufferSourceNode, buffer),
-		ACCESSOR_M(AudioBufferSourceNode, start),
-		ACCESSOR_M(AudioBufferSourceNode, destroy),
-		ACCESSOR_R(AudioBufferSourceNode, detune),
-		ACCESSOR_R(AudioBufferSourceNode, playbackRate),
-		ACCESSOR_R(AudioBufferSourceNode, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
-	
-	exports.Set("AudioBufferSourceNode", ctor);
-	
-}
-
-
-Napi::Object AudioBufferSourceNode::getNew(Napi::Object context) {
-	
-	Napi::Function ctor = Nan::New(_constructor);
-	Napi::Value argv[] = { context };
-	return Nan::NewInstance(ctor, 1, argv).ToLocalChecked();
-	
-}
-
-
-AudioBufferSourceNode::AudioBufferSourceNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<AudioBufferSourceNode>(info) {
-	
-	CTOR_CHECK("AudioBufferSourceNode");
-	
-	REQ_OBJ_ARG(0, context);
-	
-	AudioBufferSourceNode *audioBufferSourceNode = new AudioBufferSourceNode(context);
-	
-}
-
-
-JS_METHOD(AudioBufferSourceNode::destroy) { THIS_CHECK;
-	
-	emit("destroy");
-	
-	_destroy();
-	
-}
-
-
-JS_GETTER(AudioBufferSourceNode::isDestroyedGetter) { NAPI_ENV;
-	
-	RET_BOOL(_isDestroyed);
 	
 }

@@ -35,14 +35,24 @@ void AudioParam::init(Napi::Env env, Napi::Object exports) {
 	
 }
 
-bool AudioNode::isAudioNode(Napi::Object obj) {
+
+Napi::Object AudioParam::create(Napi::Env env, Napi::Object context, ParamPtr param) {
+	Napi::Function ctor = _constructor.Value().As<Napi::Function>();
+	std::vector<napi_value> args;
+	args.push_back(context);
+	args.push_back(JS_EXT(reinterpret_cast<void*>(&param)));
+	return ctor.New(args);
+}
+
+
+bool AudioParam::isAudioParam(Napi::Object obj) {
 	return obj.InstanceOf(_constructor.Value());
 }
 
 
-AudioNode::AudioNode(const Napi::CallbackInfo &info):
-Napi::ObjectWrap<AudioNode>(info) { NAPI_ENV;
-
+AudioParam::AudioParam(const Napi::CallbackInfo &info):
+Napi::ObjectWrap<AudioParam>(info) { NAPI_ENV;
+	
 }
 
 

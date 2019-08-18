@@ -22,9 +22,11 @@ void GainNode::init(Napi::Env env, Napi::Object exports) {
 	
 }
 
-GainNode *GainNode::create(Napi::Env env) {
+Napi::Object GainNode::create(Napi::Env env, Napi::Object context) {
 	Napi::Function ctor = _constructor.Value().As<Napi::Function>();
-	return ctor.New();
+	std::vector<napi_value> args;
+	args.push_back(context);
+	return ctor.New(args);
 }
 
 
@@ -35,11 +37,19 @@ Napi::ObjectWrap<GainNode>(info) { NAPI_ENV;
 	
 	REQ_OBJ_ARG(0, context);
 	
-	lab::GainNode *node = new lab::GainNode();
+	NodePtr node = std::make_shared<lab::GainNode>();
 	
-	reset(context, NodePtr(node));
+	reset(context, node);
 	
-	_gain.Reset(AudioParam::create(context, node->gain()));
+	Napi::Object that = info.This().As<Napi::Object>();
+	Napi::Function ctor = _constructor.Value().As<Napi::Function>();
+	Napi::Function _Super = ctor.Get("_Super").As<Napi::Function>();
+	std::vector<napi_value> args;
+	args.push_back(context);
+	_Super.Call(that, args);
+	
+	lab::GainNode *gainNode = reinterpret_cast<lab::GainNode*>(node.get());
+	_gain.Reset(AudioParam::create(env, context, gainNode->gain()));
 	
 }
 

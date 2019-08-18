@@ -3,14 +3,13 @@
 
 #include "common.hpp"
 
-namespace lab { class AudioParam; };
 
-
-class AudioParam : public Napi::ObjectWrap<AudioParam>, private CommonParam {
+class AudioParam : public Napi::ObjectWrap<AudioParam>, public CommonParam {
 	
 public:
 	
 	static void init(Napi::Env env, Napi::Object exports);
+	static Napi::Object create(Napi::Env env, Napi::Object context, ParamPtr param);
 	static bool isAudioParam(Napi::Object obj);
 	
 	explicit AudioParam(const Napi::CallbackInfo &info);

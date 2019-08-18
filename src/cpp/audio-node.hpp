@@ -1,16 +1,12 @@
 #ifndef _AUDIO_NODE_HPP_
 #define _AUDIO_NODE_HPP_
 
-
-#include <memory>
-
 #include "common.hpp"
 
-namespace lab { class AudioNode; };
 #include <LabSound/core/AudioNode.h>
 
 
-class AudioNode : public Napi::ObjectWrap<AudioNode>, private CommonNode {
+class AudioNode : public Napi::ObjectWrap<AudioNode>, public CommonNode {
 	
 public:
 	

@@ -1,42 +1,27 @@
 #ifndef _AUDIO_CONTEXT_HPP_
 #define _AUDIO_CONTEXT_HPP_
 
-
 #include "common.hpp"
 
-#include "base-audio-context.hpp"
 
-
-class AudioContext : public BaseAudioContext {
+class AudioContext : public Napi::ObjectWrap<AudioContext>, public CommonCtx {
 	
 public:
 	
-	~AudioContext();
-	explicit AudioContext(const Napi::CallbackInfo &info);
-	
 	static void init(Napi::Env env, Napi::Object exports);
+	
+	explicit AudioContext(const Napi::CallbackInfo &info);
+	~AudioContext();
 	
 	// Destroy an instance from C++ land
 	void _destroy();
 	
 	
-// Methods and props
-protected:
-	
-	AudioContext();
-	explicit AudioContext(float sampleRate);
+private:
 	
 	static Napi::FunctionReference _constructor;
 	
-	bool _isDestroyed;
-	
 	double _baseLatency;
-	
-	
-private:
-	
-	JS_METHOD(destroy);
-	JS_GETTER(isDestroyedGetter);
 	
 	JS_METHOD(suspend);
 	JS_METHOD(close);
