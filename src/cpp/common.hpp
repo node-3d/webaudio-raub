@@ -21,14 +21,10 @@ namespace lab {
 
 struct Common {
 	
-	// Destroy an instance from C++ land
-	void _destroy();
-	
+	Common(const char *asyncName);
 	~Common();
-	Common();
 	
-	JS_GETTER(isDestroyedGetter);
-	JS_METHOD(destroy);
+	void _destroy();
 	
 	void emit(
 		const Napi::CallbackInfo& info,
@@ -37,7 +33,19 @@ struct Common {
 		const Napi::Value *argv = nullptr
 	);
 	
+	void emitAsync(
+		const Napi::CallbackInfo& info,
+		const char* name,
+		int argc = 0,
+		const Napi::Value *argv = nullptr
+	);
+	
 	bool _isDestroyed;
+	
+	Napi::AsyncContext asyncCtx;
+	
+	JS_GETTER(isDestroyedGetter);
+	JS_METHOD(destroy);
 	
 };
 
@@ -45,11 +53,13 @@ struct CommonNode: public Common {
 	
 	typedef std::shared_ptr<lab::AudioNode> NodePtr;
 	
-	NodePtr getNode() const;
+	CommonNode(): Common("AudioNode") {};
+	~CommonNode();
 	
 	void _destroy();
 	
-	~CommonNode();
+	NodePtr getNode() const;
+	
 	void reset(Napi::Object context, NodePtr node);
 	
 	NodePtr _impl;
@@ -61,11 +71,13 @@ struct CommonParam: public Common {
 	
 	typedef std::shared_ptr<lab::AudioParam> ParamPtr;
 	
-	ParamPtr getParam() const;
+	CommonParam(): Common("AudioParam") {};
+	~CommonParam();
 	
 	void _destroy();
 	
-	~CommonParam();
+	ParamPtr getParam() const;
+	
 	void reset(Napi::Object context, ParamPtr param);
 	
 	ParamPtr _impl;
@@ -77,11 +89,13 @@ struct CommonCtx: public Common {
 	
 	typedef std::shared_ptr<lab::AudioContext> CtxPtr;
 	
-	CtxPtr getCtx() const;
+	CommonCtx(): Common("AudioContext") {};
+	~CommonCtx();
 	
 	void _destroy();
 	
-	~CommonCtx();
+	CtxPtr getCtx() const;
+	
 	void reset(CtxPtr ctx);
 	
 	CtxPtr _impl;

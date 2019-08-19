@@ -1,10 +1,24 @@
-
 #include "wave-shaper-node.hpp"
 
-#include "common.hpp"
 
+Napi::FunctionReference WaveShaperNode::_constructor;
 
-// ------ Constructor and Destructor
+void WaveShaperNode::init(Napi::Env env, Napi::Object exports) {
+	
+	Napi::Function ctor = DefineClass(env, "WaveShaperNode", {
+		ACCESSOR_RW(WaveShaperNode, oversample),
+		ACCESSOR_RW(WaveShaperNode, curve),
+		ACCESSOR_M(WaveShaperNode, destroy),
+		ACCESSOR_R(WaveShaperNode, isDestroyed)
+	});
+	
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
+	
+	exports.Set("WaveShaperNode", ctor);
+	
+}
+
 
 WaveShaperNode::WaveShaperNode(const Napi::CallbackInfo &info) :
 AudioNode() {
@@ -35,7 +49,7 @@ JS_SETTER(WaveShaperNode::curveSetter) { THIS_CHECK; SETTER_OBJ_ARG;
 	
 	// TODO: may be additional actions on change?
 	
-	emit("curve", 1, &value);
+	emit(env, "curve", 1, &value);
 	
 }
 
@@ -52,33 +66,6 @@ JS_SETTER(WaveShaperNode::oversampleSetter) { THIS_CHECK; SETTER_STR_ARG;
 	
 	// TODO: may be additional actions on change?
 	
-	emit("oversample", 1, &value);
+	emit(env, "oversample", 1, &value);
 	
-}
-
-
-// ------ System methods and props for Napi::ObjectWrap
-
-Napi::FunctionReference WaveShaperNode::_constructor;
-
-
-void WaveShaperNode::init(Napi::Env env, Napi::Object exports) {
-	
-	Napi::Function ctor = DefineClass(env, "WaveShaperNode", {
-		ACCESSOR_RW(WaveShaperNode, oversample),
-		ACCESSOR_RW(WaveShaperNode, curve),
-		ACCESSOR_M(WaveShaperNode, destroy),
-		ACCESSOR_R(WaveShaperNode, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
-	
-	exports.Set("WaveShaperNode", ctor);
-	
-}
-
-
-bool WaveShaperNode::isWaveShaperNode(Napi::Object obj) {
-	return obj.InstanceOf(_constructor.Value());
 }

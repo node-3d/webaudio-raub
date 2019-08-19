@@ -9,7 +9,7 @@
 namespace lab { class AudioBus; };
 
 
-class AudioBuffer : public Napi::ObjectWrap<AudioBuffer>, private CommonNode {
+class AudioBuffer : public Napi::ObjectWrap<AudioBuffer>, private CommonBuffer {
 	
 public:
 	

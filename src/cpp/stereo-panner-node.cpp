@@ -87,7 +87,7 @@ StereoPannerNode::StereoPannerNode(const Napi::CallbackInfo &info): Napi::Object
 
 JS_METHOD(StereoPannerNode::destroy) { THIS_CHECK;
 	
-	emit("destroy");
+	emit(env, "destroy");
 	
 	_destroy();
 	

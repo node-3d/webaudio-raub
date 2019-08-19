@@ -29,7 +29,6 @@
 // #include "script-processor-node.hpp"
 // #include "stereo-panner-node.hpp"
 // #include "wave-shaper-node.hpp"
-#include "common.hpp"
 
 
 
@@ -75,15 +74,13 @@ void BaseAudioContext::init(Napi::Env env, Napi::Object exports) {
 	Napi::Function ctor = DefineClass(env, "BaseAudioContext", {
 		ACCESSOR_M(BaseAudioContext, resume),
 		ACCESSOR_M(BaseAudioContext, decodeAudioData),
-		ACCESSOR_M(BaseAudioContext, createBuffer),
 		ACCESSOR_M(BaseAudioContext, update),
-		ACCESSOR_M(BaseAudioContext, destroy),
 		ACCESSOR_R(BaseAudioContext, state),
 		ACCESSOR_R(BaseAudioContext, listener),
 		ACCESSOR_R(BaseAudioContext, sampleRate),
 		ACCESSOR_R(BaseAudioContext, currentTime),
 		ACCESSOR_R(BaseAudioContext, destination),
-		ACCESSOR_R(BaseAudioContext, isDestroyed)
+		ACCESSOR_M(BaseAudioContext, destroy)
 	});
 	
 	_constructor = Napi::Persistent(ctor);
@@ -95,20 +92,14 @@ void BaseAudioContext::init(Napi::Env env, Napi::Object exports) {
 
 
 BaseAudioContext::BaseAudioContext(const Napi::CallbackInfo &info):
-Napi::ObjectWrap<BaseAudioContext>(info) {  NAPI_ENV;
+Napi::ObjectWrap<BaseAudioContext>(info),
+CommonContext(info.Env(), "BaseAudioContext") {  NAPI_ENV;
 	
 	REQ_EXT_ARG(0, extCtx);
 	
-	CtxPtr *ctx = reinterpret_cast<CtxPtr *>(extCtx->Value());
+	CtxPtr *ctx = reinterpret_cast<CtxPtr*>(extCtx.Data());
 	
 	reset(*ctx);
-	
-	_impl->setDestinationNode(
-		std::make_shared<lab::DefaultAudioDestinationNode>(
-			_impl.get(), 2, _impl->sampleRate()
-		)
-	);
-	_impl->lazyInitialize();
 	
 	_state = "running";
 	
@@ -136,9 +127,7 @@ Napi::ObjectWrap<BaseAudioContext>(info) {  NAPI_ENV;
 
 
 BaseAudioContext::~BaseAudioContext() {
-	
 	_destroy();
-	
 }
 
 
@@ -178,20 +167,22 @@ JS_METHOD(BaseAudioContext::decodeAudioData) { THIS_CHECK;
 	REQ_OBJ_ARG(0, audioData);
 	REQ_FUN_ARG(1, successCallback);
 	
-	int len;
-	uint8_t *data = getArrayData(env, audioData, &len)
+	// int len;
+	// uint8_t *data = getArrayData(env, audioData, &len)
 	
-	vector<uint8_t> dataVec(data, data + len);
+	// std::vector<uint8_t> dataVec(data, data + len);
 	
-	std::string ext = getExtension(data);
+	// std::string ext = getExtension(data);
 	
-	AudioBuffer::BusPtr bus = lab::MakeBusFromMemory(dataVec, ext, false);
+	// AudioBuffer::BusPtr bus = lab::MakeBusFromMemory(dataVec, ext, false);
 	
-	Napi::Object buffer = AudioBuffer::create(bus);
+	// Napi::Object buffer = AudioBuffer::create(bus);
 	
-	std::vector<napi_value> args;
-	args.push_back(buffer);
-	successCallback.Call(args);
+	// std::vector<napi_value> args;
+	// args.push_back(buffer);
+	// successCallback.Call(args);
+	
+	RET_UNDEFINED;
 	
 }
 
@@ -200,12 +191,15 @@ JS_METHOD(BaseAudioContext::update) { THIS_CHECK;
 	
 	_impl->dispatchEvents();
 	
+	RET_UNDEFINED;
+	
 }
 
 
 JS_METHOD(BaseAudioContext::resume) { THIS_CHECK;
 	
 	// TODO: do something?
+	RET_UNDEFINED;
 	
 }
 

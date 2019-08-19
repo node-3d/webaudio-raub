@@ -57,7 +57,7 @@ JS_SETTER(ConvolverNode::bufferSetter) { THIS_CHECK; SETTER_OBJ_ARG;
 	Napi::Object context = _context.Value();
 	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
 	
-	lab::AudioContext *ctx = audioContext->getContext().get();
+	lab::AudioContext *ctx = audioContext->getCtx().get();
 	
 	AudioBuffer *audioBuffer = Napi::ObjectWrap<AudioBuffer>::Unwrap(v);
 	AudioBuffer::BusPtr bus = audioBuffer->getBus();
@@ -67,7 +67,7 @@ JS_SETTER(ConvolverNode::bufferSetter) { THIS_CHECK; SETTER_OBJ_ARG;
 	);
 	node->setImpulse(bus);
 	
-	emit("buffer", 1, &value);
+	emit(env, "buffer", 1, &value);
 	
 }
 
@@ -90,7 +90,7 @@ JS_SETTER(ConvolverNode::normalizeSetter) { THIS_CHECK; SETTER_BOOL_ARG;
 	
 	node->setNormalize(v);
 	
-	emit("normalize", 1, &value);
+	emit(env, "normalize", 1, &value);
 	
 }
 
@@ -139,7 +139,7 @@ ConvolverNode::ConvolverNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<C
 
 JS_METHOD(ConvolverNode::destroy) { THIS_CHECK;
 	
-	emit("destroy");
+	emit(env, "destroy");
 	
 	_destroy();
 	

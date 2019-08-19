@@ -16,6 +16,8 @@ public:
 	~AudioNode();
 	explicit AudioNode(const Napi::CallbackInfo &info);
 	
+	void _destroy();
+	
 private:
 	
 	static Napi::FunctionReference _constructor;

@@ -105,7 +105,7 @@ JS_SETTER(OscillatorNode::typeSetter) { THIS_CHECK; SETTER_STR_ARG;
 	
 	node->setType(toOscillatorType(*v));
 	
-	emit("type", 1, &value);
+	emit(env, "type", 1, &value);
 	
 }
 
@@ -170,14 +170,14 @@ OscillatorNode::OscillatorNode(const Napi::CallbackInfo &info): Napi::ObjectWrap
 	
 	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
 	
-	OscillatorNode *oscillatorNode = new OscillatorNode(context, audioContext->getContext()->sampleRate());
+	OscillatorNode *oscillatorNode = new OscillatorNode(context, audioContext->getCtx()->sampleRate());
 	
 }
 
 
 JS_METHOD(OscillatorNode::destroy) { THIS_CHECK;
 	
-	emit("destroy");
+	emit(env, "destroy");
 	
 	_destroy();
 	

@@ -87,7 +87,7 @@ ConstantSourceNode::ConstantSourceNode(const Napi::CallbackInfo &info): Napi::Ob
 
 JS_METHOD(ConstantSourceNode::destroy) { THIS_CHECK;
 	
-	emit("destroy");
+	emit(env, "destroy");
 	
 	_destroy();
 	

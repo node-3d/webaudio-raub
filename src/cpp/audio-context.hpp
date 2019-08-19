@@ -13,9 +13,7 @@ public:
 	explicit AudioContext(const Napi::CallbackInfo &info);
 	~AudioContext();
 	
-	// Destroy an instance from C++ land
 	void _destroy();
-	
 	
 private:
 	
@@ -26,10 +24,6 @@ private:
 	JS_METHOD(suspend);
 	JS_METHOD(close);
 	JS_METHOD(getOutputTimestamp);
-	JS_METHOD(createMediaElementSource);
-	JS_METHOD(createMediaStreamSource);
-	JS_METHOD(createMediaStreamDestination);
-	
 	JS_GETTER(baseLatencyGetter);
 	
 };

@@ -13,6 +13,7 @@ public:
 	explicit BaseAudioContext(const Napi::CallbackInfo &info);
 	~BaseAudioContext();
 	
+	void _destroy();
 	
 private:
 	

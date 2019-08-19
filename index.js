@@ -2,5 +2,4 @@
 
 const core = require('./core');
 
-
-module.exports = core;
+module.exports = require('./js');

@@ -11,7 +11,9 @@
 // ------ Constructor and Destructor
 
 
-AudioBuffer::AudioBuffer(const Napi::CallbackInfo &info): Napi::ObjectWrap<AudioBuffer>(info) {
+AudioBuffer::AudioBuffer(const Napi::CallbackInfo &info):
+Napi::ObjectWrap<AudioBuffer>(info),
+CommonBuffer(info.Env(), "AudioBuffer") {
 	
 	CTOR_CHECK("AudioBuffer");
 	

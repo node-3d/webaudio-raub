@@ -17,7 +17,7 @@ AudioNode(context, NodePtr(new lab::DelayNode(sampleRate, delay))) {
 	
 	REQ_OBJ_ARG(0, context);
 	REQ_DOUBLE_ARG(1, delay);
-	float sampleRate = audioContext->getContext()->sampleRate();
+	float sampleRate = audioContext->getCtx()->sampleRate();
 	
 	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
 	
@@ -92,14 +92,14 @@ DelayNode::DelayNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<DelayNode
 	
 	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
 	
-	DelayNode *delayNode = new DelayNode(context, audioContext->getContext()->sampleRate(), delay);
+	DelayNode *delayNode = new DelayNode(context, audioContext->getCtx()->sampleRate(), delay);
 	
 }
 
 
 JS_METHOD(DelayNode::destroy) { THIS_CHECK;
 	
-	emit("destroy");
+	emit(env, "destroy");
 	
 	_destroy();
 	

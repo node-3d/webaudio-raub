@@ -8,9 +8,11 @@
 
 // ------ Constructor and Destructor
 
-BiquadFilterNode::BiquadFilterNode(Napi::Object context) :
-AudioNode(context, NodePtr(new lab::BiquadFilterNode())) {
+BiquadFilterNode::BiquadFilterNode(Napi::Object context):
+Napi::ObjectWrap<BiquadFilterNode>(info),
+CommonNode(info.Env(), "BiquadFilterNode") {
 	
+	// AudioNode(context, NodePtr(new lab::BiquadFilterNode()))
 	lab::BiquadFilterNode *node = static_cast<lab::BiquadFilterNode*>(_impl.get());
 	
 	_frequency.Reset(AudioParam::getNew(context, node->frequency()));
@@ -73,7 +75,7 @@ JS_SETTER(BiquadFilterNode::typeSetter) { THIS_CHECK; SETTER_STR_ARG;
 	
 	// TODO: may be additional actions on change?
 	
-	emit("type", 1, &value);
+	emit(env, "type", 1, &value);
 	
 }
 
@@ -159,7 +161,7 @@ BiquadFilterNode::BiquadFilterNode(const Napi::CallbackInfo &info): Napi::Object
 
 JS_METHOD(BiquadFilterNode::destroy) { THIS_CHECK;
 	
-	emit("destroy");
+	emit(env, "destroy");
 	
 	_destroy();
 	

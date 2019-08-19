@@ -10,9 +10,8 @@ Napi::FunctionReference GainNode::_constructor;
 void GainNode::init(Napi::Env env, Napi::Object exports) {
 	
 	Napi::Function ctor = DefineClass(env, "GainNode", {
-		ACCESSOR_M(GainNode, destroy),
 		ACCESSOR_R(GainNode, gain),
-		ACCESSOR_R(GainNode, isDestroyed)
+		ACCESSOR_M(GainNode, destroy)
 	});
 	
 	_constructor = Napi::Persistent(ctor);
@@ -51,6 +50,11 @@ Napi::ObjectWrap<GainNode>(info) { NAPI_ENV;
 	lab::GainNode *gainNode = reinterpret_cast<lab::GainNode*>(node.get());
 	_gain.Reset(AudioParam::create(env, context, gainNode->gain()));
 	
+}
+
+
+GainNode::~GainNode() {
+	_destroy();
 }
 
 

@@ -88,7 +88,7 @@ MediaStreamAudioDestinationNode::MediaStreamAudioDestinationNode(const Napi::Cal
 
 JS_METHOD(MediaStreamAudioDestinationNode::destroy) { THIS_CHECK;
 	
-	emit("destroy");
+	emit(env, "destroy");
 	
 	_destroy();
 	

@@ -8,8 +8,9 @@
 
 // ------ Constructor and Destructor
 
-AudioDestinationNode::AudioDestinationNode(Napi::Object context, DestPtr node) :
-AudioNode(context, node) {
+AudioDestinationNode::AudioDestinationNode(Napi::Object context, DestPtr node):
+Napi::ObjectWrap<AudioDestinationNode>(info),
+CommonNode(info.Env(), "AudioDestinationNode") {
 	
 	_isDestroyed = false;
 	
@@ -90,7 +91,7 @@ AudioDestinationNode::AudioDestinationNode(const Napi::CallbackInfo &info): Napi
 
 JS_METHOD(AudioDestinationNode::destroy) { THIS_CHECK;
 	
-	emit("destroy");
+	emit(env, "destroy");
 	
 	_destroy();
 	

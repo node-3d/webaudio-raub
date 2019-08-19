@@ -15,6 +15,8 @@ public:
 	explicit AudioParam(const Napi::CallbackInfo &info);
 	~AudioParam();
 	
+	void _destroy();
+	
 private:
 	
 	static Napi::FunctionReference _constructor;

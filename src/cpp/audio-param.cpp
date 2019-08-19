@@ -21,11 +21,10 @@ void AudioParam::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_M(AudioParam, exponentialRampToValueAtTime),
 		ACCESSOR_M(AudioParam, linearRampToValueAtTime),
 		ACCESSOR_M(AudioParam, setValueAtTime),
-		ACCESSOR_M(AudioParam, destroy),
 		ACCESSOR_R(AudioParam, maxValue),
 		ACCESSOR_R(AudioParam, minValue),
 		ACCESSOR_R(AudioParam, defaultValue),
-		ACCESSOR_R(AudioParam, isDestroyed)
+		ACCESSOR_M(AudioParam, destroy)
 	});
 	
 	_constructor = Napi::Persistent(ctor);
@@ -40,7 +39,7 @@ Napi::Object AudioParam::create(Napi::Env env, Napi::Object context, ParamPtr pa
 	Napi::Function ctor = _constructor.Value().As<Napi::Function>();
 	std::vector<napi_value> args;
 	args.push_back(context);
-	args.push_back(JS_EXT(reinterpret_cast<void*>(&param)));
+	args.push_back(JS_EXT(&param));
 	return ctor.New(args);
 }
 
@@ -51,10 +50,27 @@ bool AudioParam::isAudioParam(Napi::Object obj) {
 
 
 AudioParam::AudioParam(const Napi::CallbackInfo &info):
-Napi::ObjectWrap<AudioParam>(info) { NAPI_ENV;
+Napi::ObjectWrap<AudioParam>(info),
+CommonParam(info.Env(), "AudioParam") { NAPI_ENV;
+	
+	REQ_OBJ_ARG(0, context);
+	REQ_EXT_ARG(1, extParam);
+	
+	ParamPtr *param = reinterpret_cast<ParamPtr *>(extParam.Data());
+	
+	reset(context, *param);
 	
 }
 
+
+AudioParam::~AudioParam() {
+	_destroy();
+}
+
+
+void AudioParam::_destroy() { DES_CHECK;
+	CommonParam::_destroy();
+}
 
 
 JS_METHOD(AudioParam::setValueAtTime) { THIS_CHECK;
@@ -63,6 +79,7 @@ JS_METHOD(AudioParam::setValueAtTime) { THIS_CHECK;
 	REQ_FLOAT_ARG(1, time);
 	
 	_impl->setValueAtTime(value, time);
+	RET_UNDEFINED;
 	
 }
 
@@ -73,6 +90,7 @@ JS_METHOD(AudioParam::linearRampToValueAtTime) { THIS_CHECK;
 	REQ_FLOAT_ARG(1, time);
 	
 	_impl->linearRampToValueAtTime(value, time);
+	RET_UNDEFINED;
 	
 }
 
@@ -83,6 +101,7 @@ JS_METHOD(AudioParam::exponentialRampToValueAtTime) { THIS_CHECK;
 	REQ_FLOAT_ARG(1, time);
 	
 	_impl->exponentialRampToValueAtTime(value, time);
+	RET_UNDEFINED;
 	
 }
 
@@ -94,6 +113,7 @@ JS_METHOD(AudioParam::setTargetAtTime) { THIS_CHECK;
 	REQ_FLOAT_ARG(2, timeConstant);
 	
 	_impl->setTargetAtTime(target, time, timeConstant);
+	RET_UNDEFINED;
 	
 }
 
@@ -108,6 +128,7 @@ JS_METHOD(AudioParam::setValueCurveAtTime) { THIS_CHECK;
 	// TODO: read array
 	
 	_impl->setValueCurveAtTime(curve, time, duration);
+	RET_UNDEFINED;
 	
 }
 
@@ -117,6 +138,7 @@ JS_METHOD(AudioParam::cancelScheduledValues) { THIS_CHECK;
 	REQ_FLOAT_ARG(0, startTime);
 	
 	_impl->cancelScheduledValues(startTime);
+	RET_UNDEFINED;
 	
 }
 
@@ -127,6 +149,7 @@ JS_METHOD(AudioParam::cancelAndHoldAtTime) { THIS_CHECK;
 	
 	// TODO: implement
 	// _impl->cancelAndHoldAtTime(startTime);
+	RET_UNDEFINED;
 	
 }
 
@@ -136,13 +159,13 @@ JS_GETTER(AudioParam::valueGetter) { THIS_CHECK;
 	Napi::Object context = _context.Value();
 	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
 	
-	lab::ContextRenderLock renderLock(audioContext->getContext().get(), "AudioParam::valueGetter");
+	lab::ContextRenderLock renderLock(audioContext->getCtx().get(), "AudioParam::valueGetter");
 	
 	RET_NUM(_impl->value(renderLock));
 	
 }
 
-JS_SETTER(AudioParam::valueSetter) { THIS_CHECK; SETTER_FLOAT_ARG;
+JS_SETTER(AudioParam::valueSetter) { THIS_SETTER_CHECK; SETTER_FLOAT_ARG;
 	
 	_impl->setValue(v);
 	

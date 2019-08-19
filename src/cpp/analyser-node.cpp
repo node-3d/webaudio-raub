@@ -31,7 +31,8 @@ void AnalyserNode::init(Napi::Env env, Napi::Object exports) {
 
 // Image.prototype.__proto__ = EventEmitter.prototype;
 AnalyserNode::AnalyserNode(const Napi::CallbackInfo &info):
-Napi::ObjectWrap<AnalyserNode>(info) {
+Napi::ObjectWrap<AnalyserNode>(info),
+CommonNode(info.Env(), "AnalyserNode") {
 	
 	CTOR_CHECK("AnalyserNode");
 	
@@ -103,7 +104,7 @@ JS_SETTER(AnalyserNode::fftSizeSetter) { THIS_CHECK; SETTER_UINT32_ARG;
 	
 	// TODO: may be additional actions on change?
 	
-	emit("fftSize", 1, &value);
+	emit(env, "fftSize", 1, &value);
 	
 }
 
@@ -120,7 +121,7 @@ JS_SETTER(AnalyserNode::minDecibelsSetter) { THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	// TODO: may be additional actions on change?
 	
-	emit("minDecibels", 1, &value);
+	emit(env, "minDecibels", 1, &value);
 	
 }
 
@@ -137,7 +138,7 @@ JS_SETTER(AnalyserNode::maxDecibelsSetter) { THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	// TODO: may be additional actions on change?
 	
-	emit("maxDecibels", 1, &value);
+	emit(env, "maxDecibels", 1, &value);
 	
 }
 
@@ -154,6 +155,6 @@ JS_SETTER(AnalyserNode::smoothingTimeConstantSetter) { THIS_CHECK; SETTER_DOUBLE
 	
 	// TODO: may be additional actions on change?
 	
-	emit("smoothingTimeConstant", 1, &value);
+	emit(env, "smoothingTimeConstant", 1, &value);
 	
 }

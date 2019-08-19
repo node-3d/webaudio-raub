@@ -1,7 +1,4 @@
-#include <LabSound/core/AudioContext.h>
-#include <LabSound/core/AudioNode.h>
-#include <LabSound/core/AudioParam.h>
-#include <LabSound/extended/AudioContextLock.h>
+#include <LabSound/LabSound.h>
 
 #include "audio-node.hpp"
 #include "audio-context.hpp"
@@ -20,11 +17,10 @@ void AudioNode::init(Napi::Env env, Napi::Object exports) {
 		ACCESSOR_RW(AudioNode, channelCount),
 		ACCESSOR_M(AudioNode, disconnect),
 		ACCESSOR_M(AudioNode, connect),
-		ACCESSOR_M(AudioNode, destroy),
 		ACCESSOR_R(AudioNode, numberOfOutputs),
 		ACCESSOR_R(AudioNode, numberOfInputs),
 		ACCESSOR_R(AudioNode, context),
-		ACCESSOR_R(AudioNode, isDestroyed)
+		ACCESSOR_M(AudioNode, destroy)
 	});
 	
 	_constructor = Napi::Persistent(ctor);
@@ -81,12 +77,23 @@ inline lab::ChannelInterpretation toChannelInterpretation(const std::string &io)
 
 
 AudioNode::AudioNode(const Napi::CallbackInfo &info):
-Napi::ObjectWrap<AudioNode>(info) { NAPI_ENV;
+Napi::ObjectWrap<AudioNode>(info),
+CommonNode(info.Env(), "AudioNode") { NAPI_ENV;
 	
 	_channelCount = _impl->channelCount();
 	_channelCountMode = fromChannelCountMode(_impl->channelCountMode());
 	_channelInterpretation = fromChannelInterpretation(_impl->channelInterpretation());
 	
+}
+
+
+AudioNode::~AudioNode() {
+	_destroy();
+}
+
+
+void AudioNode::_destroy() { DES_CHECK;
+	CommonNode::_destroy();
 }
 
 
@@ -102,7 +109,7 @@ JS_METHOD(AudioNode::connect) { THIS_CHECK;
 	Napi::Object context = _context.Value();
 	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
 	
-	lab::AudioContext *ctx = audioContext->getContext().get();
+	lab::AudioContext *ctx = audioContext->getCtx().get();
 	
 	if (isAudioNode(destination)) {
 		
@@ -140,7 +147,7 @@ JS_METHOD(AudioNode::disconnect) { THIS_CHECK;
 	
 	Napi::Object context = _context.Value();
 	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
-	lab::AudioContext *ctx = audioContext->getContext().get();
+	lab::AudioContext *ctx = audioContext->getCtx().get();
 	
 	if (info.Length() == 1) {
 		
@@ -238,7 +245,7 @@ JS_SETTER(AudioNode::channelCountSetter) { THIS_SETTER_CHECK; SETTER_UINT32_ARG;
 	Napi::Object context = _context.Value();
 	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
 	
-	lab::ContextGraphLock graphLock(audioContext->getContext().get(), "AudioNode::channelCountSetter");
+	lab::ContextGraphLock graphLock(audioContext->getCtx().get(), "AudioNode::channelCountSetter");
 	_impl->setChannelCount(graphLock, _channelCount);
 	
 	emit(info, "channelCount", 1, &value);

@@ -7,8 +7,9 @@
 
 // ------ Constructor and Destructor
 
-AudioScheduledSourceNode::AudioScheduledSourceNode(Napi::Object context, NodePtr node) :
-AudioNode(context, node) {
+AudioScheduledSourceNode::AudioScheduledSourceNode(Napi::Object context, NodePtr node):
+Napi::ObjectWrap<AudioScheduledSourceNode>(info),
+CommonNode(info.Env(), "AudioScheduledSourceNode") {
 	
 	node->setOnEnded(std::bind(&AudioScheduledSourceNode::onEnded, this));
 	
@@ -26,7 +27,7 @@ AudioScheduledSourceNode::~AudioScheduledSourceNode() {
 
 void AudioScheduledSourceNode::onEnded() { NAN_HS;
 	
-	emit("ended");
+	emit(env, "ended");
 	
 }
 
@@ -123,7 +124,7 @@ AudioScheduledSourceNode::AudioScheduledSourceNode(const Napi::CallbackInfo &inf
 
 JS_METHOD(AudioScheduledSourceNode::destroy) { THIS_CHECK;
 	
-	emit("destroy");
+	emit(env, "destroy");
 	
 	_destroy();
 	

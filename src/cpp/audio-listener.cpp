@@ -11,7 +11,9 @@
 
 // ------ Constructor and Destructor
 
-AudioListener::AudioListener(Napi::Object context, ListenerPtr listener) {
+AudioListener::AudioListener(Napi::Object context, ListenerPtr listener):
+Napi::ObjectWrap<AudioListener>(info),
+CommonListener(info.Env(), "AudioListener") {
 	
 	_impl = listener;
 	_context.Reset(context);

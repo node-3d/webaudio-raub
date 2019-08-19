@@ -58,14 +58,14 @@ AudioNode(context, NodePtr(new lab::PannerNode(sampleRate, hrtf))) {
 	
 	REQ_OBJ_ARG(0, context);
 	
-	float sampleRate = audioContext->getContext()->sampleRate();
+	float sampleRate = audioContext->getCtx()->sampleRate();
 	Napi::Value hrtfValue = _constructor.Value().As<Napi::Object>().Get("hrtf");
 	std::string hrtf = hrtfValue.As<Napi::String>().Utf8Value();
 	
 	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
 	
 	Nan::Utf8String hrtf(Napi::Object::Cast(Nan::New(_constructor))->Get(JS_STR("hrtf")));
-	PannerNode *pannerNode = new PannerNode(context, audioContext->getContext()->sampleRate(), *hrtf);
+	PannerNode *pannerNode = new PannerNode(context, audioContext->getCtx()->sampleRate(), *hrtf);
 	
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(_impl.get());
@@ -170,7 +170,7 @@ JS_SETTER(PannerNode::panningModelSetter) { THIS_CHECK; SETTER_STR_ARG;
 	
 	node->setPanningModel(toPanningMode(*v));
 	
-	emit("panningModel", 1, &value);
+	emit(env, "panningModel", 1, &value);
 	
 }
 
@@ -201,7 +201,7 @@ JS_SETTER(PannerNode::distanceModelSetter) { THIS_CHECK; SETTER_STR_ARG;
 	
 	node->setDistanceModel(toDistanceModel(*v));
 	
-	emit("distanceModel", 1, &value);
+	emit(env, "distanceModel", 1, &value);
 	
 }
 
@@ -224,7 +224,7 @@ JS_SETTER(PannerNode::refDistanceSetter) { THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	node->setRefDistance(static_cast<float>(v));
 	
-	emit("refDistance", 1, &value);
+	emit(env, "refDistance", 1, &value);
 	
 }
 
@@ -247,7 +247,7 @@ JS_SETTER(PannerNode::maxDistanceSetter) { THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	node->setMaxDistance(static_cast<float>(v));
 	
-	emit("maxDistance", 1, &value);
+	emit(env, "maxDistance", 1, &value);
 	
 }
 
@@ -270,7 +270,7 @@ JS_SETTER(PannerNode::rolloffFactorSetter) { THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	node->setRolloffFactor(static_cast<float>(v));
 	
-	emit("rolloffFactor", 1, &value);
+	emit(env, "rolloffFactor", 1, &value);
 	
 }
 
@@ -293,7 +293,7 @@ JS_SETTER(PannerNode::coneInnerAngleSetter) { THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	node->setConeInnerAngle(static_cast<float>(v));
 	
-	emit("coneInnerAngle", 1, &value);
+	emit(env, "coneInnerAngle", 1, &value);
 	
 }
 
@@ -316,7 +316,7 @@ JS_SETTER(PannerNode::coneOuterAngleSetter) { THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	node->setConeOuterAngle(static_cast<float>(v));
 	
-	emit("coneOuterAngle", 1, &value);
+	emit(env, "coneOuterAngle", 1, &value);
 	
 }
 
@@ -339,7 +339,7 @@ JS_SETTER(PannerNode::coneOuterGainSetter) { THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	node->setConeOuterGain(static_cast<float>(v));
 	
-	emit("coneOuterGain", 1, &value);
+	emit(env, "coneOuterGain", 1, &value);
 	
 }
 
@@ -395,14 +395,14 @@ PannerNode::PannerNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<PannerN
 	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
 	
 	Nan::Utf8String hrtf(Napi::Object::Cast(Nan::New(_constructor))->Get(JS_STR("hrtf")));
-	PannerNode *pannerNode = new PannerNode(context, audioContext->getContext()->sampleRate(), *hrtf);
+	PannerNode *pannerNode = new PannerNode(context, audioContext->getCtx()->sampleRate(), *hrtf);
 	
 }
 
 
 JS_METHOD(PannerNode::destroy) { THIS_CHECK;
 	
-	emit("destroy");
+	emit(env, "destroy");
 	
 	_destroy();
 	

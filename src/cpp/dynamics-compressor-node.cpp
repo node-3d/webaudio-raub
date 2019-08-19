@@ -127,7 +127,7 @@ DynamicsCompressorNode::DynamicsCompressorNode(const Napi::CallbackInfo &info): 
 
 JS_METHOD(DynamicsCompressorNode::destroy) { THIS_CHECK;
 	
-	emit("destroy");
+	emit(env, "destroy");
 	
 	_destroy();
 	
