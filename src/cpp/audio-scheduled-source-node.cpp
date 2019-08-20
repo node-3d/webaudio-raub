@@ -1,33 +1,65 @@
-#include <LabSound/core/AudioScheduledSourceNode.h>
+#include <LabSound/LabSound.h>
 
 #include "audio-scheduled-source-node.hpp"
 
-#include "common.hpp"
+
+Napi::FunctionReference AudioScheduledSourceNode::_constructor;
+
+void AudioScheduledSourceNode::init(Napi::Env env, Napi::Object exports) {
+	
+	Napi::Function ctor = DefineClass(env, "AudioScheduledSourceNode", {
+		ACCESSOR_M(AudioScheduledSourceNode, stop),
+		ACCESSOR_M(AudioScheduledSourceNode, start),
+		ACCESSOR_M(AudioScheduledSourceNode, destroy),
+		ACCESSOR_R(AudioScheduledSourceNode, isDestroyed)
+	});
+	
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
+	
+	exports.Set("AudioScheduledSourceNode", ctor);
+	
+}
 
 
-// ------ Constructor and Destructor
-
-AudioScheduledSourceNode::AudioScheduledSourceNode(Napi::Object context, NodePtr node):
+AudioScheduledSourceNode::AudioScheduledSourceNode(const Napi::CallbackInfo &info):
 Napi::ObjectWrap<AudioScheduledSourceNode>(info),
 CommonNode(info.Env(), "AudioScheduledSourceNode") {
+		
+	CTOR_CHECK("AudioScheduledSourceNode");
+	
+	REQ_OBJ_ARG(0, context);
+	REQ_EXT_ARG(1, extNode);
+	
+	NodePtr *nodePtr = reinterpret_cast<NodePtr *>(extNode.Data());
+	
+	reset(context, *nodePtr);
+	
+	Napi::Object that = info.This().As<Napi::Object>();
+	Napi::Function ctor = _constructor.Value().As<Napi::Function>();
+	Napi::Function _Super = ctor.Get("_Super").As<Napi::Function>();
+	
+	std::vector<napi_value> args;
+	args.push_back(context);
+	_Super.Call(that, args);
+	
+	lab::AudioScheduledSourceNode *node = static_cast<lab::AudioScheduledSourceNode*>(
+		_impl.get()
+	);
 	
 	node->setOnEnded(std::bind(&AudioScheduledSourceNode::onEnded, this));
-	
-	_isDestroyed = false;
 	
 }
 
 
 AudioScheduledSourceNode::~AudioScheduledSourceNode() {
-	
 	_destroy();
-	
 }
 
 
-void AudioScheduledSourceNode::onEnded() { NAN_HS;
+void AudioScheduledSourceNode::onEnded() {
 	
-	emit(env, "ended");
+	emitAsync("ended");
 	
 }
 
@@ -40,9 +72,7 @@ void AudioScheduledSourceNode::_destroy() { DES_CHECK;
 	
 	node->setOnEnded(nullptr);
 	
-	_isDestroyed = true;
-	
-	AudioNode::_destroy();
+	CommonNode::_destroy();
 	
 }
 
@@ -76,63 +106,10 @@ JS_METHOD(AudioScheduledSourceNode::stop) { THIS_CHECK;
 }
 
 
-// ------ System methods and props for Napi::ObjectWrap
-
-Napi::FunctionReference AudioScheduledSourceNode::_constructor;
-
-
-void AudioScheduledSourceNode::init(Napi::Env env, Napi::Object exports) {
-	
-	Napi::Function ctor = DefineClass(env, "AudioScheduledSourceNode", {
-		ACCESSOR_M(AudioScheduledSourceNode, stop),
-		ACCESSOR_M(AudioScheduledSourceNode, start),
-		ACCESSOR_M(AudioScheduledSourceNode, destroy),
-		ACCESSOR_R(AudioScheduledSourceNode, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
-	
-	exports.Set("AudioScheduledSourceNode", ctor);
-	
-}
-
-
-Napi::Object AudioScheduledSourceNode::getNew(Napi::Object context, NodePtr node) {
-	
-	Napi::Function ctor = Nan::New(_constructor);
-	V8_VAR_EXT extNode = JS_EXT(&node);
-	Napi::Value argv[] = { context, extNode };
-	return Nan::NewInstance(ctor, 2, argv).ToLocalChecked();
-	
-}
-
-
-AudioScheduledSourceNode::AudioScheduledSourceNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<AudioScheduledSourceNode>(info) {
-	
-	CTOR_CHECK("AudioScheduledSourceNode");
-	
-	REQ_OBJ_ARG(0, context);
-	REQ_EXT_ARG(1, extNode);
-	
-	NodePtr *node = reinterpret_cast<NodePtr *>(extNode->Value());
-	
-	AudioScheduledSourceNode *audioScheduledSourceNode = new AudioScheduledSourceNode(context, *node);
-	
-}
-
-
 JS_METHOD(AudioScheduledSourceNode::destroy) { THIS_CHECK;
 	
-	emit(env, "destroy");
+	emit(info, "destroy");
 	
 	_destroy();
-	
-}
-
-
-JS_GETTER(AudioScheduledSourceNode::isDestroyedGetter) { NAPI_ENV;
-	
-	RET_BOOL(_isDestroyed);
 	
 }

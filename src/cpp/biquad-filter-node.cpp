@@ -1,16 +1,44 @@
-#include <LabSound/core/BiquadFilterNode.h>
+#include <LabSound/LabSound.h>
 
 #include "biquad-filter-node.hpp"
 #include "audio-param.hpp"
 
-#include "common.hpp"
+
+Napi::FunctionReference BiquadFilterNode::_constructor;
+
+void BiquadFilterNode::init(Napi::Env env, Napi::Object exports) {
+	
+	Napi::Function ctor = DefineClass(env, "BiquadFilterNode", {
+		ACCESSOR_RW(BiquadFilterNode, type),
+		ACCESSOR_M(BiquadFilterNode, getFrequencyResponse),
+		ACCESSOR_R(BiquadFilterNode, gain),
+		ACCESSOR_R(BiquadFilterNode, Q),
+		ACCESSOR_R(BiquadFilterNode, detune),
+		ACCESSOR_R(BiquadFilterNode, frequency),
+		ACCESSOR_M(BiquadFilterNode, destroy)
+	});
+	
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
+	
+	exports.Set("BiquadFilterNode", ctor);
+	
+}
 
 
-// ------ Constructor and Destructor
+BiquadFilterNode::BiquadFilterNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<BiquadFilterNode>(info) {
+	
+	CTOR_CHECK("BiquadFilterNode");
+	
+	REQ_OBJ_ARG(0, context);
+	
+	BiquadFilterNode *biquadFilterNode = new BiquadFilterNode(context);
+	
+}
 
 BiquadFilterNode::BiquadFilterNode(Napi::Object context):
 Napi::ObjectWrap<BiquadFilterNode>(info),
-CommonNode(info.Env(), "BiquadFilterNode") {
+CommonNode(info.Env(), "BiquadFilterNode") { NAPI_ENV;
 	
 	// AudioNode(context, NodePtr(new lab::BiquadFilterNode()))
 	lab::BiquadFilterNode *node = static_cast<lab::BiquadFilterNode*>(_impl.get());
@@ -26,9 +54,7 @@ CommonNode(info.Env(), "BiquadFilterNode") {
 
 
 BiquadFilterNode::~BiquadFilterNode() {
-	
 	_destroy();
-	
 }
 
 
@@ -39,9 +65,7 @@ void BiquadFilterNode::_destroy() { DES_CHECK;
 	_Q.Reset();
 	_gain.Reset();
 	
-	_isDestroyed = true;
-	
-	AudioNode::_destroy();
+	CommonNode::_destroy();
 	
 }
 
@@ -68,14 +92,11 @@ JS_GETTER(BiquadFilterNode::typeGetter) { THIS_CHECK;
 
 JS_SETTER(BiquadFilterNode::typeSetter) { THIS_CHECK; SETTER_STR_ARG;
 	
-	if (_type == *v) {
-		return;
-	}
-	_type = *v;
+	CACHE_CAS(_type, v);
 	
 	// TODO: may be additional actions on change?
 	
-	emit(env, "type", 1, &value);
+	emit(info, "type", 1, &value);
 	
 }
 
@@ -108,68 +129,10 @@ JS_GETTER(BiquadFilterNode::gainGetter) { THIS_CHECK;
 }
 
 
-// ------ System methods and props for Napi::ObjectWrap
-
-Napi::FunctionReference BiquadFilterNode::_constructor;
-
-
-void BiquadFilterNode::init(Napi::Env env, Napi::Object exports) {
-	
-	Napi::Function ctor = DefineClass(env, "BiquadFilterNode", {
-		ACCESSOR_RW(BiquadFilterNode, type),
-		ACCESSOR_M(BiquadFilterNode, getFrequencyResponse),
-		ACCESSOR_M(BiquadFilterNode, destroy),
-		ACCESSOR_R(BiquadFilterNode, gain),
-		ACCESSOR_R(BiquadFilterNode, Q),
-		ACCESSOR_R(BiquadFilterNode, detune),
-		ACCESSOR_R(BiquadFilterNode, frequency),
-		ACCESSOR_R(BiquadFilterNode, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
-	
-	exports.Set("BiquadFilterNode", ctor);
-	
-}
-
-
-bool BiquadFilterNode::isBiquadFilterNode(Napi::Object obj) {
-	return obj.InstanceOf(_constructor.Value());
-}
-
-
-Napi::Object BiquadFilterNode::getNew(Napi::Object context) {
-	
-	Napi::Function ctor = Nan::New(_constructor);
-	Napi::Value argv[] = { context };
-	return Nan::NewInstance(ctor, 1, argv).ToLocalChecked();
-	
-}
-
-
-BiquadFilterNode::BiquadFilterNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<BiquadFilterNode>(info) {
-	
-	CTOR_CHECK("BiquadFilterNode");
-	
-	REQ_OBJ_ARG(0, context);
-	
-	BiquadFilterNode *biquadFilterNode = new BiquadFilterNode(context);
-	
-}
-
-
 JS_METHOD(BiquadFilterNode::destroy) { THIS_CHECK;
 	
-	emit(env, "destroy");
+	emit(info, "destroy");
 	
 	_destroy();
-	
-}
-
-
-JS_GETTER(BiquadFilterNode::isDestroyedGetter) { NAPI_ENV;
-	
-	RET_BOOL(_isDestroyed);
 	
 }

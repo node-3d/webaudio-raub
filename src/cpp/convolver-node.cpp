@@ -67,7 +67,7 @@ JS_SETTER(ConvolverNode::bufferSetter) { THIS_CHECK; SETTER_OBJ_ARG;
 	);
 	node->setImpulse(bus);
 	
-	emit(env, "buffer", 1, &value);
+	emit(info, "buffer", 1, &value);
 	
 }
 
@@ -90,7 +90,7 @@ JS_SETTER(ConvolverNode::normalizeSetter) { THIS_CHECK; SETTER_BOOL_ARG;
 	
 	node->setNormalize(v);
 	
-	emit(env, "normalize", 1, &value);
+	emit(info, "normalize", 1, &value);
 	
 }
 
@@ -139,7 +139,7 @@ ConvolverNode::ConvolverNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<C
 
 JS_METHOD(ConvolverNode::destroy) { THIS_CHECK;
 	
-	emit(env, "destroy");
+	emit(info, "destroy");
 	
 	_destroy();
 	

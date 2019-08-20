@@ -49,7 +49,7 @@ JS_SETTER(WaveShaperNode::curveSetter) { THIS_CHECK; SETTER_OBJ_ARG;
 	
 	// TODO: may be additional actions on change?
 	
-	emit(env, "curve", 1, &value);
+	emit(info, "curve", 1, &value);
 	
 }
 
@@ -66,6 +66,6 @@ JS_SETTER(WaveShaperNode::oversampleSetter) { THIS_CHECK; SETTER_STR_ARG;
 	
 	// TODO: may be additional actions on change?
 	
-	emit(env, "oversample", 1, &value);
+	emit(info, "oversample", 1, &value);
 	
 }

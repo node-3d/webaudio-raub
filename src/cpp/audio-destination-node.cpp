@@ -91,7 +91,7 @@ AudioDestinationNode::AudioDestinationNode(const Napi::CallbackInfo &info): Napi
 
 JS_METHOD(AudioDestinationNode::destroy) { THIS_CHECK;
 	
-	emit(env, "destroy");
+	emit(info, "destroy");
 	
 	_destroy();
 	

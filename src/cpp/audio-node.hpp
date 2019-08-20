@@ -26,6 +26,8 @@ private:
 	std::string _channelCountMode;
 	std::string _channelInterpretation;
 	
+	JS_METHOD(destroy);
+	
 	JS_METHOD(connect);
 	JS_METHOD(disconnect);
 	

@@ -1,15 +1,11 @@
-#include <LabSound/core/AudioNode.h>
-#include <LabSound/core/PannerNode.h>
-#include <LabSound/core/FloatPoint3D.h>
+#include <LabSound/LabSound.h>
 
 #include "panner-node.hpp"
 #include "audio-context.hpp"
 #include "audio-param.hpp"
 
-#include "common.hpp"
 
-
-inline std::string fromDistanceModel(uint16_t mode) {
+inline std::string fromDistanceModel(lab::PannerNode::DistanceModel mode) {
 	if (mode == lab::PannerNode::LINEAR_DISTANCE) {
 		return "linear";
 	} else if (mode == lab::PannerNode::INVERSE_DISTANCE) {
@@ -20,7 +16,7 @@ inline std::string fromDistanceModel(uint16_t mode) {
 }
 
 
-inline uint16_t toDistanceModel(const std::string &mode) {
+inline lab::PannerNode::DistanceModel toDistanceModel(const std::string &mode) {
 	if (mode == "linear") {
 		return lab::PannerNode::LINEAR_DISTANCE;
 	} else if (mode == "inverse") {
@@ -49,43 +45,89 @@ inline lab::PanningMode toPanningMode(const std::string &mode) {
 }
 
 
-// ------ Constructor and Destructor
-//const Napi::CallbackInfo &info
-PannerNode::PannerNode(Napi::Object context, float sampleRate, const std::string &hrtf) :
-AudioNode(context, NodePtr(new lab::PannerNode(sampleRate, hrtf))) {
+
+Napi::FunctionReference PannerNode::_constructor;
+
+
+void PannerNode::init(Napi::Env env, Napi::Object exports) {
+	
+	Napi::Function ctor = DefineClass(env, "PannerNode", {
+		ACCESSOR_RW(PannerNode, coneOuterGain),
+		ACCESSOR_RW(PannerNode, coneOuterAngle),
+		ACCESSOR_RW(PannerNode, coneInnerAngle),
+		ACCESSOR_RW(PannerNode, rolloffFactor),
+		ACCESSOR_RW(PannerNode, maxDistance),
+		ACCESSOR_RW(PannerNode, refDistance),
+		ACCESSOR_RW(PannerNode, distanceModel),
+		ACCESSOR_RW(PannerNode, panningModel),
+		ACCESSOR_M(PannerNode, setVelocity),
+		ACCESSOR_M(PannerNode, setOrientation),
+		ACCESSOR_M(PannerNode, setPosition),
+		ACCESSOR_R(PannerNode, orientationZ),
+		ACCESSOR_R(PannerNode, orientationY),
+		ACCESSOR_R(PannerNode, orientationX),
+		ACCESSOR_R(PannerNode, positionZ),
+		ACCESSOR_R(PannerNode, positionY),
+		ACCESSOR_R(PannerNode, positionX),
+		ACCESSOR_M(PannerNode, destroy)
+	});
+	
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
+	
+	exports.Set("PannerNode", ctor);
+	
+}
+
+
+
+PannerNode::PannerNode(const Napi::CallbackInfo &info):
+Napi::ObjectWrap<PannerNode>(info),
+CommonNode(info.Env(), "PannerNode") { NAPI_ENV;
 	
 	CTOR_CHECK("PannerNode");
 	
 	REQ_OBJ_ARG(0, context);
 	
-	float sampleRate = audioContext->getCtx()->sampleRate();
-	Napi::Value hrtfValue = _constructor.Value().As<Napi::Object>().Get("hrtf");
-	std::string hrtf = hrtfValue.As<Napi::String>().Utf8Value();
-	
 	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
+	float sampleRate = audioContext->getCtx()->sampleRate();
+	Napi::Object that = info.This().As<Napi::Object>();
+	Napi::Function ctor = _constructor.Value().As<Napi::Function>();
+	Napi::Function _Super = ctor.Get("_Super").As<Napi::Function>();
+	Napi::String hrtf = ctor.Get("hrtf").As<Napi::String>();
 	
-	Nan::Utf8String hrtf(Napi::Object::Cast(Nan::New(_constructor))->Get(JS_STR("hrtf")));
-	PannerNode *pannerNode = new PannerNode(context, audioContext->getCtx()->sampleRate(), *hrtf);
+	reset(context, std::make_shared<lab::PannerNode>(sampleRate, hrtf.Utf8Value()));
 	
+	std::vector<napi_value> args;
+	args.push_back(context);
+	_Super.Call(that, args);
 	
-	lab::PannerNode *node = static_cast<lab::PannerNode*>(_impl.get());
+	lab::PannerNode *node = static_cast<lab::PannerNode*>(
+		_impl.get()
+	);
 	
-	_positionX.Reset(AudioParam::getNew(context, node->positionX()));
-	_positionY.Reset(AudioParam::getNew(context, node->positionY()));
-	_positionZ.Reset(AudioParam::getNew(context, node->positionZ()));
-	_orientationX.Reset(AudioParam::getNew(context, node->orientationX()));
-	_orientationY.Reset(AudioParam::getNew(context, node->orientationY()));
-	_orientationZ.Reset(AudioParam::getNew(context, node->orientationZ()));
-	
-	_isDestroyed = false;
+	_positionX.Reset(AudioParam::create(env, context, node->positionX()));
+	_positionY.Reset(AudioParam::create(env, context, node->positionY()));
+	_positionZ.Reset(AudioParam::create(env, context, node->positionZ()));
+	_orientationX.Reset(AudioParam::create(env, context, node->orientationX()));
+	_orientationY.Reset(AudioParam::create(env, context, node->orientationY()));
+	_orientationZ.Reset(AudioParam::create(env, context, node->orientationZ()));
 	
 }
 
 
-PannerNode::~PannerNode() {
+JS_METHOD(PannerNode::destroy) { THIS_CHECK;
+	
+	emit(info, "destroy");
 	
 	_destroy();
 	
+}
+
+
+
+PannerNode::~PannerNode() {
+	_destroy();
 }
 
 
@@ -98,9 +140,7 @@ void PannerNode::_destroy() { DES_CHECK;
 	_orientationY.Reset();
 	_orientationZ.Reset();
 	
-	_isDestroyed = true;
-	
-	AudioNode::_destroy();
+	CommonNode::_destroy();
 	
 }
 
@@ -162,15 +202,15 @@ JS_GETTER(PannerNode::panningModelGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(PannerNode::panningModelSetter) { THIS_CHECK; SETTER_STR_ARG;
+JS_SETTER(PannerNode::panningModelSetter) { THIS_SETTER_CHECK; SETTER_STR_ARG;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
 		_impl.get()
 	);
 	
-	node->setPanningModel(toPanningMode(*v));
+	node->setPanningModel(toPanningMode(v.c_str()));
 	
-	emit(env, "panningModel", 1, &value);
+	emit(info, "panningModel", 1, &value);
 	
 }
 
@@ -193,15 +233,15 @@ JS_GETTER(PannerNode::distanceModelGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(PannerNode::distanceModelSetter) { THIS_CHECK; SETTER_STR_ARG;
+JS_SETTER(PannerNode::distanceModelSetter) { THIS_SETTER_CHECK; SETTER_STR_ARG;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
 		_impl.get()
 	);
 	
-	node->setDistanceModel(toDistanceModel(*v));
+	node->setDistanceModel(toDistanceModel(v.c_str()));
 	
-	emit(env, "distanceModel", 1, &value);
+	emit(info, "distanceModel", 1, &value);
 	
 }
 
@@ -216,7 +256,7 @@ JS_GETTER(PannerNode::refDistanceGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(PannerNode::refDistanceSetter) { THIS_CHECK; SETTER_DOUBLE_ARG;
+JS_SETTER(PannerNode::refDistanceSetter) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
 		_impl.get()
@@ -224,7 +264,7 @@ JS_SETTER(PannerNode::refDistanceSetter) { THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	node->setRefDistance(static_cast<float>(v));
 	
-	emit(env, "refDistance", 1, &value);
+	emit(info, "refDistance", 1, &value);
 	
 }
 
@@ -239,7 +279,7 @@ JS_GETTER(PannerNode::maxDistanceGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(PannerNode::maxDistanceSetter) { THIS_CHECK; SETTER_DOUBLE_ARG;
+JS_SETTER(PannerNode::maxDistanceSetter) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
 		_impl.get()
@@ -247,7 +287,7 @@ JS_SETTER(PannerNode::maxDistanceSetter) { THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	node->setMaxDistance(static_cast<float>(v));
 	
-	emit(env, "maxDistance", 1, &value);
+	emit(info, "maxDistance", 1, &value);
 	
 }
 
@@ -262,7 +302,7 @@ JS_GETTER(PannerNode::rolloffFactorGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(PannerNode::rolloffFactorSetter) { THIS_CHECK; SETTER_DOUBLE_ARG;
+JS_SETTER(PannerNode::rolloffFactorSetter) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
 		_impl.get()
@@ -270,7 +310,7 @@ JS_SETTER(PannerNode::rolloffFactorSetter) { THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	node->setRolloffFactor(static_cast<float>(v));
 	
-	emit(env, "rolloffFactor", 1, &value);
+	emit(info, "rolloffFactor", 1, &value);
 	
 }
 
@@ -285,7 +325,7 @@ JS_GETTER(PannerNode::coneInnerAngleGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(PannerNode::coneInnerAngleSetter) { THIS_CHECK; SETTER_DOUBLE_ARG;
+JS_SETTER(PannerNode::coneInnerAngleSetter) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
 		_impl.get()
@@ -293,7 +333,7 @@ JS_SETTER(PannerNode::coneInnerAngleSetter) { THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	node->setConeInnerAngle(static_cast<float>(v));
 	
-	emit(env, "coneInnerAngle", 1, &value);
+	emit(info, "coneInnerAngle", 1, &value);
 	
 }
 
@@ -308,7 +348,7 @@ JS_GETTER(PannerNode::coneOuterAngleGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(PannerNode::coneOuterAngleSetter) { THIS_CHECK; SETTER_DOUBLE_ARG;
+JS_SETTER(PannerNode::coneOuterAngleSetter) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
 		_impl.get()
@@ -316,7 +356,7 @@ JS_SETTER(PannerNode::coneOuterAngleSetter) { THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	node->setConeOuterAngle(static_cast<float>(v));
 	
-	emit(env, "coneOuterAngle", 1, &value);
+	emit(info, "coneOuterAngle", 1, &value);
 	
 }
 
@@ -331,7 +371,7 @@ JS_GETTER(PannerNode::coneOuterGainGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(PannerNode::coneOuterGainSetter) { THIS_CHECK; SETTER_DOUBLE_ARG;
+JS_SETTER(PannerNode::coneOuterGainSetter) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
 		_impl.get()
@@ -339,78 +379,6 @@ JS_SETTER(PannerNode::coneOuterGainSetter) { THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	node->setConeOuterGain(static_cast<float>(v));
 	
-	emit(env, "coneOuterGain", 1, &value);
-	
-}
-
-
-// ------ System methods and props for Napi::ObjectWrap
-
-Napi::FunctionReference PannerNode::_constructor;
-
-
-void PannerNode::init(Napi::Env env, Napi::Object exports) {
-	
-	Napi::Function ctor = DefineClass(env, "PannerNode", {
-		ACCESSOR_RW(PannerNode, coneOuterGain),
-		ACCESSOR_RW(PannerNode, coneOuterAngle),
-		ACCESSOR_RW(PannerNode, coneInnerAngle),
-		ACCESSOR_RW(PannerNode, rolloffFactor),
-		ACCESSOR_RW(PannerNode, maxDistance),
-		ACCESSOR_RW(PannerNode, refDistance),
-		ACCESSOR_RW(PannerNode, distanceModel),
-		ACCESSOR_RW(PannerNode, panningModel),
-		ACCESSOR_M(PannerNode, setVelocity),
-		ACCESSOR_M(PannerNode, setOrientation),
-		ACCESSOR_M(PannerNode, setPosition),
-		ACCESSOR_M(PannerNode, destroy),
-		ACCESSOR_R(PannerNode, orientationZ),
-		ACCESSOR_R(PannerNode, orientationY),
-		ACCESSOR_R(PannerNode, orientationX),
-		ACCESSOR_R(PannerNode, positionZ),
-		ACCESSOR_R(PannerNode, positionY),
-		ACCESSOR_R(PannerNode, positionX),
-		ACCESSOR_R(PannerNode, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
-	
-	exports.Set("PannerNode", ctor);
-	
-}
-
-
-bool PannerNode::isPannerNode(Napi::Object obj) {
-	return obj.InstanceOf(_constructor.Value());
-}
-
-
-PannerNode::PannerNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<PannerNode>(info) {
-	
-	CTOR_CHECK("PannerNode");
-		
-	REQ_OBJ_ARG(0, context);
-	
-	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
-	
-	Nan::Utf8String hrtf(Napi::Object::Cast(Nan::New(_constructor))->Get(JS_STR("hrtf")));
-	PannerNode *pannerNode = new PannerNode(context, audioContext->getCtx()->sampleRate(), *hrtf);
-	
-}
-
-
-JS_METHOD(PannerNode::destroy) { THIS_CHECK;
-	
-	emit(env, "destroy");
-	
-	_destroy();
-	
-}
-
-
-JS_GETTER(PannerNode::isDestroyedGetter) { NAPI_ENV;
-	
-	RET_BOOL(_isDestroyed);
+	emit(info, "coneOuterGain", 1, &value);
 	
 }

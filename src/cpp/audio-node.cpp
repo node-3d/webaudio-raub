@@ -80,6 +80,13 @@ AudioNode::AudioNode(const Napi::CallbackInfo &info):
 Napi::ObjectWrap<AudioNode>(info),
 CommonNode(info.Env(), "AudioNode") { NAPI_ENV;
 	
+	REQ_OBJ_ARG(0, context);
+	REQ_EXT_ARG(1, extNode);
+	
+	NodePtr *node = reinterpret_cast<NodePtr *>(extNode.Data());
+	
+	reset(context, *node);
+	
 	_channelCount = _impl->channelCount();
 	_channelCountMode = fromChannelCountMode(_impl->channelCountMode());
 	_channelInterpretation = fromChannelInterpretation(_impl->channelInterpretation());

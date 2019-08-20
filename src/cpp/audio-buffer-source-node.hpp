@@ -1,40 +1,32 @@
 #ifndef _AUDIO_BUFFER_SOURCE_NODE_HPP_
 #define _AUDIO_BUFFER_SOURCE_NODE_HPP_
 
+#include "common.hpp"
 
 #include "audio-scheduled-source-node.hpp"
 
 
-class AudioBufferSourceNode : public AudioScheduledSourceNode {
+class AudioBufferSourceNode : public Napi::ObjectWrap<AudioBufferSourceNode>, private CommonNode {
 	
 public:
 	
-	~AudioBufferSourceNode();
-	explicit AudioBufferSourceNode(const Napi::CallbackInfo &info);
-	
 	static void init(Napi::Env env, Napi::Object exports);
+	static Napi::Object create(Napi::Env env, Napi::Object context);
 	
-	// Destroy an instance from C++ land
+	explicit AudioBufferSourceNode(const Napi::CallbackInfo &info);
+	~AudioBufferSourceNode();
+	
 	void _destroy();
 	
-	
-protected:
-	
-	explicit AudioBufferSourceNode(Napi::Object context);
+private:
 	
 	static Napi::FunctionReference _constructor;
-	
-	bool _isDestroyed;
 	
 	Napi::ObjectReference _buffer;
 	Napi::ObjectReference _playbackRate;
 	Napi::ObjectReference _detune;
 	
-	
-private:
-	
 	JS_METHOD(destroy);
-	JS_GETTER(isDestroyedGetter);
 	
 	JS_METHOD(start);
 	

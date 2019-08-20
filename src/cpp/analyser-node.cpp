@@ -104,7 +104,7 @@ JS_SETTER(AnalyserNode::fftSizeSetter) { THIS_CHECK; SETTER_UINT32_ARG;
 	
 	// TODO: may be additional actions on change?
 	
-	emit(env, "fftSize", 1, &value);
+	emit(info, "fftSize", 1, &value);
 	
 }
 
@@ -121,7 +121,7 @@ JS_SETTER(AnalyserNode::minDecibelsSetter) { THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	// TODO: may be additional actions on change?
 	
-	emit(env, "minDecibels", 1, &value);
+	emit(info, "minDecibels", 1, &value);
 	
 }
 
@@ -138,7 +138,7 @@ JS_SETTER(AnalyserNode::maxDecibelsSetter) { THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	// TODO: may be additional actions on change?
 	
-	emit(env, "maxDecibels", 1, &value);
+	emit(info, "maxDecibels", 1, &value);
 	
 }
 
@@ -155,6 +155,6 @@ JS_SETTER(AnalyserNode::smoothingTimeConstantSetter) { THIS_CHECK; SETTER_DOUBLE
 	
 	// TODO: may be additional actions on change?
 	
-	emit(env, "smoothingTimeConstant", 1, &value);
+	emit(info, "smoothingTimeConstant", 1, &value);
 	
 }

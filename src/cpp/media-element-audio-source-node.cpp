@@ -88,7 +88,7 @@ MediaElementAudioSourceNode::MediaElementAudioSourceNode(const Napi::CallbackInf
 
 JS_METHOD(MediaElementAudioSourceNode::destroy) { THIS_CHECK;
 	
-	emit(env, "destroy");
+	emit(info, "destroy");
 	
 	_destroy();
 	

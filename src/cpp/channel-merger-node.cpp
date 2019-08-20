@@ -80,7 +80,7 @@ ChannelMergerNode::ChannelMergerNode(const Napi::CallbackInfo &info): Napi::Obje
 
 JS_METHOD(ChannelMergerNode::destroy) { THIS_CHECK;
 	
-	emit(env, "destroy");
+	emit(info, "destroy");
 	
 	_destroy();
 	

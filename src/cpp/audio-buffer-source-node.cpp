@@ -1,6 +1,4 @@
-#include <LabSound/core/AudioContext.h>
-#include <LabSound/core/SampledAudioNode.h>
-#include <LabSound/extended/AudioContextLock.h>
+#include <LabSound/LabSound.h>
 
 #include "audio-buffer-source-node.hpp"
 #include "audio-context.hpp"
@@ -31,24 +29,31 @@ void AudioBufferSourceNode::init(Napi::Env env, Napi::Object exports) {
 }
 
 
-Napi::Object AudioBufferSourceNode::getNew(Napi::Object context) {
-	
-	Napi::Function ctor = Nan::New(_constructor);
-	Napi::Value argv[] = { context };
-	return Nan::NewInstance(ctor, 1, argv).ToLocalChecked();
-	
-}
-
-
 AudioBufferSourceNode::AudioBufferSourceNode(const Napi::CallbackInfo &info):
 Napi::ObjectWrap<AudioBufferSourceNode>(info),
-CommonNode(info.Env(), "AudioBufferSourceNode") {
+CommonNode(info.Env(), "AudioBufferSourceNode") { NAPI_ENV;
 	
 	CTOR_CHECK("AudioBufferSourceNode");
 	
 	REQ_OBJ_ARG(0, context);
 	
-	AudioBufferSourceNode *audioBufferSourceNode = new AudioBufferSourceNode(context);
+	Napi::Object that = info.This().As<Napi::Object>();
+	Napi::Function ctor = _constructor.Value().As<Napi::Function>();
+	Napi::Function _Super = ctor.Get("_Super").As<Napi::Function>();
+	
+	reset(context, std::make_shared<lab::SampledAudioNode>());
+	
+	std::vector<napi_value> args;
+	args.push_back(context);
+	_Super.Call(that, args);
+	
+	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
+		_impl.get()
+	);
+	
+	_playbackRate.Reset(AudioParam::create(env, context, node->playbackRate()));
+	// FIXME: LabSound
+	// _detune.Reset(AudioParam::getNew(context, node->gain()));
 	
 }
 
@@ -73,9 +78,7 @@ AudioScheduledSourceNode(
 
 
 AudioBufferSourceNode::~AudioBufferSourceNode() {
-	
 	_destroy();
-	
 }
 
 
@@ -158,7 +161,7 @@ JS_SETTER(AudioBufferSourceNode::bufferSetter) {
 	);
 	node->setBus(r, bus);
 	
-	emit(env, "buffer", 1, &value);
+	emit(info, "buffer", 1, &value);
 	
 }
 
@@ -196,7 +199,7 @@ JS_SETTER(AudioBufferSourceNode::loopSetter) {
 	
 	node->setLoop(v);
 	
-	emit(env, "loop", 1, &value);
+	emit(info, "loop", 1, &value);
 	
 }
 
@@ -220,7 +223,7 @@ JS_SETTER(AudioBufferSourceNode::loopStartSetter) {
 	
 	node->setLoopStart(v);
 	
-	emit(env, "loopStart", 1, &value);
+	emit(info, "loopStart", 1, &value);
 	
 }
 
@@ -244,6 +247,6 @@ JS_SETTER(AudioBufferSourceNode::loopEndSetter) {
 	
 	node->setLoopEnd(v);
 	
-	emit(env, "loopEnd", 1, &value);
+	emit(info, "loopEnd", 1, &value);
 	
 }

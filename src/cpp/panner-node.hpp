@@ -1,9 +1,9 @@
 #ifndef _PANNER_NODE_HPP_
 #define _PANNER_NODE_HPP_
 
+#include "common.hpp"
 
 #include "audio-node.hpp"
-
 #include "audio-param.hpp"
 
 
@@ -11,24 +11,17 @@ class PannerNode : public Napi::ObjectWrap<PannerNode>, private CommonNode {
 	
 public:
 	
-	~PannerNode();
-	explicit PannerNode(const Napi::CallbackInfo &info);
-	
 	static void init(Napi::Env env, Napi::Object exports);
+	static Napi::Object create(Napi::Env env, Napi::Object context);
 	
-	static bool isPannerNode(Napi::Object obj);
+	explicit PannerNode(const Napi::CallbackInfo &info);
+	~PannerNode();
 	
-	// Destroy an instance from C++ land
 	void _destroy();
 	
-	
-protected:
-	
-	PannerNode(Napi::Object context, float sampleRate, const std::string &hrtf);
+private:
 	
 	static Napi::FunctionReference _constructor;
-	
-	bool _isDestroyed;
 	
 	Napi::ObjectReference _positionX;
 	Napi::ObjectReference _positionY;
@@ -37,11 +30,7 @@ protected:
 	Napi::ObjectReference _orientationY;
 	Napi::ObjectReference _orientationZ;
 	
-	
-private:
-	
 	JS_METHOD(destroy);
-	JS_GETTER(isDestroyedGetter);
 	
 	JS_METHOD(setPosition);
 	JS_METHOD(setOrientation);

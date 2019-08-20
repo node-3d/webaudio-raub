@@ -1,12 +1,8 @@
-#include <LabSound/core/AudioListener.h>
-#include <LabSound/core/AudioParam.h>
-#include <LabSound/core/FloatPoint3D.h>
+#include <LabSound/LabSound.h>
 
 #include "audio-listener.hpp"
 #include "audio-context.hpp"
 #include "audio-param.hpp"
-
-#include "common.hpp"
 
 
 // ------ Constructor and Destructor

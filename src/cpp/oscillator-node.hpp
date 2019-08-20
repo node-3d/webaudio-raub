@@ -7,38 +7,27 @@
 #include "audio-scheduled-source-node.hpp"
 
 
-class OscillatorNode : public AudioScheduledSourceNode {
+class OscillatorNode : public Napi::ObjectWrap<OscillatorNode>, private CommonNode {
 	
 public:
 	
-	~OscillatorNode();
-	explicit OscillatorNode(const Napi::CallbackInfo &info);
-	
 	static void init(Napi::Env env, Napi::Object exports);
+	static Napi::Object create(Napi::Env env, Napi::Object context);
 	
-	static bool isOscillatorNode(Napi::Object obj);
+	explicit OscillatorNode(const Napi::CallbackInfo &info);
+	~OscillatorNode();
 	
-	// Destroy an instance from C++ land
 	void _destroy();
 	
-	
-protected:
-	
-	OscillatorNode(Napi::Object context, float sampleRate);
+private:
 	
 	static Napi::FunctionReference _constructor;
-	
-	bool _isDestroyed;
 	
 	std::string _type;
 	Napi::ObjectReference _frequency;
 	Napi::ObjectReference _detune;
 	
-	
-private:
-	
 	JS_METHOD(destroy);
-	JS_GETTER(isDestroyedGetter);
 	
 	JS_METHOD(setPeriodicWave);
 	

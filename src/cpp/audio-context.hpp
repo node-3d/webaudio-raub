@@ -21,6 +21,8 @@ private:
 	
 	double _baseLatency;
 	
+	JS_METHOD(destroy);
+	
 	JS_METHOD(suspend);
 	JS_METHOD(close);
 	JS_METHOD(getOutputTimestamp);

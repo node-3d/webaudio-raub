@@ -1,7 +1,6 @@
 #ifndef _DELAY_NODE_HPP_
 #define _DELAY_NODE_HPP_
 
-
 #include "common.hpp"
 
 #include "audio-node.hpp"
@@ -11,32 +10,21 @@ class DelayNode : public Napi::ObjectWrap<DelayNode>, private CommonNode {
 	
 public:
 	
-	~DelayNode();
-	explicit DelayNode(const Napi::CallbackInfo &info);
-	
 	static void init(Napi::Env env, Napi::Object exports);
+	static Napi::Object create(Napi::Env env, Napi::Object context);
 	
-	static bool isDelayNode(Napi::Object obj);
+	explicit DelayNode(const Napi::CallbackInfo &info);
+	~DelayNode();
 	
-	// Destroy an instance from C++ land
 	void _destroy();
-	
-	
-protected:
-	
-	DelayNode(Napi::Object context, float sampleRate, double delay);
-	
-	static Napi::FunctionReference _constructor;
-	
-	bool _isDestroyed;
-	
-	Napi::ObjectReference _delayTime;
-	
 	
 private:
 	
+	static Napi::FunctionReference _constructor;
+	
+	Napi::ObjectReference _delayTime;
+	
 	JS_METHOD(destroy);
-	JS_GETTER(isDestroyedGetter);
 	
 	JS_GETTER(delayTimeGetter);
 	

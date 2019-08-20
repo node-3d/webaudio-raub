@@ -1,10 +1,28 @@
-#include <LabSound/core/OscillatorNode.h>
+#include <LabSound/LabSound.h>
 
 #include "oscillator-node.hpp"
 #include "audio-context.hpp"
 #include "audio-param.hpp"
 
-#include "common.hpp"
+
+Napi::FunctionReference OscillatorNode::_constructor;
+
+void OscillatorNode::init(Napi::Env env, Napi::Object exports) {
+	
+	Napi::Function ctor = DefineClass(env, "OscillatorNode", {
+		ACCESSOR_RW(OscillatorNode, type),
+		ACCESSOR_M(OscillatorNode, setPeriodicWave),
+		ACCESSOR_R(OscillatorNode, detune),
+		ACCESSOR_R(OscillatorNode, frequency),
+		ACCESSOR_M(OscillatorNode, destroy)
+	});
+	
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
+	
+	exports.Set("OscillatorNode", ctor);
+	
+}
 
 
 inline std::string fromOscillatorType(lab::OscillatorType mode) {
@@ -37,26 +55,37 @@ inline lab::OscillatorType toOscillatorType(const std::string &mode) {
 }
 
 
-// ------ Constructor and Destructor
-
-OscillatorNode::OscillatorNode(Napi::Object context, float sampleRate) :
-AudioScheduledSourceNode(
-	context,
-	shared_ptr<lab::AudioScheduledSourceNode>(new lab::OscillatorNode(sampleRate))
-) {
+OscillatorNode::OscillatorNode(const Napi::CallbackInfo &info):
+Napi::ObjectWrap<OscillatorNode>(info),
+CommonNode(info.Env(), "OscillatorNode") { NAPI_ENV;
 	
-	lab::OscillatorNode *node = static_cast<lab::OscillatorNode*>(_impl.get());
+	CTOR_CHECK("OscillatorNode");
 	
-	_frequency.Reset(AudioParam::getNew(context, node->frequency()));
-	_detune.Reset(AudioParam::getNew(context, node->detune()));
+	REQ_OBJ_ARG(0, context);
 	
-	_isDestroyed = false;
+	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
+	float sampleRate = audioContext->getCtx()->sampleRate();
+	Napi::Object that = info.This().As<Napi::Object>();
+	Napi::Function ctor = _constructor.Value().As<Napi::Function>();
+	Napi::Function _Super = ctor.Get("_Super").As<Napi::Function>();
+	
+	reset(context, std::make_shared<lab::OscillatorNode>(sampleRate));
+	
+	std::vector<napi_value> args;
+	args.push_back(context);
+	_Super.Call(that, args);
+	
+	lab::OscillatorNode *node = static_cast<lab::OscillatorNode*>(
+		_impl.get()
+	);
+	
+	_frequency.Reset(AudioParam::create(env, context, node->frequency()));
+	_detune.Reset(AudioParam::create(env, context, node->detune()));
 	
 }
 
 
 OscillatorNode::~OscillatorNode() {
-	
 	_destroy();
 	
 }
@@ -67,9 +96,7 @@ void OscillatorNode::_destroy() { DES_CHECK;
 	_frequency.Reset();
 	_detune.Reset();
 	
-	_isDestroyed = true;
-	
-	AudioNode::_destroy();
+	CommonNode::_destroy();
 	
 }
 
@@ -97,15 +124,15 @@ JS_GETTER(OscillatorNode::typeGetter) { THIS_CHECK;
 }
 
 
-JS_SETTER(OscillatorNode::typeSetter) { THIS_CHECK; SETTER_STR_ARG;
+JS_SETTER(OscillatorNode::typeSetter) { THIS_SETTER_CHECK; SETTER_STR_ARG;
 	
 	lab::OscillatorNode *node = static_cast<lab::OscillatorNode*>(
 		_impl.get()
 	);
 	
-	node->setType(toOscillatorType(*v));
+	node->setType(toOscillatorType(v.c_str()));
 	
-	emit(env, "type", 1, &value);
+	emit(info, "type", 1, &value);
 	
 }
 
@@ -120,72 +147,5 @@ JS_GETTER(OscillatorNode::frequencyGetter) { THIS_CHECK;
 JS_GETTER(OscillatorNode::detuneGetter) { THIS_CHECK;
 	
 	RET_VALUE(_detune.Value());
-	
-}
-
-
-// ------ System methods and props for Napi::ObjectWrap
-
-Napi::FunctionReference OscillatorNode::_constructor;
-
-
-void OscillatorNode::init(Napi::Env env, Napi::Object exports) {
-	
-	Napi::Function ctor = DefineClass(env, "OscillatorNode", {
-		ACCESSOR_RW(OscillatorNode, type),
-		ACCESSOR_M(OscillatorNode, setPeriodicWave),
-		ACCESSOR_M(OscillatorNode, destroy),
-		ACCESSOR_R(OscillatorNode, detune),
-		ACCESSOR_R(OscillatorNode, frequency),
-		ACCESSOR_R(OscillatorNode, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
-	
-	exports.Set("OscillatorNode", ctor);
-	
-}
-
-
-bool OscillatorNode::isOscillatorNode(Napi::Object obj) {
-	return obj.InstanceOf(_constructor.Value());
-}
-
-
-Napi::Object OscillatorNode::getNew(Napi::Object context) {
-	
-	Napi::Function ctor = Nan::New(_constructor);
-	Napi::Value argv[] = { context };
-	return Nan::NewInstance(ctor, 1, argv).ToLocalChecked();
-	
-}
-
-
-OscillatorNode::OscillatorNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<OscillatorNode>(info) {
-	
-	CTOR_CHECK("OscillatorNode");
-	
-	REQ_OBJ_ARG(0, context);
-	
-	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
-	
-	OscillatorNode *oscillatorNode = new OscillatorNode(context, audioContext->getCtx()->sampleRate());
-	
-}
-
-
-JS_METHOD(OscillatorNode::destroy) { THIS_CHECK;
-	
-	emit(env, "destroy");
-	
-	_destroy();
-	
-}
-
-
-JS_GETTER(OscillatorNode::isDestroyedGetter) { NAPI_ENV;
-	
-	RET_BOOL(_isDestroyed);
 	
 }

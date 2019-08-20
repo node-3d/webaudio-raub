@@ -21,7 +21,7 @@ namespace lab {
 
 struct Common {
 	
-	Common(const char *asyncName);
+	Common(Napi::Env env, const char *name);
 	~Common();
 	
 	void _destroy();
@@ -53,7 +53,7 @@ struct CommonNode: public Common {
 	
 	typedef std::shared_ptr<lab::AudioNode> NodePtr;
 	
-	CommonNode(): Common("AudioNode") {};
+	CommonNode(Napi::Env env, const char *name): Common(env, name) {};
 	~CommonNode();
 	
 	void _destroy();
@@ -71,7 +71,7 @@ struct CommonParam: public Common {
 	
 	typedef std::shared_ptr<lab::AudioParam> ParamPtr;
 	
-	CommonParam(): Common("AudioParam") {};
+	CommonParam(Napi::Env env, const char *name): Common(env, name) {};
 	~CommonParam();
 	
 	void _destroy();
@@ -89,7 +89,7 @@ struct CommonCtx: public Common {
 	
 	typedef std::shared_ptr<lab::AudioContext> CtxPtr;
 	
-	CommonCtx(): Common("AudioContext") {};
+	CommonCtx(Napi::Env env, const char *name): Common(env, name) {};
 	~CommonCtx();
 	
 	void _destroy();

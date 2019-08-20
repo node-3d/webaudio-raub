@@ -23,41 +23,16 @@ private:
 	Napi::ObjectReference _listener;
 	std::string _state;
 	
-	JS_METHOD(update);
+	JS_METHOD(destroy);
 	
+	JS_METHOD(update);
 	JS_METHOD(resume);
 	JS_METHOD(decodeAudioData);
-	// JS_METHOD(createBuffer);
-	
-	// JS_METHOD(createBufferSource);
-	// // JS_METHOD(createConstantSource);
-	// JS_METHOD(createGain);
-	// JS_METHOD(createDelay);
-	// JS_METHOD(createBiquadFilter);
-	// JS_METHOD(createIIRFilter);
-	// // JS_METHOD(createWaveShaper);
-	// JS_METHOD(createPanner);
-	// JS_METHOD(createConvolver);
-	// // JS_METHOD(createDynamicsCompressor);
-	// // JS_METHOD(createAnalyser);
-	// JS_METHOD(createScriptProcessor);
-	// // JS_METHOD(createStereoPanner);
-	// JS_METHOD(createOscillator);
-	// JS_METHOD(createPeriodicWave);
-	// JS_METHOD(createChannelSplitter);
-	// JS_METHOD(createChannelMerger);
-	// JS_METHOD(createMediaElementSource);
-	// JS_METHOD(createMediaStreamSource);
-	// JS_METHOD(createMediaStreamDestination);
 	
 	JS_GETTER(destinationGetter);
-	
 	JS_GETTER(currentTimeGetter);
-	
 	JS_GETTER(sampleRateGetter);
-	
 	JS_GETTER(listenerGetter);
-	
 	JS_GETTER(stateGetter);
 	
 };

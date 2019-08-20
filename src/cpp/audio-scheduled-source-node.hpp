@@ -1,43 +1,30 @@
 #ifndef _AUDIO_SCHEDULED_SOURCE_NODE_HPP_
 #define _AUDIO_SCHEDULED_SOURCE_NODE_HPP_
 
+#include "common.hpp"
 
 #include "audio-node.hpp"
-
-namespace lab { class AudioScheduledSourceNode; };
 
 
 class AudioScheduledSourceNode : public Napi::ObjectWrap<AudioScheduledSourceNode>, private CommonNode {
 	
 public:
 	
-	typedef std::shared_ptr<lab::AudioScheduledSourceNode> NodePtr;
-	
-	~AudioScheduledSourceNode();
-	explicit AudioScheduledSourceNode(const Napi::CallbackInfo &info);
-	
 	static void init(Napi::Env env, Napi::Object exports);
+	static Napi::Object create(Napi::Env env, Napi::Object context);
 	
-	// Destroy an instance from C++ land
+	explicit AudioScheduledSourceNode(const Napi::CallbackInfo &info);
+	~AudioScheduledSourceNode();
+	
 	void _destroy();
-	
-	
-protected:
-	
-	AudioScheduledSourceNode() {} // fake, TODO: remove
-	AudioScheduledSourceNode(Napi::Object context, NodePtr node);
-	
-	static Napi::FunctionReference _constructor;
-	
-	bool _isDestroyed;
-	
-	void onEnded();
-	
 	
 private:
 	
+	static Napi::FunctionReference _constructor;
+	
+	void onEnded();
+	
 	JS_METHOD(destroy);
-	JS_GETTER(isDestroyedGetter);
 	
 	JS_METHOD(start);
 	JS_METHOD(stop);
