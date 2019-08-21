@@ -1,60 +1,15 @@
-#include <LabSound/core/AudioNode.h>
-#include <LabSound/core/AudioDestinationNode.h>
+#include <LabSound/LabSound.h>
 
 #include "audio-destination-node.hpp"
 
-#include "common.hpp"
-
-
-// ------ Constructor and Destructor
-
-AudioDestinationNode::AudioDestinationNode(Napi::Object context, DestPtr node):
-Napi::ObjectWrap<AudioDestinationNode>(info),
-CommonNode(info.Env(), "AudioDestinationNode") {
-	
-	_isDestroyed = false;
-	
-}
-
-
-AudioDestinationNode::~AudioDestinationNode() {
-	
-	_destroy();
-	
-}
-
-
-void AudioDestinationNode::_destroy() { DES_CHECK;
-	
-	_isDestroyed = true;
-	
-	AudioNode::_destroy();
-	
-}
-
-
-// ------ Methods and props
-
-
-
-JS_GETTER(AudioDestinationNode::maxChannelCountGetter) { THIS_CHECK;
-	
-	RET_NUM(_maxChannelCount);
-	
-}
-
-
-// ------ System methods and props for Napi::ObjectWrap
 
 Napi::FunctionReference AudioDestinationNode::_constructor;
-
 
 void AudioDestinationNode::init(Napi::Env env, Napi::Object exports) {
 	
 	Napi::Function ctor = DefineClass(env, "AudioDestinationNode", {
-		ACCESSOR_M(AudioDestinationNode, destroy),
 		ACCESSOR_R(AudioDestinationNode, maxChannelCount),
-		ACCESSOR_R(AudioDestinationNode, isDestroyed)
+		ACCESSOR_M(AudioDestinationNode, destroy)
 	});
 	
 	_constructor = Napi::Persistent(ctor);
@@ -65,26 +20,44 @@ void AudioDestinationNode::init(Napi::Env env, Napi::Object exports) {
 }
 
 
-Napi::Object AudioDestinationNode::getNew(Napi::Object context, DestPtr node) {
-	
-	Napi::Function ctor = Nan::New(_constructor);
-	V8_VAR_EXT extNode = JS_EXT(&node);
-	Napi::Value argv[] = { context, extNode };
-	return Nan::NewInstance(ctor, 2, argv).ToLocalChecked();
-	
+Napi::Object AudioDestinationNode::create(Napi::Env env, Napi::Object context, NodePtr node) {
+	Napi::Function ctor = _constructor.Value().As<Napi::Function>();
+	std::vector<napi_value> args;
+	args.push_back(context);
+	args.push_back(JS_EXT(&node));
+	return ctor.New(args);
 }
 
 
-AudioDestinationNode::AudioDestinationNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<AudioDestinationNode>(info) {
-	
-	CTOR_CHECK("AudioDestinationNode");
+AudioDestinationNode::AudioDestinationNode(const Napi::CallbackInfo &info):
+Napi::ObjectWrap<AudioDestinationNode>(info),
+CommonNode(info.Env(), "AudioDestinationNode") { NAPI_ENV;
 	
 	REQ_OBJ_ARG(0, context);
 	REQ_EXT_ARG(1, extNode);
 	
-	DestPtr *node = reinterpret_cast<DestPtr *>(extNode->Value());
+	NodePtr *node = reinterpret_cast<NodePtr *>(extNode.Data());
 	
-	AudioDestinationNode *audioDestinationNode = new AudioDestinationNode(context, *node);
+	reset(context, *node);
+	
+}
+
+
+AudioDestinationNode::~AudioDestinationNode() {
+	_destroy();
+}
+
+
+void AudioDestinationNode::_destroy() { DES_CHECK;
+	
+	CommonNode::_destroy();
+	
+}
+
+
+JS_GETTER(AudioDestinationNode::maxChannelCountGetter) { THIS_CHECK;
+	
+	RET_NUM(_maxChannelCount);
 	
 }
 
@@ -94,12 +67,5 @@ JS_METHOD(AudioDestinationNode::destroy) { THIS_CHECK;
 	emit(info, "destroy");
 	
 	_destroy();
-	
-}
-
-
-JS_GETTER(AudioDestinationNode::isDestroyedGetter) { NAPI_ENV;
-	
-	RET_BOOL(_isDestroyed);
 	
 }

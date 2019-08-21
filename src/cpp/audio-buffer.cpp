@@ -44,25 +44,13 @@ CommonBuffer(info.Env(), "AudioBuffer") {
 
 
 AudioBuffer::~AudioBuffer() {
-	
 	_destroy();
-	
-}
-
-
-AudioBuffer::BusPtr AudioBuffer::getBus() const {
-	return _impl;
 }
 
 
 void AudioBuffer::_destroy() { DES_CHECK;
-	
-	_impl.reset();
-	
-	_isDestroyed = true;
-	
+	CommonBuffer::_destroy();
 }
-
 
 // ------ Methods and props
 

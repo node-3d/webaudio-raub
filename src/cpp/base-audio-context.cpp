@@ -1,35 +1,8 @@
-#include <LabSound/extended/AudioFileReader.h>
-#include <LabSound/core/AudioContext.h>
-#include <LabSound/core/DefaultAudioDestinationNode.h>
-#include <LabSound/core/AudioListener.h>
+#include <LabSound/LabSound.h>
 
 #include "base-audio-context.hpp"
 #include "audio-buffer.hpp"
 #include "audio-listener.hpp"
-
-// Nodes
-// #include "analyser-node.hpp"
-// #include "audio-buffer-source-node.hpp"
-// #include "audio-destination-node.hpp"
-// // #include "audio-worklet-node.hpp"
-// #include "biquad-filter-node.hpp"
-// // #include "channel-merger-node.hpp"
-// // #include "channel-splitter-node.hpp"
-// // #include "constant-source-node.hpp"
-// #include "convolver-node.hpp"
-// #include "delay-node.hpp"
-// // #include "dynamics-compressor-node.hpp"
-// #include "gain-node.hpp"
-// // #include "iir-filter-node.hpp"
-// // #include "media-element-audio-source-node.hpp"
-// // #include "media-stream-audio-destination-node.hpp"
-// // #include "media-stream-audio-source-node.hpp"
-// #include "oscillator-node.hpp"
-// #include "panner-node.hpp"
-// #include "script-processor-node.hpp"
-// #include "stereo-panner-node.hpp"
-// #include "wave-shaper-node.hpp"
-
 
 
 bool compareMagic(const uint8_t *data, const int16_t *magic) {
@@ -93,7 +66,7 @@ void BaseAudioContext::init(Napi::Env env, Napi::Object exports) {
 
 BaseAudioContext::BaseAudioContext(const Napi::CallbackInfo &info):
 Napi::ObjectWrap<BaseAudioContext>(info),
-CommonContext(info.Env(), "BaseAudioContext") {  NAPI_ENV;
+CommonCtx(info.Env(), "BaseAudioContext") {  NAPI_ENV;
 	
 	REQ_EXT_ARG(0, extCtx);
 	

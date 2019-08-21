@@ -1,36 +1,24 @@
 #ifndef _AUDIO_LISTENER_HPP_
 #define _AUDIO_LISTENER_HPP_
 
-
 #include "common.hpp"
 
-namespace lab { class AudioListener; };
 
-
-class AudioListener : public Napi::ObjectWrap<AudioListener>, private CommonNode {
+class AudioListener : public Napi::ObjectWrap<AudioListener>, private CommonListener {
 	
 public:
 	
-	typedef std::shared_ptr<lab::AudioListener> ListenerPtr;
-	
-	~AudioListener();
-	explicit AudioListener(const Napi::CallbackInfo &info);
-	
 	static void init(Napi::Env env, Napi::Object exports);
+	static Napi::Object create(Napi::Env env, Napi::Object context, ListenerPtr listener);
 	
-	static bool isAudioListener(Napi::Object obj);
+	explicit ConvolverNode(const Napi::CallbackInfo &info);
+	~ConvolverNode();
 	
-	// Destroy an instance from C++ land
 	void _destroy();
 	
-	
-protected:
-	
-	explicit AudioListener(Napi::Object context, ListenerPtr listener);
+private:
 	
 	static Napi::FunctionReference _constructor;
-	
-	bool _isDestroyed;
 	
 	Napi::ObjectReference _positionX;
 	Napi::ObjectReference _positionY;
@@ -42,14 +30,7 @@ protected:
 	Napi::ObjectReference _upY;
 	Napi::ObjectReference _upZ;
 	
-	ListenerPtr _impl;
-	Napi::ObjectReference _context;
-	
-	
-private:
-	
 	JS_METHOD(destroy);
-	JS_GETTER(isDestroyedGetter);
 	
 	JS_METHOD(setPosition);
 	JS_METHOD(setOrientation);

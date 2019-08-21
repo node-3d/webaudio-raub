@@ -26,29 +26,32 @@ void BiquadFilterNode::init(Napi::Env env, Napi::Object exports) {
 }
 
 
-BiquadFilterNode::BiquadFilterNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<BiquadFilterNode>(info) {
+BiquadFilterNode::BiquadFilterNode(const Napi::CallbackInfo &info):
+Napi::ObjectWrap<BiquadFilterNode>(info),
+CommonNode(info.Env(), "BiquadFilterNode") { NAPI_ENV;
 	
 	CTOR_CHECK("BiquadFilterNode");
 	
 	REQ_OBJ_ARG(0, context);
 	
-	BiquadFilterNode *biquadFilterNode = new BiquadFilterNode(context);
+	Napi::Object that = info.This().As<Napi::Object>();
+	Napi::Function ctor = _constructor.Value().As<Napi::Function>();
+	Napi::Function _Super = ctor.Get("_Super").As<Napi::Function>();
 	
-}
-
-BiquadFilterNode::BiquadFilterNode(Napi::Object context):
-Napi::ObjectWrap<BiquadFilterNode>(info),
-CommonNode(info.Env(), "BiquadFilterNode") { NAPI_ENV;
+	reset(context, std::make_shared<lab::BiquadFilterNode>());
 	
-	// AudioNode(context, NodePtr(new lab::BiquadFilterNode()))
-	lab::BiquadFilterNode *node = static_cast<lab::BiquadFilterNode*>(_impl.get());
+	std::vector<napi_value> args;
+	args.push_back(context);
+	_Super.Call(that, args);
 	
-	_frequency.Reset(AudioParam::getNew(context, node->frequency()));
-	_detune.Reset(AudioParam::getNew(context, node->detune()));
-	_Q.Reset(AudioParam::getNew(context, node->q()));
-	_gain.Reset(AudioParam::getNew(context, node->gain()));
+	lab::BiquadFilterNode *node = static_cast<lab::BiquadFilterNode*>(
+		_impl.get()
+	);
 	
-	_isDestroyed = false;
+	_frequency.Reset(AudioParam::create(env, context, node->frequency()));
+	_detune.Reset(AudioParam::create(env, context, node->detune()));
+	_Q.Reset(AudioParam::create(env, context, node->q()));
+	_gain.Reset(AudioParam::create(env, context, node->gain()));
 	
 }
 
@@ -90,7 +93,7 @@ JS_GETTER(BiquadFilterNode::typeGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(BiquadFilterNode::typeSetter) { THIS_CHECK; SETTER_STR_ARG;
+JS_SETTER(BiquadFilterNode::typeSetter) { THIS_SETTER_CHECK; SETTER_STR_ARG;
 	
 	CACHE_CAS(_type, v);
 	

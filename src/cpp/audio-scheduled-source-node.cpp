@@ -24,7 +24,7 @@ void AudioScheduledSourceNode::init(Napi::Env env, Napi::Object exports) {
 
 AudioScheduledSourceNode::AudioScheduledSourceNode(const Napi::CallbackInfo &info):
 Napi::ObjectWrap<AudioScheduledSourceNode>(info),
-CommonNode(info.Env(), "AudioScheduledSourceNode") {
+CommonNode(info.Env(), "AudioScheduledSourceNode") { NAPI_ENV;
 		
 	CTOR_CHECK("AudioScheduledSourceNode");
 	

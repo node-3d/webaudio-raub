@@ -26,7 +26,7 @@ void AudioContext::init(Napi::Env env, Napi::Object exports) {
 
 AudioContext::AudioContext(const Napi::CallbackInfo &info):
 Napi::ObjectWrap<AudioContext>(info),
-CommonNode(info.Env(), "AudioContext") { NAPI_ENV;
+CommonCtx(info.Env(), "AudioContext") { NAPI_ENV;
 	
 	CTOR_CHECK("AudioContext");
 	

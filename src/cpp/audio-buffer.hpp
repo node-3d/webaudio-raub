@@ -1,45 +1,27 @@
 #ifndef _AUDIO_BUFFER_HPP_
 #define _AUDIO_BUFFER_HPP_
 
-
-#include <memory>
-
 #include "common.hpp"
-
-namespace lab { class AudioBus; };
 
 
 class AudioBuffer : public Napi::ObjectWrap<AudioBuffer>, private CommonBuffer {
 	
 public:
 	
-	typedef std::shared_ptr<lab::AudioBus> BusPtr;
-	
-	~AudioBuffer();
-	explicit AudioBuffer(const Napi::CallbackInfo &info);
-	
 	static void init(Napi::Env env, Napi::Object exports);
+	static Napi::Object create(Napi::Env env, Napi::Object context, ListenerPtr listener);
 	
-	// Destroy an instance from C++ land
+	explicit AudioBuffer(const Napi::CallbackInfo &info);
+	~AudioBuffer();
+	
 	void _destroy();
 	
-	BusPtr getBus() const;
-	
-	
-protected:
-	
-	AudioBuffer();
-	explicit AudioBuffer(BusPtr bus);
+private:
 	
 	int _length;
 	double _duration;
 	float _sampleRate;
 	uint32_t _numberOfChannels;
-	
-	BusPtr _impl;
-	
-	
-private:
 	
 	JS_METHOD(getChannelData);
 	JS_METHOD(copyFromChannel);

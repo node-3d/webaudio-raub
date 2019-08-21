@@ -1,7 +1,6 @@
 #ifndef _BIQUAD_FILTER_NODE_HPP_
 #define _BIQUAD_FILTER_NODE_HPP_
 
-
 #include "common.hpp"
 
 #include "audio-node.hpp"
@@ -11,24 +10,17 @@ class BiquadFilterNode : public Napi::ObjectWrap<BiquadFilterNode>, private Comm
 	
 public:
 	
-	~BiquadFilterNode();
-	explicit BiquadFilterNode(const Napi::CallbackInfo &info);
-	
 	static void init(Napi::Env env, Napi::Object exports);
+	static Napi::Object create(Napi::Env env, Napi::Object context);
 	
-	static bool isBiquadFilterNode(Napi::Object obj);
+	explicit BiquadFilterNode(const Napi::CallbackInfo &info);
+	~BiquadFilterNode();
 	
-	// Destroy an instance from C++ land
 	void _destroy();
 	
-	
-protected:
-	
-	explicit BiquadFilterNode(Napi::Object context);
+private:
 	
 	static Napi::FunctionReference _constructor;
-	
-	bool _isDestroyed;
 	
 	std::string _type;
 	Napi::ObjectReference _frequency;
@@ -36,11 +28,7 @@ protected:
 	Napi::ObjectReference _Q;
 	Napi::ObjectReference _gain;
 	
-	
-private:
-	
 	JS_METHOD(destroy);
-	JS_GETTER(isDestroyedGetter);
 	
 	JS_METHOD(getFrequencyResponse);
 	

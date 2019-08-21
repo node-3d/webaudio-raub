@@ -5,53 +5,74 @@
 #include "audio-param.hpp"
 
 
-// ------ Constructor and Destructor
+Napi::FunctionReference AudioListener::_constructor;
 
-AudioListener::AudioListener(Napi::Object context, ListenerPtr listener):
+void AudioListener::init(Napi::Env env, Napi::Object exports) {
+	
+	Napi::Function ctor = DefineClass(env, "AudioListener", {
+		ACCESSOR_M(AudioListener, setOrientation),
+		ACCESSOR_M(AudioListener, setPosition),
+		ACCESSOR_M(AudioListener, destroy),
+		ACCESSOR_R(AudioListener, upZ),
+		ACCESSOR_R(AudioListener, upY),
+		ACCESSOR_R(AudioListener, upX),
+		ACCESSOR_R(AudioListener, forwardZ),
+		ACCESSOR_R(AudioListener, forwardY),
+		ACCESSOR_R(AudioListener, forwardX),
+		ACCESSOR_R(AudioListener, positionZ),
+		ACCESSOR_R(AudioListener, positionY),
+		ACCESSOR_R(AudioListener, positionX),
+		ACCESSOR_R(AudioListener, isDestroyed)
+	});
+	
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
+	
+	exports.Set("AudioListener", ctor);
+	
+}
+
+
+Napi::Object AudioListener::create(Napi::Env env, Napi::Object context, ListenerPtr listener) {
+	Napi::Function ctor = _constructor.Value().As<Napi::Function>();
+	std::vector<napi_value> args;
+	args.push_back(context);
+	args.push_back(JS_EXT(&listener));
+	return ctor.New(args);
+}
+
+
+AudioListener::AudioListener(const Napi::CallbackInfo &info):
 Napi::ObjectWrap<AudioListener>(info),
-CommonListener(info.Env(), "AudioListener") {
+CommonListener(info.Env(), "AudioListener") { NAPI_ENV;
 	
-	_impl = listener;
-	_context.Reset(context);
+	REQ_OBJ_ARG(0, context);
+	REQ_EXT_ARG(1, extListener);
 	
-	_positionX.Reset(AudioParam::getNew(context, _impl->positionX()));
-	_positionY.Reset(AudioParam::getNew(context, _impl->positionY()));
-	_positionZ.Reset(AudioParam::getNew(context, _impl->positionZ()));
-	_forwardX.Reset(AudioParam::getNew(context, _impl->forwardX()));
-	_forwardY.Reset(AudioParam::getNew(context, _impl->forwardY()));
-	_forwardZ.Reset(AudioParam::getNew(context, _impl->forwardZ()));
-	_upX.Reset(AudioParam::getNew(context, _impl->upX()));
-	_upY.Reset(AudioParam::getNew(context, _impl->upY()));
-	_upZ.Reset(AudioParam::getNew(context, _impl->upZ()));
+	ListenerPtr *param = reinterpret_cast<ListenerPtr *>(extListener.Data());
 	
-	_isDestroyed = false;
+	reset(context, *param);
+	
+	_positionX.Reset(AudioParam::create(env, _impl->positionX()));
+	_positionY.Reset(AudioParam::create(env, _impl->positionY()));
+	_positionZ.Reset(AudioParam::create(env, _impl->positionZ()));
+	_forwardX.Reset(AudioParam::create(env, _impl->forwardX()));
+	_forwardY.Reset(AudioParam::create(env, _impl->forwardY()));
+	_forwardZ.Reset(AudioParam::create(env, _impl->forwardZ()));
+	_upX.Reset(AudioParam::create(env, _impl->upX()));
+	_upY.Reset(AudioParam::create(env, _impl->upY()));
+	_upZ.Reset(AudioParam::create(env, _impl->upZ()));
 	
 }
 
 
 AudioListener::~AudioListener() {
-	
 	_destroy();
-	
 }
 
 
 void AudioListener::_destroy() { DES_CHECK;
-	
-	_context.Reset();
-	
-	_positionX.Reset();
-	_positionY.Reset();
-	_positionZ.Reset();
-	_forwardX.Reset();
-	_forwardY.Reset();
-	_forwardZ.Reset();
-	_upX.Reset();
-	_upY.Reset();
-	_upZ.Reset();
-	
-	_isDestroyed = true;
-	
+	CommonListener::_destroy();
 }
 
 
@@ -94,75 +115,8 @@ PARAM_GETTER(AudioListener, upY);
 PARAM_GETTER(AudioListener, upZ);
 
 
-// ------ System methods and props for Napi::ObjectWrap
-
-Napi::FunctionReference AudioListener::_constructor;
-
-
-void AudioListener::init(Napi::Env env, Napi::Object exports) {
-	
-	Napi::Function ctor = DefineClass(env, "AudioListener", {
-		ACCESSOR_M(AudioListener, setOrientation),
-		ACCESSOR_M(AudioListener, setPosition),
-		ACCESSOR_M(AudioListener, destroy),
-		ACCESSOR_R(AudioListener, upZ),
-		ACCESSOR_R(AudioListener, upY),
-		ACCESSOR_R(AudioListener, upX),
-		ACCESSOR_R(AudioListener, forwardZ),
-		ACCESSOR_R(AudioListener, forwardY),
-		ACCESSOR_R(AudioListener, forwardX),
-		ACCESSOR_R(AudioListener, positionZ),
-		ACCESSOR_R(AudioListener, positionY),
-		ACCESSOR_R(AudioListener, positionX),
-		ACCESSOR_R(AudioListener, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
-	
-	exports.Set("AudioListener", ctor);
-	
-}
-
-
-bool AudioListener::isAudioListener(Napi::Object obj) {
-	return obj.InstanceOf(_constructor.Value());
-}
-
-
-Napi::Object AudioListener::getNew(Napi::Object context, ListenerPtr listener) {
-	
-	Napi::Function ctor = Nan::New(_constructor);
-	V8_VAR_EXT extListener = JS_EXT(&listener);
-	Napi::Value argv[] = { context, extListener };
-	return Nan::NewInstance(ctor, 2, argv).ToLocalChecked();
-	
-}
-
-
-AudioListener::AudioListener(const Napi::CallbackInfo &info): Napi::ObjectWrap<AudioListener>(info) {
-	
-	CTOR_CHECK("AudioListener");
-	
-	REQ_OBJ_ARG(0, context);
-	REQ_EXT_ARG(1, extListener);
-	
-	ListenerPtr *listener = reinterpret_cast<ListenerPtr *>(extListener->Value());
-	
-	AudioListener *audioListener = new AudioListener(context, *listener);
-	
-}
-
-
 JS_METHOD(AudioListener::destroy) { THIS_CHECK;
 	
 	_destroy();
-	
-}
-
-
-JS_GETTER(AudioListener::isDestroyedGetter) { NAPI_ENV;
-	
-	RET_BOOL(_isDestroyed);
 	
 }

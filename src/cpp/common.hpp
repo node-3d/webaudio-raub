@@ -102,4 +102,40 @@ struct CommonCtx: public Common {
 	
 };
 
+struct CommonBus: public Common {
+	
+	typedef std::shared_ptr<lab::AudioBus> BusPtr;
+	
+	CommonBus(Napi::Env env, const char *name): Common(env, name) {};
+	~CommonBus();
+	
+	void _destroy();
+	
+	BusPtr getBus() const;
+	
+	void reset(BusPtr ctx);
+	
+	BusPtr _impl;
+	Napi::ObjectReference _context;
+	
+};
+
+struct CommonListener: public Common {
+	
+	typedef std::shared_ptr<lab::AudioListener> ListenerPtr;
+	
+	CommonListener(Napi::Env env, const char *name): Common(env, name) {};
+	~CommonListener();
+	
+	void _destroy();
+	
+	ListenerPtr getListener() const;
+	
+	void reset(ListenerPtr ctx);
+	
+	ListenerPtr _impl;
+	Napi::ObjectReference _context;
+	
+};
+
 #endif // _COMMON_HPP_

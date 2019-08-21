@@ -1,37 +1,61 @@
-#include <LabSound/core/AudioContext.h>
-#include <LabSound/core/ConvolverNode.h>
+#include <LabSound/LabSound.h>
 
 #include "convolver-node.hpp"
 #include "audio-context.hpp"
 #include "audio-buffer.hpp"
 
-#include "common.hpp"
 
+Napi::FunctionReference ConvolverNode::_constructor;
 
-// ------ Constructor and Destructor
-
-ConvolverNode::ConvolverNode(Napi::Object context) :
-AudioNode(context, NodePtr(new lab::ConvolverNode())) {
+void ConvolverNode::init(Napi::Env env, Napi::Object exports) {
 	
-	lab::ConvolverNode *node = static_cast<lab::ConvolverNode*>(_impl.get());
+	Napi::Function ctor = DefineClass(env, "ConvolverNode", {
+		ACCESSOR_RW(ConvolverNode, normalize),
+		ACCESSOR_RW(ConvolverNode, buffer),
+		ACCESSOR_M(ConvolverNode, destroy)
+	});
 	
-	_isDestroyed = false;
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
+	
+	exports.Set("ConvolverNode", ctor);
+	
+}
+
+
+ConvolverNode::ConvolverNode(const Napi::CallbackInfo &info):
+Napi::ObjectWrap<ConvolverNode>(info),
+CommonNode(info.Env(), "ConvolverNode") { NAPI_ENV;
+	
+	CTOR_CHECK("ConvolverNode");
+	
+	REQ_OBJ_ARG(0, context);
+	
+	Napi::Object that = info.This().As<Napi::Object>();
+	Napi::Function ctor = _constructor.Value().As<Napi::Function>();
+	Napi::Function _Super = ctor.Get("_Super").As<Napi::Function>();
+	
+	reset(context, std::make_shared<lab::ConvolverNode>());
+	
+	std::vector<napi_value> args;
+	args.push_back(context);
+	_Super.Call(that, args);
+	
+	// lab::ConvolverNode *node = static_cast<lab::ConvolverNode*>(
+	// 	_impl.get()
+	// );
 	
 }
 
 
 ConvolverNode::~ConvolverNode() {
-	
 	_destroy();
-	
 }
 
 
 void ConvolverNode::_destroy() { DES_CHECK;
 	
-	_isDestroyed = true;
-	
-	AudioNode::_destroy();
+	CommonNode::_destroy();
 	
 }
 
@@ -46,9 +70,9 @@ JS_GETTER(ConvolverNode::bufferGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(ConvolverNode::bufferSetter) { THIS_CHECK; SETTER_OBJ_ARG;
+JS_SETTER(ConvolverNode::bufferSetter) { THIS_SETTER_CHECK; SETTER_OBJ_ARG;
 	
-	if (Nan::New(_buffer) == v) {
+	if (_buffer.Value() == v) {
 		return;
 	}
 	
@@ -82,7 +106,7 @@ JS_GETTER(ConvolverNode::normalizeGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(ConvolverNode::normalizeSetter) { THIS_CHECK; SETTER_BOOL_ARG;
+JS_SETTER(ConvolverNode::normalizeSetter) { THIS_SETTER_CHECK; SETTER_BOOL_ARG;
 	
 	lab::ConvolverNode *node = static_cast<lab::ConvolverNode*>(
 		_impl.get()
@@ -95,59 +119,10 @@ JS_SETTER(ConvolverNode::normalizeSetter) { THIS_CHECK; SETTER_BOOL_ARG;
 }
 
 
-// ------ System methods and props for Napi::ObjectWrap
-
-Napi::FunctionReference ConvolverNode::_constructor;
-
-
-void ConvolverNode::init(Napi::Env env, Napi::Object exports) {
-	
-	Napi::Function ctor = DefineClass(env, "ConvolverNode", {
-		ACCESSOR_RW(ConvolverNode, normalize),
-		ACCESSOR_RW(ConvolverNode, buffer),
-		ACCESSOR_M(ConvolverNode, destroy),
-		ACCESSOR_R(ConvolverNode, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
-	
-	exports.Set("ConvolverNode", ctor);
-	
-}
-
-
-Napi::Object ConvolverNode::getNew(Napi::Object context) {
-	
-	Napi::Function ctor = Nan::New(_constructor);
-	Napi::Value argv[] = { context };
-	return Nan::NewInstance(ctor, 1, argv).ToLocalChecked();
-	
-}
-
-
-ConvolverNode::ConvolverNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<ConvolverNode>(info) {
-	
-	CTOR_CHECK("ConvolverNode");
-	
-	REQ_OBJ_ARG(0, context);
-	
-	ConvolverNode *convolverNode = new ConvolverNode(context);
-	
-}
-
-
 JS_METHOD(ConvolverNode::destroy) { THIS_CHECK;
 	
 	emit(info, "destroy");
 	
 	_destroy();
-	
-}
-
-
-JS_GETTER(ConvolverNode::isDestroyedGetter) { NAPI_ENV;
-	
-	RET_BOOL(_isDestroyed);
 	
 }
