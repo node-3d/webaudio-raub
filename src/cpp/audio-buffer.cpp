@@ -8,7 +8,30 @@
 #include "common.hpp"
 
 
-// ------ Constructor and Destructor
+
+Napi::FunctionReference AudioBuffer::_constructor;
+
+
+void AudioBuffer::init(Napi::Env env, Napi::Object exports) {
+	
+	Napi::Function ctor = DefineClass(env, "AudioBuffer", {
+		ACCESSOR_M(AudioBuffer, copyToChannel),
+		ACCESSOR_M(AudioBuffer, copyFromChannel),
+		ACCESSOR_M(AudioBuffer, getChannelData),
+		ACCESSOR_M(AudioBuffer, destroy),
+		ACCESSOR_R(AudioBuffer, numberOfChannels),
+		ACCESSOR_R(AudioBuffer, sampleRate),
+		ACCESSOR_R(AudioBuffer, duration),
+		ACCESSOR_R(AudioBuffer, length),
+		ACCESSOR_R(AudioBuffer, isDestroyed)
+	});
+	
+	_constructor = Napi::Persistent(ctor);
+	_constructor.SuppressDestruct();
+	
+	exports.Set("AudioBuffer", ctor);
+	
+}
 
 
 AudioBuffer::AudioBuffer(const Napi::CallbackInfo &info):
@@ -114,42 +137,8 @@ JS_GETTER(AudioBuffer::numberOfChannelsGetter) { THIS_CHECK;
 }
 
 
-// ------ System methods and props for Napi::ObjectWrap
-
-Napi::FunctionReference AudioBuffer::_constructor;
-
-
-void AudioBuffer::init(Napi::Env env, Napi::Object exports) {
-	
-	Napi::Function ctor = DefineClass(env, "AudioBuffer", {
-		ACCESSOR_M(AudioBuffer, copyToChannel),
-		ACCESSOR_M(AudioBuffer, copyFromChannel),
-		ACCESSOR_M(AudioBuffer, getChannelData),
-		ACCESSOR_M(AudioBuffer, destroy),
-		ACCESSOR_R(AudioBuffer, numberOfChannels),
-		ACCESSOR_R(AudioBuffer, sampleRate),
-		ACCESSOR_R(AudioBuffer, duration),
-		ACCESSOR_R(AudioBuffer, length),
-		ACCESSOR_R(AudioBuffer, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
-	
-	exports.Set("AudioBuffer", ctor);
-	
-}
-
-
 JS_METHOD(AudioBuffer::destroy) { THIS_CHECK;
 	
 	_destroy();
-	
-}
-
-
-JS_GETTER(AudioBuffer::isDestroyedGetter) { NAPI_ENV;
-	
-	RET_BOOL(_isDestroyed);
 	
 }

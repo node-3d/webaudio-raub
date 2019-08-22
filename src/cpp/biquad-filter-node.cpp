@@ -99,7 +99,7 @@ JS_SETTER(BiquadFilterNode::typeSetter) { THIS_SETTER_CHECK; SETTER_STR_ARG;
 	
 	// TODO: may be additional actions on change?
 	
-	emit(info, "type", 1, &value);
+	emit("type", 1, &value);
 	
 }
 
@@ -134,7 +134,7 @@ JS_GETTER(BiquadFilterNode::gainGetter) { THIS_CHECK;
 
 JS_METHOD(BiquadFilterNode::destroy) { THIS_CHECK;
 	
-	emit(info, "destroy");
+	emit("destroy");
 	
 	_destroy();
 	

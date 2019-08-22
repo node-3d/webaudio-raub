@@ -27,14 +27,14 @@ struct Common {
 	void _destroy();
 	
 	void emit(
-		const Napi::CallbackInfo& info,
+		Napi::Object that,
 		const char* name,
 		int argc = 0,
 		const Napi::Value *argv = nullptr
 	);
 	
 	void emitAsync(
-		const Napi::CallbackInfo& info,
+		Napi::Object that,
 		const char* name,
 		int argc = 0,
 		const Napi::Value *argv = nullptr
@@ -42,6 +42,7 @@ struct Common {
 	
 	bool _isDestroyed;
 	
+	Napi::ObjectReference _context;
 	Napi::AsyncContext asyncCtx;
 	
 	JS_GETTER(isDestroyedGetter);
@@ -53,7 +54,7 @@ struct CommonNode: public Common {
 	
 	typedef std::shared_ptr<lab::AudioNode> NodePtr;
 	
-	CommonNode(Napi::Env env, const char *name): Common(env, name) {};
+	CommonNode(Napi::Env env, const char *name);
 	~CommonNode();
 	
 	void _destroy();
@@ -63,7 +64,6 @@ struct CommonNode: public Common {
 	void reset(Napi::Object context, NodePtr node);
 	
 	NodePtr _impl;
-	Napi::ObjectReference _context;
 	
 };
 
@@ -71,7 +71,7 @@ struct CommonParam: public Common {
 	
 	typedef std::shared_ptr<lab::AudioParam> ParamPtr;
 	
-	CommonParam(Napi::Env env, const char *name): Common(env, name) {};
+	CommonParam(Napi::Env env, const char *name);
 	~CommonParam();
 	
 	void _destroy();
@@ -81,7 +81,6 @@ struct CommonParam: public Common {
 	void reset(Napi::Object context, ParamPtr param);
 	
 	ParamPtr _impl;
-	Napi::ObjectReference _context;
 	
 };
 
@@ -89,7 +88,7 @@ struct CommonCtx: public Common {
 	
 	typedef std::shared_ptr<lab::AudioContext> CtxPtr;
 	
-	CommonCtx(Napi::Env env, const char *name): Common(env, name) {};
+	CommonCtx(Napi::Env env, const char *name);
 	~CommonCtx();
 	
 	void _destroy();
@@ -106,17 +105,16 @@ struct CommonBus: public Common {
 	
 	typedef std::shared_ptr<lab::AudioBus> BusPtr;
 	
-	CommonBus(Napi::Env env, const char *name): Common(env, name) {};
+	CommonBus(Napi::Env env, const char *name);
 	~CommonBus();
 	
 	void _destroy();
 	
 	BusPtr getBus() const;
 	
-	void reset(BusPtr ctx);
+	void reset(Napi::Object context, BusPtr ctx);
 	
 	BusPtr _impl;
-	Napi::ObjectReference _context;
 	
 };
 
@@ -124,17 +122,16 @@ struct CommonListener: public Common {
 	
 	typedef std::shared_ptr<lab::AudioListener> ListenerPtr;
 	
-	CommonListener(Napi::Env env, const char *name): Common(env, name) {};
+	CommonListener(Napi::Env env, const char *name);
 	~CommonListener();
 	
 	void _destroy();
 	
 	ListenerPtr getListener() const;
 	
-	void reset(ListenerPtr ctx);
+	void reset(Napi::Object context, ListenerPtr ctx);
 	
 	ListenerPtr _impl;
-	Napi::ObjectReference _context;
 	
 };
 

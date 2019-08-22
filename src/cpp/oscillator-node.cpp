@@ -132,7 +132,7 @@ JS_SETTER(OscillatorNode::typeSetter) { THIS_SETTER_CHECK; SETTER_STR_ARG;
 	
 	node->setType(toOscillatorType(v.c_str()));
 	
-	emit(info, "type", 1, &value);
+	emit("type", 1, &value);
 	
 }
 

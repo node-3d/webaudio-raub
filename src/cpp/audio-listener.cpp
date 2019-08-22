@@ -53,15 +53,15 @@ CommonListener(info.Env(), "AudioListener") { NAPI_ENV;
 	
 	reset(context, *param);
 	
-	_positionX.Reset(AudioParam::create(env, _impl->positionX()));
-	_positionY.Reset(AudioParam::create(env, _impl->positionY()));
-	_positionZ.Reset(AudioParam::create(env, _impl->positionZ()));
-	_forwardX.Reset(AudioParam::create(env, _impl->forwardX()));
-	_forwardY.Reset(AudioParam::create(env, _impl->forwardY()));
-	_forwardZ.Reset(AudioParam::create(env, _impl->forwardZ()));
-	_upX.Reset(AudioParam::create(env, _impl->upX()));
-	_upY.Reset(AudioParam::create(env, _impl->upY()));
-	_upZ.Reset(AudioParam::create(env, _impl->upZ()));
+	_positionX.Reset(AudioParam::create(env, context, _impl->positionX()));
+	_positionY.Reset(AudioParam::create(env, context, _impl->positionY()));
+	_positionZ.Reset(AudioParam::create(env, context, _impl->positionZ()));
+	_forwardX.Reset(AudioParam::create(env, context, _impl->forwardX()));
+	_forwardY.Reset(AudioParam::create(env, context, _impl->forwardY()));
+	_forwardZ.Reset(AudioParam::create(env, context, _impl->forwardZ()));
+	_upX.Reset(AudioParam::create(env, context, _impl->upX()));
+	_upY.Reset(AudioParam::create(env, context, _impl->upY()));
+	_upZ.Reset(AudioParam::create(env, context, _impl->upZ()));
 	
 }
 

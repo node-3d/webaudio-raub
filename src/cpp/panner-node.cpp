@@ -118,7 +118,7 @@ CommonNode(info.Env(), "PannerNode") { NAPI_ENV;
 
 JS_METHOD(PannerNode::destroy) { THIS_CHECK;
 	
-	emit(info, "destroy");
+	emit("destroy");
 	
 	_destroy();
 	
@@ -210,7 +210,7 @@ JS_SETTER(PannerNode::panningModelSetter) { THIS_SETTER_CHECK; SETTER_STR_ARG;
 	
 	node->setPanningModel(toPanningMode(v.c_str()));
 	
-	emit(info, "panningModel", 1, &value);
+	emit("panningModel", 1, &value);
 	
 }
 
@@ -241,7 +241,7 @@ JS_SETTER(PannerNode::distanceModelSetter) { THIS_SETTER_CHECK; SETTER_STR_ARG;
 	
 	node->setDistanceModel(toDistanceModel(v.c_str()));
 	
-	emit(info, "distanceModel", 1, &value);
+	emit("distanceModel", 1, &value);
 	
 }
 
@@ -264,7 +264,7 @@ JS_SETTER(PannerNode::refDistanceSetter) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
 	
 	node->setRefDistance(static_cast<float>(v));
 	
-	emit(info, "refDistance", 1, &value);
+	emit("refDistance", 1, &value);
 	
 }
 
@@ -287,7 +287,7 @@ JS_SETTER(PannerNode::maxDistanceSetter) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
 	
 	node->setMaxDistance(static_cast<float>(v));
 	
-	emit(info, "maxDistance", 1, &value);
+	emit("maxDistance", 1, &value);
 	
 }
 
@@ -310,7 +310,7 @@ JS_SETTER(PannerNode::rolloffFactorSetter) { THIS_SETTER_CHECK; SETTER_DOUBLE_AR
 	
 	node->setRolloffFactor(static_cast<float>(v));
 	
-	emit(info, "rolloffFactor", 1, &value);
+	emit("rolloffFactor", 1, &value);
 	
 }
 
@@ -333,7 +333,7 @@ JS_SETTER(PannerNode::coneInnerAngleSetter) { THIS_SETTER_CHECK; SETTER_DOUBLE_A
 	
 	node->setConeInnerAngle(static_cast<float>(v));
 	
-	emit(info, "coneInnerAngle", 1, &value);
+	emit("coneInnerAngle", 1, &value);
 	
 }
 
@@ -356,7 +356,7 @@ JS_SETTER(PannerNode::coneOuterAngleSetter) { THIS_SETTER_CHECK; SETTER_DOUBLE_A
 	
 	node->setConeOuterAngle(static_cast<float>(v));
 	
-	emit(info, "coneOuterAngle", 1, &value);
+	emit("coneOuterAngle", 1, &value);
 	
 }
 
@@ -379,6 +379,6 @@ JS_SETTER(PannerNode::coneOuterGainSetter) { THIS_SETTER_CHECK; SETTER_DOUBLE_AR
 	
 	node->setConeOuterGain(static_cast<float>(v));
 	
-	emit(info, "coneOuterGain", 1, &value);
+	emit("coneOuterGain", 1, &value);
 	
 }

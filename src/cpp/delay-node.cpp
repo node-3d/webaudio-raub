@@ -76,7 +76,7 @@ JS_GETTER(DelayNode::delayTimeGetter) { THIS_CHECK;
 
 JS_METHOD(DelayNode::destroy) { THIS_CHECK;
 	
-	emit(info, "destroy");
+	emit("destroy");
 	
 	_destroy();
 	

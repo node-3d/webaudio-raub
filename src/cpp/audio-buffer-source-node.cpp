@@ -58,25 +58,6 @@ CommonNode(info.Env(), "AudioBufferSourceNode") { NAPI_ENV;
 }
 
 
-
-AudioBufferSourceNode::AudioBufferSourceNode(Napi::Object context) :
-AudioScheduledSourceNode(
-	context,
-	NodePtr(new lab::SampledAudioNode())
-) {
-	
-	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(_impl.get());
-	
-	_playbackRate.Reset(AudioParam::getNew(context, node->playbackRate()));
-	
-	// FIXME: LabSound
-	// _detune.Reset(AudioParam::getNew(context, node->gain()));
-	
-	_isDestroyed = false;
-	
-}
-
-
 AudioBufferSourceNode::~AudioBufferSourceNode() {
 	_destroy();
 }
@@ -104,12 +85,9 @@ void AudioBufferSourceNode::_destroy() { DES_CHECK;
 	
 	_isDestroyed = true;
 	
-	AudioScheduledSourceNode::_destroy();
+	CommonNode::_destroy();
 	
 }
-
-
-// ------ Methods and props
 
 
 JS_METHOD(AudioBufferSourceNode::start) { THIS_CHECK;
@@ -138,12 +116,11 @@ JS_GETTER(AudioBufferSourceNode::bufferGetter) { THIS_CHECK;
 }
 
 
-JS_SETTER(AudioBufferSourceNode::bufferSetter) {
-	THIS_SETTER_CHECK; SETTER_OBJ_ARG;
+JS_SETTER(AudioBufferSourceNode::bufferSetter) { THIS_SETTER_CHECK; SETTER_OBJ_ARG;
 	
-	if (Nan::New(_buffer) == v) {
-		return;
-	}
+	// if (Nan::New(_buffer) == v) {
+	// 	return;
+	// }
 	_buffer.Reset(v);
 	
 	Napi::Object context = _context.Value();
@@ -161,7 +138,7 @@ JS_SETTER(AudioBufferSourceNode::bufferSetter) {
 	);
 	node->setBus(r, bus);
 	
-	emit(info, "buffer", 1, &value);
+	emit("buffer", 1, &value);
 	
 }
 
@@ -190,8 +167,7 @@ JS_GETTER(AudioBufferSourceNode::loopGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(AudioBufferSourceNode::loopSetter) {
-	THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK; SETTER_BOOL_ARG;
+JS_SETTER(AudioBufferSourceNode::loopSetter) { THIS_SETTER_CHECK; SETTER_BOOL_ARG;
 	
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
 		_impl.get()
@@ -199,7 +175,7 @@ JS_SETTER(AudioBufferSourceNode::loopSetter) {
 	
 	node->setLoop(v);
 	
-	emit(info, "loop", 1, &value);
+	emit("loop", 1, &value);
 	
 }
 
@@ -214,8 +190,7 @@ JS_GETTER(AudioBufferSourceNode::loopStartGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(AudioBufferSourceNode::loopStartSetter) {
-	THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
+JS_SETTER(AudioBufferSourceNode::loopStartSetter) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
 	
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
 		_impl.get()
@@ -223,7 +198,7 @@ JS_SETTER(AudioBufferSourceNode::loopStartSetter) {
 	
 	node->setLoopStart(v);
 	
-	emit(info, "loopStart", 1, &value);
+	emit("loopStart", 1, &value);
 	
 }
 
@@ -238,8 +213,7 @@ JS_GETTER(AudioBufferSourceNode::loopEndGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(AudioBufferSourceNode::loopEndSetter) {
-	THIS_AUDIO_BUFFER_SOURCE_NODE; THIS_CHECK; SETTER_DOUBLE_ARG;
+JS_SETTER(AudioBufferSourceNode::loopEndSetter) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
 	
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
 		_impl.get()
@@ -247,6 +221,6 @@ JS_SETTER(AudioBufferSourceNode::loopEndSetter) {
 	
 	node->setLoopEnd(v);
 	
-	emit(info, "loopEnd", 1, &value);
+	emit("loopEnd", 1, &value);
 	
 }

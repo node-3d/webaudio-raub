@@ -64,7 +64,7 @@ JS_GETTER(AudioDestinationNode::maxChannelCountGetter) { THIS_CHECK;
 
 JS_METHOD(AudioDestinationNode::destroy) { THIS_CHECK;
 	
-	emit(info, "destroy");
+	emit("destroy");
 	
 	_destroy();
 	

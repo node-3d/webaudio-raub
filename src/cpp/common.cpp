@@ -168,28 +168,26 @@ void CommonListener::_destroy() { DES_CHECK;
 
 
 void Common::emit(
-	const Napi::CallbackInfo& info,
+	Napi::Object that,
 	const char* name,
 	int argc,
 	const Napi::Value *argv
 ) {
-	NAPI_ENV;
-	eventEmit(env, info.This().As<Napi::Object>(), name, argc, argv);
+	eventEmit(that, name, argc, argv);
 }
 
 void Common::emitAsync(
-	const Napi::CallbackInfo& info,
+	Napi::Object that,
 	const char* name,
 	int argc,
 	const Napi::Value *argv
 ) {
-	NAPI_ENV;
-	eventEmitAsync(asyncCtx, env, info.This().As<Napi::Object>(), name, argc, argv);
+	eventEmitAsync(that, name, argc, argv, asyncCtx);
 }
 
 JS_METHOD(Common::destroy) { THIS_CHECK;
 	
-	emit(info, "destroy");
+	emit("destroy");
 	
 	_destroy();
 	

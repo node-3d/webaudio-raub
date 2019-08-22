@@ -11,8 +11,8 @@ public:
 	static void init(Napi::Env env, Napi::Object exports);
 	static Napi::Object create(Napi::Env env, Napi::Object context, ListenerPtr listener);
 	
-	explicit ConvolverNode(const Napi::CallbackInfo &info);
-	~ConvolverNode();
+	explicit AudioListener(const Napi::CallbackInfo &info);
+	~AudioListener();
 	
 	void _destroy();
 	

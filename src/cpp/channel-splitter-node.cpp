@@ -80,7 +80,7 @@ ChannelSplitterNode::ChannelSplitterNode(const Napi::CallbackInfo &info): Napi::
 
 JS_METHOD(ChannelSplitterNode::destroy) { THIS_CHECK;
 	
-	emit(info, "destroy");
+	emit("destroy");
 	
 	_destroy();
 	

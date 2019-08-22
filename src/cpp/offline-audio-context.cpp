@@ -64,7 +64,7 @@ JS_SETTER(OfflineAudioContext::oncompleteSetter) { THIS_CHECK; SETTER_FUN_ARG;
 	
 	// TODO: may be additional actions on change?
 	
-	emit(info, "oncomplete", 1, &value);
+	emit("oncomplete", 1, &value);
 	
 }
 
@@ -125,7 +125,7 @@ OfflineAudioContext::OfflineAudioContext(const Napi::CallbackInfo &info): Napi::
 
 JS_METHOD(OfflineAudioContext::destroy) { THIS_CHECK;
 	
-	emit(info, "destroy");
+	emit("destroy");
 	
 	_destroy();
 	

@@ -108,7 +108,7 @@ JS_METHOD(AudioScheduledSourceNode::stop) { THIS_CHECK;
 
 JS_METHOD(AudioScheduledSourceNode::destroy) { THIS_CHECK;
 	
-	emit(info, "destroy");
+	emit("destroy");
 	
 	_destroy();
 	

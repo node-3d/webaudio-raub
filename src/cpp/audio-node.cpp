@@ -255,7 +255,7 @@ JS_SETTER(AudioNode::channelCountSetter) { THIS_SETTER_CHECK; SETTER_UINT32_ARG;
 	lab::ContextGraphLock graphLock(audioContext->getCtx().get(), "AudioNode::channelCountSetter");
 	_impl->setChannelCount(graphLock, _channelCount);
 	
-	emit(info, "channelCount", 1, &value);
+	emit("channelCount", 1, &value);
 	
 }
 
@@ -275,7 +275,7 @@ JS_SETTER(AudioNode::channelCountModeSetter) { THIS_SETTER_CHECK; SETTER_STR_ARG
 	
 	// TODO: may be additional actions on change?
 	
-	emit(info, "channelCountMode", 1, &value);
+	emit("channelCountMode", 1, &value);
 	
 }
 
@@ -295,6 +295,6 @@ JS_SETTER(AudioNode::channelInterpretationSetter) { THIS_SETTER_CHECK; SETTER_ST
 	
 	// TODO: may be additional actions on change?
 	
-	emit(info, "channelInterpretation", 1, &value);
+	emit("channelInterpretation", 1, &value);
 	
 }

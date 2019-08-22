@@ -49,7 +49,7 @@ JS_SETTER(ScriptProcessorNode::onaudioprocessSetter) { THIS_CHECK; SETTER_FUN_AR
 	
 	// TODO: may be additional actions on change?
 	
-	emit(info, "onaudioprocess", 1, &value);
+	emit("onaudioprocess", 1, &value);
 	
 }
 
@@ -108,7 +108,7 @@ ScriptProcessorNode::ScriptProcessorNode(const Napi::CallbackInfo &info): Napi::
 
 JS_METHOD(ScriptProcessorNode::destroy) { THIS_CHECK;
 	
-	emit(info, "destroy");
+	emit("destroy");
 	
 	_destroy();
 	
