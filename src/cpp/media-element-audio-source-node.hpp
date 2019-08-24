@@ -7,7 +7,7 @@
 #include "audio-node.hpp"
 
 
-class MediaElementAudioSourceNode : public Napi::ObjectWrap<MediaElementAudioSourceNode>, private CommonNode {
+class MediaElementAudioSourceNode : public CommonNode<MediaElementAudioSourceNode> {
 	
 public:
 	

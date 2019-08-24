@@ -7,7 +7,7 @@
 #include "audio-node.hpp"
 
 
-class WaveShaperNode : public Napi::ObjectWrap<WaveShaperNode>, private CommonNode {
+class WaveShaperNode : public CommonNode<WaveShaperNode> {
 	
 public:
 	

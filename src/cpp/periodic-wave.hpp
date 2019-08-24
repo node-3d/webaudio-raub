@@ -5,7 +5,7 @@
 #include "common.hpp"
 
 
-class PeriodicWave : public Napi::ObjectWrap<PeriodicWave>, private CommonNode {
+class PeriodicWave : public CommonNode<PeriodicWave> {
 	
 public:
 	

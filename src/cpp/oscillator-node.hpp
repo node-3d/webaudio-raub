@@ -7,7 +7,7 @@
 #include "audio-scheduled-source-node.hpp"
 
 
-class OscillatorNode : public Napi::ObjectWrap<OscillatorNode>, private CommonNode {
+class OscillatorNode : public CommonNode<OscillatorNode> {
 	
 public:
 	

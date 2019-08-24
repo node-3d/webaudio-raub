@@ -4,7 +4,7 @@
 #include "common.hpp"
 
 
-class AudioDestinationNode : public Napi::ObjectWrap<AudioDestinationNode>, private CommonNode {
+class AudioDestinationNode : public CommonNode<AudioDestinationNode> {
 	
 public:
 	

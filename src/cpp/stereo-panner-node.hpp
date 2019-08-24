@@ -7,7 +7,7 @@
 #include "audio-node.hpp"
 
 
-class StereoPannerNode : public Napi::ObjectWrap<StereoPannerNode>, private CommonNode {
+class StereoPannerNode : public CommonNode<StereoPannerNode> {
 	
 public:
 	

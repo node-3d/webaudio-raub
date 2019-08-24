@@ -6,7 +6,7 @@
 #include "audio-node.hpp"
 
 
-class BiquadFilterNode : public Napi::ObjectWrap<BiquadFilterNode>, private CommonNode {
+class BiquadFilterNode : public CommonNode<BiquadFilterNode> {
 	
 public:
 	

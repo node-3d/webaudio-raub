@@ -4,7 +4,7 @@
 #include "common.hpp"
 
 
-class AudioParam : public Napi::ObjectWrap<AudioParam>, public CommonParam {
+class AudioParam : public CommonParam<AudioParam> {
 	
 public:
 	

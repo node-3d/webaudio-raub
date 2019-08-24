@@ -28,7 +28,7 @@ void BiquadFilterNode::init(Napi::Env env, Napi::Object exports) {
 
 BiquadFilterNode::BiquadFilterNode(const Napi::CallbackInfo &info):
 Napi::ObjectWrap<BiquadFilterNode>(info),
-CommonNode(info.Env(), "BiquadFilterNode") { NAPI_ENV;
+CommonNode(info, "BiquadFilterNode") { NAPI_ENV;
 	
 	CTOR_CHECK("BiquadFilterNode");
 	

@@ -4,7 +4,7 @@
 #include "common.hpp"
 
 
-class AudioListener : public Napi::ObjectWrap<AudioListener>, private CommonListener {
+class AudioListener : public CommonListener<AudioListener> {
 	
 public:
 	

@@ -66,7 +66,7 @@ void BaseAudioContext::init(Napi::Env env, Napi::Object exports) {
 
 BaseAudioContext::BaseAudioContext(const Napi::CallbackInfo &info):
 Napi::ObjectWrap<BaseAudioContext>(info),
-CommonCtx(info.Env(), "BaseAudioContext") {  NAPI_ENV;
+CommonCtx(info, "BaseAudioContext") {  NAPI_ENV;
 	
 	REQ_EXT_ARG(0, extCtx);
 	

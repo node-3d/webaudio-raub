@@ -6,7 +6,7 @@
 #include "audio-node.hpp"
 
 
-class GainNode : public Napi::ObjectWrap<GainNode>, private CommonNode {
+class GainNode : public CommonNode<GainNode> {
 	
 public:
 	

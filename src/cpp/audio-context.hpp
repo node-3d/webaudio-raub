@@ -4,7 +4,7 @@
 #include "common.hpp"
 
 
-class AudioContext : public Napi::ObjectWrap<AudioContext>, public CommonCtx {
+class AudioContext : public CommonCtx<AudioContext> {
 	
 public:
 	

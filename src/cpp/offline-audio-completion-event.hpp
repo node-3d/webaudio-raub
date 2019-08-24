@@ -5,7 +5,7 @@
 #include "common.hpp"
 
 
-class OfflineAudioCompletionEvent : public Napi::ObjectWrap<OfflineAudioCompletionEvent>, private CommonNode {
+class OfflineAudioCompletionEvent : public CommonNode<OfflineAudioCompletionEvent> {
 	
 public:
 	

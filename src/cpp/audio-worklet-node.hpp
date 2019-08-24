@@ -5,7 +5,7 @@
 #include "common.hpp"
 
 
-class AudioWorkletNode : public Napi::ObjectWrap<AudioWorkletNode>, private CommonNode {
+class AudioWorkletNode : public CommonNode<AudioWorkletNode> {
 	
 public:
 	

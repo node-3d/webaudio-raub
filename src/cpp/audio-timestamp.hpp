@@ -5,7 +5,7 @@
 #include "common.hpp"
 
 
-class AudioTimestamp : public Napi::ObjectWrap<AudioTimestamp>, private CommonNode {
+class AudioTimestamp : public CommonNode<AudioTimestamp> {
 	
 public:
 	

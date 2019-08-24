@@ -6,7 +6,7 @@
 #include <LabSound/core/AudioNode.h>
 
 
-class AudioNode : public Napi::ObjectWrap<AudioNode>, public CommonNode {
+class AudioNode : public CommonNode<AudioNode> {
 	
 public:
 	

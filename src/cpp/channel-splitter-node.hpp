@@ -7,7 +7,7 @@
 #include "audio-node.hpp"
 
 
-class ChannelSplitterNode : public Napi::ObjectWrap<ChannelSplitterNode>, private CommonNode {
+class ChannelSplitterNode : public CommonNode<ChannelSplitterNode> {
 	
 public:
 	

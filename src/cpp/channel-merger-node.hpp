@@ -7,7 +7,7 @@
 #include "audio-node.hpp"
 
 
-class ChannelMergerNode : public Napi::ObjectWrap<ChannelMergerNode>, private CommonNode {
+class ChannelMergerNode : public CommonNode<ChannelMergerNode> {
 	
 public:
 	

@@ -25,7 +25,7 @@ void ConvolverNode::init(Napi::Env env, Napi::Object exports) {
 
 ConvolverNode::ConvolverNode(const Napi::CallbackInfo &info):
 Napi::ObjectWrap<ConvolverNode>(info),
-CommonNode(info.Env(), "ConvolverNode") { NAPI_ENV;
+CommonNode(info, "ConvolverNode") { NAPI_ENV;
 	
 	CTOR_CHECK("ConvolverNode");
 	

@@ -7,7 +7,7 @@
 #include "audio-node.hpp"
 
 
-class AnalyserNode : public Napi::ObjectWrap<AnalyserNode>, private CommonNode, private CommonNode {
+class AnalyserNode : public CommonNode<AnalyserNode> {
 	
 public:
 	

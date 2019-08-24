@@ -57,7 +57,7 @@ inline lab::OscillatorType toOscillatorType(const std::string &mode) {
 
 OscillatorNode::OscillatorNode(const Napi::CallbackInfo &info):
 Napi::ObjectWrap<OscillatorNode>(info),
-CommonNode(info.Env(), "OscillatorNode") { NAPI_ENV;
+CommonNode(info, "OscillatorNode") { NAPI_ENV;
 	
 	CTOR_CHECK("OscillatorNode");
 	

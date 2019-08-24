@@ -51,7 +51,7 @@ bool AudioParam::isAudioParam(Napi::Object obj) {
 
 AudioParam::AudioParam(const Napi::CallbackInfo &info):
 Napi::ObjectWrap<AudioParam>(info),
-CommonParam(info.Env(), "AudioParam") { NAPI_ENV;
+CommonParam(info, "AudioParam") { NAPI_ENV;
 	
 	REQ_OBJ_ARG(0, context);
 	REQ_EXT_ARG(1, extParam);

@@ -7,7 +7,7 @@
 #include "audio-node.hpp"
 
 
-class ScriptProcessorNode : public Napi::ObjectWrap<ScriptProcessorNode>, private CommonNode {
+class ScriptProcessorNode : public CommonNode<ScriptProcessorNode> {
 	
 public:
 	

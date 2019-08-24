@@ -6,7 +6,7 @@
 #include "audio-node.hpp"
 
 
-class AudioScheduledSourceNode : public Napi::ObjectWrap<AudioScheduledSourceNode>, private CommonNode {
+class AudioScheduledSourceNode : public CommonNode<AudioScheduledSourceNode> {
 	
 public:
 	

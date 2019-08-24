@@ -7,7 +7,7 @@
 #include "audio-node.hpp"
 
 
-class DynamicsCompressorNode : public Napi::ObjectWrap<DynamicsCompressorNode>, private CommonNode {
+class DynamicsCompressorNode : public CommonNode<DynamicsCompressorNode> {
 	
 public:
 	

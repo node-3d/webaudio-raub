@@ -36,7 +36,7 @@ void AudioBuffer::init(Napi::Env env, Napi::Object exports) {
 
 AudioBuffer::AudioBuffer(const Napi::CallbackInfo &info):
 Napi::ObjectWrap<AudioBuffer>(info),
-CommonBuffer(info.Env(), "AudioBuffer") {
+CommonBuffer(info, "AudioBuffer") {
 	
 	CTOR_CHECK("AudioBuffer");
 	

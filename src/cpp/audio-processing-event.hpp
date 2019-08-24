@@ -5,7 +5,7 @@
 #include "common.hpp"
 
 
-class AudioProcessingEvent : public Napi::ObjectWrap<AudioProcessingEvent>, private CommonNode {
+class AudioProcessingEvent : public CommonNode<AudioProcessingEvent> {
 	
 public:
 	

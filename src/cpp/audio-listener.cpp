@@ -44,7 +44,7 @@ Napi::Object AudioListener::create(Napi::Env env, Napi::Object context, Listener
 
 AudioListener::AudioListener(const Napi::CallbackInfo &info):
 Napi::ObjectWrap<AudioListener>(info),
-CommonListener(info.Env(), "AudioListener") { NAPI_ENV;
+CommonListener(info, "AudioListener") { NAPI_ENV;
 	
 	REQ_OBJ_ARG(0, context);
 	REQ_EXT_ARG(1, extListener);

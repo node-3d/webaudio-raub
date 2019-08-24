@@ -24,7 +24,7 @@ void DelayNode::init(Napi::Env env, Napi::Object exports) {
 
 DelayNode::DelayNode(const Napi::CallbackInfo &info): 
 Napi::ObjectWrap<DelayNode>(info),
-CommonNode(info.Env(), "DelayNode") { NAPI_ENV;
+CommonNode(info, "DelayNode") { NAPI_ENV;
 	
 	CTOR_CHECK("DelayNode");
 	

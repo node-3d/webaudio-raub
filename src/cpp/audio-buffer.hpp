@@ -4,7 +4,7 @@
 #include "common.hpp"
 
 
-class AudioBuffer : public Napi::ObjectWrap<AudioBuffer>, public CommonBus {
+class AudioBuffer : public CommonBus<AudioBuffer> {
 	
 public:
 	

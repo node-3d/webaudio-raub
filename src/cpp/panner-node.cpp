@@ -83,7 +83,7 @@ void PannerNode::init(Napi::Env env, Napi::Object exports) {
 
 PannerNode::PannerNode(const Napi::CallbackInfo &info):
 Napi::ObjectWrap<PannerNode>(info),
-CommonNode(info.Env(), "PannerNode") { NAPI_ENV;
+CommonNode(info, "PannerNode") { NAPI_ENV;
 	
 	CTOR_CHECK("PannerNode");
 	

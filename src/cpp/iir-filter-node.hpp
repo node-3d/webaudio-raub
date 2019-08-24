@@ -7,7 +7,7 @@
 #include "audio-node.hpp"
 
 
-class IIRFilterNode : public Napi::ObjectWrap<IIRFilterNode>, private CommonNode {
+class IIRFilterNode : public CommonNode<IIRFilterNode> {
 	
 public:
 	

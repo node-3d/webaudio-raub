@@ -5,62 +5,6 @@
 #include "common.hpp"
 
 
-Common::Common(Napi::Env env, const char *name):
-asyncCtx(env, name) {
-	_isDestroyed = false;
-}
-
-CommonNode::CommonNode(Napi::Env env, const char *name):
-Common(env, name) {
-
-}
-
-CommonParam::CommonParam(Napi::Env env, const char *name):
-Common(env, name) {
-
-}
-
-CommonCtx::CommonCtx(Napi::Env env, const char *name):
-Common(env, name) {
-
-}
-
-CommonBus::CommonBus(Napi::Env env, const char *name):
-Common(env, name) {
-
-}
-
-CommonListener::CommonListener(Napi::Env env, const char *name):
-Common(env, name) {
-
-}
-
-
-Common::~Common() {
-	_destroy();
-}
-
-CommonNode::~CommonNode() {
-	_destroy();
-}
-
-CommonParam::~CommonParam() {
-	_destroy();
-}
-
-CommonCtx::~CommonCtx() {
-	_destroy();
-}
-
-CommonBus::~CommonBus() {
-	_destroy();
-}
-
-CommonListener::~CommonListener() {
-	_destroy();
-}
-
-
 void CommonNode::reset(Napi::Object context, NodePtr node) {
 	_context.Reset(context);
 	_impl = node;
@@ -168,20 +112,20 @@ void CommonListener::_destroy() { DES_CHECK;
 
 
 void Common::emit(
-	Napi::Object that,
 	const char* name,
 	int argc,
 	const Napi::Value *argv
-) {
+) { DES_CHECK;
+	Napi::Object that = Value().As<Napi::Object>();
 	eventEmit(that, name, argc, argv);
 }
 
 void Common::emitAsync(
-	Napi::Object that,
 	const char* name,
 	int argc,
 	const Napi::Value *argv
-) {
+) { DES_CHECK;
+	Napi::Object that = Value().As<Napi::Object>();
 	eventEmitAsync(that, name, argc, argv, asyncCtx);
 }
 

@@ -24,7 +24,7 @@ void GainNode::init(Napi::Env env, Napi::Object exports) {
 
 GainNode::GainNode(const Napi::CallbackInfo &info):
 Napi::ObjectWrap<GainNode>(info),
-CommonNode(info.Env(), "GainNode") { NAPI_ENV;
+CommonNode(info, "GainNode") { NAPI_ENV;
 	
 	CTOR_CHECK("GainNode");
 	

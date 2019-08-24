@@ -6,7 +6,7 @@
 #include "audio-node.hpp"
 
 
-class ConvolverNode : public Napi::ObjectWrap<ConvolverNode>, private CommonNode {
+class ConvolverNode : public CommonNode<ConvolverNode> {
 	
 public:
 	

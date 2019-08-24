@@ -31,7 +31,7 @@ void AudioBufferSourceNode::init(Napi::Env env, Napi::Object exports) {
 
 AudioBufferSourceNode::AudioBufferSourceNode(const Napi::CallbackInfo &info):
 Napi::ObjectWrap<AudioBufferSourceNode>(info),
-CommonNode(info.Env(), "AudioBufferSourceNode") { NAPI_ENV;
+CommonNode(info, "AudioBufferSourceNode") { NAPI_ENV;
 	
 	CTOR_CHECK("AudioBufferSourceNode");
 	

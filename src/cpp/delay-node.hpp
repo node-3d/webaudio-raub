@@ -6,7 +6,7 @@
 #include "audio-node.hpp"
 
 
-class DelayNode : public Napi::ObjectWrap<DelayNode>, private CommonNode {
+class DelayNode : public CommonNode<DelayNode> {
 	
 public:
 	

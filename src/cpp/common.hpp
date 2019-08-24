@@ -19,22 +19,26 @@ namespace lab {
 };
 
 
-struct Common {
+template <typename T>
+struct Common : public Napi::ObjectWrap<T> {
 	
-	Common(Napi::Env env, const char *name);
-	~Common();
+	template <typename T>
+	Common<T>(const Napi::CallbackInfo &info, const char *name):
+	Napi::ObjectWrap<T>(info)
+	asyncCtx(info, name) {
+		_isDestroyed = false;
+	};
+	~Common() { _destroy(); };
 	
 	void _destroy();
 	
 	void emit(
-		Napi::Object that,
 		const char* name,
 		int argc = 0,
 		const Napi::Value *argv = nullptr
 	);
 	
 	void emitAsync(
-		Napi::Object that,
 		const char* name,
 		int argc = 0,
 		const Napi::Value *argv = nullptr
@@ -50,12 +54,17 @@ struct Common {
 	
 };
 
-struct CommonNode: public Common {
+template <typename T>
+struct CommonNode: public Common<T> {
 	
 	typedef std::shared_ptr<lab::AudioNode> NodePtr;
 	
-	CommonNode(Napi::Env env, const char *name);
-	~CommonNode();
+	template <typename T>
+	CommonNode<T>(const Napi::CallbackInfo &info, const char *name):
+	Common<T>(info, name) {
+	};
+	
+	~CommonNode() { _destroy(); };
 	
 	void _destroy();
 	
@@ -67,12 +76,17 @@ struct CommonNode: public Common {
 	
 };
 
-struct CommonParam: public Common {
+template <typename T>
+struct CommonParam: public Common<T> {
 	
 	typedef std::shared_ptr<lab::AudioParam> ParamPtr;
 	
-	CommonParam(Napi::Env env, const char *name);
-	~CommonParam();
+	template <typename T>
+	CommonParam<T>(const Napi::CallbackInfo &info, const char *name):
+	Common<T>(info, name) {
+	};
+	
+	~CommonParam() { _destroy(); };
 	
 	void _destroy();
 	
@@ -84,12 +98,17 @@ struct CommonParam: public Common {
 	
 };
 
-struct CommonCtx: public Common {
+template <typename T>
+struct CommonCtx: public Common<T> {
 	
 	typedef std::shared_ptr<lab::AudioContext> CtxPtr;
 	
-	CommonCtx(Napi::Env env, const char *name);
-	~CommonCtx();
+	template <typename T>
+	CommonCtx<T>(const Napi::CallbackInfo &info, const char *name):
+	Common<T>(info, name) {
+	};
+	
+	~CommonCtx() { _destroy(); };
 	
 	void _destroy();
 	
@@ -101,12 +120,17 @@ struct CommonCtx: public Common {
 	
 };
 
-struct CommonBus: public Common {
+template <typename T>
+struct CommonBus: public Common<T> {
 	
 	typedef std::shared_ptr<lab::AudioBus> BusPtr;
 	
-	CommonBus(Napi::Env env, const char *name);
-	~CommonBus();
+	template <typename T>
+	CommonBus<T>(const Napi::CallbackInfo &info, const char *name):
+	Common<T>(info, name) {
+	};
+	
+	~CommonBus() { _destroy(); };
 	
 	void _destroy();
 	
@@ -118,12 +142,17 @@ struct CommonBus: public Common {
 	
 };
 
-struct CommonListener: public Common {
+template <typename T>
+struct CommonListener: public Common<T> {
 	
 	typedef std::shared_ptr<lab::AudioListener> ListenerPtr;
 	
-	CommonListener(Napi::Env env, const char *name);
-	~CommonListener();
+	template <typename T>
+	CommonListener<T>(const Napi::CallbackInfo &info, const char *name):
+	Common<T>(info, name) {
+	};
+	
+	~CommonListener() { _destroy(); };
 	
 	void _destroy();
 	

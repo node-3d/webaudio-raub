@@ -6,7 +6,7 @@
 #include "audio-scheduled-source-node.hpp"
 
 
-class AudioBufferSourceNode : public Napi::ObjectWrap<AudioBufferSourceNode>, private CommonNode {
+class AudioBufferSourceNode : public CommonNode<AudioBufferSourceNode> {
 	
 public:
 	

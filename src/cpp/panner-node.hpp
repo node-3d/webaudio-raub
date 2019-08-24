@@ -7,7 +7,7 @@
 #include "audio-param.hpp"
 
 
-class PannerNode : public Napi::ObjectWrap<PannerNode>, private CommonNode {
+class PannerNode : public CommonNode<PannerNode> {
 	
 public:
 	

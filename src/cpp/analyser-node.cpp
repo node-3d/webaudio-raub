@@ -32,7 +32,7 @@ void AnalyserNode::init(Napi::Env env, Napi::Object exports) {
 // Image.prototype.__proto__ = EventEmitter.prototype;
 AnalyserNode::AnalyserNode(const Napi::CallbackInfo &info):
 Napi::ObjectWrap<AnalyserNode>(info),
-CommonNode(info.Env(), "AnalyserNode") {
+CommonNode(info, "AnalyserNode") {
 	
 	CTOR_CHECK("AnalyserNode");
 	
