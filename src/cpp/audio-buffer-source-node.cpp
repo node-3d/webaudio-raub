@@ -30,8 +30,7 @@ void AudioBufferSourceNode::init(Napi::Env env, Napi::Object exports) {
 
 
 AudioBufferSourceNode::AudioBufferSourceNode(const Napi::CallbackInfo &info):
-Napi::ObjectWrap<AudioBufferSourceNode>(info),
-CommonNode(info, "AudioBufferSourceNode") { NAPI_ENV;
+CommonNode<AudioBufferSourceNode>(info, "AudioBufferSourceNode") { NAPI_ENV;
 	
 	CTOR_CHECK("AudioBufferSourceNode");
 	
@@ -105,6 +104,7 @@ JS_METHOD(AudioBufferSourceNode::start) { THIS_CHECK;
 	} else {
 		node->startGrain(when, grainOffset);
 	}
+	RET_UNDEFINED;
 	
 }
 
@@ -131,7 +131,7 @@ JS_SETTER(AudioBufferSourceNode::bufferSetter) { THIS_SETTER_CHECK; SETTER_OBJ_A
 	lab::ContextRenderLock r(ctx, "AudioBufferSourceNode::bufferSetter");
 	
 	AudioBuffer *audioBuffer = Napi::ObjectWrap<AudioBuffer>::Unwrap(v);
-	AudioBuffer::BusPtr bus = audioBuffer->getBus();
+	BusPtr bus = audioBuffer->getBus();
 	
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
 		_impl.get()
@@ -222,5 +222,15 @@ JS_SETTER(AudioBufferSourceNode::loopEndSetter) { THIS_SETTER_CHECK; SETTER_DOUB
 	node->setLoopEnd(v);
 	
 	emit("loopEnd", 1, &value);
+	
+}
+
+
+JS_METHOD(AudioBufferSourceNode::destroy) { THIS_CHECK;
+	
+	emit("destroy");
+	
+	_destroy();
+	RET_UNDEFINED;
 	
 }

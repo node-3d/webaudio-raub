@@ -56,8 +56,7 @@ inline lab::OscillatorType toOscillatorType(const std::string &mode) {
 
 
 OscillatorNode::OscillatorNode(const Napi::CallbackInfo &info):
-Napi::ObjectWrap<OscillatorNode>(info),
-CommonNode(info, "OscillatorNode") { NAPI_ENV;
+CommonNode<OscillatorNode>(info, "OscillatorNode") { NAPI_ENV;
 	
 	CTOR_CHECK("OscillatorNode");
 	
@@ -109,6 +108,7 @@ JS_METHOD(OscillatorNode::setPeriodicWave) { THIS_CHECK;
 	REQ_OBJ_ARG(0, periodicWave);
 	
 	// TODO: do something?
+	RET_UNDEFINED;
 	
 }
 
@@ -147,5 +147,15 @@ JS_GETTER(OscillatorNode::frequencyGetter) { THIS_CHECK;
 JS_GETTER(OscillatorNode::detuneGetter) { THIS_CHECK;
 	
 	RET_VALUE(_detune.Value());
+	
+}
+
+
+JS_METHOD(OscillatorNode::destroy) { THIS_CHECK;
+	
+	emit("destroy");
+	
+	_destroy();
+	RET_UNDEFINED;
 	
 }

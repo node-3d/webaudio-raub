@@ -24,6 +24,8 @@ private:
 	
 	Napi::ObjectReference _gain;
 	
+	JS_METHOD(destroy);
+	
 	JS_GETTER(gainGetter);
 	
 };

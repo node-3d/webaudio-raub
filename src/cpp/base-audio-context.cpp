@@ -65,8 +65,7 @@ void BaseAudioContext::init(Napi::Env env, Napi::Object exports) {
 
 
 BaseAudioContext::BaseAudioContext(const Napi::CallbackInfo &info):
-Napi::ObjectWrap<BaseAudioContext>(info),
-CommonCtx(info, "BaseAudioContext") {  NAPI_ENV;
+CommonCtx<BaseAudioContext>(info, "BaseAudioContext") {  NAPI_ENV;
 	
 	REQ_EXT_ARG(0, extCtx);
 	
@@ -208,5 +207,15 @@ JS_GETTER(BaseAudioContext::listenerGetter) { THIS_CHECK;
 JS_GETTER(BaseAudioContext::stateGetter) { THIS_CHECK;
 	
 	RET_STR(_state);
+	
+}
+
+
+JS_METHOD(BaseAudioContext::destroy) { THIS_CHECK;
+	
+	emit("destroy");
+	
+	_destroy();
+	RET_UNDEFINED;
 	
 }

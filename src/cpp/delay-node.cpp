@@ -23,8 +23,7 @@ void DelayNode::init(Napi::Env env, Napi::Object exports) {
 
 
 DelayNode::DelayNode(const Napi::CallbackInfo &info): 
-Napi::ObjectWrap<DelayNode>(info),
-CommonNode(info, "DelayNode") { NAPI_ENV;
+CommonNode<DelayNode>(info, "DelayNode") { NAPI_ENV;
 	
 	CTOR_CHECK("DelayNode");
 	
@@ -79,5 +78,6 @@ JS_METHOD(DelayNode::destroy) { THIS_CHECK;
 	emit("destroy");
 	
 	_destroy();
+	RET_UNDEFINED;
 	
 }

@@ -33,29 +33,11 @@ class JsBaseAudioContext extends BaseAudioContext {
 	}
 	
 	
-	on(name, cb) {
-		
-		super.on(name, cb);
-		
-		if (name === 'load' && this._data) {
-			cb.call(this);
-		}
-		
-	}
-	
-	
-	once(name, cb) {
-		
-		if (name === 'load' && this._data) {
-			cb.call(this);
-		} else {
-			super.once(name, cb);
-		}
-		
-	}
-	
 	get onerror() { return this.listeners('error'); }
 	set onerror(cb) { this.on('error', cb); }
+	
+	get onstatechange() { return this.listeners('statechange'); }
+	set onstatechange(cb) { this.on('statechange', cb); }
 	
 	[util.inspect.custom]() { return this.toString(); }
 	
@@ -64,6 +46,19 @@ class JsBaseAudioContext extends BaseAudioContext {
 	}
 	
 }
+
+JsBaseAudioContext.UPDATE_INTERVAL = 20;
+
+JsBaseAudioContext.startUpdater = that => {
+	that._updateTimerId = setInterval(() => that.update(), JsBaseAudioContext.UPDATE_INTERVAL);
+	that._updateTimerId.unref();
+};
+
+JsBaseAudioContext.stopUpdater = that => {
+	// console.log('\n\nSTOP UPDATER\n\n');
+	clearInterval(that._updateTimerId);
+	that._updateTimerId = null;
+};
 
 
 module.exports = JsBaseAudioContext;

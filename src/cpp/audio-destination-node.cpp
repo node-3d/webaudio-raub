@@ -30,8 +30,7 @@ Napi::Object AudioDestinationNode::create(Napi::Env env, Napi::Object context, N
 
 
 AudioDestinationNode::AudioDestinationNode(const Napi::CallbackInfo &info):
-Napi::ObjectWrap<AudioDestinationNode>(info),
-CommonNode(info, "AudioDestinationNode") { NAPI_ENV;
+CommonNode<AudioDestinationNode>(info, "AudioDestinationNode") { NAPI_ENV;
 	
 	REQ_OBJ_ARG(0, context);
 	REQ_EXT_ARG(1, extNode);
@@ -67,5 +66,6 @@ JS_METHOD(AudioDestinationNode::destroy) { THIS_CHECK;
 	emit("destroy");
 	
 	_destroy();
+	RET_UNDEFINED;
 	
 }

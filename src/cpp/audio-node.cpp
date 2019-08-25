@@ -77,8 +77,7 @@ inline lab::ChannelInterpretation toChannelInterpretation(const std::string &io)
 
 
 AudioNode::AudioNode(const Napi::CallbackInfo &info):
-Napi::ObjectWrap<AudioNode>(info),
-CommonNode(info, "AudioNode") { NAPI_ENV;
+CommonNode<AudioNode>(info, "AudioNode") { NAPI_ENV;
 	
 	REQ_OBJ_ARG(0, context);
 	REQ_EXT_ARG(1, extNode);
@@ -204,7 +203,7 @@ JS_METHOD(AudioNode::disconnect) { THIS_CHECK;
 		
 		AudioParam *destParam = Napi::ObjectWrap<AudioParam>::Unwrap(destination);
 		
-		AudioParam::ParamPtr param = destParam->getParam();
+		ParamPtr param = destParam->getParam();
 		
 		lab::ContextGraphLock graphLock(ctx, "AudioNode::disconnect");
 		// TODO:
@@ -296,5 +295,15 @@ JS_SETTER(AudioNode::channelInterpretationSetter) { THIS_SETTER_CHECK; SETTER_ST
 	// TODO: may be additional actions on change?
 	
 	emit("channelInterpretation", 1, &value);
+	
+}
+
+
+JS_METHOD(AudioNode::destroy) { THIS_CHECK;
+	
+	emit("destroy");
+	
+	_destroy();
+	RET_UNDEFINED;
 	
 }

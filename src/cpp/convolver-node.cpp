@@ -24,8 +24,7 @@ void ConvolverNode::init(Napi::Env env, Napi::Object exports) {
 
 
 ConvolverNode::ConvolverNode(const Napi::CallbackInfo &info):
-Napi::ObjectWrap<ConvolverNode>(info),
-CommonNode(info, "ConvolverNode") { NAPI_ENV;
+CommonNode<ConvolverNode>(info, "ConvolverNode") { NAPI_ENV;
 	
 	CTOR_CHECK("ConvolverNode");
 	
@@ -84,7 +83,7 @@ JS_SETTER(ConvolverNode::bufferSetter) { THIS_SETTER_CHECK; SETTER_OBJ_ARG;
 	lab::AudioContext *ctx = audioContext->getCtx().get();
 	
 	AudioBuffer *audioBuffer = Napi::ObjectWrap<AudioBuffer>::Unwrap(v);
-	CommonBus::BusPtr bus = audioBuffer->getBus();
+	BusPtr bus = audioBuffer->getBus();
 	
 	lab::ConvolverNode *node = static_cast<lab::ConvolverNode*>(
 		_impl.get()
@@ -124,5 +123,6 @@ JS_METHOD(ConvolverNode::destroy) { THIS_CHECK;
 	emit("destroy");
 	
 	_destroy();
+	RET_UNDEFINED;
 	
 }

@@ -18,10 +18,14 @@ public:
 	
 private:
 	
+	static Napi::FunctionReference _constructor;
+	
 	int _length;
 	double _duration;
 	float _sampleRate;
 	uint32_t _numberOfChannels;
+	
+	JS_METHOD(destroy);
 	
 	JS_METHOD(getChannelData);
 	JS_METHOD(copyFromChannel);

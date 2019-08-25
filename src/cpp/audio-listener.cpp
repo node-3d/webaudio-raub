@@ -43,8 +43,7 @@ Napi::Object AudioListener::create(Napi::Env env, Napi::Object context, Listener
 
 
 AudioListener::AudioListener(const Napi::CallbackInfo &info):
-Napi::ObjectWrap<AudioListener>(info),
-CommonListener(info, "AudioListener") { NAPI_ENV;
+CommonListener<AudioListener>(info, "AudioListener") { NAPI_ENV;
 	
 	REQ_OBJ_ARG(0, context);
 	REQ_EXT_ARG(1, extListener);
@@ -86,6 +85,7 @@ JS_METHOD(AudioListener::setPosition) { THIS_CHECK;
 	REQ_FLOAT_ARG(2, z);
 	
 	_impl->setPosition(x, y, z);
+	RET_UNDEFINED;
 	
 }
 
@@ -100,6 +100,7 @@ JS_METHOD(AudioListener::setOrientation) { THIS_CHECK;
 	REQ_FLOAT_ARG(5, zUp);
 	
 	_impl->setOrientation(x, y, z, xUp, yUp, zUp);
+	RET_UNDEFINED;
 	
 }
 
@@ -117,6 +118,9 @@ PARAM_GETTER(AudioListener, upZ);
 
 JS_METHOD(AudioListener::destroy) { THIS_CHECK;
 	
+	emit("destroy");
+	
 	_destroy();
+	RET_UNDEFINED;
 	
 }

@@ -22,8 +22,6 @@ class JsAnalyserNode extends AnalyserNode {
 		
 		super(ctx);
 		
-
-		
 	}
 	
 	

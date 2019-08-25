@@ -50,8 +50,7 @@ bool AudioParam::isAudioParam(Napi::Object obj) {
 
 
 AudioParam::AudioParam(const Napi::CallbackInfo &info):
-Napi::ObjectWrap<AudioParam>(info),
-CommonParam(info, "AudioParam") { NAPI_ENV;
+CommonParam<AudioParam>(info, "AudioParam") { NAPI_ENV;
 	
 	REQ_OBJ_ARG(0, context);
 	REQ_EXT_ARG(1, extParam);
@@ -189,5 +188,15 @@ JS_GETTER(AudioParam::minValueGetter) { THIS_CHECK;
 JS_GETTER(AudioParam::maxValueGetter) { THIS_CHECK;
 	
 	RET_NUM(_impl->maxValue());
+	
+}
+
+
+JS_METHOD(AudioParam::destroy) { THIS_CHECK;
+	
+	emit("destroy");
+	
+	_destroy();
+	RET_UNDEFINED;
 	
 }

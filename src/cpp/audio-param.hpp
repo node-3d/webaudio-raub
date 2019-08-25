@@ -21,6 +21,13 @@ private:
 	
 	static Napi::FunctionReference _constructor;
 	
+	JS_METHOD(destroy);
+	
+	// JS_METHOD(connect);
+	// JS_METHOD(disconnect);
+	
+	// JS_GETTER(contextGetter);
+	
 	JS_METHOD(setValueAtTime);
 	JS_METHOD(linearRampToValueAtTime);
 	JS_METHOD(exponentialRampToValueAtTime);

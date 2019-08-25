@@ -23,8 +23,7 @@ void GainNode::init(Napi::Env env, Napi::Object exports) {
 
 
 GainNode::GainNode(const Napi::CallbackInfo &info):
-Napi::ObjectWrap<GainNode>(info),
-CommonNode(info, "GainNode") { NAPI_ENV;
+CommonNode<GainNode>(info, "GainNode") { NAPI_ENV;
 	
 	CTOR_CHECK("GainNode");
 	
@@ -66,5 +65,15 @@ void GainNode::_destroy() { DES_CHECK;
 JS_GETTER(GainNode::gainGetter) { THIS_CHECK;
 	
 	RET_VALUE(_gain.Value());
+	
+}
+
+
+JS_METHOD(GainNode::destroy) { THIS_CHECK;
+	
+	emit("destroy");
+	
+	_destroy();
+	RET_UNDEFINED;
 	
 }

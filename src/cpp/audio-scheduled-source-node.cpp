@@ -23,8 +23,7 @@ void AudioScheduledSourceNode::init(Napi::Env env, Napi::Object exports) {
 
 
 AudioScheduledSourceNode::AudioScheduledSourceNode(const Napi::CallbackInfo &info):
-Napi::ObjectWrap<AudioScheduledSourceNode>(info),
-CommonNode(info, "AudioScheduledSourceNode") { NAPI_ENV;
+CommonNode<AudioScheduledSourceNode>(info, "AudioScheduledSourceNode") { NAPI_ENV;
 		
 	CTOR_CHECK("AudioScheduledSourceNode");
 	
@@ -89,6 +88,7 @@ JS_METHOD(AudioScheduledSourceNode::start) { THIS_CHECK;
 	);
 	
 	node->start(when);
+	RET_UNDEFINED;
 	
 }
 
@@ -102,6 +102,7 @@ JS_METHOD(AudioScheduledSourceNode::stop) { THIS_CHECK;
 	);
 	
 	node->stop(when);
+	RET_UNDEFINED;
 	
 }
 
@@ -111,5 +112,6 @@ JS_METHOD(AudioScheduledSourceNode::destroy) { THIS_CHECK;
 	emit("destroy");
 	
 	_destroy();
+	RET_UNDEFINED;
 	
 }

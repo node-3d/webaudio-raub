@@ -27,8 +27,7 @@ void BiquadFilterNode::init(Napi::Env env, Napi::Object exports) {
 
 
 BiquadFilterNode::BiquadFilterNode(const Napi::CallbackInfo &info):
-Napi::ObjectWrap<BiquadFilterNode>(info),
-CommonNode(info, "BiquadFilterNode") { NAPI_ENV;
+CommonNode<BiquadFilterNode>(info, "BiquadFilterNode") { NAPI_ENV;
 	
 	CTOR_CHECK("BiquadFilterNode");
 	
@@ -83,6 +82,7 @@ JS_METHOD(BiquadFilterNode::getFrequencyResponse) { THIS_CHECK;
 	REQ_OBJ_ARG(2, phaseResponse);
 	
 	// TODO: do something?
+	RET_UNDEFINED;
 	
 }
 
@@ -137,5 +137,6 @@ JS_METHOD(BiquadFilterNode::destroy) { THIS_CHECK;
 	emit("destroy");
 	
 	_destroy();
+	RET_UNDEFINED;
 	
 }

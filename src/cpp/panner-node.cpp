@@ -45,9 +45,7 @@ inline lab::PanningMode toPanningMode(const std::string &mode) {
 }
 
 
-
 Napi::FunctionReference PannerNode::_constructor;
-
 
 void PannerNode::init(Napi::Env env, Napi::Object exports) {
 	
@@ -80,10 +78,8 @@ void PannerNode::init(Napi::Env env, Napi::Object exports) {
 }
 
 
-
 PannerNode::PannerNode(const Napi::CallbackInfo &info):
-Napi::ObjectWrap<PannerNode>(info),
-CommonNode(info, "PannerNode") { NAPI_ENV;
+CommonNode<PannerNode>(info, "PannerNode") { NAPI_ENV;
 	
 	CTOR_CHECK("PannerNode");
 	
@@ -114,16 +110,6 @@ CommonNode(info, "PannerNode") { NAPI_ENV;
 	_orientationZ.Reset(AudioParam::create(env, context, node->orientationZ()));
 	
 }
-
-
-JS_METHOD(PannerNode::destroy) { THIS_CHECK;
-	
-	emit("destroy");
-	
-	_destroy();
-	
-}
-
 
 
 PannerNode::~PannerNode() {
@@ -159,6 +145,7 @@ JS_METHOD(PannerNode::setPosition) { THIS_CHECK;
 	);
 	
 	node->setPosition(x, y, z);
+	RET_UNDEFINED;
 	
 }
 
@@ -174,6 +161,7 @@ JS_METHOD(PannerNode::setOrientation) { THIS_CHECK;
 	);
 	
 	node->setOrientation(lab::FloatPoint3D(x, y, z));
+	RET_UNDEFINED;
 	
 }
 
@@ -189,6 +177,7 @@ JS_METHOD(PannerNode::setVelocity) { THIS_CHECK;
 	);
 	
 	node->setVelocity(x, y, z);
+	RET_UNDEFINED;
 	
 }
 
@@ -380,5 +369,15 @@ JS_SETTER(PannerNode::coneOuterGainSetter) { THIS_SETTER_CHECK; SETTER_DOUBLE_AR
 	node->setConeOuterGain(static_cast<float>(v));
 	
 	emit("coneOuterGain", 1, &value);
+	
+}
+
+
+JS_METHOD(PannerNode::destroy) { THIS_CHECK;
+	
+	emit("destroy");
+	
+	_destroy();
+	RET_UNDEFINED;
 	
 }

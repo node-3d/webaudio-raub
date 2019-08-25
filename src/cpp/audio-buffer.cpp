@@ -1,16 +1,10 @@
-#include <memory>
-
-#include <LabSound/core/AudioBus.h>
+#include <LabSound/LabSound.h>
 
 #include "audio-buffer.hpp"
 #include "audio-context.hpp"
 
-#include "common.hpp"
-
-
 
 Napi::FunctionReference AudioBuffer::_constructor;
-
 
 void AudioBuffer::init(Napi::Env env, Napi::Object exports) {
 	
@@ -35,31 +29,23 @@ void AudioBuffer::init(Napi::Env env, Napi::Object exports) {
 
 
 AudioBuffer::AudioBuffer(const Napi::CallbackInfo &info):
-Napi::ObjectWrap<AudioBuffer>(info),
-CommonBuffer(info, "AudioBuffer") {
+CommonBus<AudioBuffer>(info, "AudioBuffer") { NAPI_ENV;
 	
 	CTOR_CHECK("AudioBuffer");
 	
-	if (info.Length() > 0) {
+	REQ_OBJ_ARG(0, context);
+	
+	if (info.Length() > 1) {
 		
-		if (info[0].IsExternal()) {
-			
-			REQ_EXT_ARG(0, extBus);
-			
-			BusPtr *bus = reinterpret_cast<BusPtr *>(extBus->Value());
-			_impl = bus;
-			
-		} else if (info[0].IsObject()) {
-			
-			REQ_OBJ_ARG(0, opts);
-			
-			_impl = make_shared<lab::AudioBus>(1, 1, false);
-			
-		}
+		REQ_EXT_ARG(1, extBus);
+		
+		BusPtr *busPtr = reinterpret_cast<BusPtr *>(extBus.Data());
+		reset(context, *busPtr);
 		
 	} else {
 		
-		_impl = make_shared<lab::AudioBus>(1, 1, false);
+		BusPtr bus = std::make_shared<lab::AudioBus>(1, 1, false);
+		reset(context, bus);
 		
 	}
 	
@@ -72,7 +58,7 @@ AudioBuffer::~AudioBuffer() {
 
 
 void AudioBuffer::_destroy() { DES_CHECK;
-	CommonBuffer::_destroy();
+	CommonBus::_destroy();
 }
 
 // ------ Methods and props
@@ -83,6 +69,7 @@ JS_METHOD(AudioBuffer::getChannelData) { THIS_CHECK;
 	REQ_UINT32_ARG(0, channelIndex);
 	
 	// TODO: do something?
+	RET_UNDEFINED;
 	
 }
 
@@ -94,6 +81,7 @@ JS_METHOD(AudioBuffer::copyFromChannel) { THIS_CHECK;
 	REQ_UINT32_ARG(2, startInChannel);
 	
 	// TODO: do something?
+	RET_UNDEFINED;
 	
 }
 
@@ -105,6 +93,7 @@ JS_METHOD(AudioBuffer::copyToChannel) { THIS_CHECK;
 	REQ_UINT32_ARG(2, startInChannel);
 	
 	// TODO: do something?
+	RET_UNDEFINED;
 	
 }
 
@@ -139,6 +128,9 @@ JS_GETTER(AudioBuffer::numberOfChannelsGetter) { THIS_CHECK;
 
 JS_METHOD(AudioBuffer::destroy) { THIS_CHECK;
 	
+	emit("destroy");
+	
 	_destroy();
+	RET_UNDEFINED;
 	
 }
