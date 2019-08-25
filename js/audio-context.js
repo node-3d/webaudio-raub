@@ -17,13 +17,15 @@ class JsAudioContext extends AudioContext {
 		if (opts.sampleRate) {
 			super(opts.sampleRate);
 		} else {
+			console.log('audio-context.js', 'cs1');
 			super();
+			console.log('audio-context.js', 'cs2');
 		}
 		
 	}
 	
 	
-	[util.inspect.custom]() { return this.toString(); }
+	[inspect.custom]() { return this.toString(); }
 	
 	toString() {
 		return 'AudioContext {}';

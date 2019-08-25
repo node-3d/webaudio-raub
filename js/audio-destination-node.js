@@ -32,7 +32,7 @@ class JsAudioDestinationNode extends AudioDestinationNode {
 	}
 	
 	
-	[util.inspect.custom]() { return this.toString(); }
+	[inspect.custom]() { return this.toString(); }
 	
 	toString() {
 		return 'AudioDestinationNode {}';

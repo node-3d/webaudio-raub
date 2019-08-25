@@ -1,6 +1,7 @@
  'use strict';
 
 const { inspect } = require('util');
+const EventEmitter = require('events');
 
 const { AudioParam } = require('../core');
 const AudioNode = require('./audio-node');
@@ -32,7 +33,7 @@ class JsAudioParam extends AudioParam {
 	}
 	
 	
-	[util.inspect.custom]() { return this.toString(); }
+	[inspect.custom]() { return this.toString(); }
 	
 	toString() {
 		return 'AudioParam {}';

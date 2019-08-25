@@ -34,7 +34,7 @@ class JsAudioListener extends AudioListener {
 	}
 	
 	
-	[util.inspect.custom]() { return this.toString(); }
+	[inspect.custom]() { return this.toString(); }
 	
 	toString() {
 		return 'AudioListener {}';

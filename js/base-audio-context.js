@@ -1,6 +1,6 @@
 'use strict';
 
-const util  = require('util');
+const { inspect } = require('util');
 
 const EventEmitter = require('events');
 
@@ -8,30 +8,15 @@ const { BaseAudioContext } = require('../core');
 
 
 BaseAudioContext.prototype.__proto__ = EventEmitter.prototype;
+BaseAudioContext._Super = EventEmitter.constructor;
 
 class JsBaseAudioContext extends BaseAudioContext {
 	
 	constructor(ctx) {
-		
+		console.log('base-audio-context.js', '111');
 		super(ctx);
-		
+		console.log('base-audio-context.js', '222');
 	}
-	
-	
-	addEventListener(type, cb) {
-		this.on(type, cb);
-	}
-	
-	
-	removeEventListener(type, cb) {
-		this.removeListener(type, cb);
-	}
-	
-	
-	dispatchEvent(e) {
-		this.emit(e.type || 'unknown', e);
-	}
-	
 	
 	get onerror() { return this.listeners('error'); }
 	set onerror(cb) { this.on('error', cb); }
@@ -39,7 +24,7 @@ class JsBaseAudioContext extends BaseAudioContext {
 	get onstatechange() { return this.listeners('statechange'); }
 	set onstatechange(cb) { this.on('statechange', cb); }
 	
-	[util.inspect.custom]() { return this.toString(); }
+	[inspect.custom]() { return this.toString(); }
 	
 	toString() {
 		return 'BaseAudioContext {}';

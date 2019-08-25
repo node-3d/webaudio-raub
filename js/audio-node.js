@@ -1,7 +1,6 @@
 'use strict';
 
-const util  = require('util');
-
+const { inspect } = require('util');
 const EventEmitter = require('events');
 
 const { AudioNode } = require('../core');
@@ -30,7 +29,7 @@ class JsAudioNode extends AudioNode {
 	set onended(cb) { this.on('ended', cb); }
 	
 	
-	[util.inspect.custom]() { return this.toString(); }
+	[inspect.custom]() { return this.toString(); }
 	
 	toString() {
 		return 'AudioListener {}';

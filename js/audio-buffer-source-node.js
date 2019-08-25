@@ -32,7 +32,7 @@ class JsAudioBufferSourceNode extends AudioBufferSourceNode {
 	}
 	
 	
-	[util.inspect.custom]() { return this.toString(); }
+	[inspect.custom]() { return this.toString(); }
 	
 	toString() {
 		return 'AudioBufferSourceNode {}';

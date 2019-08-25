@@ -32,7 +32,7 @@ class JsGainNode extends GainNode {
 	}
 	
 	
-	[util.inspect.custom]() { return this.toString(); }
+	[inspect.custom]() { return this.toString(); }
 	
 	toString() {
 		return 'GainNode {}';

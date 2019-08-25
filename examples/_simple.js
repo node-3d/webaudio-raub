@@ -10,7 +10,7 @@ const read = require('./utils/read');
 	const context = new AudioContext();
 	
 	const clip = await read(`${__dirname}/samples/trainrolling.wav`);
-	
+	console.log('_simple.js', context.decodeAudioData);
 	const musicClip = await new Promise(res => context.decodeAudioData(clip, b => res(b)));
 	
 	const oscillator = context.createOscillator();

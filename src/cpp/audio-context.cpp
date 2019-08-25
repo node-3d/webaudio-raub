@@ -1,5 +1,5 @@
 #include <LabSound/LabSound.h>
-
+#include <iostream>
 #include "audio-context.hpp"
 
 
@@ -26,26 +26,30 @@ void AudioContext::init(Napi::Env env, Napi::Object exports) {
 
 AudioContext::AudioContext(const Napi::CallbackInfo &info):
 CommonCtx<AudioContext>(info, "AudioContext") { NAPI_ENV;
-	
+	std::cout << "lolo 1" << std::endl;
 	CTOR_CHECK("AudioContext");
-	
+	std::cout << "lolo 2" << std::endl;
 	if (info.Length() > 0) {
 		LET_FLOAT_ARG(0, sampleRate);
 		reset(std::move(
 			lab::Sound::MakeRealtimeAudioContext(lab::Channels::Stereo, sampleRate)
 		));
 	} else {
+		std::cout << "lolo 3" << std::endl;
 		reset(std::move(
 			lab::Sound::MakeRealtimeAudioContext(lab::Channels::Stereo)
 		));
+		std::cout << "lolo 4" << std::endl;
 	}
-	
-	Napi::Object that = info.This().As<Napi::Object>();
-	Napi::Function ctor = _constructor.Value().As<Napi::Function>();
-	Napi::Function _Super = ctor.Get("_Super").As<Napi::Function>();
-	std::vector<napi_value> args;
-	args.push_back(JS_EXT(&_impl));
-	_Super.Call(that, args);
+	std::cout << "lolo 5" << std::endl;
+	Napi::Object that = info.This().As<Napi::Object>();std::cout << "lolo 6" << std::endl;
+	Napi::Function ctor = _constructor.Value().As<Napi::Function>();std::cout << "lolo 7" << std::endl;
+	Napi::Function _Super = ctor.Get("_Super").As<Napi::Function>();std::cout << "lolo 8" << std::endl;
+	std::vector<napi_value> args;std::cout << "lolo 9" << std::endl;
+	// args.push_back(JS_EXT(&_impl));std::cout << "lolo 10" << std::endl;
+	args.push_back(JS_NUM(reinterpret_cast<size_t>(&_impl)));std::cout << "lolo 10" << std::endl;
+	// _Super.Call(that, args);
+	std::cout << "lolo 11" << std::endl;
 	
 	
 	// audioContext->finishNew(info.This());

@@ -34,7 +34,7 @@ class JsPannerNode extends PannerNode {
 	}
 	
 	
-	[util.inspect.custom]() { return this.toString(); }
+	[inspect.custom]() { return this.toString(); }
 	
 	toString() {
 		return 'PannerNode {}';

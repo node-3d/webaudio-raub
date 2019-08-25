@@ -32,7 +32,7 @@ class JsBiquadFilterNode extends BiquadFilterNode {
 	}
 	
 	
-	[util.inspect.custom]() { return this.toString(); }
+	[inspect.custom]() { return this.toString(); }
 	
 	toString() {
 		return 'BiquadFilterNode {}';

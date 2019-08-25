@@ -65,11 +65,13 @@ void BaseAudioContext::init(Napi::Env env, Napi::Object exports) {
 
 
 BaseAudioContext::BaseAudioContext(const Napi::CallbackInfo &info):
-CommonCtx<BaseAudioContext>(info, "BaseAudioContext") {  NAPI_ENV;
+CommonCtx<BaseAudioContext>(info, "BaseAudioContext") { NAPI_ENV;
 	
-	REQ_EXT_ARG(0, extCtx);
+	// REQ_EXT_ARG(0, extCtx);
+	REQ_OFFS_ARG(0, extCtx);
 	
-	CtxPtr *ctx = reinterpret_cast<CtxPtr*>(extCtx.Data());
+	// CtxPtr *ctx = reinterpret_cast<CtxPtr*>(extCtx.Data());
+	CtxPtr *ctx = reinterpret_cast<CtxPtr*>(extCtx);
 	
 	reset(*ctx);
 	
@@ -94,6 +96,14 @@ CommonCtx<BaseAudioContext>(info, "BaseAudioContext") {  NAPI_ENV;
 	// Napi::Value argv = context;
 	// Nan::AsyncResource async("BaseAudioContext::finishNew()");
 	// startUpdaterCb.Call(1, &argv, &async);
+	
+	std::cout << "lolo2 5" << std::endl;
+	Napi::Object that = info.This().As<Napi::Object>();std::cout << "lolo2 6" << std::endl;
+	Napi::Function ctor = _constructor.Value().As<Napi::Function>();std::cout << "lolo2 7" << std::endl;
+	Napi::Function _Super = ctor.Get("_Super").As<Napi::Function>();std::cout << "lolo2 8" << std::endl;
+	std::vector<napi_value> args;std::cout << "lolo2 9" << std::endl;
+	// _Super.Call(that, args);
+	std::cout << "lolo2 11" << std::endl;
 	
 }
 
