@@ -8,7 +8,7 @@ const { BaseAudioContext } = require('../core');
 
 
 BaseAudioContext.prototype.__proto__ = EventEmitter.prototype;
-BaseAudioContext._Super = EventEmitter.constructor;
+BaseAudioContext._Super = EventEmitter.prototype.constructor;
 
 class JsBaseAudioContext extends BaseAudioContext {
 	

@@ -27,13 +27,13 @@ void AudioContext::init(Napi::Env env, Napi::Object exports) {
 AudioContext::AudioContext(const Napi::CallbackInfo &info):
 CommonCtx<AudioContext>(info, "AudioContext") { NAPI_ENV;
 	std::cout << "lolo 1" << std::endl;
-	CTOR_CHECK("AudioContext");
+	// CTOR_CHECK("AudioContext");
 	std::cout << "lolo 2" << std::endl;
 	if (info.Length() > 0) {
-		LET_FLOAT_ARG(0, sampleRate);
-		reset(std::move(
-			lab::Sound::MakeRealtimeAudioContext(lab::Channels::Stereo, sampleRate)
-		));
+		// LET_FLOAT_ARG(0, sampleRate);
+		// reset(std::move(
+		// 	lab::Sound::MakeRealtimeAudioContext(lab::Channels::Stereo, sampleRate)
+		// ));
 	} else {
 		std::cout << "lolo 3" << std::endl;
 		reset(std::move(
@@ -48,8 +48,9 @@ CommonCtx<AudioContext>(info, "AudioContext") { NAPI_ENV;
 	std::vector<napi_value> args;std::cout << "lolo 9" << std::endl;
 	// args.push_back(JS_EXT(&_impl));std::cout << "lolo 10" << std::endl;
 	args.push_back(JS_NUM(reinterpret_cast<size_t>(&_impl)));std::cout << "lolo 10" << std::endl;
-	// _Super.Call(that, args);
-	std::cout << "lolo 11" << std::endl;
+	consoleLog(env, 1, &_Super);
+	_Super.Call(that, args);
+	std::cout << "lolo 11 CALLED!" << std::endl;
 	
 	
 	// audioContext->finishNew(info.This());

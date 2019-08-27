@@ -69,7 +69,7 @@ CommonCtx<BaseAudioContext>(info, "BaseAudioContext") { NAPI_ENV;
 	
 	// REQ_EXT_ARG(0, extCtx);
 	REQ_OFFS_ARG(0, extCtx);
-	
+	std::cout << "lowwwww" << extCtx << std::endl;
 	// CtxPtr *ctx = reinterpret_cast<CtxPtr*>(extCtx.Data());
 	CtxPtr *ctx = reinterpret_cast<CtxPtr*>(extCtx);
 	
