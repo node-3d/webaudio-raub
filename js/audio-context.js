@@ -3,11 +3,13 @@
 const { inspect } = require('util');
 
 const { AudioContext } = require('../core');
-const BaseAudioContext = require('./base-audio-context');
+const JsBaseAudioContext = require('./base-audio-context');
 
 
-AudioContext.prototype.__proto__ = BaseAudioContext.prototype;
-AudioContext._Super = BaseAudioContext.prototype.constructor;
+Object.setPrototypeOf(AudioContext.prototype, JsBaseAudioContext.prototype);
+Object.setPrototypeOf(AudioContext, JsBaseAudioContext);
+// AudioContext.prototype.__proto__ = JsBaseAudioContext.prototype;
+// AudioContext._Super = JsBaseAudioContext.prototype.constructor;
 
 
 class JsAudioContext extends AudioContext {
@@ -17,7 +19,7 @@ class JsAudioContext extends AudioContext {
 		if (opts.sampleRate) {
 			super(opts.sampleRate);
 		} else {
-			console.log('audio-context.js', 'cs1', BaseAudioContext.constructor);
+			console.log('audio-context.js', 'cs1', JsBaseAudioContext.constructor);
 			super();
 			console.log('audio-context.js', 'cs2');
 		}
