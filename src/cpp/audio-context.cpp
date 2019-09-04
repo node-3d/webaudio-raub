@@ -40,6 +40,9 @@ CommonCtx<AudioContext>(info, "AudioContext") { NAPI_ENV;
 		std::cout << "lolo 4" << std::endl;
 	}
 	std::cout << "lolo 5" << std::endl;
+	
+	
+	
 	Napi::Object that = info.This().As<Napi::Object>();std::cout << "lolo 6" << std::endl;
 	Napi::Function ctor = _constructor.Value().As<Napi::Function>();std::cout << "lolo 7" << std::endl;
 	Napi::Function _Super = ctor.Get("_Super").As<Napi::Function>();std::cout << "lolo 8" << std::endl;
