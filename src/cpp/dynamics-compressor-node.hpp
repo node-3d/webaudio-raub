@@ -40,22 +40,22 @@ protected:
 	
 private:
 	
-	JS_METHOD(destroy);
-	JS_GETTER(isDestroyedGetter);
+	JS_DECLARE_METHOD(destroy);
+	JS_DECLARE_GETTER(isDestroyed);
 	
 	
 	
-	JS_GETTER(thresholdGetter);
+	JS_DECLARE_GETTER(threshold);
 	
-	JS_GETTER(kneeGetter);
+	JS_DECLARE_GETTER(knee);
 	
-	JS_GETTER(ratioGetter);
+	JS_DECLARE_GETTER(ratio);
 	
-	JS_GETTER(reductionGetter);
+	JS_DECLARE_GETTER(reduction);
 	
-	JS_GETTER(attackGetter);
+	JS_DECLARE_GETTER(attack);
 	
-	JS_GETTER(releaseGetter);
+	JS_DECLARE_GETTER(release);
 	
 };
 

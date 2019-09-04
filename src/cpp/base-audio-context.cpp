@@ -44,20 +44,17 @@ Napi::FunctionReference BaseAudioContext::_constructor;
 
 void BaseAudioContext::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "BaseAudioContext", {
-		ACCESSOR_M(BaseAudioContext, resume),
-		ACCESSOR_M(BaseAudioContext, decodeAudioData),
-		ACCESSOR_M(BaseAudioContext, update),
-		ACCESSOR_R(BaseAudioContext, state),
-		ACCESSOR_R(BaseAudioContext, listener),
-		ACCESSOR_R(BaseAudioContext, sampleRate),
-		ACCESSOR_R(BaseAudioContext, currentTime),
-		ACCESSOR_R(BaseAudioContext, destination),
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_METHOD(resume);
+	JS_ASSIGN_METHOD(decodeAudioData);
+	JS_ASSIGN_METHOD(update);
+	JS_ASSIGN_GETTER(state);
+	JS_ASSIGN_GETTER(listener);
+	JS_ASSIGN_GETTER(sampleRate);
+	JS_ASSIGN_GETTER(currentTime);
+	JS_ASSIGN_GETTER(destination);
 		ACCESSOR_M(BaseAudioContext, destroy)
 	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
 	
 	exports.Set("BaseAudioContext", ctor);
 	
@@ -66,6 +63,7 @@ void BaseAudioContext::init(Napi::Env env, Napi::Object exports) {
 
 BaseAudioContext::BaseAudioContext(const Napi::CallbackInfo &info):
 CommonCtx<BaseAudioContext>(info, "BaseAudioContext") { NAPI_ENV;
+	super(info);
 	
 	// REQ_EXT_ARG(0, extCtx);
 	REQ_OFFS_ARG(0, extCtx);

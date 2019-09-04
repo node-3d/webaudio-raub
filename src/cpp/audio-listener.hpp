@@ -30,22 +30,22 @@ private:
 	Napi::ObjectReference _upY;
 	Napi::ObjectReference _upZ;
 	
-	JS_METHOD(destroy);
+	JS_DECLARE_METHOD(destroy);
 	
-	JS_METHOD(setPosition);
-	JS_METHOD(setOrientation);
+	JS_DECLARE_METHOD(setPosition);
+	JS_DECLARE_METHOD(setOrientation);
 	
-	JS_GETTER(positionXGetter);
-	JS_GETTER(positionYGetter);
-	JS_GETTER(positionZGetter);
+	JS_DECLARE_GETTER(positionX);
+	JS_DECLARE_GETTER(positionY);
+	JS_DECLARE_GETTER(positionZ);
 	
-	JS_GETTER(forwardXGetter);
-	JS_GETTER(forwardYGetter);
-	JS_GETTER(forwardZGetter);
+	JS_DECLARE_GETTER(forwardX);
+	JS_DECLARE_GETTER(forwardY);
+	JS_DECLARE_GETTER(forwardZ);
 	
-	JS_GETTER(upXGetter);
-	JS_GETTER(upYGetter);
-	JS_GETTER(upZGetter);
+	JS_DECLARE_GETTER(upX);
+	JS_DECLARE_GETTER(upY);
+	JS_DECLARE_GETTER(upZ);
 	
 };
 

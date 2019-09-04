@@ -48,14 +48,10 @@ Napi::FunctionReference MediaStreamAudioSourceNode::_constructor;
 
 void MediaStreamAudioSourceNode::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "MediaStreamAudioSourceNode", {
-		ACCESSOR_M(MediaStreamAudioSourceNode, destroy),
-		ACCESSOR_R(MediaStreamAudioSourceNode, mediaStream),
-		ACCESSOR_R(MediaStreamAudioSourceNode, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_METHOD(destroy);
+	JS_ASSIGN_GETTER(mediaStream);
+	JS_ASSIGN_GETTER(isDestroyed);
 	
 	exports.Set("MediaStreamAudioSourceNode", ctor);
 	
@@ -77,8 +73,6 @@ Napi::Object MediaStreamAudioSourceNode::getNew() {
 
 
 MediaStreamAudioSourceNode::MediaStreamAudioSourceNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<MediaStreamAudioSourceNode>(info) {
-	
-	CTOR_CHECK("MediaStreamAudioSourceNode");
 	
 	MediaStreamAudioSourceNode *mediaStreamAudioSourceNode = new MediaStreamAudioSourceNode();
 	

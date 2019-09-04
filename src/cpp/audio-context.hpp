@@ -21,12 +21,12 @@ private:
 	
 	double _baseLatency;
 	
-	JS_METHOD(destroy);
+	JS_DECLARE_METHOD(destroy);
 	
-	JS_METHOD(suspend);
-	JS_METHOD(close);
-	JS_METHOD(getOutputTimestamp);
-	JS_GETTER(baseLatencyGetter);
+	JS_DECLARE_METHOD(suspend);
+	JS_DECLARE_METHOD(close);
+	JS_DECLARE_METHOD(getOutputTimestamp);
+	JS_DECLARE_GETTER(baseLatency);
 	
 };
 

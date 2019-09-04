@@ -70,16 +70,12 @@ Napi::FunctionReference AudioWorkletNode::_constructor;
 
 void AudioWorkletNode::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "AudioWorkletNode", {
-		ACCESSOR_RW(AudioWorkletNode, onprocessorerror),
-		ACCESSOR_M(AudioWorkletNode, destroy),
-		ACCESSOR_R(AudioWorkletNode, port),
-		ACCESSOR_R(AudioWorkletNode, parameters),
-		ACCESSOR_R(AudioWorkletNode, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_SETTER(onprocessorerror);
+	JS_ASSIGN_METHOD(destroy);
+	JS_ASSIGN_GETTER(port);
+	JS_ASSIGN_GETTER(parameters);
+	JS_ASSIGN_GETTER(isDestroyed);
 	
 	exports.Set("AudioWorkletNode", ctor);
 	
@@ -101,8 +97,6 @@ Napi::Object AudioWorkletNode::getNew() {
 
 
 AudioWorkletNode::AudioWorkletNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<AudioWorkletNode>(info) {
-	
-	CTOR_CHECK("AudioWorkletNode");
 	
 	AudioWorkletNode *audioWorkletNode = new AudioWorkletNode();
 	

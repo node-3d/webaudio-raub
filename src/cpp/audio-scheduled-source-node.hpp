@@ -24,10 +24,10 @@ private:
 	
 	void onEnded();
 	
-	JS_METHOD(destroy);
+	JS_DECLARE_METHOD(destroy);
 	
-	JS_METHOD(start);
-	JS_METHOD(stop);
+	JS_DECLARE_METHOD(start);
+	JS_DECLARE_METHOD(stop);
 	
 };
 

@@ -9,24 +9,20 @@ Napi::FunctionReference AudioListener::_constructor;
 
 void AudioListener::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "AudioListener", {
-		ACCESSOR_M(AudioListener, setOrientation),
-		ACCESSOR_M(AudioListener, setPosition),
-		ACCESSOR_M(AudioListener, destroy),
-		ACCESSOR_R(AudioListener, upZ),
-		ACCESSOR_R(AudioListener, upY),
-		ACCESSOR_R(AudioListener, upX),
-		ACCESSOR_R(AudioListener, forwardZ),
-		ACCESSOR_R(AudioListener, forwardY),
-		ACCESSOR_R(AudioListener, forwardX),
-		ACCESSOR_R(AudioListener, positionZ),
-		ACCESSOR_R(AudioListener, positionY),
-		ACCESSOR_R(AudioListener, positionX),
-		ACCESSOR_R(AudioListener, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_METHOD(setOrientation);
+	JS_ASSIGN_METHOD(setPosition);
+	JS_ASSIGN_METHOD(destroy);
+	JS_ASSIGN_GETTER(upZ);
+	JS_ASSIGN_GETTER(upY);
+	JS_ASSIGN_GETTER(upX);
+	JS_ASSIGN_GETTER(forwardZ);
+	JS_ASSIGN_GETTER(forwardY);
+	JS_ASSIGN_GETTER(forwardX);
+	JS_ASSIGN_GETTER(positionZ);
+	JS_ASSIGN_GETTER(positionY);
+	JS_ASSIGN_GETTER(positionX);
+	JS_ASSIGN_GETTER(isDestroyed);
 	
 	exports.Set("AudioListener", ctor);
 	
@@ -44,6 +40,7 @@ Napi::Object AudioListener::create(Napi::Env env, Napi::Object context, Listener
 
 AudioListener::AudioListener(const Napi::CallbackInfo &info):
 CommonListener<AudioListener>(info, "AudioListener") { NAPI_ENV;
+	super(info);
 	
 	REQ_OBJ_ARG(0, context);
 	REQ_EXT_ARG(1, extListener);

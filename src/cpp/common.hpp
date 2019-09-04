@@ -49,22 +49,6 @@ struct Common : public Napi::ObjectWrap<T> {
 		eventEmitAsync(that, name, argc, argv, asyncCtx);
 	}
 	
-	JS_METHOD(destroy) { THIS_CHECK;
-		
-		emit("destroy");
-		
-		_destroy();
-		
-		RET_UNDEFINED;
-		
-	}
-	
-	JS_GETTER(isDestroyedGetter) { NAPI_ENV;
-		
-		RET_BOOL(_isDestroyed);
-		
-	}
-	
 	void _destroy() { DES_CHECK;
 		_isDestroyed = true;
 	};

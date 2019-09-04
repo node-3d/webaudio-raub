@@ -25,19 +25,19 @@ private:
 	float _sampleRate;
 	uint32_t _numberOfChannels;
 	
-	JS_METHOD(destroy);
+	JS_DECLARE_METHOD(destroy);
 	
-	JS_METHOD(getChannelData);
-	JS_METHOD(copyFromChannel);
-	JS_METHOD(copyToChannel);
+	JS_DECLARE_METHOD(getChannelData);
+	JS_DECLARE_METHOD(copyFromChannel);
+	JS_DECLARE_METHOD(copyToChannel);
 	
-	JS_GETTER(lengthGetter);
+	JS_DECLARE_GETTER(length);
 	
-	JS_GETTER(durationGetter);
+	JS_DECLARE_GETTER(duration);
 	
-	JS_GETTER(sampleRateGetter);
+	JS_DECLARE_GETTER(sampleRate);
 	
-	JS_GETTER(numberOfChannelsGetter);
+	JS_DECLARE_GETTER(numberOfChannels);
 	
 };
 

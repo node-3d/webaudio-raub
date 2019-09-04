@@ -7,17 +7,14 @@ Napi::FunctionReference AudioContext::_constructor;
 
 void AudioContext::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "AudioContext", {
-		ACCESSOR_M(AudioContext, getOutputTimestamp),
-		ACCESSOR_M(AudioContext, close),
-		ACCESSOR_M(AudioContext, suspend),
-		ACCESSOR_M(AudioContext, destroy),
-		ACCESSOR_R(AudioContext, baseLatency),
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_METHOD(getOutputTimestamp);
+	JS_ASSIGN_METHOD(close);
+	JS_ASSIGN_METHOD(suspend);
+	JS_ASSIGN_METHOD(destroy);
+	JS_ASSIGN_GETTER(baseLatency);
 		ACCESSOR_M(AudioContext, destroy)
 	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
 	
 	exports.Set("AudioContext", ctor);
 	
@@ -26,6 +23,7 @@ void AudioContext::init(Napi::Env env, Napi::Object exports) {
 
 AudioContext::AudioContext(const Napi::CallbackInfo &info):
 CommonCtx<AudioContext>(info, "AudioContext") { NAPI_ENV;
+	super(info);
 	std::cout << "lolo 1" << std::endl;
 	// CTOR_CHECK("AudioContext");
 	std::cout << "lolo 2" << std::endl;

@@ -48,14 +48,10 @@ Napi::FunctionReference ConstantSourceNode::_constructor;
 
 void ConstantSourceNode::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "ConstantSourceNode", {
-		ACCESSOR_M(ConstantSourceNode, destroy),
-		ACCESSOR_R(ConstantSourceNode, offset),
-		ACCESSOR_R(ConstantSourceNode, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_METHOD(destroy);
+	JS_ASSIGN_GETTER(offset);
+	JS_ASSIGN_GETTER(isDestroyed);
 	
 	exports.Set("ConstantSourceNode", ctor);
 	
@@ -77,8 +73,6 @@ Napi::Object ConstantSourceNode::getNew() {
 
 
 ConstantSourceNode::ConstantSourceNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<ConstantSourceNode>(info) {
-	
-	CTOR_CHECK("ConstantSourceNode");
 	
 	ConstantSourceNode *constantSourceNode = new ConstantSourceNode();
 	

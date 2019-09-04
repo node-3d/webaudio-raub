@@ -23,17 +23,17 @@ private:
 	Napi::ObjectReference _listener;
 	std::string _state;
 	
-	JS_METHOD(destroy);
+	JS_DECLARE_METHOD(destroy);
 	
-	JS_METHOD(update);
-	JS_METHOD(resume);
-	JS_METHOD(decodeAudioData);
+	JS_DECLARE_METHOD(update);
+	JS_DECLARE_METHOD(resume);
+	JS_DECLARE_METHOD(decodeAudioData);
 	
-	JS_GETTER(destinationGetter);
-	JS_GETTER(currentTimeGetter);
-	JS_GETTER(sampleRateGetter);
-	JS_GETTER(listenerGetter);
-	JS_GETTER(stateGetter);
+	JS_DECLARE_GETTER(destination);
+	JS_DECLARE_GETTER(currentTime);
+	JS_DECLARE_GETTER(sampleRate);
+	JS_DECLARE_GETTER(listener);
+	JS_DECLARE_GETTER(state);
 	
 };
 

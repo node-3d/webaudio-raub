@@ -27,16 +27,16 @@ private:
 	Napi::ObjectReference _frequency;
 	Napi::ObjectReference _detune;
 	
-	JS_METHOD(destroy);
+	JS_DECLARE_METHOD(destroy);
 	
-	JS_METHOD(setPeriodicWave);
+	JS_DECLARE_METHOD(setPeriodicWave);
 	
-	JS_GETTER(typeGetter);
-	JS_SETTER(typeSetter);
+	JS_DECLARE_GETTER(type);
+	JS_DECLARE_SETTER(type);
 	
-	JS_GETTER(frequencyGetter);
+	JS_DECLARE_GETTER(frequency);
 	
-	JS_GETTER(detuneGetter);
+	JS_DECLARE_GETTER(detune);
 	
 };
 

@@ -7,15 +7,11 @@ Napi::FunctionReference AudioScheduledSourceNode::_constructor;
 
 void AudioScheduledSourceNode::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "AudioScheduledSourceNode", {
-		ACCESSOR_M(AudioScheduledSourceNode, stop),
-		ACCESSOR_M(AudioScheduledSourceNode, start),
-		ACCESSOR_M(AudioScheduledSourceNode, destroy),
-		ACCESSOR_R(AudioScheduledSourceNode, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_METHOD(stop);
+	JS_ASSIGN_METHOD(start);
+	JS_ASSIGN_METHOD(destroy);
+	JS_ASSIGN_GETTER(isDestroyed);
 	
 	exports.Set("AudioScheduledSourceNode", ctor);
 	
@@ -24,8 +20,7 @@ void AudioScheduledSourceNode::init(Napi::Env env, Napi::Object exports) {
 
 AudioScheduledSourceNode::AudioScheduledSourceNode(const Napi::CallbackInfo &info):
 CommonNode<AudioScheduledSourceNode>(info, "AudioScheduledSourceNode") { NAPI_ENV;
-		
-	CTOR_CHECK("AudioScheduledSourceNode");
+	super(info);
 	
 	REQ_OBJ_ARG(0, context);
 	REQ_EXT_ARG(1, extNode);

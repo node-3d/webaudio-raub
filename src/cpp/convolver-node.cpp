@@ -9,14 +9,11 @@ Napi::FunctionReference ConvolverNode::_constructor;
 
 void ConvolverNode::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "ConvolverNode", {
-		ACCESSOR_RW(ConvolverNode, normalize),
-		ACCESSOR_RW(ConvolverNode, buffer),
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_SETTER(normalize);
+	JS_ASSIGN_SETTER(buffer);
 		ACCESSOR_M(ConvolverNode, destroy)
 	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
 	
 	exports.Set("ConvolverNode", ctor);
 	
@@ -25,8 +22,7 @@ void ConvolverNode::init(Napi::Env env, Napi::Object exports) {
 
 ConvolverNode::ConvolverNode(const Napi::CallbackInfo &info):
 CommonNode<ConvolverNode>(info, "ConvolverNode") { NAPI_ENV;
-	
-	CTOR_CHECK("ConvolverNode");
+	super(info);
 	
 	REQ_OBJ_ARG(0, context);
 	

@@ -7,13 +7,10 @@ Napi::FunctionReference AudioDestinationNode::_constructor;
 
 void AudioDestinationNode::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "AudioDestinationNode", {
-		ACCESSOR_R(AudioDestinationNode, maxChannelCount),
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_GETTER(maxChannelCount);
 		ACCESSOR_M(AudioDestinationNode, destroy)
 	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
 	
 	exports.Set("AudioDestinationNode", ctor);
 	
@@ -31,6 +28,7 @@ Napi::Object AudioDestinationNode::create(Napi::Env env, Napi::Object context, N
 
 AudioDestinationNode::AudioDestinationNode(const Napi::CallbackInfo &info):
 CommonNode<AudioDestinationNode>(info, "AudioDestinationNode") { NAPI_ENV;
+	super(info);
 	
 	REQ_OBJ_ARG(0, context);
 	REQ_EXT_ARG(1, extNode);

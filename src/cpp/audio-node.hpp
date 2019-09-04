@@ -26,25 +26,25 @@ private:
 	std::string _channelCountMode;
 	std::string _channelInterpretation;
 	
-	JS_METHOD(destroy);
+	JS_DECLARE_METHOD(destroy);
 	
-	JS_METHOD(connect);
-	JS_METHOD(disconnect);
+	JS_DECLARE_METHOD(connect);
+	JS_DECLARE_METHOD(disconnect);
 	
-	JS_GETTER(contextGetter);
+	JS_DECLARE_GETTER(context);
 	
-	JS_GETTER(numberOfInputsGetter);
+	JS_DECLARE_GETTER(numberOfInputs);
 	
-	JS_GETTER(numberOfOutputsGetter);
+	JS_DECLARE_GETTER(numberOfOutputs);
 	
-	JS_GETTER(channelCountGetter);
-	JS_SETTER(channelCountSetter);
+	JS_DECLARE_GETTER(channelCount);
+	JS_DECLARE_SETTER(channelCount);
 	
-	JS_GETTER(channelCountModeGetter);
-	JS_SETTER(channelCountModeSetter);
+	JS_DECLARE_GETTER(channelCountMode);
+	JS_DECLARE_SETTER(channelCountMode);
 	
-	JS_GETTER(channelInterpretationGetter);
-	JS_SETTER(channelInterpretationSetter);
+	JS_DECLARE_GETTER(channelInterpretation);
+	JS_DECLARE_SETTER(channelInterpretation);
 	
 };
 

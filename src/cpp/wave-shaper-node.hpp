@@ -27,11 +27,11 @@ protected:
 	
 private:
 	
-	JS_GETTER(curveGetter);
-	JS_SETTER(curveSetter);
+	JS_DECLARE_GETTER(curve);
+	JS_DECLARE_SETTER(curve);
 	
-	JS_GETTER(oversampleGetter);
-	JS_SETTER(oversampleSetter);
+	JS_DECLARE_GETTER(oversample);
+	JS_DECLARE_SETTER(oversample);
 	
 };
 

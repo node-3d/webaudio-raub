@@ -8,6 +8,7 @@
 
 
 class AnalyserNode : public CommonNode<AnalyserNode> {
+DECLARE_ES5_CLASS(AnalyserNode, AnalyserNode);
 	
 public:
 	
@@ -28,24 +29,24 @@ protected:
 	
 private:
 	
-	JS_METHOD(getFloatFrequencyData);
-	JS_METHOD(getByteFrequencyData);
-	JS_METHOD(getFloatTimeDomainData);
-	JS_METHOD(getByteTimeDomainData);
+	JS_DECLARE_METHOD(getFloatFrequencyData);
+	JS_DECLARE_METHOD(getByteFrequencyData);
+	JS_DECLARE_METHOD(getFloatTimeDomainData);
+	JS_DECLARE_METHOD(getByteTimeDomainData);
 	
-	JS_GETTER(frequencyBinCountGetter);
+	JS_DECLARE_GETTER(frequencyBinCount);
 	
-	JS_GETTER(fftSizeGetter);
-	JS_SETTER(fftSizeSetter);
+	JS_DECLARE_GETTER(fftSize);
+	JS_DECLARE_SETTER(fftSize);
 	
-	JS_GETTER(minDecibelsGetter);
-	JS_SETTER(minDecibelsSetter);
+	JS_DECLARE_GETTER(minDecibels);
+	JS_DECLARE_SETTER(minDecibels);
 	
-	JS_GETTER(maxDecibelsGetter);
-	JS_SETTER(maxDecibelsSetter);
+	JS_DECLARE_GETTER(maxDecibels);
+	JS_DECLARE_SETTER(maxDecibels);
 	
-	JS_GETTER(smoothingTimeConstantGetter);
-	JS_SETTER(smoothingTimeConstantSetter);
+	JS_DECLARE_GETTER(smoothingTimeConstant);
+	JS_DECLARE_SETTER(smoothingTimeConstant);
 	
 };
 

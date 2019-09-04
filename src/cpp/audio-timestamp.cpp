@@ -68,15 +68,11 @@ Napi::FunctionReference AudioTimestamp::_constructor;
 
 void AudioTimestamp::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "AudioTimestamp", {
-		ACCESSOR_RW(AudioTimestamp, performanceTime),
-		ACCESSOR_RW(AudioTimestamp, contextTime),
-		ACCESSOR_M(AudioTimestamp, destroy),
-		ACCESSOR_R(AudioTimestamp, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_SETTER(performanceTime);
+	JS_ASSIGN_SETTER(contextTime);
+	JS_ASSIGN_METHOD(destroy);
+	JS_ASSIGN_GETTER(isDestroyed);
 	
 	exports.Set("AudioTimestamp", ctor);
 	
@@ -98,8 +94,6 @@ Napi::Object AudioTimestamp::getNew() {
 
 
 AudioTimestamp::AudioTimestamp(const Napi::CallbackInfo &info): Napi::ObjectWrap<AudioTimestamp>(info) {
-	
-	CTOR_CHECK("AudioTimestamp");
 	
 	AudioTimestamp *audioTimestamp = new AudioTimestamp();
 	

@@ -8,18 +8,15 @@ Napi::FunctionReference BiquadFilterNode::_constructor;
 
 void BiquadFilterNode::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "BiquadFilterNode", {
-		ACCESSOR_RW(BiquadFilterNode, type),
-		ACCESSOR_M(BiquadFilterNode, getFrequencyResponse),
-		ACCESSOR_R(BiquadFilterNode, gain),
-		ACCESSOR_R(BiquadFilterNode, Q),
-		ACCESSOR_R(BiquadFilterNode, detune),
-		ACCESSOR_R(BiquadFilterNode, frequency),
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_SETTER(type);
+	JS_ASSIGN_METHOD(getFrequencyResponse);
+	JS_ASSIGN_GETTER(gain);
+	JS_ASSIGN_GETTER(Q);
+	JS_ASSIGN_GETTER(detune);
+	JS_ASSIGN_GETTER(frequency);
 		ACCESSOR_M(BiquadFilterNode, destroy)
 	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
 	
 	exports.Set("BiquadFilterNode", ctor);
 	
@@ -28,8 +25,7 @@ void BiquadFilterNode::init(Napi::Env env, Napi::Object exports) {
 
 BiquadFilterNode::BiquadFilterNode(const Napi::CallbackInfo &info):
 CommonNode<BiquadFilterNode>(info, "BiquadFilterNode") { NAPI_ENV;
-	
-	CTOR_CHECK("BiquadFilterNode");
+	super(info);
 	
 	REQ_OBJ_ARG(0, context);
 	

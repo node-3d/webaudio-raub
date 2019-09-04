@@ -83,19 +83,15 @@ Napi::FunctionReference DynamicsCompressorNode::_constructor;
 
 void DynamicsCompressorNode::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "DynamicsCompressorNode", {
-		ACCESSOR_M(DynamicsCompressorNode, destroy),
-		ACCESSOR_R(DynamicsCompressorNode, release),
-		ACCESSOR_R(DynamicsCompressorNode, attack),
-		ACCESSOR_R(DynamicsCompressorNode, reduction),
-		ACCESSOR_R(DynamicsCompressorNode, ratio),
-		ACCESSOR_R(DynamicsCompressorNode, knee),
-		ACCESSOR_R(DynamicsCompressorNode, threshold),
-		ACCESSOR_R(DynamicsCompressorNode, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_METHOD(destroy);
+	JS_ASSIGN_GETTER(release);
+	JS_ASSIGN_GETTER(attack);
+	JS_ASSIGN_GETTER(reduction);
+	JS_ASSIGN_GETTER(ratio);
+	JS_ASSIGN_GETTER(knee);
+	JS_ASSIGN_GETTER(threshold);
+	JS_ASSIGN_GETTER(isDestroyed);
 	
 	exports.Set("DynamicsCompressorNode", ctor);
 	
@@ -117,8 +113,6 @@ Napi::Object DynamicsCompressorNode::getNew() {
 
 
 DynamicsCompressorNode::DynamicsCompressorNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<DynamicsCompressorNode>(info) {
-	
-	CTOR_CHECK("DynamicsCompressorNode");
 	
 	DynamicsCompressorNode *dynamicsCompressorNode = new DynamicsCompressorNode();
 	

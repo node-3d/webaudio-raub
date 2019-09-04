@@ -52,14 +52,10 @@ Napi::FunctionReference IIRFilterNode::_constructor;
 
 void IIRFilterNode::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "IIRFilterNode", {
-		ACCESSOR_M(IIRFilterNode, getFrequencyResponse),
-		ACCESSOR_M(IIRFilterNode, destroy),
-		ACCESSOR_R(IIRFilterNode, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_METHOD(getFrequencyResponse);
+	JS_ASSIGN_METHOD(destroy);
+	JS_ASSIGN_GETTER(isDestroyed);
 	
 	exports.Set("IIRFilterNode", ctor);
 	
@@ -81,8 +77,6 @@ Napi::Object IIRFilterNode::getNew() {
 
 
 IIRFilterNode::IIRFilterNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<IIRFilterNode>(info) {
-	
-	CTOR_CHECK("IIRFilterNode");
 	
 	IIRFilterNode *iIRFilterNode = new IIRFilterNode();
 	

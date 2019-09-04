@@ -22,9 +22,9 @@ private:
 	
 	uint32_t _maxChannelCount;
 	
-	JS_METHOD(destroy);
+	JS_DECLARE_METHOD(destroy);
 	
-	JS_GETTER(maxChannelCountGetter);
+	JS_DECLARE_GETTER(maxChannelCount);
 	
 };
 

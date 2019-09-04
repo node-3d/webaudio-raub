@@ -21,29 +21,29 @@ private:
 	
 	static Napi::FunctionReference _constructor;
 	
-	JS_METHOD(destroy);
+	JS_DECLARE_METHOD(destroy);
 	
 	// JS_METHOD(connect);
 	// JS_METHOD(disconnect);
 	
-	// JS_GETTER(contextGetter);
+	// JS_GETTER(context);
 	
-	JS_METHOD(setValueAtTime);
-	JS_METHOD(linearRampToValueAtTime);
-	JS_METHOD(exponentialRampToValueAtTime);
-	JS_METHOD(setTargetAtTime);
-	JS_METHOD(setValueCurveAtTime);
-	JS_METHOD(cancelScheduledValues);
-	JS_METHOD(cancelAndHoldAtTime);
+	JS_DECLARE_METHOD(setValueAtTime);
+	JS_DECLARE_METHOD(linearRampToValueAtTime);
+	JS_DECLARE_METHOD(exponentialRampToValueAtTime);
+	JS_DECLARE_METHOD(setTargetAtTime);
+	JS_DECLARE_METHOD(setValueCurveAtTime);
+	JS_DECLARE_METHOD(cancelScheduledValues);
+	JS_DECLARE_METHOD(cancelAndHoldAtTime);
 	
-	JS_GETTER(valueGetter);
-	JS_SETTER(valueSetter);
+	JS_DECLARE_GETTER(value);
+	JS_DECLARE_SETTER(value);
 	
-	JS_GETTER(defaultValueGetter);
+	JS_DECLARE_GETTER(defaultValue);
 	
-	JS_GETTER(minValueGetter);
+	JS_DECLARE_GETTER(minValue);
 	
-	JS_GETTER(maxValueGetter);
+	JS_DECLARE_GETTER(maxValue);
 	
 };
 

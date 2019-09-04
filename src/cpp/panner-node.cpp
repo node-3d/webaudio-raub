@@ -49,29 +49,26 @@ Napi::FunctionReference PannerNode::_constructor;
 
 void PannerNode::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "PannerNode", {
-		ACCESSOR_RW(PannerNode, coneOuterGain),
-		ACCESSOR_RW(PannerNode, coneOuterAngle),
-		ACCESSOR_RW(PannerNode, coneInnerAngle),
-		ACCESSOR_RW(PannerNode, rolloffFactor),
-		ACCESSOR_RW(PannerNode, maxDistance),
-		ACCESSOR_RW(PannerNode, refDistance),
-		ACCESSOR_RW(PannerNode, distanceModel),
-		ACCESSOR_RW(PannerNode, panningModel),
-		ACCESSOR_M(PannerNode, setVelocity),
-		ACCESSOR_M(PannerNode, setOrientation),
-		ACCESSOR_M(PannerNode, setPosition),
-		ACCESSOR_R(PannerNode, orientationZ),
-		ACCESSOR_R(PannerNode, orientationY),
-		ACCESSOR_R(PannerNode, orientationX),
-		ACCESSOR_R(PannerNode, positionZ),
-		ACCESSOR_R(PannerNode, positionY),
-		ACCESSOR_R(PannerNode, positionX),
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_SETTER(coneOuterGain);
+	JS_ASSIGN_SETTER(coneOuterAngle);
+	JS_ASSIGN_SETTER(coneInnerAngle);
+	JS_ASSIGN_SETTER(rolloffFactor);
+	JS_ASSIGN_SETTER(maxDistance);
+	JS_ASSIGN_SETTER(refDistance);
+	JS_ASSIGN_SETTER(distanceModel);
+	JS_ASSIGN_SETTER(panningModel);
+	JS_ASSIGN_METHOD(setVelocity);
+	JS_ASSIGN_METHOD(setOrientation);
+	JS_ASSIGN_METHOD(setPosition);
+	JS_ASSIGN_GETTER(orientationZ);
+	JS_ASSIGN_GETTER(orientationY);
+	JS_ASSIGN_GETTER(orientationX);
+	JS_ASSIGN_GETTER(positionZ);
+	JS_ASSIGN_GETTER(positionY);
+	JS_ASSIGN_GETTER(positionX);
 		ACCESSOR_M(PannerNode, destroy)
 	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
 	
 	exports.Set("PannerNode", ctor);
 	
@@ -80,8 +77,7 @@ void PannerNode::init(Napi::Env env, Napi::Object exports) {
 
 PannerNode::PannerNode(const Napi::CallbackInfo &info):
 CommonNode<PannerNode>(info, "PannerNode") { NAPI_ENV;
-	
-	CTOR_CHECK("PannerNode");
+	super(info);
 	
 	REQ_OBJ_ARG(0, context);
 	

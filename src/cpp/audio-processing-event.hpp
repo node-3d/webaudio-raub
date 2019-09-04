@@ -35,16 +35,16 @@ protected:
 	
 private:
 	
-	JS_METHOD(destroy);
-	JS_GETTER(isDestroyedGetter);
+	JS_DECLARE_METHOD(destroy);
+	JS_DECLARE_GETTER(isDestroyed);
 	
 	
 	
-	JS_GETTER(playbackTimeGetter);
+	JS_DECLARE_GETTER(playbackTime);
 	
-	JS_GETTER(inputBufferGetter);
+	JS_DECLARE_GETTER(inputBuffer);
 	
-	JS_GETTER(outputBufferGetter);
+	JS_DECLARE_GETTER(outputBuffer);
 	
 };
 

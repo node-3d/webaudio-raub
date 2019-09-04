@@ -30,47 +30,47 @@ private:
 	Napi::ObjectReference _orientationY;
 	Napi::ObjectReference _orientationZ;
 	
-	JS_METHOD(destroy);
+	JS_DECLARE_METHOD(destroy);
 	
-	JS_METHOD(setPosition);
-	JS_METHOD(setOrientation);
-	JS_METHOD(setVelocity);
+	JS_DECLARE_METHOD(setPosition);
+	JS_DECLARE_METHOD(setOrientation);
+	JS_DECLARE_METHOD(setVelocity);
 	
-	JS_GETTER(panningModelGetter);
-	JS_SETTER(panningModelSetter);
+	JS_DECLARE_GETTER(panningModel);
+	JS_DECLARE_SETTER(panningModel);
 	
-	JS_GETTER(positionXGetter);
+	JS_DECLARE_GETTER(positionX);
 	
-	JS_GETTER(positionYGetter);
+	JS_DECLARE_GETTER(positionY);
 	
-	JS_GETTER(positionZGetter);
+	JS_DECLARE_GETTER(positionZ);
 	
-	JS_GETTER(orientationXGetter);
+	JS_DECLARE_GETTER(orientationX);
 	
-	JS_GETTER(orientationYGetter);
+	JS_DECLARE_GETTER(orientationY);
 	
-	JS_GETTER(orientationZGetter);
+	JS_DECLARE_GETTER(orientationZ);
 	
-	JS_GETTER(distanceModelGetter);
-	JS_SETTER(distanceModelSetter);
+	JS_DECLARE_GETTER(distanceModel);
+	JS_DECLARE_SETTER(distanceModel);
 	
-	JS_GETTER(refDistanceGetter);
-	JS_SETTER(refDistanceSetter);
+	JS_DECLARE_GETTER(refDistance);
+	JS_DECLARE_SETTER(refDistance);
 	
-	JS_GETTER(maxDistanceGetter);
-	JS_SETTER(maxDistanceSetter);
+	JS_DECLARE_GETTER(maxDistance);
+	JS_DECLARE_SETTER(maxDistance);
 	
-	JS_GETTER(rolloffFactorGetter);
-	JS_SETTER(rolloffFactorSetter);
+	JS_DECLARE_GETTER(rolloffFactor);
+	JS_DECLARE_SETTER(rolloffFactor);
 	
-	JS_GETTER(coneInnerAngleGetter);
-	JS_SETTER(coneInnerAngleSetter);
+	JS_DECLARE_GETTER(coneInnerAngle);
+	JS_DECLARE_SETTER(coneInnerAngle);
 	
-	JS_GETTER(coneOuterAngleGetter);
-	JS_SETTER(coneOuterAngleSetter);
+	JS_DECLARE_GETTER(coneOuterAngle);
+	JS_DECLARE_SETTER(coneOuterAngle);
 	
-	JS_GETTER(coneOuterGainGetter);
-	JS_SETTER(coneOuterGainSetter);
+	JS_DECLARE_GETTER(coneOuterGain);
+	JS_DECLARE_SETTER(coneOuterGain);
 	
 };
 

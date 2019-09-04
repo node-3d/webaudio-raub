@@ -26,25 +26,25 @@ private:
 	Napi::ObjectReference _playbackRate;
 	Napi::ObjectReference _detune;
 	
-	JS_METHOD(destroy);
+	JS_DECLARE_METHOD(destroy);
 	
-	JS_METHOD(start);
+	JS_DECLARE_METHOD(start);
 	
-	JS_GETTER(bufferGetter);
-	JS_SETTER(bufferSetter);
+	JS_DECLARE_GETTER(buffer);
+	JS_DECLARE_SETTER(buffer);
 	
-	JS_GETTER(playbackRateGetter);
+	JS_DECLARE_GETTER(playbackRate);
 	
-	JS_GETTER(detuneGetter);
+	JS_DECLARE_GETTER(detune);
 	
-	JS_GETTER(loopGetter);
-	JS_SETTER(loopSetter);
+	JS_DECLARE_GETTER(loop);
+	JS_DECLARE_SETTER(loop);
 	
-	JS_GETTER(loopStartGetter);
-	JS_SETTER(loopStartSetter);
+	JS_DECLARE_GETTER(loopStart);
+	JS_DECLARE_SETTER(loopStart);
 	
-	JS_GETTER(loopEndGetter);
-	JS_SETTER(loopEndSetter);
+	JS_DECLARE_GETTER(loopEnd);
+	JS_DECLARE_SETTER(loopEnd);
 	
 };
 

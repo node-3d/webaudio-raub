@@ -35,17 +35,17 @@ protected:
 	
 private:
 	
-	JS_METHOD(destroy);
-	JS_GETTER(isDestroyedGetter);
+	JS_DECLARE_METHOD(destroy);
+	JS_DECLARE_GETTER(isDestroyed);
 	
 	
 	
-	JS_GETTER(parametersGetter);
+	JS_DECLARE_GETTER(parameters);
 	
-	JS_GETTER(portGetter);
+	JS_DECLARE_GETTER(port);
 	
-	JS_GETTER(onprocessorerrorGetter);
-	JS_SETTER(onprocessorerrorSetter);
+	JS_DECLARE_GETTER(onprocessorerror);
+	JS_DECLARE_SETTER(onprocessorerror);
 	
 };
 

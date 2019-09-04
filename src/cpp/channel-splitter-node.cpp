@@ -42,13 +42,9 @@ Napi::FunctionReference ChannelSplitterNode::_constructor;
 
 void ChannelSplitterNode::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "ChannelSplitterNode", {
-		ACCESSOR_M(ChannelSplitterNode, destroy),
-		ACCESSOR_R(ChannelSplitterNode, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_METHOD(destroy);
+	JS_ASSIGN_GETTER(isDestroyed);
 	
 	exports.Set("ChannelSplitterNode", ctor);
 	
@@ -70,8 +66,6 @@ Napi::Object ChannelSplitterNode::getNew() {
 
 
 ChannelSplitterNode::ChannelSplitterNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<ChannelSplitterNode>(info) {
-	
-	CTOR_CHECK("ChannelSplitterNode");
 	
 	ChannelSplitterNode *channelSplitterNode = new ChannelSplitterNode();
 	

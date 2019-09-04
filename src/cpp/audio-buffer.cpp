@@ -8,20 +8,16 @@ Napi::FunctionReference AudioBuffer::_constructor;
 
 void AudioBuffer::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "AudioBuffer", {
-		ACCESSOR_M(AudioBuffer, copyToChannel),
-		ACCESSOR_M(AudioBuffer, copyFromChannel),
-		ACCESSOR_M(AudioBuffer, getChannelData),
-		ACCESSOR_M(AudioBuffer, destroy),
-		ACCESSOR_R(AudioBuffer, numberOfChannels),
-		ACCESSOR_R(AudioBuffer, sampleRate),
-		ACCESSOR_R(AudioBuffer, duration),
-		ACCESSOR_R(AudioBuffer, length),
-		ACCESSOR_R(AudioBuffer, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_METHOD(copyToChannel);
+	JS_ASSIGN_METHOD(copyFromChannel);
+	JS_ASSIGN_METHOD(getChannelData);
+	JS_ASSIGN_METHOD(destroy);
+	JS_ASSIGN_GETTER(numberOfChannels);
+	JS_ASSIGN_GETTER(sampleRate);
+	JS_ASSIGN_GETTER(duration);
+	JS_ASSIGN_GETTER(length);
+	JS_ASSIGN_GETTER(isDestroyed);
 	
 	exports.Set("AudioBuffer", ctor);
 	
@@ -30,8 +26,7 @@ void AudioBuffer::init(Napi::Env env, Napi::Object exports) {
 
 AudioBuffer::AudioBuffer(const Napi::CallbackInfo &info):
 CommonBus<AudioBuffer>(info, "AudioBuffer") { NAPI_ENV;
-	
-	CTOR_CHECK("AudioBuffer");
+	super(info);
 	
 	REQ_OBJ_ARG(0, context);
 	

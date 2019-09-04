@@ -9,16 +9,13 @@ Napi::FunctionReference OscillatorNode::_constructor;
 
 void OscillatorNode::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "OscillatorNode", {
-		ACCESSOR_RW(OscillatorNode, type),
-		ACCESSOR_M(OscillatorNode, setPeriodicWave),
-		ACCESSOR_R(OscillatorNode, detune),
-		ACCESSOR_R(OscillatorNode, frequency),
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_SETTER(type);
+	JS_ASSIGN_METHOD(setPeriodicWave);
+	JS_ASSIGN_GETTER(detune);
+	JS_ASSIGN_GETTER(frequency);
 		ACCESSOR_M(OscillatorNode, destroy)
 	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
 	
 	exports.Set("OscillatorNode", ctor);
 	
@@ -57,8 +54,7 @@ inline lab::OscillatorType toOscillatorType(const std::string &mode) {
 
 OscillatorNode::OscillatorNode(const Napi::CallbackInfo &info):
 CommonNode<OscillatorNode>(info, "OscillatorNode") { NAPI_ENV;
-	
-	CTOR_CHECK("OscillatorNode");
+	super(info);
 	
 	REQ_OBJ_ARG(0, context);
 	

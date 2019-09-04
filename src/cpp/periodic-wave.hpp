@@ -33,8 +33,8 @@ protected:
 	
 private:
 	
-	JS_METHOD(destroy);
-	JS_GETTER(isDestroyedGetter);
+	JS_DECLARE_METHOD(destroy);
+	JS_DECLARE_GETTER(isDestroyed);
 	
 	
 	

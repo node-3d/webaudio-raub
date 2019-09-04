@@ -35,16 +35,16 @@ protected:
 	
 private:
 	
-	JS_METHOD(destroy);
-	JS_GETTER(isDestroyedGetter);
+	JS_DECLARE_METHOD(destroy);
+	JS_DECLARE_GETTER(isDestroyed);
 	
-	JS_METHOD(registerProcessor);
+	JS_DECLARE_METHOD(registerProcessor);
 	
-	JS_GETTER(currentFrameGetter);
+	JS_DECLARE_GETTER(currentFrame);
 	
-	JS_GETTER(currentTimeGetter);
+	JS_DECLARE_GETTER(currentTime);
 	
-	JS_GETTER(sampleRateGetter);
+	JS_DECLARE_GETTER(sampleRate);
 	
 };
 

@@ -10,19 +10,16 @@ Napi::FunctionReference AudioBufferSourceNode::_constructor;
 
 void AudioBufferSourceNode::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "AudioBufferSourceNode", {
-		ACCESSOR_RW(AudioBufferSourceNode, loopEnd),
-		ACCESSOR_RW(AudioBufferSourceNode, loopStart),
-		ACCESSOR_RW(AudioBufferSourceNode, loop),
-		ACCESSOR_RW(AudioBufferSourceNode, buffer),
-		ACCESSOR_M(AudioBufferSourceNode, start),
-		ACCESSOR_R(AudioBufferSourceNode, detune),
-		ACCESSOR_R(AudioBufferSourceNode, playbackRate),
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_SETTER(loopEnd);
+	JS_ASSIGN_SETTER(loopStart);
+	JS_ASSIGN_SETTER(loop);
+	JS_ASSIGN_SETTER(buffer);
+	JS_ASSIGN_METHOD(start);
+	JS_ASSIGN_GETTER(detune);
+	JS_ASSIGN_GETTER(playbackRate);
 		ACCESSOR_M(AudioBufferSourceNode, destroy)
 	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
 	
 	exports.Set("AudioBufferSourceNode", ctor);
 	
@@ -31,8 +28,7 @@ void AudioBufferSourceNode::init(Napi::Env env, Napi::Object exports) {
 
 AudioBufferSourceNode::AudioBufferSourceNode(const Napi::CallbackInfo &info):
 CommonNode<AudioBufferSourceNode>(info, "AudioBufferSourceNode") { NAPI_ENV;
-	
-	CTOR_CHECK("AudioBufferSourceNode");
+	super(info);
 	
 	REQ_OBJ_ARG(0, context);
 	

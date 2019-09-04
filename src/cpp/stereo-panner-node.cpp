@@ -48,14 +48,10 @@ Napi::FunctionReference StereoPannerNode::_constructor;
 
 void StereoPannerNode::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "StereoPannerNode", {
-		ACCESSOR_M(StereoPannerNode, destroy),
-		ACCESSOR_R(StereoPannerNode, pan),
-		ACCESSOR_R(StereoPannerNode, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_METHOD(destroy);
+	JS_ASSIGN_GETTER(pan);
+	JS_ASSIGN_GETTER(isDestroyed);
 	
 	exports.Set("StereoPannerNode", ctor);
 	
@@ -77,8 +73,6 @@ Napi::Object StereoPannerNode::getNew() {
 
 
 StereoPannerNode::StereoPannerNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<StereoPannerNode>(info) {
-	
-	CTOR_CHECK("StereoPannerNode");
 	
 	StereoPannerNode *stereoPannerNode = new StereoPannerNode();
 	

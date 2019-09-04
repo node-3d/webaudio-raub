@@ -42,13 +42,9 @@ Napi::FunctionReference ChannelMergerNode::_constructor;
 
 void ChannelMergerNode::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "ChannelMergerNode", {
-		ACCESSOR_M(ChannelMergerNode, destroy),
-		ACCESSOR_R(ChannelMergerNode, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_METHOD(destroy);
+	JS_ASSIGN_GETTER(isDestroyed);
 	
 	exports.Set("ChannelMergerNode", ctor);
 	
@@ -70,8 +66,6 @@ Napi::Object ChannelMergerNode::getNew() {
 
 
 ChannelMergerNode::ChannelMergerNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<ChannelMergerNode>(info) {
-	
-	CTOR_CHECK("ChannelMergerNode");
 	
 	ChannelMergerNode *channelMergerNode = new ChannelMergerNode();
 	

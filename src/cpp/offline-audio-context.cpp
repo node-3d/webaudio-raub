@@ -83,17 +83,13 @@ Napi::FunctionReference OfflineAudioContext::_constructor;
 
 void OfflineAudioContext::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "OfflineAudioContext", {
-		ACCESSOR_RW(OfflineAudioContext, oncomplete),
-		ACCESSOR_M(OfflineAudioContext, suspend),
-		ACCESSOR_M(OfflineAudioContext, startRendering),
-		ACCESSOR_M(OfflineAudioContext, destroy),
-		ACCESSOR_R(OfflineAudioContext, length),
-		ACCESSOR_R(OfflineAudioContext, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_SETTER(oncomplete);
+	JS_ASSIGN_METHOD(suspend);
+	JS_ASSIGN_METHOD(startRendering);
+	JS_ASSIGN_METHOD(destroy);
+	JS_ASSIGN_GETTER(length);
+	JS_ASSIGN_GETTER(isDestroyed);
 	
 	exports.Set("OfflineAudioContext", ctor);
 	
@@ -115,8 +111,6 @@ Napi::Object OfflineAudioContext::getNew() {
 
 
 OfflineAudioContext::OfflineAudioContext(const Napi::CallbackInfo &info): Napi::ObjectWrap<OfflineAudioContext>(info) {
-	
-	CTOR_CHECK("OfflineAudioContext");
 	
 	OfflineAudioContext *offlineAudioContext = new OfflineAudioContext();
 	

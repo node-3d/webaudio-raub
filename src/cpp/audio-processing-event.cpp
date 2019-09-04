@@ -59,16 +59,12 @@ Napi::FunctionReference AudioProcessingEvent::_constructor;
 
 void AudioProcessingEvent::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "AudioProcessingEvent", {
-		ACCESSOR_M(AudioProcessingEvent, destroy),
-		ACCESSOR_R(AudioProcessingEvent, outputBuffer),
-		ACCESSOR_R(AudioProcessingEvent, inputBuffer),
-		ACCESSOR_R(AudioProcessingEvent, playbackTime),
-		ACCESSOR_R(AudioProcessingEvent, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_METHOD(destroy);
+	JS_ASSIGN_GETTER(outputBuffer);
+	JS_ASSIGN_GETTER(inputBuffer);
+	JS_ASSIGN_GETTER(playbackTime);
+	JS_ASSIGN_GETTER(isDestroyed);
 	
 	exports.Set("AudioProcessingEvent", ctor);
 	
@@ -90,8 +86,6 @@ Napi::Object AudioProcessingEvent::getNew() {
 
 
 AudioProcessingEvent::AudioProcessingEvent(const Napi::CallbackInfo &info): Napi::ObjectWrap<AudioProcessingEvent>(info) {
-	
-	CTOR_CHECK("AudioProcessingEvent");
 	
 	AudioProcessingEvent *audioProcessingEvent = new AudioProcessingEvent();
 	

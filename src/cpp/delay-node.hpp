@@ -24,9 +24,9 @@ private:
 	
 	Napi::ObjectReference _delayTime;
 	
-	JS_METHOD(destroy);
+	JS_DECLARE_METHOD(destroy);
 	
-	JS_GETTER(delayTimeGetter);
+	JS_DECLARE_GETTER(delayTime);
 	
 };
 

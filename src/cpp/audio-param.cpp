@@ -12,23 +12,20 @@ Napi::FunctionReference AudioParam::_constructor;
 
 void AudioParam::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "AudioParam", {
-		ACCESSOR_RW(AudioParam, value),
-		ACCESSOR_M(AudioParam, cancelAndHoldAtTime),
-		ACCESSOR_M(AudioParam, cancelScheduledValues),
-		ACCESSOR_M(AudioParam, setValueCurveAtTime),
-		ACCESSOR_M(AudioParam, setTargetAtTime),
-		ACCESSOR_M(AudioParam, exponentialRampToValueAtTime),
-		ACCESSOR_M(AudioParam, linearRampToValueAtTime),
-		ACCESSOR_M(AudioParam, setValueAtTime),
-		ACCESSOR_R(AudioParam, maxValue),
-		ACCESSOR_R(AudioParam, minValue),
-		ACCESSOR_R(AudioParam, defaultValue),
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_SETTER(value);
+	JS_ASSIGN_METHOD(cancelAndHoldAtTime);
+	JS_ASSIGN_METHOD(cancelScheduledValues);
+	JS_ASSIGN_METHOD(setValueCurveAtTime);
+	JS_ASSIGN_METHOD(setTargetAtTime);
+	JS_ASSIGN_METHOD(exponentialRampToValueAtTime);
+	JS_ASSIGN_METHOD(linearRampToValueAtTime);
+	JS_ASSIGN_METHOD(setValueAtTime);
+	JS_ASSIGN_GETTER(maxValue);
+	JS_ASSIGN_GETTER(minValue);
+	JS_ASSIGN_GETTER(defaultValue);
 		ACCESSOR_M(AudioParam, destroy)
 	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
 	
 	exports.Set("AudioParam", ctor);
 	
@@ -51,6 +48,7 @@ bool AudioParam::isAudioParam(Napi::Object obj) {
 
 AudioParam::AudioParam(const Napi::CallbackInfo &info):
 CommonParam<AudioParam>(info, "AudioParam") { NAPI_ENV;
+	super(info);
 	
 	REQ_OBJ_ARG(0, context);
 	REQ_EXT_ARG(1, extParam);

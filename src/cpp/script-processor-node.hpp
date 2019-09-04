@@ -36,15 +36,15 @@ protected:
 	
 private:
 	
-	JS_METHOD(destroy);
-	JS_GETTER(isDestroyedGetter);
+	JS_DECLARE_METHOD(destroy);
+	JS_DECLARE_GETTER(isDestroyed);
 	
 	
 	
-	JS_GETTER(onaudioprocessGetter);
-	JS_SETTER(onaudioprocessSetter);
+	JS_DECLARE_GETTER(onaudioprocess);
+	JS_DECLARE_SETTER(onaudioprocess);
 	
-	JS_GETTER(bufferSizeGetter);
+	JS_DECLARE_GETTER(bufferSize);
 	
 };
 

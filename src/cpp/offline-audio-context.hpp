@@ -36,16 +36,16 @@ protected:
 	
 private:
 	
-	JS_METHOD(destroy);
-	JS_GETTER(isDestroyedGetter);
+	JS_DECLARE_METHOD(destroy);
+	JS_DECLARE_GETTER(isDestroyed);
 	
-	JS_METHOD(startRendering);
-	JS_METHOD(suspend);
+	JS_DECLARE_METHOD(startRendering);
+	JS_DECLARE_METHOD(suspend);
 	
-	JS_GETTER(oncompleteGetter);
-	JS_SETTER(oncompleteSetter);
+	JS_DECLARE_GETTER(oncomplete);
+	JS_DECLARE_SETTER(oncomplete);
 	
-	JS_GETTER(lengthGetter);
+	JS_DECLARE_GETTER(length);
 	
 };
 

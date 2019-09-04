@@ -28,20 +28,20 @@ private:
 	Napi::ObjectReference _Q;
 	Napi::ObjectReference _gain;
 	
-	JS_METHOD(destroy);
+	JS_DECLARE_METHOD(destroy);
 	
-	JS_METHOD(getFrequencyResponse);
+	JS_DECLARE_METHOD(getFrequencyResponse);
 	
-	JS_GETTER(typeGetter);
-	JS_SETTER(typeSetter);
+	JS_DECLARE_GETTER(type);
+	JS_DECLARE_SETTER(type);
 	
-	JS_GETTER(frequencyGetter);
+	JS_DECLARE_GETTER(frequency);
 	
-	JS_GETTER(detuneGetter);
+	JS_DECLARE_GETTER(detune);
 	
-	JS_GETTER(QGetter);
+	JS_DECLARE_GETTER(Q);
 	
-	JS_GETTER(gainGetter);
+	JS_DECLARE_GETTER(gain);
 	
 };
 

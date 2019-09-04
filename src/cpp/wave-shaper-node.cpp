@@ -5,15 +5,11 @@ Napi::FunctionReference WaveShaperNode::_constructor;
 
 void WaveShaperNode::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "WaveShaperNode", {
-		ACCESSOR_RW(WaveShaperNode, oversample),
-		ACCESSOR_RW(WaveShaperNode, curve),
-		ACCESSOR_M(WaveShaperNode, destroy),
-		ACCESSOR_R(WaveShaperNode, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_SETTER(oversample);
+	JS_ASSIGN_SETTER(curve);
+	JS_ASSIGN_METHOD(destroy);
+	JS_ASSIGN_GETTER(isDestroyed);
 	
 	exports.Set("WaveShaperNode", ctor);
 	
@@ -22,8 +18,6 @@ void WaveShaperNode::init(Napi::Env env, Napi::Object exports) {
 
 WaveShaperNode::WaveShaperNode(const Napi::CallbackInfo &info) :
 AudioNode() {
-	
-	CTOR_CHECK("WaveShaperNode");
 	
 	_isDestroyed = false;
 	

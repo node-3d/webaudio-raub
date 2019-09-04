@@ -11,20 +11,17 @@ Napi::FunctionReference AudioNode::_constructor;
 
 void AudioNode::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "AudioNode", {
-		ACCESSOR_RW(AudioNode, channelInterpretation),
-		ACCESSOR_RW(AudioNode, channelCountMode),
-		ACCESSOR_RW(AudioNode, channelCount),
-		ACCESSOR_M(AudioNode, disconnect),
-		ACCESSOR_M(AudioNode, connect),
-		ACCESSOR_R(AudioNode, numberOfOutputs),
-		ACCESSOR_R(AudioNode, numberOfInputs),
-		ACCESSOR_R(AudioNode, context),
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_SETTER(channelInterpretation);
+	JS_ASSIGN_SETTER(channelCountMode);
+	JS_ASSIGN_SETTER(channelCount);
+	JS_ASSIGN_METHOD(disconnect);
+	JS_ASSIGN_METHOD(connect);
+	JS_ASSIGN_GETTER(numberOfOutputs);
+	JS_ASSIGN_GETTER(numberOfInputs);
+	JS_ASSIGN_GETTER(context);
 		ACCESSOR_M(AudioNode, destroy)
 	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
 	
 	exports.Set("AudioNode", ctor);
 	
@@ -78,6 +75,7 @@ inline lab::ChannelInterpretation toChannelInterpretation(const std::string &io)
 
 AudioNode::AudioNode(const Napi::CallbackInfo &info):
 CommonNode<AudioNode>(info, "AudioNode") { NAPI_ENV;
+	super(info);
 	
 	REQ_OBJ_ARG(0, context);
 	REQ_EXT_ARG(1, extNode);

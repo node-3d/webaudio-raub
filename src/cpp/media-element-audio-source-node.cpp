@@ -48,14 +48,10 @@ Napi::FunctionReference MediaElementAudioSourceNode::_constructor;
 
 void MediaElementAudioSourceNode::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "MediaElementAudioSourceNode", {
-		ACCESSOR_M(MediaElementAudioSourceNode, destroy),
-		ACCESSOR_R(MediaElementAudioSourceNode, mediaElement),
-		ACCESSOR_R(MediaElementAudioSourceNode, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_METHOD(destroy);
+	JS_ASSIGN_GETTER(mediaElement);
+	JS_ASSIGN_GETTER(isDestroyed);
 	
 	exports.Set("MediaElementAudioSourceNode", ctor);
 	
@@ -77,8 +73,6 @@ Napi::Object MediaElementAudioSourceNode::getNew() {
 
 
 MediaElementAudioSourceNode::MediaElementAudioSourceNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<MediaElementAudioSourceNode>(info) {
-	
-	CTOR_CHECK("MediaElementAudioSourceNode");
 	
 	MediaElementAudioSourceNode *mediaElementAudioSourceNode =
 		new MediaElementAudioSourceNode();

@@ -68,15 +68,11 @@ Napi::FunctionReference ScriptProcessorNode::_constructor;
 
 void ScriptProcessorNode::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "ScriptProcessorNode", {
-		ACCESSOR_RW(ScriptProcessorNode, onaudioprocess),
-		ACCESSOR_M(ScriptProcessorNode, destroy),
-		ACCESSOR_R(ScriptProcessorNode, bufferSize),
-		ACCESSOR_R(ScriptProcessorNode, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_SETTER(onaudioprocess);
+	JS_ASSIGN_METHOD(destroy);
+	JS_ASSIGN_GETTER(bufferSize);
+	JS_ASSIGN_GETTER(isDestroyed);
 	
 	exports.Set("ScriptProcessorNode", ctor);
 	
@@ -98,8 +94,6 @@ Napi::Object ScriptProcessorNode::getNew() {
 
 
 ScriptProcessorNode::ScriptProcessorNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<ScriptProcessorNode>(info) {
-	
-	CTOR_CHECK("ScriptProcessorNode");
 	
 	ScriptProcessorNode *scriptProcessorNode = new ScriptProcessorNode();
 	

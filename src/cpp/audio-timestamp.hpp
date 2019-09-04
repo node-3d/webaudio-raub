@@ -34,16 +34,16 @@ protected:
 	
 private:
 	
-	JS_METHOD(destroy);
-	JS_GETTER(isDestroyedGetter);
+	JS_DECLARE_METHOD(destroy);
+	JS_DECLARE_GETTER(isDestroyed);
 	
 	
 	
-	JS_GETTER(contextTimeGetter);
-	JS_SETTER(contextTimeSetter);
+	JS_DECLARE_GETTER(contextTime);
+	JS_DECLARE_SETTER(contextTime);
 	
-	JS_GETTER(performanceTimeGetter);
-	JS_SETTER(performanceTimeSetter);
+	JS_DECLARE_GETTER(performanceTime);
+	JS_DECLARE_SETTER(performanceTime);
 	
 };
 

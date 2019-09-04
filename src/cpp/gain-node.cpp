@@ -9,13 +9,10 @@ Napi::FunctionReference GainNode::_constructor;
 
 void GainNode::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "GainNode", {
-		ACCESSOR_R(GainNode, gain),
-		ACCESSOR_M(GainNode, destroy)
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_GETTER(gain);
+	JS_ASSIGN_METHOD(destroy);
 	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
 	
 	exports.Set("GainNode", ctor);
 	
@@ -24,8 +21,7 @@ void GainNode::init(Napi::Env env, Napi::Object exports) {
 
 GainNode::GainNode(const Napi::CallbackInfo &info):
 CommonNode<GainNode>(info, "GainNode") { NAPI_ENV;
-	
-	CTOR_CHECK("GainNode");
+	super(info);
 	
 	REQ_OBJ_ARG(0, context);
 	

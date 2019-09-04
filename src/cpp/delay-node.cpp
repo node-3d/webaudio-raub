@@ -9,13 +9,10 @@ Napi::FunctionReference DelayNode::_constructor;
 
 void DelayNode::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "DelayNode", {
-		ACCESSOR_R(DelayNode, delayTime),
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_GETTER(delayTime);
 		ACCESSOR_M(DelayNode, destroy)
 	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
 	
 	exports.Set("DelayNode", ctor);
 	
@@ -24,8 +21,6 @@ void DelayNode::init(Napi::Env env, Napi::Object exports) {
 
 DelayNode::DelayNode(const Napi::CallbackInfo &info): 
 CommonNode<DelayNode>(info, "DelayNode") { NAPI_ENV;
-	
-	CTOR_CHECK("DelayNode");
 	
 	REQ_OBJ_ARG(0, context);
 	REQ_DOUBLE_ARG(1, delay);

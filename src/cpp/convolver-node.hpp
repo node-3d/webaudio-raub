@@ -24,13 +24,13 @@ private:
 	
 	Napi::ObjectReference _buffer;
 	
-	JS_METHOD(destroy);
+	JS_DECLARE_METHOD(destroy);
 	
-	JS_GETTER(bufferGetter);
-	JS_SETTER(bufferSetter);
+	JS_DECLARE_GETTER(buffer);
+	JS_DECLARE_SETTER(buffer);
 	
-	JS_GETTER(normalizeGetter);
-	JS_SETTER(normalizeSetter);
+	JS_DECLARE_GETTER(normalize);
+	JS_DECLARE_SETTER(normalize);
 	
 };
 

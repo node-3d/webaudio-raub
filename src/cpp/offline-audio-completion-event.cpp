@@ -45,14 +45,10 @@ Napi::FunctionReference OfflineAudioCompletionEvent::_constructor;
 
 void OfflineAudioCompletionEvent::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "OfflineAudioCompletionEvent", {
-		ACCESSOR_M(OfflineAudioCompletionEvent, destroy),
-		ACCESSOR_R(OfflineAudioCompletionEvent, renderedBuffer),
-		ACCESSOR_R(OfflineAudioCompletionEvent, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_METHOD(destroy);
+	JS_ASSIGN_GETTER(renderedBuffer);
+	JS_ASSIGN_GETTER(isDestroyed);
 	
 	exports.Set("OfflineAudioCompletionEvent", ctor);
 	
@@ -74,8 +70,6 @@ Napi::Object OfflineAudioCompletionEvent::getNew() {
 
 
 OfflineAudioCompletionEvent::OfflineAudioCompletionEvent(const Napi::CallbackInfo &info): Napi::ObjectWrap<OfflineAudioCompletionEvent>(info) {
-	
-	CTOR_CHECK("OfflineAudioCompletionEvent");
 	
 	OfflineAudioCompletionEvent *offlineAudioCompletionEvent = new OfflineAudioCompletionEvent();
 	

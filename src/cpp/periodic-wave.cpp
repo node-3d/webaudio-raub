@@ -39,13 +39,9 @@ Napi::FunctionReference PeriodicWave::_constructor;
 
 void PeriodicWave::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "PeriodicWave", {
-		ACCESSOR_M(PeriodicWave, destroy),
-		ACCESSOR_R(PeriodicWave, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_METHOD(destroy);
+	JS_ASSIGN_GETTER(isDestroyed);
 	
 	exports.Set("PeriodicWave", ctor);
 	
@@ -67,8 +63,6 @@ Napi::Object PeriodicWave::getNew() {
 
 
 PeriodicWave::PeriodicWave(const Napi::CallbackInfo &info): Napi::ObjectWrap<PeriodicWave>(info) {
-	
-	CTOR_CHECK("PeriodicWave");
 	
 	PeriodicWave *periodicWave = new PeriodicWave();
 	

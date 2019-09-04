@@ -8,22 +8,18 @@ Napi::FunctionReference AnalyserNode::_constructor;
 
 void AnalyserNode::init(Napi::Env env, Napi::Object exports) {
 	
-	Napi::Function ctor = DefineClass(env, "AnalyserNode", {
-		ACCESSOR_RW(AnalyserNode, smoothingTimeConstant),
-		ACCESSOR_RW(AnalyserNode, maxDecibels),
-		ACCESSOR_RW(AnalyserNode, minDecibels),
-		ACCESSOR_RW(AnalyserNode, fftSize),
-		ACCESSOR_M(AnalyserNode, getByteTimeDomainData),
-		ACCESSOR_M(AnalyserNode, getFloatTimeDomainData),
-		ACCESSOR_M(AnalyserNode, getByteFrequencyData),
-		ACCESSOR_M(AnalyserNode, getFloatFrequencyData),
-		ACCESSOR_M(AnalyserNode, destroy),
-		ACCESSOR_R(AnalyserNode, frequencyBinCount),
-		ACCESSOR_R(AnalyserNode, isDestroyed)
-	});
-	
-	_constructor = Napi::Persistent(ctor);
-	_constructor.SuppressDestruct();
+	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_SETTER(smoothingTimeConstant);
+	JS_ASSIGN_SETTER(maxDecibels);
+	JS_ASSIGN_SETTER(minDecibels);
+	JS_ASSIGN_SETTER(fftSize);
+	JS_ASSIGN_METHOD(getByteTimeDomainData);
+	JS_ASSIGN_METHOD(getFloatTimeDomainData);
+	JS_ASSIGN_METHOD(getByteFrequencyData);
+	JS_ASSIGN_METHOD(getFloatFrequencyData);
+	JS_ASSIGN_METHOD(destroy);
+	JS_ASSIGN_GETTER(frequencyBinCount);
+	JS_ASSIGN_GETTER(isDestroyed);
 	
 	exports.Set("AnalyserNode", ctor);
 	
@@ -32,8 +28,7 @@ void AnalyserNode::init(Napi::Env env, Napi::Object exports) {
 // Image.prototype.__proto__ = EventEmitter.prototype;
 AnalyserNode::AnalyserNode(const Napi::CallbackInfo &info):
 CommonNode<AnalyserNode>(info, "AnalyserNode") {
-	
-	CTOR_CHECK("AnalyserNode");
+	super(info);
 	
 	std::make_shared<lab::AnalyserNode>();
 	
