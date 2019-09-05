@@ -1,7 +1,6 @@
 #ifndef _ANALYSER_NODE_HPP_
 #define _ANALYSER_NODE_HPP_
 
-
 #include "common.hpp"
 
 #include "audio-node.hpp"
@@ -11,42 +10,41 @@ class AnalyserNode : public CommonNode<AnalyserNode> {
 DECLARE_ES5_CLASS(AnalyserNode, AnalyserNode);
 	
 public:
-	
-	~AnalyserNode();
-	explicit AnalyserNode(const Napi::CallbackInfo &info);
-	
 	static void init(Napi::Env env, Napi::Object exports);
+	static Napi::Object create(Napi::Env env, Napi::Object context);
 	
+	explicit AnalyserNode(const Napi::CallbackInfo &info);
+	~AnalyserNode();
 	
-protected:
+	void _destroy();
 	
+private:
 	uint32_t _frequencyBinCount;
 	uint32_t _fftSize;
 	double _minDecibels;
 	double _maxDecibels;
 	double _smoothingTimeConstant;
 	
+	JS_DECLARE_METHOD(AnalyserNode, destroy);
 	
-private:
+	JS_DECLARE_METHOD(AnalyserNode, getFloatFrequencyData);
+	JS_DECLARE_METHOD(AnalyserNode, getByteFrequencyData);
+	JS_DECLARE_METHOD(AnalyserNode, getFloatTimeDomainData);
+	JS_DECLARE_METHOD(AnalyserNode, getByteTimeDomainData);
 	
-	JS_DECLARE_METHOD(getFloatFrequencyData);
-	JS_DECLARE_METHOD(getByteFrequencyData);
-	JS_DECLARE_METHOD(getFloatTimeDomainData);
-	JS_DECLARE_METHOD(getByteTimeDomainData);
+	JS_DECLARE_GETTER(AnalyserNode, frequencyBinCount);
 	
-	JS_DECLARE_GETTER(frequencyBinCount);
+	JS_DECLARE_GETTER(AnalyserNode, fftSize);
+	JS_DECLARE_SETTER(AnalyserNode, fftSize);
 	
-	JS_DECLARE_GETTER(fftSize);
-	JS_DECLARE_SETTER(fftSize);
+	JS_DECLARE_GETTER(AnalyserNode, minDecibels);
+	JS_DECLARE_SETTER(AnalyserNode, minDecibels);
 	
-	JS_DECLARE_GETTER(minDecibels);
-	JS_DECLARE_SETTER(minDecibels);
+	JS_DECLARE_GETTER(AnalyserNode, maxDecibels);
+	JS_DECLARE_SETTER(AnalyserNode, maxDecibels);
 	
-	JS_DECLARE_GETTER(maxDecibels);
-	JS_DECLARE_SETTER(maxDecibels);
-	
-	JS_DECLARE_GETTER(smoothingTimeConstant);
-	JS_DECLARE_SETTER(smoothingTimeConstant);
+	JS_DECLARE_GETTER(AnalyserNode, smoothingTimeConstant);
+	JS_DECLARE_SETTER(AnalyserNode, smoothingTimeConstant);
 	
 };
 

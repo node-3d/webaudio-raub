@@ -36,16 +36,16 @@ protected:
 	
 private:
 	
-	JS_DECLARE_METHOD(destroy);
-	JS_DECLARE_GETTER(isDestroyed);
+	JS_DECLARE_METHOD(OfflineAudioContext, destroy);
+	JS_DECLARE_GETTER(OfflineAudioContext, isDestroyed);
 	
-	JS_DECLARE_METHOD(startRendering);
-	JS_DECLARE_METHOD(suspend);
+	JS_DECLARE_METHOD(OfflineAudioContext, startRendering);
+	JS_DECLARE_METHOD(OfflineAudioContext, suspend);
 	
-	JS_DECLARE_GETTER(oncomplete);
-	JS_DECLARE_SETTER(oncomplete);
+	JS_DECLARE_GETTER(OfflineAudioContext, oncomplete);
+	JS_DECLARE_SETTER(OfflineAudioContext, oncomplete);
 	
-	JS_DECLARE_GETTER(length);
+	JS_DECLARE_GETTER(OfflineAudioContext, length);
 	
 };
 

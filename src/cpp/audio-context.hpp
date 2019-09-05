@@ -5,6 +5,7 @@
 
 
 class AudioContext : public CommonCtx<AudioContext> {
+DECLARE_ES5_CLASS(AudioContext, AudioContext);
 	
 public:
 	
@@ -17,16 +18,14 @@ public:
 	
 private:
 	
-	static Napi::FunctionReference _constructor;
-	
 	double _baseLatency;
 	
-	JS_DECLARE_METHOD(destroy);
+	JS_DECLARE_METHOD(AudioContext, destroy);
 	
-	JS_DECLARE_METHOD(suspend);
-	JS_DECLARE_METHOD(close);
-	JS_DECLARE_METHOD(getOutputTimestamp);
-	JS_DECLARE_GETTER(baseLatency);
+	JS_DECLARE_METHOD(AudioContext, suspend);
+	JS_DECLARE_METHOD(AudioContext, close);
+	JS_DECLARE_METHOD(AudioContext, getOutputTimestamp);
+	JS_DECLARE_GETTER(AudioContext, baseLatency);
 	
 };
 

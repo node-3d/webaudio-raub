@@ -7,6 +7,7 @@
 
 
 class ConvolverNode : public CommonNode<ConvolverNode> {
+DECLARE_ES5_CLASS(ConvolverNode, ConvolverNode);
 	
 public:
 	
@@ -20,17 +21,15 @@ public:
 	
 private:
 	
-	static Napi::FunctionReference _constructor;
-	
 	Napi::ObjectReference _buffer;
 	
-	JS_DECLARE_METHOD(destroy);
+	JS_DECLARE_METHOD(ConvolverNode, destroy);
 	
-	JS_DECLARE_GETTER(buffer);
-	JS_DECLARE_SETTER(buffer);
+	JS_DECLARE_GETTER(ConvolverNode, buffer);
+	JS_DECLARE_SETTER(ConvolverNode, buffer);
 	
-	JS_DECLARE_GETTER(normalize);
-	JS_DECLARE_SETTER(normalize);
+	JS_DECLARE_GETTER(ConvolverNode, normalize);
+	JS_DECLARE_SETTER(ConvolverNode, normalize);
 	
 };
 

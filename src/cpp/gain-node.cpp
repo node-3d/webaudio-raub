@@ -5,14 +5,13 @@
 #include "audio-param.hpp"
 
 
-Napi::FunctionReference GainNode::_constructor;
+IMPLEMENT_ES5_CLASS(GainNode);
 
 void GainNode::init(Napi::Env env, Napi::Object exports) {
 	
 	Napi::Function ctor = wrap(env);
 	JS_ASSIGN_GETTER(gain);
 	JS_ASSIGN_METHOD(destroy);
-	});
 	
 	exports.Set("GainNode", ctor);
 	
@@ -21,25 +20,22 @@ void GainNode::init(Napi::Env env, Napi::Object exports) {
 
 GainNode::GainNode(const Napi::CallbackInfo &info):
 CommonNode<GainNode>(info, "GainNode") { NAPI_ENV;
-	super(info);
 	
 	REQ_OBJ_ARG(0, context);
 	
-	Napi::Object that = info.This().As<Napi::Object>();
-	Napi::Function ctor = _constructor.Value().As<Napi::Function>();
-	Napi::Function _Super = ctor.Get("_Super").As<Napi::Function>();
-	
 	reset(context, std::make_shared<lab::GainNode>());
-	
-	std::vector<napi_value> args;
-	args.push_back(context);
-	_Super.Call(that, args);
 	
 	lab::GainNode *node = static_cast<lab::GainNode*>(
 		_impl.get()
 	);
 	
 	_gain.Reset(AudioParam::create(env, context, node->gain()));
+	
+	Napi::Value argv[] = {
+		static_cast<Napi::Value>(context),
+		static_cast<Napi::Value>(JS_NUM(reinterpret_cast<size_t>(&_impl)))
+	};
+	super(info, 2, argv);
 	
 }
 
@@ -58,14 +54,14 @@ void GainNode::_destroy() { DES_CHECK;
 }
 
 
-JS_GETTER(GainNode::gainGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(GainNode, gain) { THIS_CHECK;
 	
 	RET_VALUE(_gain.Value());
 	
 }
 
 
-JS_METHOD(GainNode::destroy) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(GainNode, destroy) { THIS_CHECK;
 	
 	emit("destroy");
 	

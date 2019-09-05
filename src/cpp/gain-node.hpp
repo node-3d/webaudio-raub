@@ -7,9 +7,9 @@
 
 
 class GainNode : public CommonNode<GainNode> {
+DECLARE_ES5_CLASS(GainNode, GainNode);
 	
 public:
-	
 	static void init(Napi::Env env, Napi::Object exports);
 	static Napi::Object create(Napi::Env env, Napi::Object context);
 	
@@ -19,14 +19,11 @@ public:
 	void _destroy();
 	
 private:
-	
-	static Napi::FunctionReference _constructor;
-	
 	Napi::ObjectReference _gain;
 	
-	JS_DECLARE_METHOD(destroy);
+	JS_DECLARE_METHOD(GainNode, destroy);
 	
-	JS_DECLARE_GETTER(gain);
+	JS_DECLARE_GETTER(GainNode, gain);
 	
 };
 

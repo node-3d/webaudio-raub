@@ -8,6 +8,7 @@
 
 
 class OscillatorNode : public CommonNode<OscillatorNode> {
+DECLARE_ES5_CLASS(OscillatorNode, OscillatorNode);
 	
 public:
 	
@@ -21,22 +22,20 @@ public:
 	
 private:
 	
-	static Napi::FunctionReference _constructor;
-	
 	std::string _type;
 	Napi::ObjectReference _frequency;
 	Napi::ObjectReference _detune;
 	
-	JS_DECLARE_METHOD(destroy);
+	JS_DECLARE_METHOD(OscillatorNode, destroy);
 	
-	JS_DECLARE_METHOD(setPeriodicWave);
+	JS_DECLARE_METHOD(OscillatorNode, setPeriodicWave);
 	
-	JS_DECLARE_GETTER(type);
-	JS_DECLARE_SETTER(type);
+	JS_DECLARE_GETTER(OscillatorNode, type);
+	JS_DECLARE_SETTER(OscillatorNode, type);
 	
-	JS_DECLARE_GETTER(frequency);
+	JS_DECLARE_GETTER(OscillatorNode, frequency);
 	
-	JS_DECLARE_GETTER(detune);
+	JS_DECLARE_GETTER(OscillatorNode, detune);
 	
 };
 

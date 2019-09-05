@@ -8,6 +8,7 @@
 
 
 class IIRFilterNode : public CommonNode<IIRFilterNode> {
+DECLARE_ES5_CLASS(IIRFilterNode, IIRFilterNode);
 	
 public:
 	
@@ -35,10 +36,10 @@ protected:
 	
 private:
 	
-	JS_DECLARE_METHOD(destroy);
-	JS_DECLARE_GETTER(isDestroyed);
+	JS_DECLARE_METHOD(IIRFilterNode, destroy);
+	JS_DECLARE_GETTER(IIRFilterNode, isDestroyed);
 	
-	JS_DECLARE_METHOD(getFrequencyResponse);
+	JS_DECLARE_METHOD(IIRFilterNode, getFrequencyResponse);
 	
 };
 

@@ -4,7 +4,7 @@
 #include "audio-param.hpp"
 
 
-Napi::FunctionReference BiquadFilterNode::_constructor;
+IMPLEMENT_ES5_CLASS(BiquadFilterNode);
 
 void BiquadFilterNode::init(Napi::Env env, Napi::Object exports) {
 	
@@ -15,8 +15,7 @@ void BiquadFilterNode::init(Napi::Env env, Napi::Object exports) {
 	JS_ASSIGN_GETTER(Q);
 	JS_ASSIGN_GETTER(detune);
 	JS_ASSIGN_GETTER(frequency);
-		ACCESSOR_M(BiquadFilterNode, destroy)
-	});
+	JS_ASSIGN_METHOD(destroy);
 	
 	exports.Set("BiquadFilterNode", ctor);
 	
@@ -25,19 +24,10 @@ void BiquadFilterNode::init(Napi::Env env, Napi::Object exports) {
 
 BiquadFilterNode::BiquadFilterNode(const Napi::CallbackInfo &info):
 CommonNode<BiquadFilterNode>(info, "BiquadFilterNode") { NAPI_ENV;
-	super(info);
 	
 	REQ_OBJ_ARG(0, context);
 	
-	Napi::Object that = info.This().As<Napi::Object>();
-	Napi::Function ctor = _constructor.Value().As<Napi::Function>();
-	Napi::Function _Super = ctor.Get("_Super").As<Napi::Function>();
-	
 	reset(context, std::make_shared<lab::BiquadFilterNode>());
-	
-	std::vector<napi_value> args;
-	args.push_back(context);
-	_Super.Call(that, args);
 	
 	lab::BiquadFilterNode *node = static_cast<lab::BiquadFilterNode*>(
 		_impl.get()
@@ -47,6 +37,12 @@ CommonNode<BiquadFilterNode>(info, "BiquadFilterNode") { NAPI_ENV;
 	_detune.Reset(AudioParam::create(env, context, node->detune()));
 	_Q.Reset(AudioParam::create(env, context, node->q()));
 	_gain.Reset(AudioParam::create(env, context, node->gain()));
+	
+	Napi::Value argv[] = {
+		static_cast<Napi::Value>(context),
+		static_cast<Napi::Value>(JS_NUM(reinterpret_cast<size_t>(&_impl)))
+	};
+	super(info, 2, argv);
 	
 }
 
@@ -71,7 +67,7 @@ void BiquadFilterNode::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-JS_METHOD(BiquadFilterNode::getFrequencyResponse) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(BiquadFilterNode, getFrequencyResponse) { THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, frequencyHz);
 	REQ_OBJ_ARG(1, magResponse);
@@ -83,13 +79,13 @@ JS_METHOD(BiquadFilterNode::getFrequencyResponse) { THIS_CHECK;
 }
 
 
-JS_GETTER(BiquadFilterNode::typeGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(BiquadFilterNode, type) { THIS_CHECK;
 	
 	RET_STR(_type);
 	
 }
 
-JS_SETTER(BiquadFilterNode::typeSetter) { THIS_SETTER_CHECK; SETTER_STR_ARG;
+JS_IMPLEMENT_SETTER(BiquadFilterNode, type) { THIS_SETTER_CHECK; SETTER_STR_ARG;
 	
 	CACHE_CAS(_type, v);
 	
@@ -100,35 +96,35 @@ JS_SETTER(BiquadFilterNode::typeSetter) { THIS_SETTER_CHECK; SETTER_STR_ARG;
 }
 
 
-JS_GETTER(BiquadFilterNode::frequencyGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(BiquadFilterNode, frequency) { THIS_CHECK;
 	
 	RET_VALUE(_frequency.Value());
 	
 }
 
 
-JS_GETTER(BiquadFilterNode::detuneGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(BiquadFilterNode, detune) { THIS_CHECK;
 	
 	RET_VALUE(_detune.Value());
 	
 }
 
 
-JS_GETTER(BiquadFilterNode::QGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(BiquadFilterNode, Q) { THIS_CHECK;
 	
 	RET_VALUE(_Q.Value());
 	
 }
 
 
-JS_GETTER(BiquadFilterNode::gainGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(BiquadFilterNode, gain) { THIS_CHECK;
 	
 	RET_VALUE(_gain.Value());
 	
 }
 
 
-JS_METHOD(BiquadFilterNode::destroy) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(BiquadFilterNode, destroy) { THIS_CHECK;
 	
 	emit("destroy");
 	

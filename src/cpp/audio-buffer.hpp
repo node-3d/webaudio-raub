@@ -5,6 +5,7 @@
 
 
 class AudioBuffer : public CommonBus<AudioBuffer> {
+DECLARE_ES5_CLASS(AudioBuffer, AudioBuffer);
 	
 public:
 	
@@ -18,26 +19,24 @@ public:
 	
 private:
 	
-	static Napi::FunctionReference _constructor;
-	
 	int _length;
 	double _duration;
 	float _sampleRate;
 	uint32_t _numberOfChannels;
 	
-	JS_DECLARE_METHOD(destroy);
+	JS_DECLARE_METHOD(AudioBuffer, destroy);
 	
-	JS_DECLARE_METHOD(getChannelData);
-	JS_DECLARE_METHOD(copyFromChannel);
-	JS_DECLARE_METHOD(copyToChannel);
+	JS_DECLARE_METHOD(AudioBuffer, getChannelData);
+	JS_DECLARE_METHOD(AudioBuffer, copyFromChannel);
+	JS_DECLARE_METHOD(AudioBuffer, copyToChannel);
 	
-	JS_DECLARE_GETTER(length);
+	JS_DECLARE_GETTER(AudioBuffer, length);
 	
-	JS_DECLARE_GETTER(duration);
+	JS_DECLARE_GETTER(AudioBuffer, duration);
 	
-	JS_DECLARE_GETTER(sampleRate);
+	JS_DECLARE_GETTER(AudioBuffer, sampleRate);
 	
-	JS_DECLARE_GETTER(numberOfChannels);
+	JS_DECLARE_GETTER(AudioBuffer, numberOfChannels);
 	
 };
 

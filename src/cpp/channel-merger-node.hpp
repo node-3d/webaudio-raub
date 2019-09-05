@@ -8,6 +8,7 @@
 
 
 class ChannelMergerNode : public CommonNode<ChannelMergerNode> {
+DECLARE_ES5_CLASS(ChannelMergerNode, ChannelMergerNode);
 	
 public:
 	

@@ -31,7 +31,7 @@ void OfflineAudioCompletionEvent::_destroy() { DES_CHECK;
 
 
 
-JS_GETTER(OfflineAudioCompletionEvent::renderedBufferGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(OfflineAudioCompletionEvent, renderedBuffer) { THIS_CHECK;
 	
 	RET_VALUE(_renderedBuffer.Value());
 	
@@ -40,7 +40,7 @@ JS_GETTER(OfflineAudioCompletionEvent::renderedBufferGetter) { THIS_CHECK;
 
 // ------ System methods and props for Napi::ObjectWrap
 
-Napi::FunctionReference OfflineAudioCompletionEvent::_constructor;
+IMPLEMENT_ES5_CLASS(OfflineAudioCompletionEvent);
 
 
 void OfflineAudioCompletionEvent::init(Napi::Env env, Napi::Object exports) {
@@ -56,7 +56,7 @@ void OfflineAudioCompletionEvent::init(Napi::Env env, Napi::Object exports) {
 
 
 bool OfflineAudioCompletionEvent::isOfflineAudioCompletionEvent(Napi::Object obj) {
-	return obj.InstanceOf(_constructor.Value());
+	return obj.InstanceOf(_ctorEs5.Value());
 }
 
 
@@ -76,14 +76,14 @@ OfflineAudioCompletionEvent::OfflineAudioCompletionEvent(const Napi::CallbackInf
 }
 
 
-JS_METHOD(OfflineAudioCompletionEvent::destroy) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(OfflineAudioCompletionEvent, destroy) { THIS_CHECK;
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(OfflineAudioCompletionEvent::isDestroyedGetter) { NAPI_ENV;
+JS_IMPLEMENT_GETTER(OfflineAudioCompletionEvent, isDestroyed) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

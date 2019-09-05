@@ -8,6 +8,7 @@
 
 
 class MediaStreamAudioSourceNode : public CommonNode<MediaStreamAudioSourceNode> {
+DECLARE_ES5_CLASS(MediaStreamAudioSourceNode, MediaStreamAudioSourceNode);
 	
 public:
 	
@@ -35,12 +36,12 @@ protected:
 	
 private:
 	
-	JS_DECLARE_METHOD(destroy);
-	JS_DECLARE_GETTER(isDestroyed);
+	JS_DECLARE_METHOD(MediaStreamAudioSourceNode, destroy);
+	JS_DECLARE_GETTER(MediaStreamAudioSourceNode, isDestroyed);
 	
 	
 	
-	JS_DECLARE_GETTER(mediaStream);
+	JS_DECLARE_GETTER(MediaStreamAudioSourceNode, mediaStream);
 	
 };
 

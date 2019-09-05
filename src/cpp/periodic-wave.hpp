@@ -6,6 +6,7 @@
 
 
 class PeriodicWave : public CommonNode<PeriodicWave> {
+DECLARE_ES5_CLASS(PeriodicWave, PeriodicWave);
 	
 public:
 	
@@ -33,8 +34,8 @@ protected:
 	
 private:
 	
-	JS_DECLARE_METHOD(destroy);
-	JS_DECLARE_GETTER(isDestroyed);
+	JS_DECLARE_METHOD(PeriodicWave, destroy);
+	JS_DECLARE_GETTER(PeriodicWave, isDestroyed);
 	
 	
 	

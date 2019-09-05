@@ -34,7 +34,7 @@ void StereoPannerNode::_destroy() { DES_CHECK;
 
 
 
-JS_GETTER(StereoPannerNode::panGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(StereoPannerNode, pan) { THIS_CHECK;
 	
 	RET_VALUE(_pan.Value());
 	
@@ -43,7 +43,7 @@ JS_GETTER(StereoPannerNode::panGetter) { THIS_CHECK;
 
 // ------ System methods and props for Napi::ObjectWrap
 
-Napi::FunctionReference StereoPannerNode::_constructor;
+IMPLEMENT_ES5_CLASS(StereoPannerNode);
 
 
 void StereoPannerNode::init(Napi::Env env, Napi::Object exports) {
@@ -59,7 +59,7 @@ void StereoPannerNode::init(Napi::Env env, Napi::Object exports) {
 
 
 bool StereoPannerNode::isStereoPannerNode(Napi::Object obj) {
-	return obj.InstanceOf(_constructor.Value());
+	return obj.InstanceOf(_ctorEs5.Value());
 }
 
 
@@ -79,7 +79,7 @@ StereoPannerNode::StereoPannerNode(const Napi::CallbackInfo &info): Napi::Object
 }
 
 
-JS_METHOD(StereoPannerNode::destroy) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(StereoPannerNode, destroy) { THIS_CHECK;
 	
 	emit("destroy");
 	
@@ -88,7 +88,7 @@ JS_METHOD(StereoPannerNode::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(StereoPannerNode::isDestroyedGetter) { NAPI_ENV;
+JS_IMPLEMENT_GETTER(StereoPannerNode, isDestroyed) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

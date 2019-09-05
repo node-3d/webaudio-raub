@@ -8,7 +8,7 @@
 #include "common.hpp"
 
 
-Napi::FunctionReference AudioParam::_constructor;
+IMPLEMENT_ES5_CLASS(AudioParam);
 
 void AudioParam::init(Napi::Env env, Napi::Object exports) {
 	
@@ -24,8 +24,7 @@ void AudioParam::init(Napi::Env env, Napi::Object exports) {
 	JS_ASSIGN_GETTER(maxValue);
 	JS_ASSIGN_GETTER(minValue);
 	JS_ASSIGN_GETTER(defaultValue);
-		ACCESSOR_M(AudioParam, destroy)
-	});
+	JS_ASSIGN_METHOD(destroy);
 	
 	exports.Set("AudioParam", ctor);
 	
@@ -33,7 +32,7 @@ void AudioParam::init(Napi::Env env, Napi::Object exports) {
 
 
 Napi::Object AudioParam::create(Napi::Env env, Napi::Object context, ParamPtr param) {
-	Napi::Function ctor = _constructor.Value().As<Napi::Function>();
+	Napi::Function ctor = _ctorEs5.Value().As<Napi::Function>();
 	std::vector<napi_value> args;
 	args.push_back(context);
 	args.push_back(JS_EXT(&param));
@@ -42,7 +41,7 @@ Napi::Object AudioParam::create(Napi::Env env, Napi::Object context, ParamPtr pa
 
 
 bool AudioParam::isAudioParam(Napi::Object obj) {
-	return obj.InstanceOf(_constructor.Value());
+	return obj.InstanceOf(_ctorEs5.Value());
 }
 
 
@@ -70,7 +69,7 @@ void AudioParam::_destroy() { DES_CHECK;
 }
 
 
-JS_METHOD(AudioParam::setValueAtTime) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(AudioParam, setValueAtTime) { THIS_CHECK;
 	
 	REQ_FLOAT_ARG(0, value);
 	REQ_FLOAT_ARG(1, time);
@@ -81,7 +80,7 @@ JS_METHOD(AudioParam::setValueAtTime) { THIS_CHECK;
 }
 
 
-JS_METHOD(AudioParam::linearRampToValueAtTime) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(AudioParam, linearRampToValueAtTime) { THIS_CHECK;
 	
 	REQ_FLOAT_ARG(0, value);
 	REQ_FLOAT_ARG(1, time);
@@ -92,7 +91,7 @@ JS_METHOD(AudioParam::linearRampToValueAtTime) { THIS_CHECK;
 }
 
 
-JS_METHOD(AudioParam::exponentialRampToValueAtTime) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(AudioParam, exponentialRampToValueAtTime) { THIS_CHECK;
 	
 	REQ_FLOAT_ARG(0, value);
 	REQ_FLOAT_ARG(1, time);
@@ -103,7 +102,7 @@ JS_METHOD(AudioParam::exponentialRampToValueAtTime) { THIS_CHECK;
 }
 
 
-JS_METHOD(AudioParam::setTargetAtTime) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(AudioParam, setTargetAtTime) { THIS_CHECK;
 	
 	REQ_FLOAT_ARG(0, target);
 	REQ_FLOAT_ARG(1, time);
@@ -115,7 +114,7 @@ JS_METHOD(AudioParam::setTargetAtTime) { THIS_CHECK;
 }
 
 
-JS_METHOD(AudioParam::setValueCurveAtTime) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(AudioParam, setValueCurveAtTime) { THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, values);
 	REQ_FLOAT_ARG(1, time);
@@ -130,7 +129,7 @@ JS_METHOD(AudioParam::setValueCurveAtTime) { THIS_CHECK;
 }
 
 
-JS_METHOD(AudioParam::cancelScheduledValues) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(AudioParam, cancelScheduledValues) { THIS_CHECK;
 	
 	REQ_FLOAT_ARG(0, startTime);
 	
@@ -140,7 +139,7 @@ JS_METHOD(AudioParam::cancelScheduledValues) { THIS_CHECK;
 }
 
 
-JS_METHOD(AudioParam::cancelAndHoldAtTime) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(AudioParam, cancelAndHoldAtTime) { THIS_CHECK;
 	
 	REQ_FLOAT_ARG(0, startTime);
 	
@@ -151,7 +150,7 @@ JS_METHOD(AudioParam::cancelAndHoldAtTime) { THIS_CHECK;
 }
 
 
-JS_GETTER(AudioParam::valueGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(AudioParam, value) { THIS_CHECK;
 	
 	Napi::Object context = _context.Value();
 	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
@@ -162,35 +161,35 @@ JS_GETTER(AudioParam::valueGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(AudioParam::valueSetter) { THIS_SETTER_CHECK; SETTER_FLOAT_ARG;
+JS_IMPLEMENT_SETTER(AudioParam, value) { THIS_SETTER_CHECK; SETTER_FLOAT_ARG;
 	
 	_impl->setValue(v);
 	
 }
 
 
-JS_GETTER(AudioParam::defaultValueGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(AudioParam, defaultValue) { THIS_CHECK;
 	
 	RET_NUM(_impl->defaultValue());
 	
 }
 
 
-JS_GETTER(AudioParam::minValueGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(AudioParam, minValue) { THIS_CHECK;
 	
 	RET_NUM(_impl->minValue());
 	
 }
 
 
-JS_GETTER(AudioParam::maxValueGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(AudioParam, maxValue) { THIS_CHECK;
 	
 	RET_NUM(_impl->maxValue());
 	
 }
 
 
-JS_METHOD(AudioParam::destroy) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(AudioParam, destroy) { THIS_CHECK;
 	
 	emit("destroy");
 	

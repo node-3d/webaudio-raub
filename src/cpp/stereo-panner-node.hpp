@@ -8,6 +8,7 @@
 
 
 class StereoPannerNode : public CommonNode<StereoPannerNode> {
+DECLARE_ES5_CLASS(StereoPannerNode, StereoPannerNode);
 	
 public:
 	
@@ -35,12 +36,12 @@ protected:
 	
 private:
 	
-	JS_DECLARE_METHOD(destroy);
-	JS_DECLARE_GETTER(isDestroyed);
+	JS_DECLARE_METHOD(StereoPannerNode, destroy);
+	JS_DECLARE_GETTER(StereoPannerNode, isDestroyed);
 	
 	
 	
-	JS_DECLARE_GETTER(pan);
+	JS_DECLARE_GETTER(StereoPannerNode, pan);
 	
 };
 

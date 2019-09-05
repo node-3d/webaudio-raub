@@ -40,7 +40,7 @@ std::string getExtension(const uint8_t *data) {
 }
 
 
-Napi::FunctionReference BaseAudioContext::_constructor;
+IMPLEMENT_ES5_CLASS(BaseAudioContext);
 
 void BaseAudioContext::init(Napi::Env env, Napi::Object exports) {
 	
@@ -53,8 +53,7 @@ void BaseAudioContext::init(Napi::Env env, Napi::Object exports) {
 	JS_ASSIGN_GETTER(sampleRate);
 	JS_ASSIGN_GETTER(currentTime);
 	JS_ASSIGN_GETTER(destination);
-		ACCESSOR_M(BaseAudioContext, destroy)
-	});
+	JS_ASSIGN_METHOD(destroy);
 	
 	exports.Set("BaseAudioContext", ctor);
 	
@@ -63,18 +62,19 @@ void BaseAudioContext::init(Napi::Env env, Napi::Object exports) {
 
 BaseAudioContext::BaseAudioContext(const Napi::CallbackInfo &info):
 CommonCtx<BaseAudioContext>(info, "BaseAudioContext") { NAPI_ENV;
-	super(info);
-	
-	// REQ_EXT_ARG(0, extCtx);
-	REQ_OFFS_ARG(0, extCtx);
-	std::cout << "lowwwww" << extCtx << std::endl;
-	// CtxPtr *ctx = reinterpret_cast<CtxPtr*>(extCtx.Data());
-	CtxPtr *ctx = reinterpret_cast<CtxPtr*>(extCtx);
+	std::cout << "000000" << std::endl;
+	// super(info);
+	std::cout << "11111" << std::endl;
+	REQ_EXT_ARG(0, extCtx);
+	// REQ_OFFS_ARG(0, extCtx);
+	std::cout << "lowwwww" << extCtx.Data() << std::endl;
+	CtxPtr *ctx = reinterpret_cast<CtxPtr*>(extCtx.Data());
+	// CtxPtr *ctx = reinterpret_cast<CtxPtr*>(extCtx);
 	
 	reset(*ctx);
 	
 	_state = "running";
-	
+	std::cout << "lowwwww2" << extCtx << std::endl;
 	// Napi::Object node = AudioDestinationNode::create(context, _impl->destination());
 	// _destination.Reset(node);
 	
@@ -94,15 +94,7 @@ CommonCtx<BaseAudioContext>(info, "BaseAudioContext") { NAPI_ENV;
 	// Napi::Value argv = context;
 	// Nan::AsyncResource async("BaseAudioContext::finishNew()");
 	// startUpdaterCb.Call(1, &argv, &async);
-	
-	std::cout << "lolo2 5" << std::endl;
-	Napi::Object that = info.This().As<Napi::Object>();std::cout << "lolo2 6" << std::endl;
-	Napi::Function ctor = _constructor.Value().As<Napi::Function>();std::cout << "lolo2 7" << std::endl;
-	Napi::Function _Super = ctor.Get("_Super").As<Napi::Function>();std::cout << "lolo2 8" << std::endl;
-	std::vector<napi_value> args;std::cout << "lolo2 9" << std::endl;
-	// _Super.Call(that, args);
-	std::cout << "lolo2 11" << std::endl;
-	
+	std::cout << "lowwwww3" << extCtx << std::endl;
 }
 
 
@@ -142,7 +134,7 @@ void BaseAudioContext::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-JS_METHOD(BaseAudioContext::decodeAudioData) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(BaseAudioContext, decodeAudioData) { THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, audioData);
 	REQ_FUN_ARG(1, successCallback);
@@ -167,7 +159,7 @@ JS_METHOD(BaseAudioContext::decodeAudioData) { THIS_CHECK;
 }
 
 
-JS_METHOD(BaseAudioContext::update) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(BaseAudioContext, update) { THIS_CHECK;
 	
 	_impl->dispatchEvents();
 	
@@ -176,7 +168,7 @@ JS_METHOD(BaseAudioContext::update) { THIS_CHECK;
 }
 
 
-JS_METHOD(BaseAudioContext::resume) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(BaseAudioContext, resume) { THIS_CHECK;
 	
 	// TODO: do something?
 	RET_UNDEFINED;
@@ -184,42 +176,42 @@ JS_METHOD(BaseAudioContext::resume) { THIS_CHECK;
 }
 
 
-JS_GETTER(BaseAudioContext::destinationGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(BaseAudioContext, destination) { THIS_CHECK;
 	
 	RET_VALUE(_destination.Value());
 	
 }
 
 
-JS_GETTER(BaseAudioContext::currentTimeGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(BaseAudioContext, currentTime) { THIS_CHECK;
 	
 	RET_NUM(_impl->currentTime());
 	
 }
 
 
-JS_GETTER(BaseAudioContext::sampleRateGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(BaseAudioContext, sampleRate) { THIS_CHECK;
 	
 	RET_NUM(_impl->sampleRate());
 	
 }
 
 
-JS_GETTER(BaseAudioContext::listenerGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(BaseAudioContext, listener) { THIS_CHECK;
 	
 	RET_VALUE(_listener.Value());
 	
 }
 
 
-JS_GETTER(BaseAudioContext::stateGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(BaseAudioContext, state) { THIS_CHECK;
 	
 	RET_STR(_state);
 	
 }
 
 
-JS_METHOD(BaseAudioContext::destroy) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(BaseAudioContext, destroy) { THIS_CHECK;
 	
 	emit("destroy");
 	

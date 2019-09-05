@@ -8,6 +8,7 @@
 
 
 class DynamicsCompressorNode : public CommonNode<DynamicsCompressorNode> {
+DECLARE_ES5_CLASS(DynamicsCompressorNode, DynamicsCompressorNode);
 	
 public:
 	
@@ -40,22 +41,22 @@ protected:
 	
 private:
 	
-	JS_DECLARE_METHOD(destroy);
-	JS_DECLARE_GETTER(isDestroyed);
+	JS_DECLARE_METHOD(DynamicsCompressorNode, destroy);
+	JS_DECLARE_GETTER(DynamicsCompressorNode, isDestroyed);
 	
 	
 	
-	JS_DECLARE_GETTER(threshold);
+	JS_DECLARE_GETTER(DynamicsCompressorNode, threshold);
 	
-	JS_DECLARE_GETTER(knee);
+	JS_DECLARE_GETTER(DynamicsCompressorNode, knee);
 	
-	JS_DECLARE_GETTER(ratio);
+	JS_DECLARE_GETTER(DynamicsCompressorNode, ratio);
 	
-	JS_DECLARE_GETTER(reduction);
+	JS_DECLARE_GETTER(DynamicsCompressorNode, reduction);
 	
-	JS_DECLARE_GETTER(attack);
+	JS_DECLARE_GETTER(DynamicsCompressorNode, attack);
 	
-	JS_DECLARE_GETTER(release);
+	JS_DECLARE_GETTER(DynamicsCompressorNode, release);
 	
 };
 

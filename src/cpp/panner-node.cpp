@@ -45,7 +45,7 @@ inline lab::PanningMode toPanningMode(const std::string &mode) {
 }
 
 
-Napi::FunctionReference PannerNode::_constructor;
+IMPLEMENT_ES5_CLASS(PannerNode);
 
 void PannerNode::init(Napi::Env env, Napi::Object exports) {
 	
@@ -67,8 +67,7 @@ void PannerNode::init(Napi::Env env, Napi::Object exports) {
 	JS_ASSIGN_GETTER(positionZ);
 	JS_ASSIGN_GETTER(positionY);
 	JS_ASSIGN_GETTER(positionX);
-		ACCESSOR_M(PannerNode, destroy)
-	});
+	JS_ASSIGN_METHOD(destroy);
 	
 	exports.Set("PannerNode", ctor);
 	
@@ -77,22 +76,15 @@ void PannerNode::init(Napi::Env env, Napi::Object exports) {
 
 PannerNode::PannerNode(const Napi::CallbackInfo &info):
 CommonNode<PannerNode>(info, "PannerNode") { NAPI_ENV;
-	super(info);
 	
 	REQ_OBJ_ARG(0, context);
 	
 	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
 	float sampleRate = audioContext->getCtx()->sampleRate();
-	Napi::Object that = info.This().As<Napi::Object>();
-	Napi::Function ctor = _constructor.Value().As<Napi::Function>();
-	Napi::Function _Super = ctor.Get("_Super").As<Napi::Function>();
+	Napi::Function ctor = _ctorEs5.Value().As<Napi::Function>();
 	Napi::String hrtf = ctor.Get("hrtf").As<Napi::String>();
 	
 	reset(context, std::make_shared<lab::PannerNode>(sampleRate, hrtf.Utf8Value()));
-	
-	std::vector<napi_value> args;
-	args.push_back(context);
-	_Super.Call(that, args);
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
 		_impl.get()
@@ -104,6 +96,12 @@ CommonNode<PannerNode>(info, "PannerNode") { NAPI_ENV;
 	_orientationX.Reset(AudioParam::create(env, context, node->orientationX()));
 	_orientationY.Reset(AudioParam::create(env, context, node->orientationY()));
 	_orientationZ.Reset(AudioParam::create(env, context, node->orientationZ()));
+	
+	Napi::Value argv[] = {
+		static_cast<Napi::Value>(context),
+		static_cast<Napi::Value>(JS_NUM(reinterpret_cast<size_t>(&_impl)))
+	};
+	super(info, 2, argv);
 	
 }
 
@@ -130,7 +128,7 @@ void PannerNode::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-JS_METHOD(PannerNode::setPosition) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(PannerNode, setPosition) { THIS_CHECK;
 	
 	REQ_FLOAT_ARG(0, x);
 	REQ_FLOAT_ARG(1, y);
@@ -146,7 +144,7 @@ JS_METHOD(PannerNode::setPosition) { THIS_CHECK;
 }
 
 
-JS_METHOD(PannerNode::setOrientation) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(PannerNode, setOrientation) { THIS_CHECK;
 	
 	REQ_FLOAT_ARG(0, x);
 	REQ_FLOAT_ARG(1, y);
@@ -162,7 +160,7 @@ JS_METHOD(PannerNode::setOrientation) { THIS_CHECK;
 }
 
 
-JS_METHOD(PannerNode::setVelocity) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(PannerNode, setVelocity) { THIS_CHECK;
 	
 	REQ_FLOAT_ARG(0, x);
 	REQ_FLOAT_ARG(1, y);
@@ -177,7 +175,7 @@ JS_METHOD(PannerNode::setVelocity) { THIS_CHECK;
 	
 }
 
-JS_GETTER(PannerNode::panningModelGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(PannerNode, panningModel) { THIS_CHECK;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
 		_impl.get()
@@ -187,7 +185,7 @@ JS_GETTER(PannerNode::panningModelGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(PannerNode::panningModelSetter) { THIS_SETTER_CHECK; SETTER_STR_ARG;
+JS_IMPLEMENT_SETTER(PannerNode, panningModel) { THIS_SETTER_CHECK; SETTER_STR_ARG;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
 		_impl.get()
@@ -208,7 +206,7 @@ PARAM_GETTER(PannerNode, orientationY);
 PARAM_GETTER(PannerNode, orientationZ);
 
 
-JS_GETTER(PannerNode::distanceModelGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(PannerNode, distanceModel) { THIS_CHECK;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
 		_impl.get()
@@ -218,7 +216,7 @@ JS_GETTER(PannerNode::distanceModelGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(PannerNode::distanceModelSetter) { THIS_SETTER_CHECK; SETTER_STR_ARG;
+JS_IMPLEMENT_SETTER(PannerNode, distanceModel) { THIS_SETTER_CHECK; SETTER_STR_ARG;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
 		_impl.get()
@@ -231,7 +229,7 @@ JS_SETTER(PannerNode::distanceModelSetter) { THIS_SETTER_CHECK; SETTER_STR_ARG;
 }
 
 
-JS_GETTER(PannerNode::refDistanceGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(PannerNode, refDistance) { THIS_CHECK;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
 		_impl.get()
@@ -241,7 +239,7 @@ JS_GETTER(PannerNode::refDistanceGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(PannerNode::refDistanceSetter) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
+JS_IMPLEMENT_SETTER(PannerNode, refDistance) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
 		_impl.get()
@@ -254,7 +252,7 @@ JS_SETTER(PannerNode::refDistanceSetter) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
 }
 
 
-JS_GETTER(PannerNode::maxDistanceGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(PannerNode, maxDistance) { THIS_CHECK;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
 		_impl.get()
@@ -264,7 +262,7 @@ JS_GETTER(PannerNode::maxDistanceGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(PannerNode::maxDistanceSetter) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
+JS_IMPLEMENT_SETTER(PannerNode, maxDistance) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
 		_impl.get()
@@ -277,7 +275,7 @@ JS_SETTER(PannerNode::maxDistanceSetter) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
 }
 
 
-JS_GETTER(PannerNode::rolloffFactorGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(PannerNode, rolloffFactor) { THIS_CHECK;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
 		_impl.get()
@@ -287,7 +285,7 @@ JS_GETTER(PannerNode::rolloffFactorGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(PannerNode::rolloffFactorSetter) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
+JS_IMPLEMENT_SETTER(PannerNode, rolloffFactor) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
 		_impl.get()
@@ -300,7 +298,7 @@ JS_SETTER(PannerNode::rolloffFactorSetter) { THIS_SETTER_CHECK; SETTER_DOUBLE_AR
 }
 
 
-JS_GETTER(PannerNode::coneInnerAngleGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(PannerNode, coneInnerAngle) { THIS_CHECK;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
 		_impl.get()
@@ -310,7 +308,7 @@ JS_GETTER(PannerNode::coneInnerAngleGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(PannerNode::coneInnerAngleSetter) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
+JS_IMPLEMENT_SETTER(PannerNode, coneInnerAngle) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
 		_impl.get()
@@ -323,7 +321,7 @@ JS_SETTER(PannerNode::coneInnerAngleSetter) { THIS_SETTER_CHECK; SETTER_DOUBLE_A
 }
 
 
-JS_GETTER(PannerNode::coneOuterAngleGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(PannerNode, coneOuterAngle) { THIS_CHECK;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
 		_impl.get()
@@ -333,7 +331,7 @@ JS_GETTER(PannerNode::coneOuterAngleGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(PannerNode::coneOuterAngleSetter) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
+JS_IMPLEMENT_SETTER(PannerNode, coneOuterAngle) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
 		_impl.get()
@@ -346,7 +344,7 @@ JS_SETTER(PannerNode::coneOuterAngleSetter) { THIS_SETTER_CHECK; SETTER_DOUBLE_A
 }
 
 
-JS_GETTER(PannerNode::coneOuterGainGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(PannerNode, coneOuterGain) { THIS_CHECK;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
 		_impl.get()
@@ -356,7 +354,7 @@ JS_GETTER(PannerNode::coneOuterGainGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(PannerNode::coneOuterGainSetter) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
+JS_IMPLEMENT_SETTER(PannerNode, coneOuterGain) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
 		_impl.get()
@@ -369,7 +367,7 @@ JS_SETTER(PannerNode::coneOuterGainSetter) { THIS_SETTER_CHECK; SETTER_DOUBLE_AR
 }
 
 
-JS_METHOD(PannerNode::destroy) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(PannerNode, destroy) { THIS_CHECK;
 	
 	emit("destroy");
 	

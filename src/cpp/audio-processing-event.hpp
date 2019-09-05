@@ -6,6 +6,7 @@
 
 
 class AudioProcessingEvent : public CommonNode<AudioProcessingEvent> {
+DECLARE_ES5_CLASS(AudioProcessingEvent, AudioProcessingEvent);
 	
 public:
 	
@@ -35,16 +36,16 @@ protected:
 	
 private:
 	
-	JS_DECLARE_METHOD(destroy);
-	JS_DECLARE_GETTER(isDestroyed);
+	JS_DECLARE_METHOD(AudioProcessingEvent, destroy);
+	JS_DECLARE_GETTER(AudioProcessingEvent, isDestroyed);
 	
 	
 	
-	JS_DECLARE_GETTER(playbackTime);
+	JS_DECLARE_GETTER(AudioProcessingEvent, playbackTime);
 	
-	JS_DECLARE_GETTER(inputBuffer);
+	JS_DECLARE_GETTER(AudioProcessingEvent, inputBuffer);
 	
-	JS_DECLARE_GETTER(outputBuffer);
+	JS_DECLARE_GETTER(AudioProcessingEvent, outputBuffer);
 	
 };
 

@@ -34,7 +34,7 @@ void MediaStreamAudioDestinationNode::_destroy() { DES_CHECK;
 
 
 
-JS_GETTER(MediaStreamAudioDestinationNode::streamGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(MediaStreamAudioDestinationNode, stream) { THIS_CHECK;
 	
 	RET_VALUE(_stream.Value());
 	
@@ -43,7 +43,7 @@ JS_GETTER(MediaStreamAudioDestinationNode::streamGetter) { THIS_CHECK;
 
 // ------ System methods and props for Napi::ObjectWrap
 
-Napi::FunctionReference MediaStreamAudioDestinationNode::_constructor;
+IMPLEMENT_ES5_CLASS(MediaStreamAudioDestinationNode);
 
 
 void MediaStreamAudioDestinationNode::init(Napi::Env env, Napi::Object exports) {
@@ -59,7 +59,7 @@ void MediaStreamAudioDestinationNode::init(Napi::Env env, Napi::Object exports) 
 
 
 bool MediaStreamAudioDestinationNode::isMediaStreamAudioDestinationNode(Napi::Object obj) {
-	return obj.InstanceOf(_constructor.Value());
+	return obj.InstanceOf(_ctorEs5.Value());
 }
 
 
@@ -80,7 +80,7 @@ MediaStreamAudioDestinationNode::MediaStreamAudioDestinationNode(const Napi::Cal
 }
 
 
-JS_METHOD(MediaStreamAudioDestinationNode::destroy) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(MediaStreamAudioDestinationNode, destroy) { THIS_CHECK;
 	
 	emit("destroy");
 	
@@ -89,7 +89,7 @@ JS_METHOD(MediaStreamAudioDestinationNode::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(MediaStreamAudioDestinationNode::isDestroyedGetter) { NAPI_ENV;
+JS_IMPLEMENT_GETTER(MediaStreamAudioDestinationNode, isDestroyed) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

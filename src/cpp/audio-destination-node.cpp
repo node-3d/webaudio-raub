@@ -3,14 +3,13 @@
 #include "audio-destination-node.hpp"
 
 
-Napi::FunctionReference AudioDestinationNode::_constructor;
+IMPLEMENT_ES5_CLASS(AudioDestinationNode);
 
 void AudioDestinationNode::init(Napi::Env env, Napi::Object exports) {
 	
 	Napi::Function ctor = wrap(env);
 	JS_ASSIGN_GETTER(maxChannelCount);
-		ACCESSOR_M(AudioDestinationNode, destroy)
-	});
+	JS_ASSIGN_METHOD(destroy);
 	
 	exports.Set("AudioDestinationNode", ctor);
 	
@@ -18,7 +17,7 @@ void AudioDestinationNode::init(Napi::Env env, Napi::Object exports) {
 
 
 Napi::Object AudioDestinationNode::create(Napi::Env env, Napi::Object context, NodePtr node) {
-	Napi::Function ctor = _constructor.Value().As<Napi::Function>();
+	Napi::Function ctor = _ctorEs5.Value().As<Napi::Function>();
 	std::vector<napi_value> args;
 	args.push_back(context);
 	args.push_back(JS_EXT(&node));
@@ -52,14 +51,14 @@ void AudioDestinationNode::_destroy() { DES_CHECK;
 }
 
 
-JS_GETTER(AudioDestinationNode::maxChannelCountGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(AudioDestinationNode, maxChannelCount) { THIS_CHECK;
 	
 	RET_NUM(_maxChannelCount);
 	
 }
 
 
-JS_METHOD(AudioDestinationNode::destroy) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(AudioDestinationNode, destroy) { THIS_CHECK;
 	
 	emit("destroy");
 	

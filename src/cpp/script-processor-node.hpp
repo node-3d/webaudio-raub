@@ -8,6 +8,7 @@
 
 
 class ScriptProcessorNode : public CommonNode<ScriptProcessorNode> {
+DECLARE_ES5_CLASS(ScriptProcessorNode, ScriptProcessorNode);
 	
 public:
 	
@@ -30,21 +31,21 @@ protected:
 	
 	bool _isDestroyed;
 	
-	V8_STORE_FUNC _onaudioprocess;
+	Napi::FunctionReference _onaudioprocess;
 	int _bufferSize;
 	
 	
 private:
 	
-	JS_DECLARE_METHOD(destroy);
-	JS_DECLARE_GETTER(isDestroyed);
+	JS_DECLARE_METHOD(ScriptProcessorNode, destroy);
+	JS_DECLARE_GETTER(ScriptProcessorNode, isDestroyed);
 	
 	
 	
-	JS_DECLARE_GETTER(onaudioprocess);
-	JS_DECLARE_SETTER(onaudioprocess);
+	JS_DECLARE_GETTER(ScriptProcessorNode, onaudioprocess);
+	JS_DECLARE_SETTER(ScriptProcessorNode, onaudioprocess);
 	
-	JS_DECLARE_GETTER(bufferSize);
+	JS_DECLARE_GETTER(ScriptProcessorNode, bufferSize);
 	
 };
 

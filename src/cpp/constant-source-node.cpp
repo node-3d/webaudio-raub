@@ -34,7 +34,7 @@ void ConstantSourceNode::_destroy() { DES_CHECK;
 
 
 
-JS_GETTER(ConstantSourceNode::offsetGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(ConstantSourceNode, offset) { THIS_CHECK;
 	
 	RET_VALUE(_offset.Value());
 	
@@ -43,7 +43,7 @@ JS_GETTER(ConstantSourceNode::offsetGetter) { THIS_CHECK;
 
 // ------ System methods and props for Napi::ObjectWrap
 
-Napi::FunctionReference ConstantSourceNode::_constructor;
+IMPLEMENT_ES5_CLASS(ConstantSourceNode);
 
 
 void ConstantSourceNode::init(Napi::Env env, Napi::Object exports) {
@@ -59,7 +59,7 @@ void ConstantSourceNode::init(Napi::Env env, Napi::Object exports) {
 
 
 bool ConstantSourceNode::isConstantSourceNode(Napi::Object obj) {
-	return obj.InstanceOf(_constructor.Value());
+	return obj.InstanceOf(_ctorEs5.Value());
 }
 
 
@@ -79,7 +79,7 @@ ConstantSourceNode::ConstantSourceNode(const Napi::CallbackInfo &info): Napi::Ob
 }
 
 
-JS_METHOD(ConstantSourceNode::destroy) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(ConstantSourceNode, destroy) { THIS_CHECK;
 	
 	emit("destroy");
 	
@@ -88,7 +88,7 @@ JS_METHOD(ConstantSourceNode::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(ConstantSourceNode::isDestroyedGetter) { NAPI_ENV;
+JS_IMPLEMENT_GETTER(ConstantSourceNode, isDestroyed) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

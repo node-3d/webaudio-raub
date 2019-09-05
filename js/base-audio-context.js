@@ -1,36 +1,38 @@
 'use strict';
 
-const { inspect } = require('util');
-
-const EventEmitter = require('events');
+const { inspect, inherits } = require('util');
+const Emitter = require('events');
 
 const { BaseAudioContext } = require('../core');
 
+console.log('BC', BaseAudioContext, Emitter);
+inherits(BaseAudioContext, Emitter);
 
-BaseAudioContext.prototype.__proto__ = EventEmitter.prototype;
-BaseAudioContext._Super = EventEmitter.prototype.constructor;
 
-class JsBaseAudioContext extends BaseAudioContext {
+function JsBaseAudioContext(ctx) {
+	console.log('base-audio-context.js', 'cs1', this, ctx);
+	BaseAudioContext.call(this, ctx);
+	console.log('base-audio-context.js', 'cs2');
+}
+inherits(JsBaseAudioContext, BaseAudioContext);
+
+
+JsBaseAudioContext.prototype = {
 	
-	constructor(ctx) {
-		console.log('base-audio-context.js', '111');
-		super(ctx);
-		console.log('base-audio-context.js', '222');
-	}
+	get onerror() { return this.listeners('error'); },
+	set onerror(cb) { this.on('error', cb); },
 	
-	get onerror() { return this.listeners('error'); }
-	set onerror(cb) { this.on('error', cb); }
+	get onstatechange() { return this.listeners('statechange'); },
+	set onstatechange(cb) { this.on('statechange', cb); },
 	
-	get onstatechange() { return this.listeners('statechange'); }
-	set onstatechange(cb) { this.on('statechange', cb); }
-	
-	[inspect.custom]() { return this.toString(); }
+	[inspect.custom]() { return this.toString(); },
 	
 	toString() {
 		return 'BaseAudioContext {}';
-	}
+	},
 	
-}
+};
+
 
 JsBaseAudioContext.UPDATE_INTERVAL = 20;
 

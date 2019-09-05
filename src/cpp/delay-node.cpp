@@ -5,14 +5,13 @@
 #include "audio-param.hpp"
 
 
-Napi::FunctionReference DelayNode::_constructor;
+IMPLEMENT_ES5_CLASS(DelayNode);
 
 void DelayNode::init(Napi::Env env, Napi::Object exports) {
 	
 	Napi::Function ctor = wrap(env);
 	JS_ASSIGN_GETTER(delayTime);
-		ACCESSOR_M(DelayNode, destroy)
-	});
+	JS_ASSIGN_METHOD(destroy);
 	
 	exports.Set("DelayNode", ctor);
 	
@@ -28,21 +27,19 @@ CommonNode<DelayNode>(info, "DelayNode") { NAPI_ENV;
 	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
 	float sampleRate = audioContext->getCtx()->sampleRate();
 	
-	Napi::Object that = info.This().As<Napi::Object>();
-	Napi::Function ctor = _constructor.Value().As<Napi::Function>();
-	Napi::Function _Super = ctor.Get("_Super").As<Napi::Function>();
-	
 	reset(context, std::make_shared<lab::DelayNode>(sampleRate, delay));
-	
-	std::vector<napi_value> args;
-	args.push_back(context);
-	_Super.Call(that, args);
 	
 	lab::DelayNode *node = static_cast<lab::DelayNode*>(
 		_impl.get()
 	);
 	
 	_delayTime.Reset(AudioParam::create(env, context, node->delayTime()));
+	
+	Napi::Value argv[] = {
+		static_cast<Napi::Value>(context),
+		static_cast<Napi::Value>(JS_NUM(reinterpret_cast<size_t>(node)))
+	};
+	super(info, 2, argv);
 	
 }
 
@@ -61,14 +58,14 @@ void DelayNode::_destroy() { DES_CHECK;
 }
 
 
-JS_GETTER(DelayNode::delayTimeGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(DelayNode, delayTime) { THIS_CHECK;
 	
 	RET_VALUE(_delayTime.Value());
 	
 }
 
 
-JS_METHOD(DelayNode::destroy) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(DelayNode, destroy) { THIS_CHECK;
 	
 	emit("destroy");
 	

@@ -5,6 +5,7 @@
 
 
 class AudioParam : public CommonParam<AudioParam> {
+DECLARE_ES5_CLASS(AudioParam, AudioParam);
 	
 public:
 	
@@ -19,31 +20,29 @@ public:
 	
 private:
 	
-	static Napi::FunctionReference _constructor;
-	
-	JS_DECLARE_METHOD(destroy);
+	JS_DECLARE_METHOD(AudioParam, destroy);
 	
 	// JS_METHOD(connect);
 	// JS_METHOD(disconnect);
 	
 	// JS_GETTER(context);
 	
-	JS_DECLARE_METHOD(setValueAtTime);
-	JS_DECLARE_METHOD(linearRampToValueAtTime);
-	JS_DECLARE_METHOD(exponentialRampToValueAtTime);
-	JS_DECLARE_METHOD(setTargetAtTime);
-	JS_DECLARE_METHOD(setValueCurveAtTime);
-	JS_DECLARE_METHOD(cancelScheduledValues);
-	JS_DECLARE_METHOD(cancelAndHoldAtTime);
+	JS_DECLARE_METHOD(AudioParam, setValueAtTime);
+	JS_DECLARE_METHOD(AudioParam, linearRampToValueAtTime);
+	JS_DECLARE_METHOD(AudioParam, exponentialRampToValueAtTime);
+	JS_DECLARE_METHOD(AudioParam, setTargetAtTime);
+	JS_DECLARE_METHOD(AudioParam, setValueCurveAtTime);
+	JS_DECLARE_METHOD(AudioParam, cancelScheduledValues);
+	JS_DECLARE_METHOD(AudioParam, cancelAndHoldAtTime);
 	
-	JS_DECLARE_GETTER(value);
-	JS_DECLARE_SETTER(value);
+	JS_DECLARE_GETTER(AudioParam, value);
+	JS_DECLARE_SETTER(AudioParam, value);
 	
-	JS_DECLARE_GETTER(defaultValue);
+	JS_DECLARE_GETTER(AudioParam, defaultValue);
 	
-	JS_DECLARE_GETTER(minValue);
+	JS_DECLARE_GETTER(AudioParam, minValue);
 	
-	JS_DECLARE_GETTER(maxValue);
+	JS_DECLARE_GETTER(AudioParam, maxValue);
 	
 };
 

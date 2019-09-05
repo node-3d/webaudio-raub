@@ -5,6 +5,7 @@
 
 
 class BaseAudioContext : public CommonCtx<BaseAudioContext> {
+DECLARE_ES5_CLASS(BaseAudioContext, BaseAudioContext);
 	
 public:
 	
@@ -17,23 +18,21 @@ public:
 	
 private:
 	
-	static Napi::FunctionReference _constructor;
-	
 	Napi::ObjectReference _destination;
 	Napi::ObjectReference _listener;
 	std::string _state;
 	
-	JS_DECLARE_METHOD(destroy);
+	JS_DECLARE_METHOD(BaseAudioContext, destroy);
 	
-	JS_DECLARE_METHOD(update);
-	JS_DECLARE_METHOD(resume);
-	JS_DECLARE_METHOD(decodeAudioData);
+	JS_DECLARE_METHOD(BaseAudioContext, update);
+	JS_DECLARE_METHOD(BaseAudioContext, resume);
+	JS_DECLARE_METHOD(BaseAudioContext, decodeAudioData);
 	
-	JS_DECLARE_GETTER(destination);
-	JS_DECLARE_GETTER(currentTime);
-	JS_DECLARE_GETTER(sampleRate);
-	JS_DECLARE_GETTER(listener);
-	JS_DECLARE_GETTER(state);
+	JS_DECLARE_GETTER(BaseAudioContext, destination);
+	JS_DECLARE_GETTER(BaseAudioContext, currentTime);
+	JS_DECLARE_GETTER(BaseAudioContext, sampleRate);
+	JS_DECLARE_GETTER(BaseAudioContext, listener);
+	JS_DECLARE_GETTER(BaseAudioContext, state);
 	
 };
 

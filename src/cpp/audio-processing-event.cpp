@@ -31,21 +31,21 @@ void AudioProcessingEvent::_destroy() { DES_CHECK;
 
 
 
-JS_GETTER(AudioProcessingEvent::playbackTimeGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(AudioProcessingEvent, playbackTime) { THIS_CHECK;
 	
 	RET_NUM(_playbackTime);
 	
 }
 
 
-JS_GETTER(AudioProcessingEvent::inputBufferGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(AudioProcessingEvent, inputBuffer) { THIS_CHECK;
 	
 	RET_VALUE(_inputBuffer.Value());
 	
 }
 
 
-JS_GETTER(AudioProcessingEvent::outputBufferGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(AudioProcessingEvent, outputBuffer) { THIS_CHECK;
 	
 	RET_VALUE(_outputBuffer.Value());
 	
@@ -54,7 +54,7 @@ JS_GETTER(AudioProcessingEvent::outputBufferGetter) { THIS_CHECK;
 
 // ------ System methods and props for Napi::ObjectWrap
 
-Napi::FunctionReference AudioProcessingEvent::_constructor;
+IMPLEMENT_ES5_CLASS(AudioProcessingEvent);
 
 
 void AudioProcessingEvent::init(Napi::Env env, Napi::Object exports) {
@@ -72,7 +72,7 @@ void AudioProcessingEvent::init(Napi::Env env, Napi::Object exports) {
 
 
 bool AudioProcessingEvent::isAudioProcessingEvent(Napi::Object obj) {
-	return obj.InstanceOf(_constructor.Value());
+	return obj.InstanceOf(_ctorEs5.Value());
 }
 
 
@@ -92,14 +92,14 @@ AudioProcessingEvent::AudioProcessingEvent(const Napi::CallbackInfo &info): Napi
 }
 
 
-JS_METHOD(AudioProcessingEvent::destroy) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(AudioProcessingEvent, destroy) { THIS_CHECK;
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(AudioProcessingEvent::isDestroyedGetter) { NAPI_ENV;
+JS_IMPLEMENT_GETTER(AudioProcessingEvent, isDestroyed) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

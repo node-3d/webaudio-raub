@@ -5,7 +5,7 @@
 #include "audio-param.hpp"
 
 
-Napi::FunctionReference OscillatorNode::_constructor;
+IMPLEMENT_ES5_CLASS(OscillatorNode);
 
 void OscillatorNode::init(Napi::Env env, Napi::Object exports) {
 	
@@ -14,8 +14,7 @@ void OscillatorNode::init(Napi::Env env, Napi::Object exports) {
 	JS_ASSIGN_METHOD(setPeriodicWave);
 	JS_ASSIGN_GETTER(detune);
 	JS_ASSIGN_GETTER(frequency);
-		ACCESSOR_M(OscillatorNode, destroy)
-	});
+	JS_ASSIGN_METHOD(destroy);
 	
 	exports.Set("OscillatorNode", ctor);
 	
@@ -54,21 +53,13 @@ inline lab::OscillatorType toOscillatorType(const std::string &mode) {
 
 OscillatorNode::OscillatorNode(const Napi::CallbackInfo &info):
 CommonNode<OscillatorNode>(info, "OscillatorNode") { NAPI_ENV;
-	super(info);
 	
 	REQ_OBJ_ARG(0, context);
 	
 	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
 	float sampleRate = audioContext->getCtx()->sampleRate();
-	Napi::Object that = info.This().As<Napi::Object>();
-	Napi::Function ctor = _constructor.Value().As<Napi::Function>();
-	Napi::Function _Super = ctor.Get("_Super").As<Napi::Function>();
 	
 	reset(context, std::make_shared<lab::OscillatorNode>(sampleRate));
-	
-	std::vector<napi_value> args;
-	args.push_back(context);
-	_Super.Call(that, args);
 	
 	lab::OscillatorNode *node = static_cast<lab::OscillatorNode*>(
 		_impl.get()
@@ -76,6 +67,12 @@ CommonNode<OscillatorNode>(info, "OscillatorNode") { NAPI_ENV;
 	
 	_frequency.Reset(AudioParam::create(env, context, node->frequency()));
 	_detune.Reset(AudioParam::create(env, context, node->detune()));
+	
+	Napi::Value argv[] = {
+		static_cast<Napi::Value>(context),
+		static_cast<Napi::Value>(JS_NUM(reinterpret_cast<size_t>(&_impl)))
+	};
+	super(info, 2, argv);
 	
 }
 
@@ -99,7 +96,7 @@ void OscillatorNode::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-JS_METHOD(OscillatorNode::setPeriodicWave) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(OscillatorNode, setPeriodicWave) { THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, periodicWave);
 	
@@ -109,7 +106,7 @@ JS_METHOD(OscillatorNode::setPeriodicWave) { THIS_CHECK;
 }
 
 
-JS_GETTER(OscillatorNode::typeGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(OscillatorNode, type) { THIS_CHECK;
 	
 	lab::OscillatorNode *node = static_cast<lab::OscillatorNode*>(
 		_impl.get()
@@ -120,7 +117,7 @@ JS_GETTER(OscillatorNode::typeGetter) { THIS_CHECK;
 }
 
 
-JS_SETTER(OscillatorNode::typeSetter) { THIS_SETTER_CHECK; SETTER_STR_ARG;
+JS_IMPLEMENT_SETTER(OscillatorNode, type) { THIS_SETTER_CHECK; SETTER_STR_ARG;
 	
 	lab::OscillatorNode *node = static_cast<lab::OscillatorNode*>(
 		_impl.get()
@@ -133,21 +130,21 @@ JS_SETTER(OscillatorNode::typeSetter) { THIS_SETTER_CHECK; SETTER_STR_ARG;
 }
 
 
-JS_GETTER(OscillatorNode::frequencyGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(OscillatorNode, frequency) { THIS_CHECK;
 	
 	RET_VALUE(_frequency.Value());
 	
 }
 
 
-JS_GETTER(OscillatorNode::detuneGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(OscillatorNode, detune) { THIS_CHECK;
 	
 	RET_VALUE(_detune.Value());
 	
 }
 
 
-JS_METHOD(OscillatorNode::destroy) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(OscillatorNode, destroy) { THIS_CHECK;
 	
 	emit("destroy");
 	

@@ -34,7 +34,7 @@ void PeriodicWave::_destroy() { DES_CHECK;
 
 // ------ System methods and props for Napi::ObjectWrap
 
-Napi::FunctionReference PeriodicWave::_constructor;
+IMPLEMENT_ES5_CLASS(PeriodicWave);
 
 
 void PeriodicWave::init(Napi::Env env, Napi::Object exports) {
@@ -49,7 +49,7 @@ void PeriodicWave::init(Napi::Env env, Napi::Object exports) {
 
 
 bool PeriodicWave::isPeriodicWave(Napi::Object obj) {
-	return obj.InstanceOf(_constructor.Value());
+	return obj.InstanceOf(_ctorEs5.Value());
 }
 
 
@@ -69,14 +69,14 @@ PeriodicWave::PeriodicWave(const Napi::CallbackInfo &info): Napi::ObjectWrap<Per
 }
 
 
-JS_METHOD(PeriodicWave::destroy) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(PeriodicWave, destroy) { THIS_CHECK;
 	
 	_destroy();
 	
 }
 
 
-JS_GETTER(PeriodicWave::isDestroyedGetter) { NAPI_ENV;
+JS_IMPLEMENT_GETTER(PeriodicWave, isDestroyed) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

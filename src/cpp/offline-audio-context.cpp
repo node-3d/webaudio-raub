@@ -33,14 +33,14 @@ void OfflineAudioContext::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-JS_METHOD(OfflineAudioContext::startRendering) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(OfflineAudioContext, startRendering) { THIS_CHECK;
 	
 	// TODO: do something?
 	
 }
 
 
-JS_METHOD(OfflineAudioContext::suspend) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(OfflineAudioContext, suspend) { THIS_CHECK;
 	
 	REQ_DOUBLE_ARG(0, suspendTime);
 	
@@ -49,13 +49,13 @@ JS_METHOD(OfflineAudioContext::suspend) { THIS_CHECK;
 }
 
 
-JS_GETTER(OfflineAudioContext::oncompleteGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(OfflineAudioContext, oncomplete) { THIS_CHECK;
 	
 	RET_VALUE(JS_FUN(_oncomplete));
 	
 }
 
-JS_SETTER(OfflineAudioContext::oncompleteSetter) { THIS_CHECK; SETTER_FUN_ARG;
+JS_IMPLEMENT_SETTER(OfflineAudioContext, oncomplete) { THIS_SETTER_CHECK; SETTER_FUN_ARG;
 	
 	if (Nan::New(_oncomplete) == v) {
 		return;
@@ -69,7 +69,7 @@ JS_SETTER(OfflineAudioContext::oncompleteSetter) { THIS_CHECK; SETTER_FUN_ARG;
 }
 
 
-JS_GETTER(OfflineAudioContext::lengthGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(OfflineAudioContext, length) { THIS_CHECK;
 	
 	RET_NUM(_length);
 	
@@ -78,7 +78,7 @@ JS_GETTER(OfflineAudioContext::lengthGetter) { THIS_CHECK;
 
 // ------ System methods and props for Napi::ObjectWrap
 
-Napi::FunctionReference OfflineAudioContext::_constructor;
+IMPLEMENT_ES5_CLASS(OfflineAudioContext);
 
 
 void OfflineAudioContext::init(Napi::Env env, Napi::Object exports) {
@@ -97,7 +97,7 @@ void OfflineAudioContext::init(Napi::Env env, Napi::Object exports) {
 
 
 bool OfflineAudioContext::isOfflineAudioContext(Napi::Object obj) {
-	return obj.InstanceOf(_constructor.Value());
+	return obj.InstanceOf(_ctorEs5.Value());
 }
 
 
@@ -117,7 +117,7 @@ OfflineAudioContext::OfflineAudioContext(const Napi::CallbackInfo &info): Napi::
 }
 
 
-JS_METHOD(OfflineAudioContext::destroy) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(OfflineAudioContext, destroy) { THIS_CHECK;
 	
 	emit("destroy");
 	
@@ -126,7 +126,7 @@ JS_METHOD(OfflineAudioContext::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(OfflineAudioContext::isDestroyedGetter) { NAPI_ENV;
+JS_IMPLEMENT_GETTER(OfflineAudioContext, isDestroyed) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

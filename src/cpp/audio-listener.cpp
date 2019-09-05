@@ -5,14 +5,13 @@
 #include "audio-param.hpp"
 
 
-Napi::FunctionReference AudioListener::_constructor;
+IMPLEMENT_ES5_CLASS(AudioListener);
 
 void AudioListener::init(Napi::Env env, Napi::Object exports) {
 	
 	Napi::Function ctor = wrap(env);
 	JS_ASSIGN_METHOD(setOrientation);
 	JS_ASSIGN_METHOD(setPosition);
-	JS_ASSIGN_METHOD(destroy);
 	JS_ASSIGN_GETTER(upZ);
 	JS_ASSIGN_GETTER(upY);
 	JS_ASSIGN_GETTER(upX);
@@ -22,7 +21,7 @@ void AudioListener::init(Napi::Env env, Napi::Object exports) {
 	JS_ASSIGN_GETTER(positionZ);
 	JS_ASSIGN_GETTER(positionY);
 	JS_ASSIGN_GETTER(positionX);
-	JS_ASSIGN_GETTER(isDestroyed);
+	JS_ASSIGN_METHOD(destroy);
 	
 	exports.Set("AudioListener", ctor);
 	
@@ -30,7 +29,7 @@ void AudioListener::init(Napi::Env env, Napi::Object exports) {
 
 
 Napi::Object AudioListener::create(Napi::Env env, Napi::Object context, ListenerPtr listener) {
-	Napi::Function ctor = _constructor.Value().As<Napi::Function>();
+	Napi::Function ctor = _ctorEs5.Value().As<Napi::Function>();
 	std::vector<napi_value> args;
 	args.push_back(context);
 	args.push_back(JS_EXT(&listener));
@@ -40,6 +39,7 @@ Napi::Object AudioListener::create(Napi::Env env, Napi::Object context, Listener
 
 AudioListener::AudioListener(const Napi::CallbackInfo &info):
 CommonListener<AudioListener>(info, "AudioListener") { NAPI_ENV;
+	
 	super(info);
 	
 	REQ_OBJ_ARG(0, context);
@@ -75,7 +75,7 @@ void AudioListener::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-JS_METHOD(AudioListener::setPosition) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(AudioListener, setPosition) { THIS_CHECK;
 	
 	REQ_FLOAT_ARG(0, x);
 	REQ_FLOAT_ARG(1, y);
@@ -87,7 +87,7 @@ JS_METHOD(AudioListener::setPosition) { THIS_CHECK;
 }
 
 
-JS_METHOD(AudioListener::setOrientation) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(AudioListener, setOrientation) { THIS_CHECK;
 	
 	REQ_FLOAT_ARG(0, x);
 	REQ_FLOAT_ARG(1, y);
@@ -113,7 +113,7 @@ PARAM_GETTER(AudioListener, upY);
 PARAM_GETTER(AudioListener, upZ);
 
 
-JS_METHOD(AudioListener::destroy) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(AudioListener, destroy) { THIS_CHECK;
 	
 	emit("destroy");
 	

@@ -34,13 +34,13 @@ void ScriptProcessorNode::_destroy() { DES_CHECK;
 
 
 
-JS_GETTER(ScriptProcessorNode::onaudioprocessGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(ScriptProcessorNode, onaudioprocess) { THIS_CHECK;
 	
 	RET_VALUE(JS_FUN(_onaudioprocess));
 	
 }
 
-JS_SETTER(ScriptProcessorNode::onaudioprocessSetter) { THIS_CHECK; SETTER_FUN_ARG;
+JS_IMPLEMENT_SETTER(ScriptProcessorNode, onaudioprocess) { THIS_SETTER_CHECK; SETTER_FUN_ARG;
 	
 	if (Nan::New(_onaudioprocess) == v) {
 		return;
@@ -54,7 +54,7 @@ JS_SETTER(ScriptProcessorNode::onaudioprocessSetter) { THIS_CHECK; SETTER_FUN_AR
 }
 
 
-JS_GETTER(ScriptProcessorNode::bufferSizeGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(ScriptProcessorNode, bufferSize) { THIS_CHECK;
 	
 	RET_NUM(_bufferSize);
 	
@@ -63,7 +63,7 @@ JS_GETTER(ScriptProcessorNode::bufferSizeGetter) { THIS_CHECK;
 
 // ------ System methods and props for Napi::ObjectWrap
 
-Napi::FunctionReference ScriptProcessorNode::_constructor;
+IMPLEMENT_ES5_CLASS(ScriptProcessorNode);
 
 
 void ScriptProcessorNode::init(Napi::Env env, Napi::Object exports) {
@@ -80,7 +80,7 @@ void ScriptProcessorNode::init(Napi::Env env, Napi::Object exports) {
 
 
 bool ScriptProcessorNode::isScriptProcessorNode(Napi::Object obj) {
-	return obj.InstanceOf(_constructor.Value());
+	return obj.InstanceOf(_ctorEs5.Value());
 }
 
 
@@ -100,7 +100,7 @@ ScriptProcessorNode::ScriptProcessorNode(const Napi::CallbackInfo &info): Napi::
 }
 
 
-JS_METHOD(ScriptProcessorNode::destroy) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(ScriptProcessorNode, destroy) { THIS_CHECK;
 	
 	emit("destroy");
 	
@@ -109,7 +109,7 @@ JS_METHOD(ScriptProcessorNode::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(ScriptProcessorNode::isDestroyedGetter) { NAPI_ENV;
+JS_IMPLEMENT_GETTER(ScriptProcessorNode, isDestroyed) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

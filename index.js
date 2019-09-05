@@ -1,5 +1,5 @@
 'use strict';
 
-const core = require('./core');
+require('./core');
 
 module.exports = require('./js');

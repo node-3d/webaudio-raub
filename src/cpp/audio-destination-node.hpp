@@ -5,6 +5,7 @@
 
 
 class AudioDestinationNode : public CommonNode<AudioDestinationNode> {
+DECLARE_ES5_CLASS(AudioDestinationNode, AudioDestinationNode);
 	
 public:
 	
@@ -18,13 +19,11 @@ public:
 	
 private:
 	
-	static Napi::FunctionReference _constructor;
-	
 	uint32_t _maxChannelCount;
 	
-	JS_DECLARE_METHOD(destroy);
+	JS_DECLARE_METHOD(AudioDestinationNode, destroy);
 	
-	JS_DECLARE_GETTER(maxChannelCount);
+	JS_DECLARE_GETTER(AudioDestinationNode, maxChannelCount);
 	
 };
 

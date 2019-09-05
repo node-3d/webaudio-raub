@@ -7,6 +7,7 @@
 
 
 class AudioNode : public CommonNode<AudioNode> {
+DECLARE_ES5_CLASS(AudioNode, AudioNode);
 	
 public:
 	
@@ -20,31 +21,29 @@ public:
 	
 private:
 	
-	static Napi::FunctionReference _constructor;
-	
 	uint32_t _channelCount;
 	std::string _channelCountMode;
 	std::string _channelInterpretation;
 	
-	JS_DECLARE_METHOD(destroy);
+	JS_DECLARE_METHOD(AudioNode, destroy);
 	
-	JS_DECLARE_METHOD(connect);
-	JS_DECLARE_METHOD(disconnect);
+	JS_DECLARE_METHOD(AudioNode, connect);
+	JS_DECLARE_METHOD(AudioNode, disconnect);
 	
-	JS_DECLARE_GETTER(context);
+	JS_DECLARE_GETTER(AudioNode, context);
 	
-	JS_DECLARE_GETTER(numberOfInputs);
+	JS_DECLARE_GETTER(AudioNode, numberOfInputs);
 	
-	JS_DECLARE_GETTER(numberOfOutputs);
+	JS_DECLARE_GETTER(AudioNode, numberOfOutputs);
 	
-	JS_DECLARE_GETTER(channelCount);
-	JS_DECLARE_SETTER(channelCount);
+	JS_DECLARE_GETTER(AudioNode, channelCount);
+	JS_DECLARE_SETTER(AudioNode, channelCount);
 	
-	JS_DECLARE_GETTER(channelCountMode);
-	JS_DECLARE_SETTER(channelCountMode);
+	JS_DECLARE_GETTER(AudioNode, channelCountMode);
+	JS_DECLARE_SETTER(AudioNode, channelCountMode);
 	
-	JS_DECLARE_GETTER(channelInterpretation);
-	JS_DECLARE_SETTER(channelInterpretation);
+	JS_DECLARE_GETTER(AudioNode, channelInterpretation);
+	JS_DECLARE_SETTER(AudioNode, channelInterpretation);
 	
 };
 

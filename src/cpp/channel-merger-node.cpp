@@ -37,7 +37,7 @@ void ChannelMergerNode::_destroy() { DES_CHECK;
 
 // ------ System methods and props for Napi::ObjectWrap
 
-Napi::FunctionReference ChannelMergerNode::_constructor;
+IMPLEMENT_ES5_CLASS(ChannelMergerNode);
 
 
 void ChannelMergerNode::init(Napi::Env env, Napi::Object exports) {
@@ -52,7 +52,7 @@ void ChannelMergerNode::init(Napi::Env env, Napi::Object exports) {
 
 
 bool ChannelMergerNode::isChannelMergerNode(Napi::Object obj) {
-	return obj.InstanceOf(_constructor.Value());
+	return obj.InstanceOf(_ctorEs5.Value());
 }
 
 
@@ -72,7 +72,7 @@ ChannelMergerNode::ChannelMergerNode(const Napi::CallbackInfo &info): Napi::Obje
 }
 
 
-JS_METHOD(ChannelMergerNode::destroy) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(ChannelMergerNode, destroy) { THIS_CHECK;
 	
 	emit("destroy");
 	
@@ -81,7 +81,7 @@ JS_METHOD(ChannelMergerNode::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(ChannelMergerNode::isDestroyedGetter) { NAPI_ENV;
+JS_IMPLEMENT_GETTER(ChannelMergerNode, isDestroyed) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

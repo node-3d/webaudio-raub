@@ -33,7 +33,7 @@ void IIRFilterNode::_destroy() { DES_CHECK;
 // ------ Methods and props
 
 
-JS_METHOD(IIRFilterNode::getFrequencyResponse) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(IIRFilterNode, getFrequencyResponse) { THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, frequencyHz);
 	REQ_OBJ_ARG(1, magResponse);
@@ -47,7 +47,7 @@ JS_METHOD(IIRFilterNode::getFrequencyResponse) { THIS_CHECK;
 
 // ------ System methods and props for Napi::ObjectWrap
 
-Napi::FunctionReference IIRFilterNode::_constructor;
+IMPLEMENT_ES5_CLASS(IIRFilterNode);
 
 
 void IIRFilterNode::init(Napi::Env env, Napi::Object exports) {
@@ -63,7 +63,7 @@ void IIRFilterNode::init(Napi::Env env, Napi::Object exports) {
 
 
 bool IIRFilterNode::isIIRFilterNode(Napi::Object obj) {
-	return obj.InstanceOf(_constructor.Value());
+	return obj.InstanceOf(_ctorEs5.Value());
 }
 
 
@@ -83,7 +83,7 @@ IIRFilterNode::IIRFilterNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<I
 }
 
 
-JS_METHOD(IIRFilterNode::destroy) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(IIRFilterNode, destroy) { THIS_CHECK;
 	
 	emit("destroy");
 	
@@ -92,7 +92,7 @@ JS_METHOD(IIRFilterNode::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(IIRFilterNode::isDestroyedGetter) { NAPI_ENV;
+JS_IMPLEMENT_GETTER(IIRFilterNode, isDestroyed) { NAPI_ENV;
 	
 	RET_BOOL(_isDestroyed);
 	

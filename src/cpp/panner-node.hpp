@@ -8,6 +8,7 @@
 
 
 class PannerNode : public CommonNode<PannerNode> {
+DECLARE_ES5_CLASS(PannerNode, PannerNode);
 	
 public:
 	
@@ -21,8 +22,6 @@ public:
 	
 private:
 	
-	static Napi::FunctionReference _constructor;
-	
 	Napi::ObjectReference _positionX;
 	Napi::ObjectReference _positionY;
 	Napi::ObjectReference _positionZ;
@@ -30,47 +29,47 @@ private:
 	Napi::ObjectReference _orientationY;
 	Napi::ObjectReference _orientationZ;
 	
-	JS_DECLARE_METHOD(destroy);
+	JS_DECLARE_METHOD(PannerNode, destroy);
 	
-	JS_DECLARE_METHOD(setPosition);
-	JS_DECLARE_METHOD(setOrientation);
-	JS_DECLARE_METHOD(setVelocity);
+	JS_DECLARE_METHOD(PannerNode, setPosition);
+	JS_DECLARE_METHOD(PannerNode, setOrientation);
+	JS_DECLARE_METHOD(PannerNode, setVelocity);
 	
-	JS_DECLARE_GETTER(panningModel);
-	JS_DECLARE_SETTER(panningModel);
+	JS_DECLARE_GETTER(PannerNode, panningModel);
+	JS_DECLARE_SETTER(PannerNode, panningModel);
 	
-	JS_DECLARE_GETTER(positionX);
+	JS_DECLARE_GETTER(PannerNode, positionX);
 	
-	JS_DECLARE_GETTER(positionY);
+	JS_DECLARE_GETTER(PannerNode, positionY);
 	
-	JS_DECLARE_GETTER(positionZ);
+	JS_DECLARE_GETTER(PannerNode, positionZ);
 	
-	JS_DECLARE_GETTER(orientationX);
+	JS_DECLARE_GETTER(PannerNode, orientationX);
 	
-	JS_DECLARE_GETTER(orientationY);
+	JS_DECLARE_GETTER(PannerNode, orientationY);
 	
-	JS_DECLARE_GETTER(orientationZ);
+	JS_DECLARE_GETTER(PannerNode, orientationZ);
 	
-	JS_DECLARE_GETTER(distanceModel);
-	JS_DECLARE_SETTER(distanceModel);
+	JS_DECLARE_GETTER(PannerNode, distanceModel);
+	JS_DECLARE_SETTER(PannerNode, distanceModel);
 	
-	JS_DECLARE_GETTER(refDistance);
-	JS_DECLARE_SETTER(refDistance);
+	JS_DECLARE_GETTER(PannerNode, refDistance);
+	JS_DECLARE_SETTER(PannerNode, refDistance);
 	
-	JS_DECLARE_GETTER(maxDistance);
-	JS_DECLARE_SETTER(maxDistance);
+	JS_DECLARE_GETTER(PannerNode, maxDistance);
+	JS_DECLARE_SETTER(PannerNode, maxDistance);
 	
-	JS_DECLARE_GETTER(rolloffFactor);
-	JS_DECLARE_SETTER(rolloffFactor);
+	JS_DECLARE_GETTER(PannerNode, rolloffFactor);
+	JS_DECLARE_SETTER(PannerNode, rolloffFactor);
 	
-	JS_DECLARE_GETTER(coneInnerAngle);
-	JS_DECLARE_SETTER(coneInnerAngle);
+	JS_DECLARE_GETTER(PannerNode, coneInnerAngle);
+	JS_DECLARE_SETTER(PannerNode, coneInnerAngle);
 	
-	JS_DECLARE_GETTER(coneOuterAngle);
-	JS_DECLARE_SETTER(coneOuterAngle);
+	JS_DECLARE_GETTER(PannerNode, coneOuterAngle);
+	JS_DECLARE_SETTER(PannerNode, coneOuterAngle);
 	
-	JS_DECLARE_GETTER(coneOuterGain);
-	JS_DECLARE_SETTER(coneOuterGain);
+	JS_DECLARE_GETTER(PannerNode, coneOuterGain);
+	JS_DECLARE_SETTER(PannerNode, coneOuterGain);
 	
 };
 

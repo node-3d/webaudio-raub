@@ -40,47 +40,41 @@ Napi::Object initModule(Napi::Env env, Napi::Object exports) {
 	
 	BaseAudioContext::init(env, exports);
 	AudioContext::init(env, exports);
-	// // OfflineAudioContext::init(env, exports);
+	// // // OfflineAudioContext::init(env, exports);
 	
-	AudioBuffer::init(env, exports);
-	AudioListener::init(env, exports);
+	// AudioBuffer::init(env, exports);
+	// AudioListener::init(env, exports);
 	
-	AudioParam::init(env, exports);
+	// AudioParam::init(env, exports);
 	
-	// // AudioProcessingEvent::init(env, exports);
-	// // AudioTimestamp::init(env, exports);
-	// // AudioWorklet::init(env, exports);
-	// // AudioWorkletGlobalScope::init(env, exports);
-	// // AudioWorkletProcessor::init(env, exports);
-	// // PeriodicWave::init(env, exports);
-	// // OfflineAudioCompletionEvent::init(env, exports);
+	// // // PeriodicWave::init(env, exports);
+	// // // OfflineAudioCompletionEvent::init(env, exports);
 	
-	AudioNode::init(env, exports);
+	// AudioNode::init(env, exports);
 	
-	AudioDestinationNode::init(env, exports);
-	AudioScheduledSourceNode::init(env, exports);
+	// AudioDestinationNode::init(env, exports);
+	// AudioScheduledSourceNode::init(env, exports);
 	
-	// // AnalyserNode::init(env, exports);
-	AudioBufferSourceNode::init(env, exports);
+	// AnalyserNode::init(env, exports);
+	// AudioBufferSourceNode::init(env, exports);
 	
-	// // AudioWorkletNode::init(env, exports);
-	BiquadFilterNode::init(env, exports);
-	// // ChannelMergerNode::init(env, exports);
-	// // ChannelSplitterNode::init(env, exports);
-	// // ConstantSourceNode::init(env, exports);
-	ConvolverNode::init(env, exports);
-	DelayNode::init(env, exports);
-	// // DynamicsCompressorNode::init(env, exports);
-	GainNode::init(env, exports);
-	// // IIRFilterNode::init(env, exports);
-	// // MediaElementAudioSourceNode::init(env, exports);
-	// // MediaStreamAudioDestinationNode::init(env, exports);
-	// // MediaStreamAudioSourceNode::init(env, exports);
-	OscillatorNode::init(env, exports);
-	PannerNode::init(env, exports);
-	// // ScriptProcessorNode::init(env, exports);
-	// // StereoPannerNode::init(env, exports);
-	// // WaveShaperNode::init(env, exports);
+	// BiquadFilterNode::init(env, exports);
+	// // // ChannelMergerNode::init(env, exports);
+	// // // ChannelSplitterNode::init(env, exports);
+	// // // ConstantSourceNode::init(env, exports);
+	// ConvolverNode::init(env, exports);
+	// DelayNode::init(env, exports);
+	// // // DynamicsCompressorNode::init(env, exports);
+	// GainNode::init(env, exports);
+	// // // IIRFilterNode::init(env, exports);
+	// // // MediaElementAudioSourceNode::init(env, exports);
+	// // // MediaStreamAudioDestinationNode::init(env, exports);
+	// // // MediaStreamAudioSourceNode::init(env, exports);
+	// OscillatorNode::init(env, exports);
+	// PannerNode::init(env, exports);
+	// // // ScriptProcessorNode::init(env, exports);
+	// // // StereoPannerNode::init(env, exports);
+	// // // WaveShaperNode::init(env, exports);
 	
 	return exports;
 	

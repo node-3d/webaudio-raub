@@ -34,42 +34,42 @@ void DynamicsCompressorNode::_destroy() { DES_CHECK;
 
 
 
-JS_GETTER(DynamicsCompressorNode::thresholdGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(DynamicsCompressorNode, threshold) { THIS_CHECK;
 	
 	RET_VALUE(_threshold.Value());
 	
 }
 
 
-JS_GETTER(DynamicsCompressorNode::kneeGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(DynamicsCompressorNode, knee) { THIS_CHECK;
 	
 	RET_VALUE(_knee.Value());
 	
 }
 
 
-JS_GETTER(DynamicsCompressorNode::ratioGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(DynamicsCompressorNode, ratio) { THIS_CHECK;
 	
 	RET_VALUE(_ratio.Value());
 	
 }
 
 
-JS_GETTER(DynamicsCompressorNode::reductionGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(DynamicsCompressorNode, reduction) { THIS_CHECK;
 	
 	RET_NUM(_reduction);
 	
 }
 
 
-JS_GETTER(DynamicsCompressorNode::attackGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(DynamicsCompressorNode, attack) { THIS_CHECK;
 	
 	RET_VALUE(_attack.Value());
 	
 }
 
 
-JS_GETTER(DynamicsCompressorNode::releaseGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(DynamicsCompressorNode, release) { THIS_CHECK;
 	
 	RET_VALUE(_release.Value());
 	
@@ -78,7 +78,7 @@ JS_GETTER(DynamicsCompressorNode::releaseGetter) { THIS_CHECK;
 
 // ------ System methods and props for Napi::ObjectWrap
 
-Napi::FunctionReference DynamicsCompressorNode::_constructor;
+IMPLEMENT_ES5_CLASS(DynamicsCompressorNode);
 
 
 void DynamicsCompressorNode::init(Napi::Env env, Napi::Object exports) {
@@ -99,7 +99,7 @@ void DynamicsCompressorNode::init(Napi::Env env, Napi::Object exports) {
 
 
 bool DynamicsCompressorNode::isDynamicsCompressorNode(Napi::Object obj) {
-	return obj.InstanceOf(_constructor.Value());
+	return obj.InstanceOf(_ctorEs5.Value());
 }
 
 
@@ -119,7 +119,7 @@ DynamicsCompressorNode::DynamicsCompressorNode(const Napi::CallbackInfo &info): 
 }
 
 
-JS_METHOD(DynamicsCompressorNode::destroy) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(DynamicsCompressorNode, destroy) { THIS_CHECK;
 	
 	emit("destroy");
 	
@@ -128,7 +128,7 @@ JS_METHOD(DynamicsCompressorNode::destroy) { THIS_CHECK;
 }
 
 
-JS_GETTER(DynamicsCompressorNode::isDestroyedGetter) { NAPI_ENV;
+JS_IMPLEMENT_GETTER(DynamicsCompressorNode, isDestroyed) { NAPI_ENV;
 	
 	THIS_DYNAMICS_COMPRESSOR_NODE;
 	

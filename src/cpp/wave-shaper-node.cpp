@@ -1,7 +1,7 @@
 #include "wave-shaper-node.hpp"
 
 
-Napi::FunctionReference WaveShaperNode::_constructor;
+IMPLEMENT_ES5_CLASS(WaveShaperNode);
 
 void WaveShaperNode::init(Napi::Env env, Napi::Object exports) {
 	
@@ -28,13 +28,13 @@ AudioNode() {
 
 
 
-JS_GETTER(WaveShaperNode::curveGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(WaveShaperNode, curve) { THIS_CHECK;
 	
 	RET_VALUE(_curve.Value());
 	
 }
 
-JS_SETTER(WaveShaperNode::curveSetter) { THIS_CHECK; SETTER_OBJ_ARG;
+JS_IMPLEMENT_SETTER(WaveShaperNode, curve) { THIS_SETTER_CHECK; SETTER_OBJ_ARG;
 	
 	if (Nan::New(_curve) == v) {
 		return;
@@ -48,13 +48,13 @@ JS_SETTER(WaveShaperNode::curveSetter) { THIS_CHECK; SETTER_OBJ_ARG;
 }
 
 
-JS_GETTER(WaveShaperNode::oversampleGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(WaveShaperNode, oversample) { THIS_CHECK;
 	
 	RET_STR(_oversample);
 	
 }
 
-JS_SETTER(WaveShaperNode::oversampleSetter) { THIS_CHECK; SETTER_STR_ARG;
+JS_IMPLEMENT_SETTER(WaveShaperNode, oversample) { THIS_SETTER_CHECK; SETTER_STR_ARG;
 	
 	CACHE_CAS(_oversample, v)
 	

@@ -8,6 +8,7 @@
 
 
 class WaveShaperNode : public CommonNode<WaveShaperNode> {
+DECLARE_ES5_CLASS(WaveShaperNode, WaveShaperNode);
 	
 public:
 	
@@ -27,11 +28,11 @@ protected:
 	
 private:
 	
-	JS_DECLARE_GETTER(curve);
-	JS_DECLARE_SETTER(curve);
+	JS_DECLARE_GETTER(WaveShaperNode, curve);
+	JS_DECLARE_SETTER(WaveShaperNode, curve);
 	
-	JS_DECLARE_GETTER(oversample);
-	JS_DECLARE_SETTER(oversample);
+	JS_DECLARE_GETTER(WaveShaperNode, oversample);
+	JS_DECLARE_SETTER(WaveShaperNode, oversample);
 	
 };
 

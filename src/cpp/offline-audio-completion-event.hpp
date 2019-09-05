@@ -6,6 +6,7 @@
 
 
 class OfflineAudioCompletionEvent : public CommonNode<OfflineAudioCompletionEvent> {
+DECLARE_ES5_CLASS(OfflineAudioCompletionEvent, OfflineAudioCompletionEvent);
 	
 public:
 	
@@ -33,12 +34,12 @@ protected:
 	
 private:
 	
-	JS_DECLARE_METHOD(destroy);
-	JS_DECLARE_GETTER(isDestroyed);
+	JS_DECLARE_METHOD(OfflineAudioCompletionEvent, destroy);
+	JS_DECLARE_GETTER(OfflineAudioCompletionEvent, isDestroyed);
 	
 	
 	
-	JS_DECLARE_GETTER(renderedBuffer);
+	JS_DECLARE_GETTER(OfflineAudioCompletionEvent, renderedBuffer);
 	
 };
 

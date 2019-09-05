@@ -7,9 +7,9 @@
 
 
 class AudioScheduledSourceNode : public CommonNode<AudioScheduledSourceNode> {
+DECLARE_ES5_CLASS(AudioScheduledSourceNode, AudioScheduledSourceNode);
 	
 public:
-	
 	static void init(Napi::Env env, Napi::Object exports);
 	static Napi::Object create(Napi::Env env, Napi::Object context);
 	
@@ -19,15 +19,12 @@ public:
 	void _destroy();
 	
 private:
-	
-	static Napi::FunctionReference _constructor;
-	
 	void onEnded();
 	
-	JS_DECLARE_METHOD(destroy);
+	JS_DECLARE_METHOD(AudioScheduledSourceNode, destroy);
 	
-	JS_DECLARE_METHOD(start);
-	JS_DECLARE_METHOD(stop);
+	JS_DECLARE_METHOD(AudioScheduledSourceNode, start);
+	JS_DECLARE_METHOD(AudioScheduledSourceNode, stop);
 	
 };
 

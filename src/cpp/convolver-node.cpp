@@ -5,15 +5,14 @@
 #include "audio-buffer.hpp"
 
 
-Napi::FunctionReference ConvolverNode::_constructor;
+IMPLEMENT_ES5_CLASS(ConvolverNode);
 
 void ConvolverNode::init(Napi::Env env, Napi::Object exports) {
 	
 	Napi::Function ctor = wrap(env);
 	JS_ASSIGN_SETTER(normalize);
 	JS_ASSIGN_SETTER(buffer);
-		ACCESSOR_M(ConvolverNode, destroy)
-	});
+	JS_ASSIGN_METHOD(destroy);
 	
 	exports.Set("ConvolverNode", ctor);
 	
@@ -22,23 +21,20 @@ void ConvolverNode::init(Napi::Env env, Napi::Object exports) {
 
 ConvolverNode::ConvolverNode(const Napi::CallbackInfo &info):
 CommonNode<ConvolverNode>(info, "ConvolverNode") { NAPI_ENV;
-	super(info);
 	
 	REQ_OBJ_ARG(0, context);
 	
-	Napi::Object that = info.This().As<Napi::Object>();
-	Napi::Function ctor = _constructor.Value().As<Napi::Function>();
-	Napi::Function _Super = ctor.Get("_Super").As<Napi::Function>();
-	
 	reset(context, std::make_shared<lab::ConvolverNode>());
 	
-	std::vector<napi_value> args;
-	args.push_back(context);
-	_Super.Call(that, args);
+	lab::ConvolverNode *node = static_cast<lab::ConvolverNode*>(
+		_impl.get()
+	);
 	
-	// lab::ConvolverNode *node = static_cast<lab::ConvolverNode*>(
-	// 	_impl.get()
-	// );
+	Napi::Value argv[] = {
+		static_cast<Napi::Value>(context),
+		static_cast<Napi::Value>(JS_NUM(reinterpret_cast<size_t>(node)))
+	};
+	super(info, 2, argv);
 	
 }
 
@@ -59,13 +55,13 @@ void ConvolverNode::_destroy() { DES_CHECK;
 
 
 
-JS_GETTER(ConvolverNode::bufferGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(ConvolverNode, buffer) { THIS_CHECK;
 	
 	RET_VALUE(_buffer.Value());
 	
 }
 
-JS_SETTER(ConvolverNode::bufferSetter) { THIS_SETTER_CHECK; SETTER_OBJ_ARG;
+JS_IMPLEMENT_SETTER(ConvolverNode, buffer) { THIS_SETTER_CHECK; SETTER_OBJ_ARG;
 	
 	if (_buffer.Value() == v) {
 		return;
@@ -91,7 +87,7 @@ JS_SETTER(ConvolverNode::bufferSetter) { THIS_SETTER_CHECK; SETTER_OBJ_ARG;
 }
 
 
-JS_GETTER(ConvolverNode::normalizeGetter) { THIS_CHECK;
+JS_IMPLEMENT_GETTER(ConvolverNode, normalize) { THIS_CHECK;
 	
 	lab::ConvolverNode *node = static_cast<lab::ConvolverNode*>(
 		_impl.get()
@@ -101,7 +97,7 @@ JS_GETTER(ConvolverNode::normalizeGetter) { THIS_CHECK;
 	
 }
 
-JS_SETTER(ConvolverNode::normalizeSetter) { THIS_SETTER_CHECK; SETTER_BOOL_ARG;
+JS_IMPLEMENT_SETTER(ConvolverNode, normalize) { THIS_SETTER_CHECK; SETTER_BOOL_ARG;
 	
 	lab::ConvolverNode *node = static_cast<lab::ConvolverNode*>(
 		_impl.get()
@@ -114,7 +110,7 @@ JS_SETTER(ConvolverNode::normalizeSetter) { THIS_SETTER_CHECK; SETTER_BOOL_ARG;
 }
 
 
-JS_METHOD(ConvolverNode::destroy) { THIS_CHECK;
+JS_IMPLEMENT_METHOD(ConvolverNode, destroy) { THIS_CHECK;
 	
 	emit("destroy");
 	

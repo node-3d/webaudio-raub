@@ -7,7 +7,7 @@
 
 
 #define PARAM_GETTER(CLASS, NAME)                                             \
-JS_GETTER(CLASS::NAME ## Getter) { THIS_CHECK;                                \
+JS_IMPLEMENT_GETTER(CLASS, NAME) { THIS_CHECK;                      \
 	RET_VALUE(_ ## NAME.Value());                                             \
 }
 

@@ -1,7 +1,6 @@
 #ifndef _CONSTANT_SOURCE_NODE_HPP_
 #define _CONSTANT_SOURCE_NODE_HPP_
 
-
 #include "common.hpp"
 
 #include "audio-scheduled-source-node.hpp"
@@ -35,12 +34,12 @@ protected:
 	
 private:
 	
-	JS_DECLARE_METHOD(destroy);
-	JS_DECLARE_GETTER(isDestroyed);
+	JS_DECLARE_METHOD(ConstantSourceNode, destroy);
+	JS_DECLARE_GETTER(ConstantSourceNode, isDestroyed);
 	
 	
 	
-	JS_DECLARE_GETTER(offset);
+	JS_DECLARE_GETTER(ConstantSourceNode, offset);
 	
 };
 

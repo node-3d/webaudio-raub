@@ -7,6 +7,7 @@
 
 
 class DelayNode : public CommonNode<DelayNode> {
+DECLARE_ES5_CLASS(DelayNode, DelayNode);
 	
 public:
 	
@@ -20,13 +21,11 @@ public:
 	
 private:
 	
-	static Napi::FunctionReference _constructor;
-	
 	Napi::ObjectReference _delayTime;
 	
-	JS_DECLARE_METHOD(destroy);
+	JS_DECLARE_METHOD(DelayNode, destroy);
 	
-	JS_DECLARE_GETTER(delayTime);
+	JS_DECLARE_GETTER(DelayNode, delayTime);
 	
 };
 
