@@ -7,7 +7,7 @@
 #include "audio-node.hpp"
 
 
-class DynamicsCompressorNode : public CommonNode<DynamicsCompressorNode> {
+class DynamicsCompressorNode : public CommonNode {
 DECLARE_ES5_CLASS(DynamicsCompressorNode, DynamicsCompressorNode);
 	
 public:

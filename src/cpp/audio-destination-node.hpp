@@ -4,7 +4,7 @@
 #include "common.hpp"
 
 
-class AudioDestinationNode : public CommonNode<AudioDestinationNode> {
+class AudioDestinationNode : public CommonNode {
 DECLARE_ES5_CLASS(AudioDestinationNode, AudioDestinationNode);
 	
 public:

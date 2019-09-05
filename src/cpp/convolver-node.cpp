@@ -20,7 +20,7 @@ void ConvolverNode::init(Napi::Env env, Napi::Object exports) {
 
 
 ConvolverNode::ConvolverNode(const Napi::CallbackInfo &info):
-CommonNode<ConvolverNode>(info, "ConvolverNode") { NAPI_ENV;
+CommonNode(info.This(), "ConvolverNode") { NAPI_ENV;
 	
 	REQ_OBJ_ARG(0, context);
 	

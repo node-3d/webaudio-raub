@@ -26,7 +26,7 @@ void AnalyserNode::init(Napi::Env env, Napi::Object exports) {
 
 
 AnalyserNode::AnalyserNode(const Napi::CallbackInfo &info):
-CommonNode<AnalyserNode>(info, "AnalyserNode") { NAPI_ENV;
+CommonNode(info.This(), "AnalyserNode") { NAPI_ENV;
 	
 	REQ_OBJ_ARG(0, context);
 	

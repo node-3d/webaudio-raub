@@ -52,7 +52,7 @@ inline lab::OscillatorType toOscillatorType(const std::string &mode) {
 
 
 OscillatorNode::OscillatorNode(const Napi::CallbackInfo &info):
-CommonNode<OscillatorNode>(info, "OscillatorNode") { NAPI_ENV;
+CommonNode(info.This(), "OscillatorNode") { NAPI_ENV;
 	
 	REQ_OBJ_ARG(0, context);
 	

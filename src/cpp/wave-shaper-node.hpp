@@ -7,7 +7,7 @@
 #include "audio-node.hpp"
 
 
-class WaveShaperNode : public CommonNode<WaveShaperNode> {
+class WaveShaperNode : public CommonNode {
 DECLARE_ES5_CLASS(WaveShaperNode, WaveShaperNode);
 	
 public:

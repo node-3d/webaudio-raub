@@ -26,7 +26,7 @@ void AudioBufferSourceNode::init(Napi::Env env, Napi::Object exports) {
 
 
 AudioBufferSourceNode::AudioBufferSourceNode(const Napi::CallbackInfo &info):
-CommonNode<AudioBufferSourceNode>(info, "AudioBufferSourceNode") { NAPI_ENV;
+CommonNode(info.This(), "AudioBufferSourceNode") { NAPI_ENV;
 	
 	REQ_OBJ_ARG(0, context);
 	

@@ -5,7 +5,7 @@
 #include "common.hpp"
 
 
-class AudioProcessingEvent : public CommonNode<AudioProcessingEvent> {
+class AudioProcessingEvent : public CommonNode {
 DECLARE_ES5_CLASS(AudioProcessingEvent, AudioProcessingEvent);
 	
 public:

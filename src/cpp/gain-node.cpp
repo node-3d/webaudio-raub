@@ -19,7 +19,7 @@ void GainNode::init(Napi::Env env, Napi::Object exports) {
 
 
 GainNode::GainNode(const Napi::CallbackInfo &info):
-CommonNode<GainNode>(info, "GainNode") { NAPI_ENV;
+CommonNode(info.This(), "GainNode") { NAPI_ENV;
 	
 	REQ_OBJ_ARG(0, context);
 	

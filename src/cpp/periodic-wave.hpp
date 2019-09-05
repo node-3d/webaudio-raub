@@ -5,7 +5,7 @@
 #include "common.hpp"
 
 
-class PeriodicWave : public CommonNode<PeriodicWave> {
+class PeriodicWave : public CommonNode {
 DECLARE_ES5_CLASS(PeriodicWave, PeriodicWave);
 	
 public:

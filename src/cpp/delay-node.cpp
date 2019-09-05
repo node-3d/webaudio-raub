@@ -19,7 +19,7 @@ void DelayNode::init(Napi::Env env, Napi::Object exports) {
 
 
 DelayNode::DelayNode(const Napi::CallbackInfo &info): 
-CommonNode<DelayNode>(info, "DelayNode") { NAPI_ENV;
+CommonNode(info.This(), "DelayNode") { NAPI_ENV;
 	
 	REQ_OBJ_ARG(0, context);
 	REQ_DOUBLE_ARG(1, delay);

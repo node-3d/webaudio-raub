@@ -4,7 +4,7 @@
 #include "common.hpp"
 
 
-class AudioBuffer : public CommonBus<AudioBuffer> {
+class AudioBuffer : public CommonBus {
 DECLARE_ES5_CLASS(AudioBuffer, AudioBuffer);
 	
 public:

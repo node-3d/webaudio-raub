@@ -7,7 +7,7 @@
 #include "audio-node.hpp"
 
 
-class ScriptProcessorNode : public CommonNode<ScriptProcessorNode> {
+class ScriptProcessorNode : public CommonNode {
 DECLARE_ES5_CLASS(ScriptProcessorNode, ScriptProcessorNode);
 	
 public:

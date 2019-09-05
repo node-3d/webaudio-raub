@@ -26,7 +26,7 @@ Napi::Object AudioDestinationNode::create(Napi::Env env, Napi::Object context, N
 
 
 AudioDestinationNode::AudioDestinationNode(const Napi::CallbackInfo &info):
-CommonNode<AudioDestinationNode>(info, "AudioDestinationNode") { NAPI_ENV;
+CommonNode(info.This(), "AudioDestinationNode") { NAPI_ENV;
 	super(info);
 	
 	REQ_OBJ_ARG(0, context);

@@ -6,7 +6,7 @@
 #include "audio-node.hpp"
 
 
-class DelayNode : public CommonNode<DelayNode> {
+class DelayNode : public CommonNode {
 DECLARE_ES5_CLASS(DelayNode, DelayNode);
 	
 public:

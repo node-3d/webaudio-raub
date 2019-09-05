@@ -23,7 +23,7 @@ void BiquadFilterNode::init(Napi::Env env, Napi::Object exports) {
 
 
 BiquadFilterNode::BiquadFilterNode(const Napi::CallbackInfo &info):
-CommonNode<BiquadFilterNode>(info, "BiquadFilterNode") { NAPI_ENV;
+CommonNode(info.This(), "BiquadFilterNode") { NAPI_ENV;
 	
 	REQ_OBJ_ARG(0, context);
 	

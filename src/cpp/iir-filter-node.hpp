@@ -7,7 +7,7 @@
 #include "audio-node.hpp"
 
 
-class IIRFilterNode : public CommonNode<IIRFilterNode> {
+class IIRFilterNode : public CommonNode {
 DECLARE_ES5_CLASS(IIRFilterNode, IIRFilterNode);
 	
 public:

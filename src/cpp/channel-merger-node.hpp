@@ -7,7 +7,7 @@
 #include "audio-node.hpp"
 
 
-class ChannelMergerNode : public CommonNode<ChannelMergerNode> {
+class ChannelMergerNode : public CommonNode {
 DECLARE_ES5_CLASS(ChannelMergerNode, ChannelMergerNode);
 	
 public:

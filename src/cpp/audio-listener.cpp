@@ -38,7 +38,7 @@ Napi::Object AudioListener::create(Napi::Env env, Napi::Object context, Listener
 
 
 AudioListener::AudioListener(const Napi::CallbackInfo &info):
-CommonListener<AudioListener>(info, "AudioListener") { NAPI_ENV;
+CommonListener(info.This(), "AudioListener") { NAPI_ENV;
 	
 	super(info);
 	

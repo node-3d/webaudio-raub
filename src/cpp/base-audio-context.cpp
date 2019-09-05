@@ -61,20 +61,20 @@ void BaseAudioContext::init(Napi::Env env, Napi::Object exports) {
 
 
 BaseAudioContext::BaseAudioContext(const Napi::CallbackInfo &info):
-CommonCtx<BaseAudioContext>(info, "BaseAudioContext") { NAPI_ENV;
-	std::cout << "000000" << std::endl;
+CommonCtx(info.This(), "BaseAudioContext") { NAPI_ENV;
+	std::cout << "BaseAudioContext 1 " << info.Env().IsExceptionPending() << info.Env().GetAndClearPendingException().Message() << std::endl;
 	// super(info);
-	std::cout << "11111" << std::endl;
+	// std::cout << "BaseAudioContext " << std::endl;
 	REQ_EXT_ARG(0, extCtx);
 	// REQ_OFFS_ARG(0, extCtx);
-	std::cout << "lowwwww" << extCtx.Data() << std::endl;
+	std::cout << "BaseAudioContext 2 " << extCtx.Data() << " lowwwww " <<  info.Env().IsExceptionPending() << std::endl;
 	CtxPtr *ctx = reinterpret_cast<CtxPtr*>(extCtx.Data());
 	// CtxPtr *ctx = reinterpret_cast<CtxPtr*>(extCtx);
 	
 	reset(*ctx);
 	
 	_state = "running";
-	std::cout << "lowwwww2" << extCtx << std::endl;
+	std::cout << "BaseAudioContext 3 " << info.Env().IsExceptionPending() << std::endl;
 	// Napi::Object node = AudioDestinationNode::create(context, _impl->destination());
 	// _destination.Reset(node);
 	
@@ -94,7 +94,7 @@ CommonCtx<BaseAudioContext>(info, "BaseAudioContext") { NAPI_ENV;
 	// Napi::Value argv = context;
 	// Nan::AsyncResource async("BaseAudioContext::finishNew()");
 	// startUpdaterCb.Call(1, &argv, &async);
-	std::cout << "lowwwww3" << extCtx << std::endl;
+	std::cout << "lowwwww3 " << info.Env().IsExceptionPending() << std::endl;
 }
 
 

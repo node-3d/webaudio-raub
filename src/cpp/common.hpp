@@ -21,12 +21,13 @@ void _disconnectNode(Napi::Object context, NodePtr node);
 void _disconnectParam(Napi::Object context, ParamPtr node);
 
 
-template <typename T>
-struct Common : public Napi::ObjectWrap<T> {
+struct Common {
 	
-	Common(const Napi::CallbackInfo &info, const char *name):
-	Napi::ObjectWrap<T>(info),
-	asyncCtx(info.Env(), name) {
+	Common(Napi::Value that, const char *name):
+	asyncCtx(that.Env(), name) {
+		std::cout << "Common() 1 " << that.Env().IsExceptionPending() << std::endl;
+		// _that.Reset(that.As<Napi::Object>());
+		std::cout << "Common() 2 " << that.Env().IsExceptionPending() << std::endl;
 		_isDestroyed = false;
 	};
 	~Common() { _destroy(); };
@@ -36,8 +37,7 @@ struct Common : public Napi::ObjectWrap<T> {
 		int argc = 0,
 		const Napi::Value *argv = nullptr
 	) { DES_CHECK;
-		Napi::Object that = Value().As<Napi::Object>();
-		eventEmit(that, name, argc, argv);
+		eventEmit(_that.Value(), name, argc, argv);
 	}
 	
 	void emitAsync(
@@ -45,27 +45,28 @@ struct Common : public Napi::ObjectWrap<T> {
 		int argc = 0,
 		const Napi::Value *argv = nullptr
 	) { DES_CHECK;
-		Napi::Object that = Value().As<Napi::Object>();
-		eventEmitAsync(that, name, argc, argv, asyncCtx);
+		eventEmitAsync(_that.Value(), name, argc, argv, asyncCtx);
 	}
 	
 	void _destroy() { DES_CHECK;
 		_isDestroyed = true;
+		_context.Reset();
+		_that.Reset();
 	};
 	
 	bool _isDestroyed;
 	
+	Napi::ObjectReference _that;
 	Napi::ObjectReference _context;
 	Napi::AsyncContext asyncCtx;
 	
 };
 
 
-template <typename T>
-struct CommonNode: public Common<T> {
+struct CommonNode: public Common {
 	
-	CommonNode(const Napi::CallbackInfo &info, const char *name):
-	Common<T>(info, name) {
+	CommonNode(Napi::Value that, const char *name):
+	Common(that, name) {
 	};
 	
 	~CommonNode() { _destroy(); };
@@ -75,9 +76,8 @@ struct CommonNode: public Common<T> {
 		_disconnectNode(_context.Value(), _impl);
 		
 		_impl.reset();
-		_context.Reset();
 		
-		Common<T>::_destroy();
+		Common::_destroy();
 		
 	};
 	
@@ -93,11 +93,10 @@ struct CommonNode: public Common<T> {
 };
 
 
-template <typename T>
-struct CommonParam: public Common<T> {
+struct CommonParam: public Common {
 	
-	CommonParam(const Napi::CallbackInfo &info, const char *name):
-	Common<T>(info, name) {
+	CommonParam(Napi::Value that, const char *name):
+	Common(that, name) {
 	};
 	
 	~CommonParam() { _destroy(); };
@@ -107,9 +106,8 @@ struct CommonParam: public Common<T> {
 		_disconnectParam(_context.Value(), _impl);
 		
 		_impl.reset();
-		_context.Reset();
 		
-		Common<T>::_destroy();
+		Common::_destroy();
 		
 	};
 	
@@ -125,11 +123,11 @@ struct CommonParam: public Common<T> {
 };
 
 
-template <typename T>
-struct CommonCtx: public Common<T> {
+struct CommonCtx: public Common {
 	
-	CommonCtx(const Napi::CallbackInfo &info, const char *name):
-	Common<T>(info, name) {
+	CommonCtx(Napi::Value that, const char *name):
+	Common(that, name) {
+		std::cout << "CommonCtx() 1 " << that.Env().IsExceptionPending() << std::endl;
 	};
 	
 	~CommonCtx() { _destroy(); };
@@ -138,7 +136,7 @@ struct CommonCtx: public Common<T> {
 		
 		_impl.reset();
 		
-		Common<T>::_destroy();
+		Common::_destroy();
 		
 	};
 	
@@ -153,11 +151,10 @@ struct CommonCtx: public Common<T> {
 };
 
 
-template <typename T>
-struct CommonBus: public Common<T> {
+struct CommonBus: public Common {
 	
-	CommonBus(const Napi::CallbackInfo &info, const char *name):
-	Common<T>(info, name) {
+	CommonBus(Napi::Value that, const char *name):
+	Common(that, name) {
 	};
 	
 	~CommonBus() { _destroy(); };
@@ -165,9 +162,8 @@ struct CommonBus: public Common<T> {
 		void _destroy() { DES_CHECK;
 		
 		_impl.reset();
-		_context.Reset();
 		
-		Common<T>::_destroy();
+		Common::_destroy();
 		
 	};
 	
@@ -183,11 +179,10 @@ struct CommonBus: public Common<T> {
 };
 
 
-template <typename T>
-struct CommonListener: public Common<T> {
+struct CommonListener: public Common {
 	
-	CommonListener(const Napi::CallbackInfo &info, const char *name):
-	Common<T>(info, name) {
+	CommonListener(Napi::Value that, const char *name):
+	Common(that, name) {
 	};
 	
 	~CommonListener() { _destroy(); };
@@ -195,9 +190,8 @@ struct CommonListener: public Common<T> {
 		void _destroy() { DES_CHECK;
 		
 		_impl.reset();
-		_context.Reset();
 		
-		Common<T>::_destroy();
+		Common::_destroy();
 		
 	};
 	

@@ -20,7 +20,7 @@ void ChannelSplitterNode::init(Napi::Env env, Napi::Object exports) {
 
 
 ChannelSplitterNode::ChannelSplitterNode(const Napi::CallbackInfo &info):
-CommonNode<ChannelSplitterNode>(info, "ChannelSplitterNode") { NAPI_ENV;
+CommonNode(info.This(), "ChannelSplitterNode") { NAPI_ENV;
 	
 	REQ_OBJ_ARG(0, context);
 	

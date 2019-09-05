@@ -6,7 +6,7 @@
 #include "audio-node.hpp"
 
 
-class AudioScheduledSourceNode : public CommonNode<AudioScheduledSourceNode> {
+class AudioScheduledSourceNode : public CommonNode {
 DECLARE_ES5_CLASS(AudioScheduledSourceNode, AudioScheduledSourceNode);
 	
 public:

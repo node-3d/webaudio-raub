@@ -73,7 +73,7 @@ inline lab::ChannelInterpretation toChannelInterpretation(const std::string &io)
 
 
 AudioNode::AudioNode(const Napi::CallbackInfo &info):
-CommonNode<AudioNode>(info, "AudioNode") { NAPI_ENV;
+CommonNode(info.This(), "AudioNode") { NAPI_ENV;
 	super(info);
 	
 	REQ_OBJ_ARG(0, context);

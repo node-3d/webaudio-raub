@@ -21,24 +21,24 @@ void AudioContext::init(Napi::Env env, Napi::Object exports) {
 
 
 AudioContext::AudioContext(const Napi::CallbackInfo &info):
-CommonCtx<AudioContext>(info, "AudioContext") { NAPI_ENV;
-	
+CommonCtx(info.This(), "AudioContext") { NAPI_ENV;
+	std::cout << "AudioContext() 1 " << info.Env().IsExceptionPending() << std::endl;
 	if (info.Length() > 0) {
 		LET_FLOAT_ARG(0, sampleRate);
 		reset(std::move(
 			lab::Sound::MakeRealtimeAudioContext(lab::Channels::Stereo, sampleRate)
 		));
-	} else {
+	} else {std::cout << "AudioContext() 2 " << info.Env().IsExceptionPending() << std::endl;
 		reset(std::move(
 			lab::Sound::MakeRealtimeAudioContext(lab::Channels::Stereo)
 		));
 	}
-	
+	std::cout << "AudioContext() 3 " << info.Env().IsExceptionPending() << std::endl;
 	Napi::Value argv[] = {
 		static_cast<Napi::Value>(JS_EXT(&_impl))
-	};
+	};std::cout << "AudioContext() 4 " << info.Env().IsExceptionPending() << std::endl;
 	super(info, 1, argv);
-	
+	std::cout << "AudioContext() 5 " << info.Env().IsExceptionPending() << std::endl;
 }
 
 

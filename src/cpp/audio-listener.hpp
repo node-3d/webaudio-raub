@@ -4,7 +4,7 @@
 #include "common.hpp"
 
 
-class AudioListener : public CommonListener<AudioListener> {
+class AudioListener : public CommonListener {
 DECLARE_ES5_CLASS(AudioListener, AudioListener);
 	
 public:

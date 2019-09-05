@@ -4,7 +4,7 @@
 #include "common.hpp"
 
 
-class AudioContext : public CommonCtx<AudioContext> {
+class AudioContext : public CommonCtx {
 DECLARE_ES5_CLASS(AudioContext, AudioContext);
 	
 public:

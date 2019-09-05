@@ -18,7 +18,7 @@ void AudioScheduledSourceNode::init(Napi::Env env, Napi::Object exports) {
 
 
 AudioScheduledSourceNode::AudioScheduledSourceNode(const Napi::CallbackInfo &info):
-CommonNode<AudioScheduledSourceNode>(info, "AudioScheduledSourceNode") { NAPI_ENV;
+CommonNode(info.This(), "AudioScheduledSourceNode") { NAPI_ENV;
 	
 	REQ_OBJ_ARG(0, context);
 	REQ_EXT_ARG(1, extNode);

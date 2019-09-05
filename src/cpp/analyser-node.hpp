@@ -6,7 +6,7 @@
 #include "audio-node.hpp"
 
 
-class AnalyserNode : public CommonNode<AnalyserNode> {
+class AnalyserNode : public CommonNode {
 DECLARE_ES5_CLASS(AnalyserNode, AnalyserNode);
 	
 public:

@@ -7,7 +7,7 @@
 #include "audio-param.hpp"
 
 
-class PannerNode : public CommonNode<PannerNode> {
+class PannerNode : public CommonNode {
 DECLARE_ES5_CLASS(PannerNode, PannerNode);
 	
 public:

@@ -4,7 +4,7 @@
 #include "common.hpp"
 
 
-class AudioParam : public CommonParam<AudioParam> {
+class AudioParam : public CommonParam {
 DECLARE_ES5_CLASS(AudioParam, AudioParam);
 	
 public:

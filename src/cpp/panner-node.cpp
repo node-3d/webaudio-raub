@@ -75,7 +75,7 @@ void PannerNode::init(Napi::Env env, Napi::Object exports) {
 
 
 PannerNode::PannerNode(const Napi::CallbackInfo &info):
-CommonNode<PannerNode>(info, "PannerNode") { NAPI_ENV;
+CommonNode(info.This(), "PannerNode") { NAPI_ENV;
 	
 	REQ_OBJ_ARG(0, context);
 	

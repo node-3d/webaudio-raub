@@ -6,7 +6,7 @@
 #include "audio-node.hpp"
 
 
-class ConvolverNode : public CommonNode<ConvolverNode> {
+class ConvolverNode : public CommonNode {
 DECLARE_ES5_CLASS(ConvolverNode, ConvolverNode);
 	
 public:

@@ -7,7 +7,7 @@
 #include "audio-node.hpp"
 
 
-class MediaElementAudioSourceNode : public CommonNode<MediaElementAudioSourceNode> {
+class MediaElementAudioSourceNode : public CommonNode {
 DECLARE_ES5_CLASS(MediaElementAudioSourceNode, MediaElementAudioSourceNode);
 	
 public:

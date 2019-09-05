@@ -6,7 +6,7 @@
 #include "audio-node.hpp"
 
 
-class ChannelSplitterNode : public CommonNode<ChannelSplitterNode> {
+class ChannelSplitterNode : public CommonNode {
 DECLARE_ES5_CLASS(ChannelSplitterNode, ChannelSplitterNode);
 	
 public:

@@ -7,7 +7,7 @@
 #include "audio-scheduled-source-node.hpp"
 
 
-class OscillatorNode : public CommonNode<OscillatorNode> {
+class OscillatorNode : public CommonNode {
 DECLARE_ES5_CLASS(OscillatorNode, OscillatorNode);
 	
 public:

@@ -24,7 +24,7 @@ void AudioBuffer::init(Napi::Env env, Napi::Object exports) {
 
 
 AudioBuffer::AudioBuffer(const Napi::CallbackInfo &info):
-CommonBus<AudioBuffer>(info, "AudioBuffer") { NAPI_ENV;
+CommonBus(info.This(), "AudioBuffer") { NAPI_ENV;
 	
 	super(info);
 	

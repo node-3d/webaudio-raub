@@ -5,7 +5,7 @@
 #include "common.hpp"
 
 
-class OfflineAudioCompletionEvent : public CommonNode<OfflineAudioCompletionEvent> {
+class OfflineAudioCompletionEvent : public CommonNode {
 DECLARE_ES5_CLASS(OfflineAudioCompletionEvent, OfflineAudioCompletionEvent);
 	
 public:
