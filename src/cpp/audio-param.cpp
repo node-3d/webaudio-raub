@@ -31,15 +31,6 @@ void AudioParam::init(Napi::Env env, Napi::Object exports) {
 }
 
 
-Napi::Object AudioParam::create(Napi::Env env, Napi::Object context, ParamPtr param) {
-	Napi::Function ctor = _ctorEs5.Value().As<Napi::Function>();
-	std::vector<napi_value> args;
-	args.push_back(context);
-	args.push_back(JS_EXT(&param));
-	return ctor.New(args);
-}
-
-
 bool AudioParam::isAudioParam(Napi::Object obj) {
 	return obj.InstanceOf(_ctorEs5.Value());
 }
@@ -47,15 +38,16 @@ bool AudioParam::isAudioParam(Napi::Object obj) {
 
 AudioParam::AudioParam(const Napi::CallbackInfo &info):
 CommonParam(info.This(), "AudioParam") { NAPI_ENV;
+	std::cout << "AudioParam() end" << std::endl;
 	super(info);
 	
 	REQ_OBJ_ARG(0, context);
 	REQ_EXT_ARG(1, extParam);
-	
+	std::cout << "AudioParam() 1" << std::endl;
 	ParamPtr *param = reinterpret_cast<ParamPtr *>(extParam.Data());
 	
 	reset(context, *param);
-	
+	std::cout << "AudioParam() end" << std::endl;
 }
 
 

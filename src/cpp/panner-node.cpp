@@ -78,6 +78,7 @@ PannerNode::PannerNode(const Napi::CallbackInfo &info):
 CommonNode(info.This(), "PannerNode") { NAPI_ENV;
 	
 	REQ_OBJ_ARG(0, context);
+	REQ_FUN_ARG(1, paramCtor);
 	
 	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
 	float sampleRate = audioContext->getCtx()->sampleRate();
@@ -90,17 +91,28 @@ CommonNode(info.This(), "PannerNode") { NAPI_ENV;
 		_impl.get()
 	);
 	
-	_positionX.Reset(AudioParam::create(env, context, node->positionX()));
-	_positionY.Reset(AudioParam::create(env, context, node->positionY()));
-	_positionZ.Reset(AudioParam::create(env, context, node->positionZ()));
-	_orientationX.Reset(AudioParam::create(env, context, node->orientationX()));
-	_orientationY.Reset(AudioParam::create(env, context, node->orientationY()));
-	_orientationZ.Reset(AudioParam::create(env, context, node->orientationZ()));
+	napi_value argv[2];
+	argv[0] = context;
 	
-	Napi::Value argv[] = {
-		static_cast<Napi::Value>(context),
-		static_cast<Napi::Value>(JS_NUM(reinterpret_cast<size_t>(&_impl)))
-	};
+	argv[1] = JS_EXT(&node->positionX());
+	_positionX.Reset(paramCtor.New(2, argv));
+	
+	argv[1] = JS_EXT(&node->positionY());
+	_positionY.Reset(paramCtor.New(2, argv));
+	
+	argv[1] = JS_EXT(&node->positionZ());
+	_positionZ.Reset(paramCtor.New(2, argv));
+	
+	argv[1] = JS_EXT(&node->orientationX());
+	_orientationX.Reset(paramCtor.New(2, argv));
+	
+	argv[1] = JS_EXT(&node->orientationY());
+	_orientationY.Reset(paramCtor.New(2, argv));
+	
+	argv[1] = JS_EXT(&node->orientationZ());
+	_orientationZ.Reset(paramCtor.New(2, argv));
+	
+	argv[1] = JS_EXT(&_impl);
 	super(info, 2, argv);
 	
 }

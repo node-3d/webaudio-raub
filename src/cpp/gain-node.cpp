@@ -22,6 +22,7 @@ GainNode::GainNode(const Napi::CallbackInfo &info):
 CommonNode(info.This(), "GainNode") { NAPI_ENV;
 	
 	REQ_OBJ_ARG(0, context);
+	REQ_FUN_ARG(1, paramCtor);
 	
 	reset(context, std::make_shared<lab::GainNode>());
 	
@@ -29,12 +30,13 @@ CommonNode(info.This(), "GainNode") { NAPI_ENV;
 		_impl.get()
 	);
 	
-	_gain.Reset(AudioParam::create(env, context, node->gain()));
+	napi_value argv[2];
+	argv[0] = context;
 	
-	Napi::Value argv[] = {
-		static_cast<Napi::Value>(context),
-		static_cast<Napi::Value>(JS_NUM(reinterpret_cast<size_t>(&_impl)))
-	};
+	argv[1] = JS_EXT(&node->gain());
+	_gain.Reset(paramCtor.New(2, argv));
+	
+	argv[1] = JS_EXT(&_impl);
 	super(info, 2, argv);
 	
 }

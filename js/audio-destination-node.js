@@ -1,43 +1,29 @@
 'use strict';
 
-const { inspect } = require('util');
+const { inspect, inherits } = require('util');
 
 const { AudioDestinationNode } = require('../core');
-const AudioNode = require('./audio-node');
+const JsAudioNode = require('./audio-node');
 
 
-AudioDestinationNode.prototype.__proto__ = AudioNode.prototype;
-AudioDestinationNode._Super = AudioNode.constructor;
+inherits(AudioDestinationNode, JsAudioNode);
 
 
-class JsAudioDestinationNode extends AudioDestinationNode {
+function JsAudioDestinationNode(ctx, node) {
+	console.log('call JsAudioDestinationNode()', ctx, node);
+	AudioDestinationNode.call(this, ctx, node);
+}
+
+JsAudioDestinationNode.prototype = {
 	
-	constructor(ctx, _opts = {}) {
-		
-		const opts = {
-			fftSize : 2048,
-			maxDecibels : -30,
-			minDecibels : -100,
-			smoothingTimeConstant : 0.8,
-			..._opts,
-		};
-		
-		super(ctx);
-		
-		this.fftSize = opts.fftSize;
-		this.maxDecibels = opts.maxDecibels;
-		this.minDecibels = opts.minDecibels;
-		this.smoothingTimeConstant = opts.smoothingTimeConstant;
-		
-	}
-	
-	
-	[inspect.custom]() { return this.toString(); }
+	[inspect.custom]() { return this.toString(); },
 	
 	toString() {
 		return 'AudioDestinationNode {}';
-	}
+	},
 	
-}
+};
+
+inherits(JsAudioDestinationNode, AudioDestinationNode);
 
 module.exports = JsAudioDestinationNode;

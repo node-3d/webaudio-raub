@@ -23,6 +23,16 @@ void AudioBuffer::init(Napi::Env env, Napi::Object exports) {
 }
 
 
+Napi::Object AudioBuffer::create(Napi::Object context, BusPtr bus) {
+	Napi::Env env = context.Env();
+	Napi::Function ctor = _ctorEs5.Value().As<Napi::Function>();
+	std::vector<napi_value> args;
+	args.push_back(context);
+	args.push_back(JS_EXT(&bus));
+	return ctor.New(args);
+}
+
+
 AudioBuffer::AudioBuffer(const Napi::CallbackInfo &info):
 CommonBus(info.This(), "AudioBuffer") { NAPI_ENV;
 	

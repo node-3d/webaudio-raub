@@ -24,6 +24,7 @@ private:
 	
 	JS_DECLARE_METHOD(BaseAudioContext, destroy);
 	
+	JS_DECLARE_METHOD(BaseAudioContext, _initListener);
 	JS_DECLARE_METHOD(BaseAudioContext, update);
 	JS_DECLARE_METHOD(BaseAudioContext, resume);
 	JS_DECLARE_METHOD(BaseAudioContext, decodeAudioData);

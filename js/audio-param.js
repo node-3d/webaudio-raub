@@ -1,44 +1,35 @@
- 'use strict';
+'use strict';
 
-const { inspect } = require('util');
-const EventEmitter = require('events');
+const { inspect, inherits } = require('util');
+const Emitter = require('events');
 
 const { AudioParam } = require('../core');
-const AudioNode = require('./audio-node');
+
+inherits(AudioParam, Emitter);
 
 
-AudioParam.prototype.__proto__ = EventEmitter.prototype;
-AudioParam._Super = AudioNode.constructor;
-
-
-class JsAudioParam extends AudioParam {
+function JsAudioParam(ctx, param) {
+	console.log('JsAudioParam()', ctx, param, AudioParam);
+	AudioParam.call(this, ctx, param);
 	
-	constructor(ctx, _opts = {}) {
-		
-		const opts = {
-			fftSize : 2048,
-			maxDecibels : -30,
-			minDecibels : -100,
-			smoothingTimeConstant : 0.8,
-			..._opts,
-		};
-		
-		super(ctx);
-		
-		this.fftSize = opts.fftSize;
-		this.maxDecibels = opts.maxDecibels;
-		this.minDecibels = opts.minDecibels;
-		this.smoothingTimeConstant = opts.smoothingTimeConstant;
-		
-	}
+}
+
+JsAudioParam.prototype = {
 	
+	get onerror() { return this.listeners('error'); },
+	set onerror(cb) { this.on('error', cb); },
 	
-	[inspect.custom]() { return this.toString(); }
+	get onended() { return this.listeners('ended'); },
+	set onended(cb) { this.on('ended', cb); },
+	
+	[inspect.custom]() { return this.toString(); },
 	
 	toString() {
 		return 'AudioParam {}';
-	}
+	},
 	
-}
+};
+
+inherits(JsAudioParam, AudioParam);
 
 module.exports = JsAudioParam;

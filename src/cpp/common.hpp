@@ -25,9 +25,7 @@ struct Common {
 	
 	Common(Napi::Value that, const char *name):
 	asyncCtx(that.Env(), name) {
-		std::cout << "Common() 1 " << that.Env().IsExceptionPending() << std::endl;
-		// _that.Reset(that.As<Napi::Object>());
-		std::cout << "Common() 2 " << that.Env().IsExceptionPending() << std::endl;
+		_that.Reset(that.As<Napi::Object>());
 		_isDestroyed = false;
 	};
 	~Common() { _destroy(); };
@@ -127,7 +125,6 @@ struct CommonCtx: public Common {
 	
 	CommonCtx(Napi::Value that, const char *name):
 	Common(that, name) {
-		std::cout << "CommonCtx() 1 " << that.Env().IsExceptionPending() << std::endl;
 	};
 	
 	~CommonCtx() { _destroy(); };

@@ -10,7 +10,6 @@ DECLARE_ES5_CLASS(AudioDestinationNode, AudioDestinationNode);
 public:
 	
 	static void init(Napi::Env env, Napi::Object exports);
-	static Napi::Object create(Napi::Env env, Napi::Object context, NodePtr node);
 	
 	explicit AudioDestinationNode(const Napi::CallbackInfo &info);
 	~AudioDestinationNode();

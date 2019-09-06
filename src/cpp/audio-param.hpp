@@ -10,7 +10,6 @@ DECLARE_ES5_CLASS(AudioParam, AudioParam);
 public:
 	
 	static void init(Napi::Env env, Napi::Object exports);
-	static Napi::Object create(Napi::Env env, Napi::Object context, ParamPtr param);
 	static bool isAudioParam(Napi::Object obj);
 	
 	explicit AudioParam(const Napi::CallbackInfo &info);

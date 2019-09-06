@@ -26,6 +26,7 @@ BiquadFilterNode::BiquadFilterNode(const Napi::CallbackInfo &info):
 CommonNode(info.This(), "BiquadFilterNode") { NAPI_ENV;
 	
 	REQ_OBJ_ARG(0, context);
+	REQ_FUN_ARG(1, paramCtor);
 	
 	reset(context, std::make_shared<lab::BiquadFilterNode>());
 	
@@ -33,15 +34,22 @@ CommonNode(info.This(), "BiquadFilterNode") { NAPI_ENV;
 		_impl.get()
 	);
 	
-	_frequency.Reset(AudioParam::create(env, context, node->frequency()));
-	_detune.Reset(AudioParam::create(env, context, node->detune()));
-	_Q.Reset(AudioParam::create(env, context, node->q()));
-	_gain.Reset(AudioParam::create(env, context, node->gain()));
+	napi_value argv[2];
+	argv[0] = context;
 	
-	Napi::Value argv[] = {
-		static_cast<Napi::Value>(context),
-		static_cast<Napi::Value>(JS_NUM(reinterpret_cast<size_t>(&_impl)))
-	};
+	argv[1] = JS_EXT(&node->frequency());
+	_frequency.Reset(paramCtor.New(2, argv));
+	
+	argv[1] = JS_EXT(&node->detune());
+	_detune.Reset(paramCtor.New(2, argv));
+	
+	argv[1] = JS_EXT(&node->q());
+	_Q.Reset(paramCtor.New(2, argv));
+	
+	argv[1] = JS_EXT(&node->gain());
+	_gain.Reset(paramCtor.New(2, argv));
+	
+	argv[1] = JS_EXT(&_impl);
 	super(info, 2, argv);
 	
 }

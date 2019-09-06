@@ -10,7 +10,6 @@ DECLARE_ES5_CLASS(AudioListener, AudioListener);
 public:
 	
 	static void init(Napi::Env env, Napi::Object exports);
-	static Napi::Object create(Napi::Env env, Napi::Object context, ListenerPtr listener);
 	
 	explicit AudioListener(const Napi::CallbackInfo &info);
 	~AudioListener();

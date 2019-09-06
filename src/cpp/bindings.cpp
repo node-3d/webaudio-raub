@@ -43,16 +43,16 @@ Napi::Object initModule(Napi::Env env, Napi::Object exports) {
 	// // // OfflineAudioContext::init(env, exports);
 	
 	// AudioBuffer::init(env, exports);
-	// AudioListener::init(env, exports);
+	AudioListener::init(env, exports);
 	
-	// AudioParam::init(env, exports);
+	AudioParam::init(env, exports);
 	
 	// // // PeriodicWave::init(env, exports);
 	// // // OfflineAudioCompletionEvent::init(env, exports);
 	
-	// AudioNode::init(env, exports);
+	AudioNode::init(env, exports);
 	
-	// AudioDestinationNode::init(env, exports);
+	AudioDestinationNode::init(env, exports);
 	// AudioScheduledSourceNode::init(env, exports);
 	
 	// AnalyserNode::init(env, exports);

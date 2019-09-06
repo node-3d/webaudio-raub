@@ -1,6 +1,7 @@
 #include <LabSound/LabSound.h>
 
 #include "base-audio-context.hpp"
+#include "audio-destination-node.hpp"
 #include "audio-buffer.hpp"
 #include "audio-listener.hpp"
 
@@ -45,6 +46,7 @@ IMPLEMENT_ES5_CLASS(BaseAudioContext);
 void BaseAudioContext::init(Napi::Env env, Napi::Object exports) {
 	
 	Napi::Function ctor = wrap(env);
+	JS_ASSIGN_METHOD(_initListener);
 	JS_ASSIGN_METHOD(resume);
 	JS_ASSIGN_METHOD(decodeAudioData);
 	JS_ASSIGN_METHOD(update);
@@ -62,39 +64,17 @@ void BaseAudioContext::init(Napi::Env env, Napi::Object exports) {
 
 BaseAudioContext::BaseAudioContext(const Napi::CallbackInfo &info):
 CommonCtx(info.This(), "BaseAudioContext") { NAPI_ENV;
-	std::cout << "BaseAudioContext 1 " << info.Env().IsExceptionPending() << info.Env().GetAndClearPendingException().Message() << std::endl;
-	// super(info);
-	// std::cout << "BaseAudioContext " << std::endl;
+	std::cout << "BaseAudioContext() start" << std::endl;
+	super(info);
+	
 	REQ_EXT_ARG(0, extCtx);
-	// REQ_OFFS_ARG(0, extCtx);
-	std::cout << "BaseAudioContext 2 " << extCtx.Data() << " lowwwww " <<  info.Env().IsExceptionPending() << std::endl;
+	
 	CtxPtr *ctx = reinterpret_cast<CtxPtr*>(extCtx.Data());
-	// CtxPtr *ctx = reinterpret_cast<CtxPtr*>(extCtx);
 	
 	reset(*ctx);
 	
 	_state = "running";
-	std::cout << "BaseAudioContext 3 " << info.Env().IsExceptionPending() << std::endl;
-	// Napi::Object node = AudioDestinationNode::create(context, _impl->destination());
-	// _destination.Reset(node);
-	
-	// Napi::Object listener = AudioListener::getNew(
-	// 	context,
-	// 	AudioListener::ListenerPtr(&_impl->listener())
-	// );
-	// _listener.Reset(listener);
-	
-	// Napi::Function startUpdater = Napi::Function::Cast(
-	// 	Napi::Function::Cast(Nan::New(_constructor))->Get(
-	// 		JS_STR("startUpdater")
-	// 	)
-	// );
-	// Nan::Callback startUpdaterCb(startUpdater);
-	
-	// Napi::Value argv = context;
-	// Nan::AsyncResource async("BaseAudioContext::finishNew()");
-	// startUpdaterCb.Call(1, &argv, &async);
-	std::cout << "lowwwww3 " << info.Env().IsExceptionPending() << std::endl;
+	std::cout << "BaseAudioContext() end" << std::endl;
 }
 
 
@@ -105,33 +85,38 @@ BaseAudioContext::~BaseAudioContext() {
 
 void BaseAudioContext::_destroy() { DES_CHECK;
 	
-	// Napi::Function stopUpdater = Napi::Function::Cast(
-	// 	Napi::Function::Cast(Nan::New(_constructor))->Get(
-	// 		JS_STR("stopUpdater")
-	// 	)
-	// );
-	// Nan::Callback stopUpdaterCb(stopUpdater);
+	Napi::Function startUpdater = _that.Get("stopUpdater").As<Napi::Function>();
+	startUpdater.Call(_that.Value(), 0, nullptr);
 	
-	// Napi::Object that = info.This().As<Napi::Object>();
-	// Napi::Function _Super = that.Get("stopUpdater").As<Napi::Function>();
-	// std::vector<napi_value> args;
-	// args.push_back(context);
-	// _Super.Call(that, args);
-	
-	// Napi::Value argv = handle();
-	// Nan::AsyncResource async("BaseAudioContext::_destroy()");
-	// stopUpdaterCb.Call(1, &argv, &async);
-	
-	// if (_state != "closed") {
-	// 	_state = "closed";
-	// }
+	if (_state != "closed") {
+		_state = "closed";
+	}
 	
 	CommonCtx::_destroy();
 	
 }
 
 
-// ------ Methods and props
+JS_IMPLEMENT_METHOD(BaseAudioContext, _initListener) { THIS_CHECK;
+	std::cout << "_initListener() start" << std::endl;
+	REQ_FUN_ARG(0, destinationCtor);
+	REQ_FUN_ARG(1, listenerCtor);
+	Napi::Object context = info.This().As<Napi::Object>();
+	
+	napi_value argv[2];
+	argv[0] = context;
+	
+	argv[1] = JS_EXT(&_impl->destination());
+	_destination.Reset(destinationCtor.New(2, argv));
+	std::cout << "_initListener() here" << std::endl;
+	argv[1] = JS_EXT(&_impl->listener());
+	std::cout << "_initListener() here 2" << std::endl;
+	_listener.Reset(listenerCtor.New(2, argv));
+	
+	std::cout << "_initListener() end" << std::endl;
+	RET_UNDEFINED;
+	
+}
 
 
 JS_IMPLEMENT_METHOD(BaseAudioContext, decodeAudioData) { THIS_CHECK;
@@ -139,20 +124,22 @@ JS_IMPLEMENT_METHOD(BaseAudioContext, decodeAudioData) { THIS_CHECK;
 	REQ_OBJ_ARG(0, audioData);
 	REQ_FUN_ARG(1, successCallback);
 	
-	// int len;
-	// uint8_t *data = getArrayData(env, audioData, &len)
+	Napi::Object context = info.This().As<Napi::Object>();
 	
-	// std::vector<uint8_t> dataVec(data, data + len);
+	int len;
+	uint8_t *data = getArrayData(env, audioData, &len);
 	
-	// std::string ext = getExtension(data);
+	std::vector<uint8_t> dataVec(data, data + len);
 	
-	// AudioBuffer::BusPtr bus = lab::MakeBusFromMemory(dataVec, ext, false);
+	std::string ext = getExtension(data);
 	
-	// Napi::Object buffer = AudioBuffer::create(bus);
+	BusPtr bus = lab::MakeBusFromMemory(dataVec, ext, false);
 	
-	// std::vector<napi_value> args;
-	// args.push_back(buffer);
-	// successCallback.Call(args);
+	Napi::Object buffer = AudioBuffer::create(context, bus);
+	
+	std::vector<napi_value> args;
+	args.push_back(buffer);
+	successCallback.Call(args);
 	
 	RET_UNDEFINED;
 	

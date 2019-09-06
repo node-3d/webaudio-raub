@@ -74,19 +74,20 @@ inline lab::ChannelInterpretation toChannelInterpretation(const std::string &io)
 
 AudioNode::AudioNode(const Napi::CallbackInfo &info):
 CommonNode(info.This(), "AudioNode") { NAPI_ENV;
+	std::cout << "AudioNode() 1 " << info.Env().IsExceptionPending() << std::endl;
 	super(info);
-	
+	std::cout << "AudioNode() 2 " << info.Env().IsExceptionPending() << std::endl;
 	REQ_OBJ_ARG(0, context);
 	REQ_EXT_ARG(1, extNode);
-	
+	std::cout << "AudioNode() 3 " << info.Env().IsExceptionPending() << std::endl;
 	NodePtr *ext = reinterpret_cast<NodePtr *>(extNode.Data());
 	
 	reset(context, *ext);
-	
+	std::cout << "AudioNode() 4 " << info.Env().IsExceptionPending() << std::endl;
 	_channelCount = _impl->channelCount();
 	_channelCountMode = fromChannelCountMode(_impl->channelCountMode());
 	_channelInterpretation = fromChannelInterpretation(_impl->channelInterpretation());
-	
+	std::cout << "AudioNode() 5 " << info.Env().IsExceptionPending() << std::endl;
 }
 
 

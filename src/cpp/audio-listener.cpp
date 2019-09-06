@@ -28,37 +28,57 @@ void AudioListener::init(Napi::Env env, Napi::Object exports) {
 }
 
 
-Napi::Object AudioListener::create(Napi::Env env, Napi::Object context, ListenerPtr listener) {
-	Napi::Function ctor = _ctorEs5.Value().As<Napi::Function>();
-	std::vector<napi_value> args;
-	args.push_back(context);
-	args.push_back(JS_EXT(&listener));
-	return ctor.New(args);
-}
-
-
 AudioListener::AudioListener(const Napi::CallbackInfo &info):
 CommonListener(info.This(), "AudioListener") { NAPI_ENV;
-	
+	std::cout << "AudioListener() 1 " << info.Env().IsExceptionPending() << std::endl;
 	super(info);
-	
+	std::cout << "AudioListener() 2 " << info.Env().IsExceptionPending() << std::endl;
 	REQ_OBJ_ARG(0, context);
 	REQ_EXT_ARG(1, extListener);
 	
 	ListenerPtr *param = reinterpret_cast<ListenerPtr *>(extListener.Data());
 	
 	reset(context, *param);
+	std::cout << "AudioListener() 3 " << info.Env().IsExceptionPending() << std::endl;
+	REQ_FUN_ARG(2, paramCtor);
 	
-	_positionX.Reset(AudioParam::create(env, context, _impl->positionX()));
-	_positionY.Reset(AudioParam::create(env, context, _impl->positionY()));
-	_positionZ.Reset(AudioParam::create(env, context, _impl->positionZ()));
-	_forwardX.Reset(AudioParam::create(env, context, _impl->forwardX()));
-	_forwardY.Reset(AudioParam::create(env, context, _impl->forwardY()));
-	_forwardZ.Reset(AudioParam::create(env, context, _impl->forwardZ()));
-	_upX.Reset(AudioParam::create(env, context, _impl->upX()));
-	_upY.Reset(AudioParam::create(env, context, _impl->upY()));
-	_upZ.Reset(AudioParam::create(env, context, _impl->upZ()));
+	napi_value argv[2];
+	argv[0] = context;
 	
+	argv[1] = JS_EXT(&_impl->positionX());
+	_positionX.Reset(paramCtor.New(2, argv));
+	std::cout << "AudioListener() 4 " << info.Env().IsExceptionPending() << std::endl;
+	argv[1] = JS_EXT(&_impl->positionY());
+	_positionY.Reset(paramCtor.New(2, argv));
+	std::cout << "AudioListener() 4 " << info.Env().IsExceptionPending() << std::endl;
+	
+	argv[1] = JS_EXT(&_impl->positionZ());
+	_positionZ.Reset(paramCtor.New(2, argv));
+	std::cout << "AudioListener() 5 " << info.Env().IsExceptionPending() << std::endl;
+	
+	argv[1] = JS_EXT(&_impl->forwardX());
+	_forwardX.Reset(paramCtor.New(2, argv));
+	std::cout << "AudioListener() 6 " << info.Env().IsExceptionPending() << std::endl;
+	
+	argv[1] = JS_EXT(&_impl->forwardY());
+	_forwardY.Reset(paramCtor.New(2, argv));
+	std::cout << "AudioListener() 7 " << info.Env().IsExceptionPending() << std::endl;
+	
+	argv[1] = JS_EXT(&_impl->forwardZ());
+	_forwardZ.Reset(paramCtor.New(2, argv));
+	std::cout << "AudioListener() 8 " << info.Env().IsExceptionPending() << std::endl;
+	
+	argv[1] = JS_EXT(&_impl->upX());
+	_upX.Reset(paramCtor.New(2, argv));
+	std::cout << "AudioListener() 9 " << info.Env().IsExceptionPending() << std::endl;
+	
+	argv[1] = JS_EXT(&_impl->upY());
+	_upY.Reset(paramCtor.New(2, argv));
+	std::cout << "AudioListener() 10 " << info.Env().IsExceptionPending() << std::endl;
+	
+	argv[1] = JS_EXT(&_impl->upZ());
+	_upZ.Reset(paramCtor.New(2, argv));
+	std::cout << "AudioListener() 11 " << info.Env().IsExceptionPending() << std::endl;
 }
 
 
@@ -68,11 +88,28 @@ AudioListener::~AudioListener() {
 
 
 void AudioListener::_destroy() { DES_CHECK;
+	_positionX.Reset();
+	_positionY.Reset();
+	_positionZ.Reset();
+	_forwardX.Reset();
+	_forwardY.Reset();
+	_forwardZ.Reset();
+	_upX.Reset();
+	_upY.Reset();
+	_upZ.Reset();
 	CommonListener::_destroy();
 }
 
 
-// ------ Methods and props
+PARAM_GETTER(AudioListener, positionX);
+PARAM_GETTER(AudioListener, positionY);
+PARAM_GETTER(AudioListener, positionZ);
+PARAM_GETTER(AudioListener, forwardX);
+PARAM_GETTER(AudioListener, forwardY);
+PARAM_GETTER(AudioListener, forwardZ);
+PARAM_GETTER(AudioListener, upX);
+PARAM_GETTER(AudioListener, upY);
+PARAM_GETTER(AudioListener, upZ);
 
 
 JS_IMPLEMENT_METHOD(AudioListener, setPosition) { THIS_CHECK;
@@ -100,18 +137,6 @@ JS_IMPLEMENT_METHOD(AudioListener, setOrientation) { THIS_CHECK;
 	RET_UNDEFINED;
 	
 }
-
-
-PARAM_GETTER(AudioListener, positionX);
-PARAM_GETTER(AudioListener, positionY);
-PARAM_GETTER(AudioListener, positionZ);
-PARAM_GETTER(AudioListener, forwardX);
-PARAM_GETTER(AudioListener, forwardY);
-PARAM_GETTER(AudioListener, forwardZ);
-PARAM_GETTER(AudioListener, upX);
-PARAM_GETTER(AudioListener, upY);
-PARAM_GETTER(AudioListener, upZ);
-
 
 JS_IMPLEMENT_METHOD(AudioListener, destroy) { THIS_CHECK;
 	

@@ -23,6 +23,7 @@ CommonNode(info.This(), "DelayNode") { NAPI_ENV;
 	
 	REQ_OBJ_ARG(0, context);
 	REQ_DOUBLE_ARG(1, delay);
+	REQ_FUN_ARG(2, paramCtor);
 	
 	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
 	float sampleRate = audioContext->getCtx()->sampleRate();
@@ -33,12 +34,13 @@ CommonNode(info.This(), "DelayNode") { NAPI_ENV;
 		_impl.get()
 	);
 	
-	_delayTime.Reset(AudioParam::create(env, context, node->delayTime()));
+	napi_value argv[2];
+	argv[0] = context;
 	
-	Napi::Value argv[] = {
-		static_cast<Napi::Value>(context),
-		static_cast<Napi::Value>(JS_NUM(reinterpret_cast<size_t>(node)))
-	};
+	argv[1] = JS_EXT(&node->delayTime());
+	_delayTime.Reset(paramCtor.New(2, argv));
+	
+	argv[1] = JS_EXT(&_impl);
 	super(info, 2, argv);
 	
 }

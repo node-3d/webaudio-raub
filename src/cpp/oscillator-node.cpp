@@ -55,6 +55,7 @@ OscillatorNode::OscillatorNode(const Napi::CallbackInfo &info):
 CommonNode(info.This(), "OscillatorNode") { NAPI_ENV;
 	
 	REQ_OBJ_ARG(0, context);
+	REQ_FUN_ARG(1, paramCtor);
 	
 	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
 	float sampleRate = audioContext->getCtx()->sampleRate();
@@ -65,13 +66,16 @@ CommonNode(info.This(), "OscillatorNode") { NAPI_ENV;
 		_impl.get()
 	);
 	
-	_frequency.Reset(AudioParam::create(env, context, node->frequency()));
-	_detune.Reset(AudioParam::create(env, context, node->detune()));
+	napi_value argv[2];
+	argv[0] = context;
 	
-	Napi::Value argv[] = {
-		static_cast<Napi::Value>(context),
-		static_cast<Napi::Value>(JS_NUM(reinterpret_cast<size_t>(&_impl)))
-	};
+	argv[1] = JS_EXT(&node->frequency());
+	_frequency.Reset(paramCtor.New(2, argv));
+	
+	argv[1] = JS_EXT(&node->detune());
+	_detune.Reset(paramCtor.New(2, argv));
+	
+	argv[1] = JS_EXT(&_impl);
 	super(info, 2, argv);
 	
 }

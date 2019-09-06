@@ -1,41 +1,35 @@
 'use strict';
 
-const { inspect } = require('util');
-const EventEmitter = require('events');
+const { inspect, inherits } = require('util');
+const Emitter = require('events');
 
 const { AudioNode } = require('../core');
 
+inherits(AudioNode, Emitter);
 
-AudioNode.prototype.__proto__ = EventEmitter.prototype;
 
-class JsAudioNode extends AudioNode {
+function JsAudioNode(ctx, node) {
 	
-	constructor(ctx, _opts = {}) {
-		
-		const opts = {
-			fftSize : 2048,
-			maxDecibels : -30,
-			minDecibels : -100,
-			smoothingTimeConstant : 0.8,
-			..._opts,
-		};
-		
-		super(ctx);
-		
-	}
-	
-	
-	get onended() { return this.listeners('ended'); }
-	set onended(cb) { this.on('ended', cb); }
-	
-	
-	[inspect.custom]() { return this.toString(); }
-	
-	toString() {
-		return 'AudioListener {}';
-	}
+	AudioNode.call(this, ctx, node);
 	
 }
 
+JsAudioNode.prototype = {
+	
+	get onerror() { return this.listeners('error'); },
+	set onerror(cb) { this.on('error', cb); },
+	
+	get onended() { return this.listeners('ended'); },
+	set onended(cb) { this.on('ended', cb); },
+	
+	[inspect.custom]() { return this.toString(); },
+	
+	toString() {
+		return 'AudioNode {}';
+	},
+	
+};
+
+inherits(JsAudioNode, AudioNode);
 
 module.exports = JsAudioNode;

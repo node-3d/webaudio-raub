@@ -16,18 +16,8 @@ void AudioDestinationNode::init(Napi::Env env, Napi::Object exports) {
 }
 
 
-Napi::Object AudioDestinationNode::create(Napi::Env env, Napi::Object context, NodePtr node) {
-	Napi::Function ctor = _ctorEs5.Value().As<Napi::Function>();
-	std::vector<napi_value> args;
-	args.push_back(context);
-	args.push_back(JS_EXT(&node));
-	return ctor.New(args);
-}
-
-
 AudioDestinationNode::AudioDestinationNode(const Napi::CallbackInfo &info):
 CommonNode(info.This(), "AudioDestinationNode") { NAPI_ENV;
-	super(info);
 	
 	REQ_OBJ_ARG(0, context);
 	REQ_EXT_ARG(1, extNode);
@@ -35,6 +25,13 @@ CommonNode(info.This(), "AudioDestinationNode") { NAPI_ENV;
 	NodePtr *node = reinterpret_cast<NodePtr *>(extNode.Data());
 	
 	reset(context, *node);
+	
+	Napi::Value argv[] = {
+		static_cast<Napi::Value>(context),
+		static_cast<Napi::Value>(extNode)
+	};
+	super(info, 2, argv);
+	
 	
 }
 

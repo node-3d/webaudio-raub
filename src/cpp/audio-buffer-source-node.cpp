@@ -29,6 +29,7 @@ AudioBufferSourceNode::AudioBufferSourceNode(const Napi::CallbackInfo &info):
 CommonNode(info.This(), "AudioBufferSourceNode") { NAPI_ENV;
 	
 	REQ_OBJ_ARG(0, context);
+	REQ_FUN_ARG(1, paramCtor);
 	
 	reset(context, std::make_shared<lab::SampledAudioNode>());
 	
@@ -36,14 +37,16 @@ CommonNode(info.This(), "AudioBufferSourceNode") { NAPI_ENV;
 		_impl.get()
 	);
 	
-	_playbackRate.Reset(AudioParam::create(env, context, node->playbackRate()));
-	// FIXME: LabSound
-	// _detune.Reset(AudioParam::getNew(context, node->gain()));
+	napi_value argv[2];
+	argv[0] = context;
 	
-	Napi::Value argv[] = {
-		static_cast<Napi::Value>(context),
-		static_cast<Napi::Value>(JS_NUM(reinterpret_cast<size_t>(&_impl)))
-	};
+	argv[1] = JS_EXT(&node->playbackRate());
+	_playbackRate.Reset(paramCtor.New(2, argv));
+	
+	argv[1] = JS_EXT(&node->detune());
+	_detune.Reset(paramCtor.New(2, argv));
+	
+	argv[1] = JS_EXT(&_impl);
 	super(info, 2, argv);
 	
 }

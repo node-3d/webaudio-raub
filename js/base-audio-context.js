@@ -4,18 +4,28 @@ const { inspect, inherits } = require('util');
 const Emitter = require('events');
 
 const { BaseAudioContext } = require('../core');
+const JsAudioDestinationNode = require('./audio-destination-node');
+const JsAudioListener = require('./audio-listener');
 
-console.log('BC', BaseAudioContext, Emitter);
+
 inherits(BaseAudioContext, Emitter);
 
 
 function JsBaseAudioContext(ctx) {
-	console.log('base-audio-context.js', 'cs1', this, ctx);
+	
 	BaseAudioContext.call(this, ctx);
-	console.log('base-audio-context.js', 'cs2');
+	
+	this._initListener(JsAudioDestinationNode, JsAudioListener);
+	
+	this._updateTimerId = setInterval(
+		() => this.update(),
+		JsBaseAudioContext.UPDATE_INTERVAL
+	);
+	this._updateTimerId.unref();
+	
 }
-inherits(JsBaseAudioContext, BaseAudioContext);
 
+JsBaseAudioContext.UPDATE_INTERVAL = 20;
 
 JsBaseAudioContext.prototype = {
 	
@@ -31,21 +41,14 @@ JsBaseAudioContext.prototype = {
 		return 'BaseAudioContext {}';
 	},
 	
+	stopUpdater() {
+		console.log('\n\nSTOP UPDATER\n\n');
+		clearInterval(this._updateTimerId);
+		this._updateTimerId = null;
+	},
+	
 };
 
-
-JsBaseAudioContext.UPDATE_INTERVAL = 20;
-
-JsBaseAudioContext.startUpdater = that => {
-	that._updateTimerId = setInterval(() => that.update(), JsBaseAudioContext.UPDATE_INTERVAL);
-	that._updateTimerId.unref();
-};
-
-JsBaseAudioContext.stopUpdater = that => {
-	// console.log('\n\nSTOP UPDATER\n\n');
-	clearInterval(that._updateTimerId);
-	that._updateTimerId = null;
-};
-
+inherits(JsBaseAudioContext, BaseAudioContext);
 
 module.exports = JsBaseAudioContext;
