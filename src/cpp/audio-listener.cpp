@@ -36,18 +36,21 @@ CommonListener(info.This(), "AudioListener") { NAPI_ENV;
 	REQ_OBJ_ARG(0, context);
 	REQ_EXT_ARG(1, extListener);
 	
-	ListenerPtr *param = reinterpret_cast<ListenerPtr *>(extListener.Data());
+	ListenerPtr listener = reinterpret_cast<ListenerPtr>(extListener.Data());
 	
-	reset(context, *param);
+	reset(context, listener);
 	std::cout << "AudioListener() 3 " << info.Env().IsExceptionPending() << std::endl;
 	REQ_FUN_ARG(2, paramCtor);
-	
+	std::cout << "AudioListener() 31 " << info.Env().IsExceptionPending() << std::endl;
 	napi_value argv[2];
 	argv[0] = context;
-	
+	std::cout << "AudioListener() 311 " << info.Env().IsExceptionPending() << std::endl;
+
+	std::cout << "AudioListener() 312 " << info.Env().IsExceptionPending() << "px " << std::endl;
 	argv[1] = JS_EXT(&_impl->positionX());
+	std::cout << "AudioListener() 33 " << info.Env().IsExceptionPending() << std::endl;
 	_positionX.Reset(paramCtor.New(2, argv));
-	std::cout << "AudioListener() 4 " << info.Env().IsExceptionPending() << std::endl;
+	std::cout << "AudioListener() 34 " << info.Env().IsExceptionPending() << std::endl;
 	argv[1] = JS_EXT(&_impl->positionY());
 	_positionY.Reset(paramCtor.New(2, argv));
 	std::cout << "AudioListener() 4 " << info.Env().IsExceptionPending() << std::endl;

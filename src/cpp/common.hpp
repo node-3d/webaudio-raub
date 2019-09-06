@@ -15,7 +15,7 @@ typedef std::shared_ptr<lab::AudioNode> NodePtr;
 typedef std::shared_ptr<lab::AudioParam> ParamPtr;
 typedef std::shared_ptr<lab::AudioContext> CtxPtr;
 typedef std::shared_ptr<lab::AudioBus> BusPtr;
-typedef std::shared_ptr<lab::AudioListener> ListenerPtr;
+typedef lab::AudioListener* ListenerPtr;
 
 void _disconnectNode(Napi::Object context, NodePtr node);
 void _disconnectParam(Napi::Object context, ParamPtr node);
@@ -186,7 +186,7 @@ struct CommonListener: public Common {
 		
 		void _destroy() { DES_CHECK;
 		
-		_impl.reset();
+		_impl = nullptr;
 		
 		Common::_destroy();
 		

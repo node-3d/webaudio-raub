@@ -89,7 +89,7 @@
 						'msvs_settings' : {
 							'VCCLCompilerTool' : {
 								'AdditionalOptions' : [
-									'/O2','/Oy','/GL','/GF','/Gm-',
+									# '/O2','/Oy','/GL','/GF','/Gm-',
 									'/EHsc','/MT','/GS','/Gy','/GR-','/Gd',
 									# '/O2','/GL','/Gm-', '/Fm-','/EHsc'
 								]

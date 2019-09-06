@@ -3,8 +3,7 @@
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
-		"build": "node-gyp rebuild && node cpbin",
-		"build:dev": "node-gyp rebuild --debug && node cpbin"
+		"build": "node-gyp rebuild && node cpbin"
 	},
 	"dependencies": {
 		"addon-tools-raub": "https://github.com/node-3d/addon-tools-raub",

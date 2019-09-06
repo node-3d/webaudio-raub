@@ -109,7 +109,8 @@ JS_IMPLEMENT_METHOD(BaseAudioContext, _initListener) { THIS_CHECK;
 	argv[1] = JS_EXT(&_impl->destination());
 	_destination.Reset(destinationCtor.New(2, argv));
 	std::cout << "_initListener() here" << std::endl;
-	argv[1] = JS_EXT(&_impl->listener());
+	ListenerPtr listener = &_impl->listener();
+	argv[1] = JS_EXT(listener);
 	std::cout << "_initListener() here 2" << std::endl;
 	_listener.Reset(listenerCtor.New(2, argv));
 	
