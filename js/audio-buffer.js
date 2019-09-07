@@ -1,43 +1,29 @@
 'use strict';
 
-const { inspect } = require('util');
+const { inspect, inherits } = require('util');
+const Emitter = require('events');
 
 const { AudioBuffer } = require('../core');
-const AudioNode = require('./audio-node');
+
+inherits(AudioBuffer, Emitter);
 
 
-AudioBuffer.prototype.__proto__ = AudioNode.prototype;
-AudioBuffer._Super = AudioNode.constructor;
-
-
-class JsAudioBuffer extends AudioBuffer {
+function JsAudioBuffer(ctx, bus) {
+	console.log('call JsAudioBuffer()', ctx, bus);
+	AudioBuffer.call(this, ctx, bus);
 	
-	constructor(ctx, _opts = {}) {
-		
-		const opts = {
-			fftSize : 2048,
-			maxDecibels : -30,
-			minDecibels : -100,
-			smoothingTimeConstant : 0.8,
-			..._opts,
-		};
-		
-		super(ctx);
-		
-		this.fftSize = opts.fftSize;
-		this.maxDecibels = opts.maxDecibels;
-		this.minDecibels = opts.minDecibels;
-		this.smoothingTimeConstant = opts.smoothingTimeConstant;
-		
-	}
+}
+
+JsAudioBuffer.prototype = {
 	
-	
-	[inspect.custom]() { return this.toString(); }
+	[inspect.custom]() { return this.toString(); },
 	
 	toString() {
 		return 'AudioBuffer {}';
-	}
+	},
 	
-}
+};
+
+inherits(JsAudioBuffer, AudioBuffer);
 
 module.exports = JsAudioBuffer;

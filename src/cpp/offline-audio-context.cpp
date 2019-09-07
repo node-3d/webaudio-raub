@@ -36,6 +36,7 @@ void OfflineAudioContext::_destroy() { DES_CHECK;
 JS_IMPLEMENT_METHOD(OfflineAudioContext, startRendering) { THIS_CHECK;
 	
 	// TODO: do something?
+	RET_UNDEFINED;
 	
 }
 
@@ -45,6 +46,7 @@ JS_IMPLEMENT_METHOD(OfflineAudioContext, suspend) { THIS_CHECK;
 	REQ_DOUBLE_ARG(0, suspendTime);
 	
 	// TODO: do something?
+	RET_UNDEFINED;
 	
 }
 

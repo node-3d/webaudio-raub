@@ -56,6 +56,7 @@ JS_IMPLEMENT_METHOD(AnalyserNode, getFloatFrequencyData) { THIS_CHECK;
 	REQ_OBJ_ARG(0, array);
 	
 	// TODO: do something?
+	RET_UNDEFINED;
 	
 }
 
@@ -65,6 +66,7 @@ JS_IMPLEMENT_METHOD(AnalyserNode, getByteFrequencyData) { THIS_CHECK;
 	REQ_OBJ_ARG(0, array);
 	
 	// TODO: do something?
+	RET_UNDEFINED;
 	
 }
 
@@ -74,6 +76,7 @@ JS_IMPLEMENT_METHOD(AnalyserNode, getFloatTimeDomainData) { THIS_CHECK;
 	REQ_OBJ_ARG(0, array);
 	
 	// TODO: do something?
+	RET_UNDEFINED;
 	
 }
 
@@ -83,6 +86,7 @@ JS_IMPLEMENT_METHOD(AnalyserNode, getByteTimeDomainData) { THIS_CHECK;
 	REQ_OBJ_ARG(0, array);
 	
 	// TODO: do something?
+	RET_UNDEFINED;
 	
 }
 

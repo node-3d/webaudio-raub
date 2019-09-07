@@ -40,6 +40,7 @@ JS_IMPLEMENT_METHOD(IIRFilterNode, getFrequencyResponse) { THIS_CHECK;
 	REQ_OBJ_ARG(2, phaseResponse);
 	
 	// TODO: do something?
+	RET_UNDEFINED;
 	
 }
 

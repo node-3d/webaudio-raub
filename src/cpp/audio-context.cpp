@@ -8,12 +8,11 @@ IMPLEMENT_ES5_CLASS(AudioContext);
 void AudioContext::init(Napi::Env env, Napi::Object exports) {
 	
 	Napi::Function ctor = wrap(env);
-	// JS_ASSIGN_METHOD(getOutputTimestamp);
-	// JS_ASSIGN_METHOD(close);
-	// JS_ASSIGN_METHOD(suspend);
-	// JS_ASSIGN_METHOD(destroy);
-	// JS_ASSIGN_GETTER(baseLatency);
-	// JS_ASSIGN_METHOD(destroy);
+	JS_ASSIGN_METHOD(getOutputTimestamp);
+	JS_ASSIGN_METHOD(close);
+	JS_ASSIGN_METHOD(suspend);
+	JS_ASSIGN_GETTER(baseLatency);
+	JS_ASSIGN_METHOD(destroy);
 	
 	exports.Set("AudioContext", ctor);
 	

@@ -1,9 +1,6 @@
 #include <LabSound/LabSound.h>
 
 #include "base-audio-context.hpp"
-#include "audio-destination-node.hpp"
-#include "audio-buffer.hpp"
-#include "audio-listener.hpp"
 
 
 bool compareMagic(const uint8_t *data, const int16_t *magic) {
@@ -121,27 +118,34 @@ JS_IMPLEMENT_METHOD(BaseAudioContext, _initListener) { THIS_CHECK;
 
 
 JS_IMPLEMENT_METHOD(BaseAudioContext, decodeAudioData) { THIS_CHECK;
-	
+	std::cout << "decodeAudioData() 1" << std::endl;
 	REQ_OBJ_ARG(0, audioData);
 	REQ_FUN_ARG(1, successCallback);
-	
+	REQ_FUN_ARG(2, bufferCtor);
+	std::cout << "decodeAudioData() 2" << std::endl;
 	Napi::Object context = info.This().As<Napi::Object>();
-	
+	std::cout << "decodeAudioData() 3" << std::endl;
 	int len;
 	uint8_t *data = getArrayData(env, audioData, &len);
-	
+	std::cout << "decodeAudioData() 4" << std::endl;
 	std::vector<uint8_t> dataVec(data, data + len);
-	
+	std::cout << "decodeAudioData() 5" << std::endl;
 	std::string ext = getExtension(data);
-	
+	std::cout << "decodeAudioData() 6" << std::endl;
 	BusPtr bus = lab::MakeBusFromMemory(dataVec, ext, false);
+	std::cout << "decodeAudioData() 7" << std::endl;
 	
-	Napi::Object buffer = AudioBuffer::create(context, bus);
+	napi_value argv[2];
+	argv[0] = context;
 	
-	std::vector<napi_value> args;
-	args.push_back(buffer);
-	successCallback.Call(args);
+	argv[1] = JS_EXT(&bus);
+	Napi::Object buffer = bufferCtor.New(2, argv);
 	
+	std::cout << "decodeAudioData() 8" << std::endl;
+	argv[0] = buffer;
+	successCallback.Call(1, argv);
+	
+	std::cout << "decodeAudioData() 9" << std::endl;
 	RET_UNDEFINED;
 	
 }

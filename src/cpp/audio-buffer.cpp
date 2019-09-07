@@ -23,37 +23,27 @@ void AudioBuffer::init(Napi::Env env, Napi::Object exports) {
 }
 
 
-Napi::Object AudioBuffer::create(Napi::Object context, BusPtr bus) {
-	Napi::Env env = context.Env();
-	Napi::Function ctor = _ctorEs5.Value().As<Napi::Function>();
-	std::vector<napi_value> args;
-	args.push_back(context);
-	args.push_back(JS_EXT(&bus));
-	return ctor.New(args);
-}
-
-
 AudioBuffer::AudioBuffer(const Napi::CallbackInfo &info):
 CommonBus(info.This(), "AudioBuffer") { NAPI_ENV;
-	
+	std::cout << "AudioBuffer() 1" << std::endl;
 	super(info);
-	
+	std::cout << "AudioBuffer() 2" << std::endl;
 	REQ_OBJ_ARG(0, context);
-	
+	std::cout << "AudioBuffer() 3" << std::endl;
 	if (info.Length() > 1) {
-		
+		std::cout << "AudioBuffer() 4" << std::endl;
 		REQ_EXT_ARG(1, extBus);
 		
 		BusPtr *busPtr = reinterpret_cast<BusPtr *>(extBus.Data());
 		reset(context, *busPtr);
-		
+		std::cout << "AudioBuffer() 5" << std::endl;
 	} else {
-		
+		std::cout << "AudioBuffer() 6" << std::endl;
 		BusPtr bus = std::make_shared<lab::AudioBus>(1, 1, false);
 		reset(context, bus);
-		
+		std::cout << "AudioBuffer() 7" << std::endl;
 	}
-	
+	std::cout << "AudioBuffer() 8" << std::endl;
 }
 
 
