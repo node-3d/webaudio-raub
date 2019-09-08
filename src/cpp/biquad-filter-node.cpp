@@ -1,5 +1,3 @@
-#include <LabSound/LabSound.h>
-
 #include "biquad-filter-node.hpp"
 #include "audio-param.hpp"
 
@@ -38,16 +36,16 @@ CommonNode(info.This(), "BiquadFilterNode") { NAPI_ENV;
 	argv[0] = context;
 	
 	argv[1] = JS_EXT(&node->frequency());
-	_frequency.Reset(paramCtor.New(2, argv));
+	_frequency.Reset(paramCtor.New(2, argv), 1);
 	
 	argv[1] = JS_EXT(&node->detune());
-	_detune.Reset(paramCtor.New(2, argv));
+	_detune.Reset(paramCtor.New(2, argv), 1);
 	
 	argv[1] = JS_EXT(&node->q());
-	_Q.Reset(paramCtor.New(2, argv));
+	_Q.Reset(paramCtor.New(2, argv), 1);
 	
 	argv[1] = JS_EXT(&node->gain());
-	_gain.Reset(paramCtor.New(2, argv));
+	_gain.Reset(paramCtor.New(2, argv), 1);
 	
 	argv[1] = JS_EXT(&_impl);
 	super(info, 2, argv);

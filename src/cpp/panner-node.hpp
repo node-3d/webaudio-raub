@@ -3,9 +3,6 @@
 
 #include "common.hpp"
 
-#include "audio-node.hpp"
-#include "audio-param.hpp"
-
 
 class PannerNode : public CommonNode {
 DECLARE_ES5_CLASS(PannerNode, PannerNode);
@@ -13,7 +10,6 @@ DECLARE_ES5_CLASS(PannerNode, PannerNode);
 public:
 	
 	static void init(Napi::Env env, Napi::Object exports);
-	static Napi::Object create(Napi::Env env, Napi::Object context);
 	
 	explicit PannerNode(const Napi::CallbackInfo &info);
 	~PannerNode();

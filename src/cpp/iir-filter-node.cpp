@@ -1,10 +1,6 @@
 
 #include "iir-filter-node.hpp"
 
-#include "common.hpp"
-
-
-// ------ Constructor and Destructor
 
 IIRFilterNode::IIRFilterNode() :
 AudioNode() {

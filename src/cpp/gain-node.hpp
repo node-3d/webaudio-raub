@@ -3,8 +3,6 @@
 
 #include "common.hpp"
 
-#include "audio-node.hpp"
-
 
 class GainNode : public CommonNode {
 DECLARE_ES5_CLASS(GainNode, GainNode);

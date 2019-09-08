@@ -1,10 +1,6 @@
 
 #include "media-element-audio-source-node.hpp"
 
-#include "common.hpp"
-
-
-// ------ Constructor and Destructor
 
 MediaElementAudioSourceNode::MediaElementAudioSourceNode() :
 AudioNode() {
@@ -30,18 +26,12 @@ void MediaElementAudioSourceNode::_destroy() { DES_CHECK;
 }
 
 
-// ------ Methods and props
-
-
-
 JS_IMPLEMENT_GETTER(MediaElementAudioSourceNode, mediaElement) { THIS_CHECK;
 	
 	RET_VALUE(_mediaElement.Value());
 	
 }
 
-
-// ------ System methods and props for Napi::ObjectWrap
 
 IMPLEMENT_ES5_CLASS(MediaElementAudioSourceNode);
 

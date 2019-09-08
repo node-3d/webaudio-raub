@@ -1,5 +1,3 @@
-#include <LabSound/LabSound.h>
-
 #include "audio-scheduled-source-node.hpp"
 
 
@@ -33,10 +31,7 @@ CommonNode(info.This(), "AudioScheduledSourceNode") { NAPI_ENV;
 	
 	node->setOnEnded(std::bind(&AudioScheduledSourceNode::onEnded, this));
 	
-	Napi::Value argv[] = {
-		static_cast<Napi::Value>(context),
-		static_cast<Napi::Value>(JS_NUM(reinterpret_cast<size_t>(&_impl)))
-	};
+	Napi::Value argv[] = { context, extNode };
 	super(info, 2, argv);
 	
 }
@@ -65,9 +60,6 @@ void AudioScheduledSourceNode::_destroy() { DES_CHECK;
 	CommonNode::_destroy();
 	
 }
-
-
-// ------ Methods and props
 
 
 JS_IMPLEMENT_METHOD(AudioScheduledSourceNode, start) { THIS_CHECK;

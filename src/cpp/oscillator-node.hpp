@@ -1,19 +1,14 @@
 #ifndef _OSCILLATOR_NODE_HPP_
 #define _OSCILLATOR_NODE_HPP_
 
-
 #include "common.hpp"
-
-#include "audio-scheduled-source-node.hpp"
 
 
 class OscillatorNode : public CommonNode {
 DECLARE_ES5_CLASS(OscillatorNode, OscillatorNode);
 	
 public:
-	
 	static void init(Napi::Env env, Napi::Object exports);
-	static Napi::Object create(Napi::Env env, Napi::Object context);
 	
 	explicit OscillatorNode(const Napi::CallbackInfo &info);
 	~OscillatorNode();

@@ -3,8 +3,6 @@
 
 #include "common.hpp"
 
-#include <LabSound/core/AudioNode.h>
-
 
 class AudioNode : public CommonNode {
 DECLARE_ES5_CLASS(AudioNode, AudioNode);

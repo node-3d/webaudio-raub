@@ -5,21 +5,19 @@ const { inspect, inherits } = require('util');
 const core = require('../core');
 const JsAudioNode = require('./audio-node');
 const JsAudioParam = require('./audio-param');
+const JsAudioScheduledSourceNode = require('./audio-scheduled-source-node');
 
 
-const descriptions = [
+const baseDescs = [
 	{ name: 'AnalyserNode', optset: [] },
 	{ name: 'BiquadFilterNode', optset: [] },
-	{ name: 'AudioBufferSourceNode', optset: [] },
 	// { name: 'ChannelMergerNode', optset: [] },
 	// { name: 'ChannelSplitterNode', optset: [] },
-	// { name: 'ConstantSourceNode', optset: [] },
 	{ name: 'ConvolverNode', optset: [] },
 	{ name: 'DelayNode', optset: [] },
 	// { name: 'DynamicsCompressorNode', optset: [] },
 	{ name: 'GainNode', optset: [] },
 	// { name: 'IIRFilterNode', optset: [] },
-	{ name: 'OscillatorNode', optset: [] },
 	{ name: 'PannerNode', optset: [] },
 	// { name: 'PeriodicWaveNode', optset: [] },
 	// { name: 'ScriptProcessorNode', optset: [] },
@@ -27,10 +25,17 @@ const descriptions = [
 	// { name: 'WaveShaperNode', optset: [] },
 ];
 
-const subclassNode = (name, optset) => {
+const scheduledDescs = [
+	{ name: 'AudioBufferSourceNode', optset: [] },
+	// { name: 'ConstantSourceNode', optset: [] },
+	{ name: 'OscillatorNode', optset: [] },
+];
+
+const subclassBase = (name, optset, SuperNode) => {
 	
 	const SuperClass = core[name];
-	inherits(SuperClass, JsAudioNode);
+	console.log('NOW CALL 11', name, SuperClass, SuperNode);
+	inherits(SuperClass, SuperNode);
 	
 	function JsNode(ctx, opts = {}) {
 		console.log('NOW CALL', SuperClass, this, ctx, JsAudioParam);
@@ -63,10 +68,27 @@ const subclassNode = (name, optset) => {
 };
 
 
-module.exports = descriptions.reduce(
+const baseNodes = {
+	...baseDescs.reduce(
+		(e, { name, optset }) => {
+			e[name] = subclassBase(name, optset, JsAudioNode);
+			return e;
+		},
+		{}
+	),
+	AudioScheduledSourceNode: JsAudioScheduledSourceNode,
+};
+console.log('BN', baseNodes, baseNodes.AudioScheduledSourceNode);
+const scheduledNodes = scheduledDescs.reduce(
 	(e, { name, optset }) => {
-		e[name] = subclassNode(name, optset);
+		e[name] = subclassBase(name, optset, baseNodes.AudioScheduledSourceNode);
 		return e;
 	},
 	{}
 );
+
+
+module.exports = {
+	...baseNodes,
+	...scheduledNodes,
+};

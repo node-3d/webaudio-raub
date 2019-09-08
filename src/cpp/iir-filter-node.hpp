@@ -1,10 +1,7 @@
 #ifndef _IIR_FILTER_NODE_HPP_
 #define _IIR_FILTER_NODE_HPP_
 
-
 #include "common.hpp"
-
-#include "audio-node.hpp"
 
 
 class IIRFilterNode : public CommonNode {
@@ -30,9 +27,6 @@ protected:
 	static Napi::FunctionReference _constructor;
 	
 	bool _isDestroyed;
-	
-	
-	
 	
 private:
 	

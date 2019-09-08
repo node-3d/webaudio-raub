@@ -1,5 +1,3 @@
-#include <LabSound/LabSound.h>
-
 #include "audio-listener.hpp"
 #include "audio-context.hpp"
 #include "audio-param.hpp"
@@ -30,58 +28,58 @@ void AudioListener::init(Napi::Env env, Napi::Object exports) {
 
 AudioListener::AudioListener(const Napi::CallbackInfo &info):
 CommonListener(info.This(), "AudioListener") { NAPI_ENV;
-	std::cout << "AudioListener() 1 " << info.Env().IsExceptionPending() << std::endl;
+	
 	super(info);
-	std::cout << "AudioListener() 2 " << info.Env().IsExceptionPending() << std::endl;
+	
 	REQ_OBJ_ARG(0, context);
 	REQ_EXT_ARG(1, extListener);
 	
 	ListenerPtr listener = reinterpret_cast<ListenerPtr>(extListener.Data());
 	
 	reset(context, listener);
-	std::cout << "AudioListener() 3 " << info.Env().IsExceptionPending() << std::endl;
+	
 	REQ_FUN_ARG(2, paramCtor);
-	std::cout << "AudioListener() 31 " << info.Env().IsExceptionPending() << std::endl;
+	
 	napi_value argv[2];
 	argv[0] = context;
-	std::cout << "AudioListener() 311 " << info.Env().IsExceptionPending() << std::endl;
+	
 
-	std::cout << "AudioListener() 312 " << info.Env().IsExceptionPending() << "px " << std::endl;
+	
 	argv[1] = JS_EXT(&_impl->positionX());
-	std::cout << "AudioListener() 33 " << info.Env().IsExceptionPending() << std::endl;
-	_positionX.Reset(paramCtor.New(2, argv));
-	std::cout << "AudioListener() 34 " << info.Env().IsExceptionPending() << std::endl;
+	
+	_positionX.Reset(paramCtor.New(2, argv), 1);
+	
 	argv[1] = JS_EXT(&_impl->positionY());
-	_positionY.Reset(paramCtor.New(2, argv));
-	std::cout << "AudioListener() 4 " << info.Env().IsExceptionPending() << std::endl;
+	_positionY.Reset(paramCtor.New(2, argv), 1);
+	
 	
 	argv[1] = JS_EXT(&_impl->positionZ());
-	_positionZ.Reset(paramCtor.New(2, argv));
-	std::cout << "AudioListener() 5 " << info.Env().IsExceptionPending() << std::endl;
+	_positionZ.Reset(paramCtor.New(2, argv), 1);
+	
 	
 	argv[1] = JS_EXT(&_impl->forwardX());
-	_forwardX.Reset(paramCtor.New(2, argv));
-	std::cout << "AudioListener() 6 " << info.Env().IsExceptionPending() << std::endl;
+	_forwardX.Reset(paramCtor.New(2, argv), 1);
+	
 	
 	argv[1] = JS_EXT(&_impl->forwardY());
-	_forwardY.Reset(paramCtor.New(2, argv));
-	std::cout << "AudioListener() 7 " << info.Env().IsExceptionPending() << std::endl;
+	_forwardY.Reset(paramCtor.New(2, argv), 1);
+	
 	
 	argv[1] = JS_EXT(&_impl->forwardZ());
-	_forwardZ.Reset(paramCtor.New(2, argv));
-	std::cout << "AudioListener() 8 " << info.Env().IsExceptionPending() << std::endl;
+	_forwardZ.Reset(paramCtor.New(2, argv), 1);
+	
 	
 	argv[1] = JS_EXT(&_impl->upX());
-	_upX.Reset(paramCtor.New(2, argv));
-	std::cout << "AudioListener() 9 " << info.Env().IsExceptionPending() << std::endl;
+	_upX.Reset(paramCtor.New(2, argv), 1);
+	
 	
 	argv[1] = JS_EXT(&_impl->upY());
-	_upY.Reset(paramCtor.New(2, argv));
-	std::cout << "AudioListener() 10 " << info.Env().IsExceptionPending() << std::endl;
+	_upY.Reset(paramCtor.New(2, argv), 1);
+	
 	
 	argv[1] = JS_EXT(&_impl->upZ());
-	_upZ.Reset(paramCtor.New(2, argv));
-	std::cout << "AudioListener() 11 " << info.Env().IsExceptionPending() << std::endl;
+	_upZ.Reset(paramCtor.New(2, argv), 1);
+	
 }
 
 

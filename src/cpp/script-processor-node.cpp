@@ -45,7 +45,7 @@ JS_IMPLEMENT_SETTER(ScriptProcessorNode, onaudioprocess) { THIS_SETTER_CHECK; SE
 	if (Nan::New(_onaudioprocess) == v) {
 		return;
 	}
-	_onaudioprocess.Reset(v);
+	_onaudioprocess.Reset(v, 1);
 	
 	// TODO: may be additional actions on change?
 	

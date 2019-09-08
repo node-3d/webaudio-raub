@@ -12,7 +12,6 @@ DECLARE_ES5_CLASS(AudioBufferSourceNode, AudioBufferSourceNode);
 public:
 	
 	static void init(Napi::Env env, Napi::Object exports);
-	static Napi::Object create(Napi::Env env, Napi::Object context);
 	
 	explicit AudioBufferSourceNode(const Napi::CallbackInfo &info);
 	~AudioBufferSourceNode();

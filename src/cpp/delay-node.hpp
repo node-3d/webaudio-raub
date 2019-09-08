@@ -3,16 +3,12 @@
 
 #include "common.hpp"
 
-#include "audio-node.hpp"
-
 
 class DelayNode : public CommonNode {
 DECLARE_ES5_CLASS(DelayNode, DelayNode);
 	
 public:
-	
 	static void init(Napi::Env env, Napi::Object exports);
-	static Napi::Object create(Napi::Env env, Napi::Object context);
 	
 	explicit DelayNode(const Napi::CallbackInfo &info);
 	~DelayNode();

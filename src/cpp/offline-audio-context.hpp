@@ -1,10 +1,7 @@
 #ifndef _OFFLINE_AUDIO_CONTEXT_HPP_
 #define _OFFLINE_AUDIO_CONTEXT_HPP_
 
-
 #include "common.hpp"
-
-#include "base-audio-context.hpp"
 
 
 class OfflineAudioContext : public BaseAudioContext {

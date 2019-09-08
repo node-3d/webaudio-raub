@@ -1,5 +1,3 @@
-#include <LabSound/LabSound.h>
-
 #include "audio-buffer.hpp"
 #include "audio-context.hpp"
 
@@ -25,25 +23,25 @@ void AudioBuffer::init(Napi::Env env, Napi::Object exports) {
 
 AudioBuffer::AudioBuffer(const Napi::CallbackInfo &info):
 CommonBus(info.This(), "AudioBuffer") { NAPI_ENV;
-	std::cout << "AudioBuffer() 1" << std::endl;
+	
 	super(info);
-	std::cout << "AudioBuffer() 2" << std::endl;
+	
 	REQ_OBJ_ARG(0, context);
-	std::cout << "AudioBuffer() 3" << std::endl;
+	
 	if (info.Length() > 1) {
-		std::cout << "AudioBuffer() 4" << std::endl;
+		
 		REQ_EXT_ARG(1, extBus);
 		
 		BusPtr *busPtr = reinterpret_cast<BusPtr *>(extBus.Data());
 		reset(context, *busPtr);
-		std::cout << "AudioBuffer() 5" << std::endl;
+		
 	} else {
-		std::cout << "AudioBuffer() 6" << std::endl;
+		
 		BusPtr bus = std::make_shared<lab::AudioBus>(1, 1, false);
 		reset(context, bus);
-		std::cout << "AudioBuffer() 7" << std::endl;
+		
 	}
-	std::cout << "AudioBuffer() 8" << std::endl;
+	
 }
 
 
@@ -55,8 +53,6 @@ AudioBuffer::~AudioBuffer() {
 void AudioBuffer::_destroy() { DES_CHECK;
 	CommonBus::_destroy();
 }
-
-// ------ Methods and props
 
 
 JS_IMPLEMENT_METHOD(AudioBuffer, getChannelData) { THIS_CHECK;

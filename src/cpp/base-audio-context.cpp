@@ -1,5 +1,3 @@
-#include <LabSound/LabSound.h>
-
 #include "base-audio-context.hpp"
 
 
@@ -61,7 +59,7 @@ void BaseAudioContext::init(Napi::Env env, Napi::Object exports) {
 
 BaseAudioContext::BaseAudioContext(const Napi::CallbackInfo &info):
 CommonCtx(info.This(), "BaseAudioContext") { NAPI_ENV;
-	std::cout << "BaseAudioContext() start" << std::endl;
+	
 	super(info);
 	
 	REQ_EXT_ARG(0, extCtx);
@@ -71,7 +69,7 @@ CommonCtx(info.This(), "BaseAudioContext") { NAPI_ENV;
 	reset(*ctx);
 	
 	_state = "running";
-	std::cout << "BaseAudioContext() end" << std::endl;
+	
 }
 
 
@@ -95,7 +93,7 @@ void BaseAudioContext::_destroy() { DES_CHECK;
 
 
 JS_IMPLEMENT_METHOD(BaseAudioContext, _initListener) { THIS_CHECK;
-	std::cout << "_initListener() start" << std::endl;
+	
 	REQ_FUN_ARG(0, destinationCtor);
 	REQ_FUN_ARG(1, listenerCtor);
 	Napi::Object context = info.This().As<Napi::Object>();
@@ -104,36 +102,36 @@ JS_IMPLEMENT_METHOD(BaseAudioContext, _initListener) { THIS_CHECK;
 	argv[0] = context;
 	
 	argv[1] = JS_EXT(&_impl->destination());
-	_destination.Reset(destinationCtor.New(2, argv));
-	std::cout << "_initListener() here" << std::endl;
+	_destination.Reset(destinationCtor.New(2, argv), 1);
+	
 	ListenerPtr listener = &_impl->listener();
 	argv[1] = JS_EXT(listener);
-	std::cout << "_initListener() here 2" << std::endl;
-	_listener.Reset(listenerCtor.New(2, argv));
 	
-	std::cout << "_initListener() end" << std::endl;
+	_listener.Reset(listenerCtor.New(2, argv), 1);
+	
+	
 	RET_UNDEFINED;
 	
 }
 
 
 JS_IMPLEMENT_METHOD(BaseAudioContext, decodeAudioData) { THIS_CHECK;
-	std::cout << "decodeAudioData() 1" << std::endl;
+	
 	REQ_OBJ_ARG(0, audioData);
 	REQ_FUN_ARG(1, successCallback);
 	REQ_FUN_ARG(2, bufferCtor);
-	std::cout << "decodeAudioData() 2" << std::endl;
+	
 	Napi::Object context = info.This().As<Napi::Object>();
-	std::cout << "decodeAudioData() 3" << std::endl;
+	
 	int len;
 	uint8_t *data = getArrayData(env, audioData, &len);
-	std::cout << "decodeAudioData() 4" << std::endl;
+	
 	std::vector<uint8_t> dataVec(data, data + len);
-	std::cout << "decodeAudioData() 5" << std::endl;
+	
 	std::string ext = getExtension(data);
-	std::cout << "decodeAudioData() 6" << std::endl;
+	
 	BusPtr bus = lab::MakeBusFromMemory(dataVec, ext, false);
-	std::cout << "decodeAudioData() 7" << std::endl;
+	
 	
 	napi_value argv[2];
 	argv[0] = context;
@@ -141,11 +139,11 @@ JS_IMPLEMENT_METHOD(BaseAudioContext, decodeAudioData) { THIS_CHECK;
 	argv[1] = JS_EXT(&bus);
 	Napi::Object buffer = bufferCtor.New(2, argv);
 	
-	std::cout << "decodeAudioData() 8" << std::endl;
+	
 	argv[0] = buffer;
 	successCallback.Call(1, argv);
 	
-	std::cout << "decodeAudioData() 9" << std::endl;
+	
 	RET_UNDEFINED;
 	
 }
@@ -169,6 +167,7 @@ JS_IMPLEMENT_METHOD(BaseAudioContext, resume) { THIS_CHECK;
 
 
 JS_IMPLEMENT_GETTER(BaseAudioContext, destination) { THIS_CHECK;
+	
 	
 	RET_VALUE(_destination.Value());
 	

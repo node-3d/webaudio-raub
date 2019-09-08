@@ -1,5 +1,3 @@
-#include <LabSound/LabSound.h>
-
 #include "audio-destination-node.hpp"
 
 
@@ -26,12 +24,8 @@ CommonNode(info.This(), "AudioDestinationNode") { NAPI_ENV;
 	
 	reset(context, *node);
 	
-	Napi::Value argv[] = {
-		static_cast<Napi::Value>(context),
-		static_cast<Napi::Value>(extNode)
-	};
+	Napi::Value argv[] = { context, extNode };
 	super(info, 2, argv);
-	
 	
 }
 

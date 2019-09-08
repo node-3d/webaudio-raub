@@ -1,5 +1,3 @@
-#include <LabSound/LabSound.h>
-
 #include "oscillator-node.hpp"
 #include "audio-context.hpp"
 #include "audio-param.hpp"
@@ -53,31 +51,31 @@ inline lab::OscillatorType toOscillatorType(const std::string &mode) {
 
 OscillatorNode::OscillatorNode(const Napi::CallbackInfo &info):
 CommonNode(info.This(), "OscillatorNode") { NAPI_ENV;
-	std::cout << "OscillatorNode() 1" << std::endl;
+	
 	REQ_OBJ_ARG(0, context);
 	REQ_FUN_ARG(1, paramCtor);
-	std::cout << "OscillatorNode() 2" << std::endl;
+	
 	AudioContext *audioContext = AudioContext::unwrap(context);
 	float sampleRate = audioContext->getCtx()->sampleRate();
-	std::cout << "OscillatorNode() 3" << std::endl;
+	
 	reset(context, std::make_shared<lab::OscillatorNode>(sampleRate));
-	std::cout << "OscillatorNode() 4" << std::endl;
+	
 	lab::OscillatorNode *node = static_cast<lab::OscillatorNode*>(
 		_impl.get()
 	);
-	std::cout << "OscillatorNode() 5" << std::endl;
+	
 	napi_value argv[2];
 	argv[0] = context;
-	std::cout << "OscillatorNode() 6" << std::endl;
+	
 	argv[1] = JS_EXT(&node->frequency());
-	_frequency.Reset(paramCtor.New(2, argv));
-	std::cout << "OscillatorNode() 7" << std::endl;
+	_frequency.Reset(paramCtor.New(2, argv), 1);
+	
 	argv[1] = JS_EXT(&node->detune());
-	_detune.Reset(paramCtor.New(2, argv));
-	std::cout << "OscillatorNode() 8" << std::endl;
+	_detune.Reset(paramCtor.New(2, argv), 1);
+	
 	argv[1] = JS_EXT(&_impl);
 	super(info, 2, argv);
-	std::cout << "OscillatorNode() 9" << std::endl;
+	
 }
 
 
@@ -116,12 +114,15 @@ JS_IMPLEMENT_GETTER(OscillatorNode, type) { THIS_CHECK;
 		_impl.get()
 	);
 	
-	RET_VALUE(JS_STR(fromOscillatorType(node->type())));
+	RET_STR(fromOscillatorType(node->type()));
 	
 }
 
 
-JS_IMPLEMENT_SETTER(OscillatorNode, type) { THIS_SETTER_CHECK; SETTER_STR_ARG;
+JS_IMPLEMENT_SETTER(OscillatorNode, type) { THIS_SETTER_CHECK;
+	
+	// REQ_STR_ARG(0, v);
+	SETTER_STR_ARG;
 	
 	lab::OscillatorNode *node = static_cast<lab::OscillatorNode*>(
 		_impl.get()

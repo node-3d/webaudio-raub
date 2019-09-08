@@ -1,10 +1,7 @@
 #ifndef _MEDIA_STREAM_AUDIO_SOURCE_NODE_HPP_
 #define _MEDIA_STREAM_AUDIO_SOURCE_NODE_HPP_
 
-
 #include "common.hpp"
-
-#include "audio-node.hpp"
 
 
 class MediaStreamAudioSourceNode : public CommonNode {

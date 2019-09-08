@@ -11,7 +11,6 @@ DECLARE_ES5_CLASS(AnalyserNode, AnalyserNode);
 	
 public:
 	static void init(Napi::Env env, Napi::Object exports);
-	static Napi::Object create(Napi::Env env, Napi::Object context);
 	
 	explicit AnalyserNode(const Napi::CallbackInfo &info);
 	~AnalyserNode();

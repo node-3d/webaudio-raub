@@ -1,10 +1,6 @@
 
 #include "offline-audio-context.hpp"
 
-#include "common.hpp"
-
-
-// ------ Constructor and Destructor
 
 OfflineAudioContext::OfflineAudioContext() :
 BaseAudioContext() {
@@ -62,7 +58,7 @@ JS_IMPLEMENT_SETTER(OfflineAudioContext, oncomplete) { THIS_SETTER_CHECK; SETTER
 	if (Nan::New(_oncomplete) == v) {
 		return;
 	}
-	_oncomplete.Reset(v);
+	_oncomplete.Reset(v, 1);
 	
 	// TODO: may be additional actions on change?
 	

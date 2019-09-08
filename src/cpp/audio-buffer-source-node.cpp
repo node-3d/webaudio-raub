@@ -1,5 +1,3 @@
-#include <LabSound/LabSound.h>
-
 #include "audio-buffer-source-node.hpp"
 #include "audio-context.hpp"
 #include "audio-param.hpp"
@@ -41,10 +39,10 @@ CommonNode(info.This(), "AudioBufferSourceNode") { NAPI_ENV;
 	argv[0] = context;
 	
 	argv[1] = JS_EXT(&node->playbackRate());
-	_playbackRate.Reset(paramCtor.New(2, argv));
+	_playbackRate.Reset(paramCtor.New(2, argv), 1);
 	
 	argv[1] = JS_EXT(&node->detune());
-	_detune.Reset(paramCtor.New(2, argv));
+	_detune.Reset(paramCtor.New(2, argv), 1);
 	
 	argv[1] = JS_EXT(&_impl);
 	super(info, 2, argv);
@@ -64,7 +62,7 @@ void AudioBufferSourceNode::_destroy() { DES_CHECK;
 	);
 	
 	Napi::Object context = _context.Value();
-	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
+	AudioContext *audioContext = AudioContext::unwrap(context);
 	
 	lab::AudioContext *ctx = audioContext->getCtx().get();
 	
@@ -113,19 +111,16 @@ JS_IMPLEMENT_GETTER(AudioBufferSourceNode, buffer) { THIS_CHECK;
 
 JS_IMPLEMENT_SETTER(AudioBufferSourceNode, buffer) { THIS_SETTER_CHECK; SETTER_OBJ_ARG;
 	
-	// if (Nan::New(_buffer) == v) {
-	// 	return;
-	// }
-	_buffer.Reset(v);
+	_buffer.Reset(v, 1);
 	
 	Napi::Object context = _context.Value();
-	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
+	AudioContext *audioContext = AudioContext::unwrap(context);
 	
 	lab::AudioContext *ctx = audioContext->getCtx().get();
 	
 	lab::ContextRenderLock r(ctx, "AudioBufferSourceNode::bufferSetter");
 	
-	AudioBuffer *audioBuffer = Napi::ObjectWrap<AudioBuffer>::Unwrap(v);
+	AudioBuffer *audioBuffer = AudioBuffer::unwrap(v);
 	BusPtr bus = audioBuffer->getBus();
 	
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(

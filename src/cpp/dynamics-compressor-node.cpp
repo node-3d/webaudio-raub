@@ -1,10 +1,6 @@
 
 #include "dynamics-compressor-node.hpp"
 
-#include "common.hpp"
-
-
-// ------ Constructor and Destructor
 
 DynamicsCompressorNode::DynamicsCompressorNode() :
 AudioNode() {
@@ -28,10 +24,6 @@ void DynamicsCompressorNode::_destroy() { DES_CHECK;
 	AudioNode::_destroy();
 	
 }
-
-
-// ------ Methods and props
-
 
 
 JS_IMPLEMENT_GETTER(DynamicsCompressorNode, threshold) { THIS_CHECK;

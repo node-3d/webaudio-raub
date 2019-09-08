@@ -1,5 +1,3 @@
-#include <LabSound/LabSound.h>
-
 #include "gain-node.hpp"
 #include "audio-context.hpp"
 #include "audio-param.hpp"
@@ -34,7 +32,7 @@ CommonNode(info.This(), "GainNode") { NAPI_ENV;
 	argv[0] = context;
 	
 	argv[1] = JS_EXT(&node->gain());
-	_gain.Reset(paramCtor.New(2, argv));
+	_gain.Reset(paramCtor.New(2, argv), 1);
 	
 	argv[1] = JS_EXT(&_impl);
 	super(info, 2, argv);

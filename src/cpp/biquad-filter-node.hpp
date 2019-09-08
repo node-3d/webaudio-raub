@@ -3,8 +3,6 @@
 
 #include "common.hpp"
 
-#include "audio-node.hpp"
-
 
 class BiquadFilterNode : public CommonNode {
 DECLARE_ES5_CLASS(BiquadFilterNode, BiquadFilterNode);

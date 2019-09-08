@@ -1,5 +1,3 @@
-#include <LabSound/LabSound.h>
-
 #include "panner-node.hpp"
 #include "audio-context.hpp"
 #include "audio-param.hpp"
@@ -80,7 +78,7 @@ CommonNode(info.This(), "PannerNode") { NAPI_ENV;
 	REQ_OBJ_ARG(0, context);
 	REQ_FUN_ARG(1, paramCtor);
 	
-	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
+	AudioContext *audioContext = AudioContext::unwrap(context);
 	float sampleRate = audioContext->getCtx()->sampleRate();
 	Napi::Function ctor = _ctorEs5.Value().As<Napi::Function>();
 	Napi::String hrtf = ctor.Get("hrtf").As<Napi::String>();
@@ -95,22 +93,22 @@ CommonNode(info.This(), "PannerNode") { NAPI_ENV;
 	argv[0] = context;
 	
 	argv[1] = JS_EXT(&node->positionX());
-	_positionX.Reset(paramCtor.New(2, argv));
+	_positionX.Reset(paramCtor.New(2, argv), 1);
 	
 	argv[1] = JS_EXT(&node->positionY());
-	_positionY.Reset(paramCtor.New(2, argv));
+	_positionY.Reset(paramCtor.New(2, argv), 1);
 	
 	argv[1] = JS_EXT(&node->positionZ());
-	_positionZ.Reset(paramCtor.New(2, argv));
+	_positionZ.Reset(paramCtor.New(2, argv), 1);
 	
 	argv[1] = JS_EXT(&node->orientationX());
-	_orientationX.Reset(paramCtor.New(2, argv));
+	_orientationX.Reset(paramCtor.New(2, argv), 1);
 	
 	argv[1] = JS_EXT(&node->orientationY());
-	_orientationY.Reset(paramCtor.New(2, argv));
+	_orientationY.Reset(paramCtor.New(2, argv), 1);
 	
 	argv[1] = JS_EXT(&node->orientationZ());
-	_orientationZ.Reset(paramCtor.New(2, argv));
+	_orientationZ.Reset(paramCtor.New(2, argv), 1);
 	
 	argv[1] = JS_EXT(&_impl);
 	super(info, 2, argv);

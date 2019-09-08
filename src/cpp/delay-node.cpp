@@ -1,5 +1,3 @@
-#include <LabSound/LabSound.h>
-
 #include "delay-node.hpp"
 #include "audio-context.hpp"
 #include "audio-param.hpp"
@@ -25,7 +23,7 @@ CommonNode(info.This(), "DelayNode") { NAPI_ENV;
 	REQ_DOUBLE_ARG(1, delay);
 	REQ_FUN_ARG(2, paramCtor);
 	
-	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
+	AudioContext *audioContext = AudioContext::unwrap(context);
 	float sampleRate = audioContext->getCtx()->sampleRate();
 	
 	reset(context, std::make_shared<lab::DelayNode>(sampleRate, delay));
@@ -38,7 +36,7 @@ CommonNode(info.This(), "DelayNode") { NAPI_ENV;
 	argv[0] = context;
 	
 	argv[1] = JS_EXT(&node->delayTime());
-	_delayTime.Reset(paramCtor.New(2, argv));
+	_delayTime.Reset(paramCtor.New(2, argv), 1);
 	
 	argv[1] = JS_EXT(&_impl);
 	super(info, 2, argv);

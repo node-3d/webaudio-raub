@@ -1,7 +1,4 @@
-
 #include "analyser-node.hpp"
-
-#include "common.hpp"
 
 
 IMPLEMENT_ES5_CLASS(AnalyserNode);
@@ -32,10 +29,7 @@ CommonNode(info.This(), "AnalyserNode") { NAPI_ENV;
 	
 	reset(context, std::make_shared<lab::AnalyserNode>());
 	
-	Napi::Value argv[] = {
-		static_cast<Napi::Value>(context),
-		static_cast<Napi::Value>(JS_NUM(reinterpret_cast<size_t>(&_impl)))
-	};
+	Napi::Value argv[] = { context, JS_EXT(&_impl) };
 	super(info, 2, argv);
 	
 }

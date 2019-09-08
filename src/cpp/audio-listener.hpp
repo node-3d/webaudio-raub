@@ -47,5 +47,4 @@ private:
 	
 };
 
-
 #endif // _AUDIO_LISTENER_HPP_

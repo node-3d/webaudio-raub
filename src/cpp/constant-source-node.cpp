@@ -1,10 +1,6 @@
 
 #include "constant-source-node.hpp"
 
-#include "common.hpp"
-
-
-// ------ Constructor and Destructor
 
 ConstantSourceNode::ConstantSourceNode() :
 AudioScheduledSourceNode() {

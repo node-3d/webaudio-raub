@@ -1,11 +1,5 @@
-#include <LabSound/core/AudioContext.h>
-#include <LabSound/core/AudioParam.h>
-#include <LabSound/extended/AudioContextLock.h>
-
 #include "audio-param.hpp"
 #include "audio-context.hpp"
-
-#include "common.hpp"
 
 
 IMPLEMENT_ES5_CLASS(AudioParam);
@@ -38,16 +32,16 @@ bool AudioParam::isAudioParam(Napi::Object obj) {
 
 AudioParam::AudioParam(const Napi::CallbackInfo &info):
 CommonParam(info.This(), "AudioParam") { NAPI_ENV;
-	std::cout << "AudioParam() end" << std::endl;
+	
 	super(info);
 	
 	REQ_OBJ_ARG(0, context);
 	REQ_EXT_ARG(1, extParam);
-	std::cout << "AudioParam() 1" << std::endl;
+	
 	ParamPtr *param = reinterpret_cast<ParamPtr *>(extParam.Data());
 	
 	reset(context, *param);
-	std::cout << "AudioParam() end" << std::endl;
+	
 }
 
 
@@ -145,7 +139,7 @@ JS_IMPLEMENT_METHOD(AudioParam, cancelAndHoldAtTime) { THIS_CHECK;
 JS_IMPLEMENT_GETTER(AudioParam, value) { THIS_CHECK;
 	
 	Napi::Object context = _context.Value();
-	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
+	AudioContext *audioContext = AudioContext::unwrap(context);
 	
 	lab::ContextRenderLock renderLock(audioContext->getCtx().get(), "AudioParam::valueGetter");
 	

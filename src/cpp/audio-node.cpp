@@ -1,10 +1,6 @@
-#include <LabSound/LabSound.h>
-
 #include "audio-node.hpp"
 #include "audio-context.hpp"
 #include "audio-param.hpp"
-
-#include "common.hpp"
 
 
 IMPLEMENT_ES5_CLASS(AudioNode);
@@ -74,20 +70,20 @@ inline lab::ChannelInterpretation toChannelInterpretation(const std::string &io)
 
 AudioNode::AudioNode(const Napi::CallbackInfo &info):
 CommonNode(info.This(), "AudioNode") { NAPI_ENV;
-	std::cout << "AudioNode() 1 " << info.Env().IsExceptionPending() << std::endl;
+	
 	super(info);
-	std::cout << "AudioNode() 2 " << info.Env().IsExceptionPending() << std::endl;
+	
 	REQ_OBJ_ARG(0, context);
 	REQ_EXT_ARG(1, extNode);
-	std::cout << "AudioNode() 3 " << info.Env().IsExceptionPending() << std::endl;
+	
 	NodePtr *ext = reinterpret_cast<NodePtr *>(extNode.Data());
 	
 	reset(context, *ext);
-	std::cout << "AudioNode() 4 " << info.Env().IsExceptionPending() << std::endl;
+	
 	_channelCount = _impl->channelCount();
 	_channelCountMode = fromChannelCountMode(_impl->channelCountMode());
 	_channelInterpretation = fromChannelInterpretation(_impl->channelInterpretation());
-	std::cout << "AudioNode() 5 " << info.Env().IsExceptionPending() << std::endl;
+	
 }
 
 
@@ -111,7 +107,7 @@ JS_IMPLEMENT_METHOD(AudioNode, connect) { THIS_CHECK;
 	REQ_OBJ_ARG(0, destination);
 	
 	Napi::Object context = _context.Value();
-	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
+	AudioContext *audioContext = AudioContext::unwrap(context);
 	
 	lab::AudioContext *ctx = audioContext->getCtx().get();
 	
@@ -120,7 +116,7 @@ JS_IMPLEMENT_METHOD(AudioNode, connect) { THIS_CHECK;
 		LET_INT32_ARG(1, output);
 		LET_INT32_ARG(2, input);
 		
-		AudioNode *destNode = Napi::ObjectWrap<AudioNode>::Unwrap(destination);
+		AudioNode *destNode = AudioNode::unwrap(destination);
 		
 		ctx->connect(_impl, _impl, input, output);
 		
@@ -128,7 +124,7 @@ JS_IMPLEMENT_METHOD(AudioNode, connect) { THIS_CHECK;
 		
 		LET_INT32_ARG(1, output);
 		
-		AudioParam *destParam = Napi::ObjectWrap<AudioParam>::Unwrap(destination);
+		AudioParam *destParam = AudioParam::unwrap(destination);
 		
 		ctx->connectParam(destParam->getParam(), _impl, output);
 		
@@ -150,7 +146,7 @@ JS_IMPLEMENT_METHOD(AudioNode, disconnect) { THIS_CHECK;
 	Napi::Object destination;
 	
 	Napi::Object context = _context.Value();
-	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
+	AudioContext *audioContext = AudioContext::unwrap(context);
 	lab::AudioContext *ctx = audioContext->getCtx().get();
 	
 	if (info.Length() == 1) {
@@ -194,12 +190,12 @@ JS_IMPLEMENT_METHOD(AudioNode, disconnect) { THIS_CHECK;
 	
 	if (isAudioNode(destination)) {
 		
-		AudioNode *destNode = Napi::ObjectWrap<AudioNode>::Unwrap(destination);
+		AudioNode *destNode = AudioNode::unwrap(destination);
 		ctx->disconnect(_impl, _impl, input, output);
 		
 	} else if (AudioParam::isAudioParam(destination)) {
 		
-		AudioParam *destParam = Napi::ObjectWrap<AudioParam>::Unwrap(destination);
+		AudioParam *destParam = AudioParam::unwrap(destination);
 		
 		ParamPtr param = destParam->getParam();
 		
@@ -247,7 +243,7 @@ JS_IMPLEMENT_SETTER(AudioNode, channelCount) { THIS_SETTER_CHECK; SETTER_UINT32_
 	CACHE_CAS(_channelCount, v);
 	
 	Napi::Object context = _context.Value();
-	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
+	AudioContext *audioContext = AudioContext::unwrap(context);
 	
 	lab::ContextGraphLock graphLock(audioContext->getCtx().get(), "AudioNode::channelCountSetter");
 	_impl->setChannelCount(graphLock, _channelCount);

@@ -1,10 +1,6 @@
 
 #include "media-stream-audio-source-node.hpp"
 
-#include "common.hpp"
-
-
-// ------ Constructor and Destructor
 
 MediaStreamAudioSourceNode::MediaStreamAudioSourceNode() :
 AudioNode() {

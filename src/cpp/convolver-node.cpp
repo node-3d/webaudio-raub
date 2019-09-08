@@ -1,5 +1,3 @@
-#include <LabSound/LabSound.h>
-
 #include "convolver-node.hpp"
 #include "audio-context.hpp"
 #include "audio-buffer.hpp"
@@ -51,10 +49,6 @@ void ConvolverNode::_destroy() { DES_CHECK;
 }
 
 
-// ------ Methods and props
-
-
-
 JS_IMPLEMENT_GETTER(ConvolverNode, buffer) { THIS_CHECK;
 	
 	RET_VALUE(_buffer.Value());
@@ -67,14 +61,14 @@ JS_IMPLEMENT_SETTER(ConvolverNode, buffer) { THIS_SETTER_CHECK; SETTER_OBJ_ARG;
 		return;
 	}
 	
-	_buffer.Reset(v);
+	_buffer.Reset(v, 1);
 	
 	Napi::Object context = _context.Value();
-	AudioContext *audioContext = Napi::ObjectWrap<AudioContext>::Unwrap(context);
+	AudioContext *audioContext = AudioContext::unwrap(context);
 	
 	lab::AudioContext *ctx = audioContext->getCtx().get();
 	
-	AudioBuffer *audioBuffer = Napi::ObjectWrap<AudioBuffer>::Unwrap(v);
+	AudioBuffer *audioBuffer = AudioBuffer::unwrap(v);
 	BusPtr bus = audioBuffer->getBus();
 	
 	lab::ConvolverNode *node = static_cast<lab::ConvolverNode*>(

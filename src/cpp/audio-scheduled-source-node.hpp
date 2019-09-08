@@ -3,15 +3,12 @@
 
 #include "common.hpp"
 
-#include "audio-node.hpp"
-
 
 class AudioScheduledSourceNode : public CommonNode {
 DECLARE_ES5_CLASS(AudioScheduledSourceNode, AudioScheduledSourceNode);
 	
 public:
 	static void init(Napi::Env env, Napi::Object exports);
-	static Napi::Object create(Napi::Env env, Napi::Object context);
 	
 	explicit AudioScheduledSourceNode(const Napi::CallbackInfo &info);
 	~AudioScheduledSourceNode();

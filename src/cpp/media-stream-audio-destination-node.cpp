@@ -1,10 +1,6 @@
 
 #include "media-stream-audio-destination-node.hpp"
 
-#include "common.hpp"
-
-
-// ------ Constructor and Destructor
 
 MediaStreamAudioDestinationNode::MediaStreamAudioDestinationNode() :
 AudioNode() {

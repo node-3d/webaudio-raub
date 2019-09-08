@@ -3,23 +3,16 @@
 
 #include "common.hpp"
 
-#include "audio-scheduled-source-node.hpp"
-
 
 class ConstantSourceNode : public AudioScheduledSourceNode {
 	
 public:
-	
-	~ConstantSourceNode();
 	explicit ConstantSourceNode(const Napi::CallbackInfo &info);
+	~ConstantSourceNode();
 	
 	static void init(Napi::Env env, Napi::Object exports);
 	
-	static bool isConstantSourceNode(Napi::Object obj);
-	
-	// Destroy an instance from C++ land
 	void _destroy();
-	
 	
 protected:
 	
@@ -36,8 +29,6 @@ private:
 	
 	JS_DECLARE_METHOD(ConstantSourceNode, destroy);
 	JS_DECLARE_GETTER(ConstantSourceNode, isDestroyed);
-	
-	
 	
 	JS_DECLARE_GETTER(ConstantSourceNode, offset);
 	

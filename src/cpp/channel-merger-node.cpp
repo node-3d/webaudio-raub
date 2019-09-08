@@ -1,10 +1,6 @@
 
 #include "channel-merger-node.hpp"
 
-#include "common.hpp"
-
-
-// ------ Constructor and Destructor
 
 ChannelMergerNode::ChannelMergerNode() :
 AudioNode() {

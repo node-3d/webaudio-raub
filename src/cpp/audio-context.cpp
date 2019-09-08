@@ -1,5 +1,3 @@
-#include <LabSound/LabSound.h>
-
 #include "audio-context.hpp"
 
 
@@ -21,7 +19,7 @@ void AudioContext::init(Napi::Env env, Napi::Object exports) {
 
 AudioContext::AudioContext(const Napi::CallbackInfo &info):
 CommonCtx(info.This(), "AudioContext") { NAPI_ENV;
-	std::cout << "AudioContext() start" << std::endl;
+	
 	if (info.Length() > 0) {
 		LET_FLOAT_ARG(0, sampleRate);
 		reset(std::move(
@@ -37,7 +35,7 @@ CommonCtx(info.This(), "AudioContext") { NAPI_ENV;
 		static_cast<Napi::Value>(JS_EXT(&_impl))
 	};
 	super(info, 1, argv);
-	std::cout << "AudioContext() end" << std::endl;
+	
 }
 
 

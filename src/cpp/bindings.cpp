@@ -56,7 +56,7 @@ Napi::Object initModule(Napi::Env env, Napi::Object exports) {
 	BiquadFilterNode::init(env, exports);
 	// // // ChannelMergerNode::init(env, exports);
 	// // // ChannelSplitterNode::init(env, exports);
-	// // // ConstantSourceNode::init(env, exports);
+	// ConstantSourceNode::init(env, exports);
 	ConvolverNode::init(env, exports);
 	DelayNode::init(env, exports);
 	// // // DynamicsCompressorNode::init(env, exports);

@@ -39,7 +39,7 @@ JS_IMPLEMENT_SETTER(WaveShaperNode, curve) { THIS_SETTER_CHECK; SETTER_OBJ_ARG;
 	if (Nan::New(_curve) == v) {
 		return;
 	}
-	_curve.Reset(v);
+	_curve.Reset(v, 1);
 	
 	// TODO: may be additional actions on change?
 	
