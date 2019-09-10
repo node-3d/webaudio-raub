@@ -42,7 +42,7 @@ struct Common {
 		const char* name,
 		int argc = 0,
 		const Napi::Value *argv = nullptr
-	) { DES_CHECK;
+	) { Napi::Env env = _that.Value().Env();NAPI_HS;DES_CHECK;
 		eventEmitAsync(_that.Value(), name, argc, argv, asyncCtx);
 	}
 	
