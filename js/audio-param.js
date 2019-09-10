@@ -9,9 +9,7 @@ inherits(AudioParam, Emitter);
 
 
 function JsAudioParam(ctx, param) {
-	console.log('JsAudioParam()', ctx, param, AudioParam);
 	AudioParam.call(this, ctx, param);
-	
 }
 
 JsAudioParam.prototype = {

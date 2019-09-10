@@ -34,11 +34,10 @@ const scheduledDescs = [
 const subclassBase = (name, optset, SuperNode) => {
 	
 	const SuperClass = core[name];
-	console.log('NOW CALL 11', name, SuperClass, SuperNode);
+	
 	inherits(SuperClass, SuperNode);
 	
 	function JsNode(ctx, opts = {}) {
-		console.log('NOW CALL', SuperClass, this, ctx, JsAudioParam);
 		SuperClass.call(this, ctx, JsAudioParam);
 		optset.forEach(opt => {
 			if (opts[opt] !== undefined) {
@@ -78,7 +77,7 @@ const baseNodes = {
 	),
 	AudioScheduledSourceNode: JsAudioScheduledSourceNode,
 };
-console.log('BN', baseNodes, baseNodes.AudioScheduledSourceNode);
+
 const scheduledNodes = scheduledDescs.reduce(
 	(e, { name, optset }) => {
 		e[name] = subclassBase(name, optset, baseNodes.AudioScheduledSourceNode);

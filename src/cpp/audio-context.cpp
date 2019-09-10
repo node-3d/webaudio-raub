@@ -26,9 +26,35 @@ CommonCtx(info.This(), "AudioContext") { NAPI_ENV;
 			lab::Sound::MakeRealtimeAudioContext(lab::Channels::Stereo, sampleRate)
 		));
 	} else {
-		reset(std::move(
-			lab::Sound::MakeRealtimeAudioContext(lab::Channels::Stereo)
-		));
+		std::cout << "BEFORE" << std::endl;
+		
+		std::shared_ptr<lab::AudioContext> ctx
+			= std::make_shared<lab::AudioContext>(false);
+		std::cout << "C 111" << std::endl;
+		
+		std::shared_ptr<lab::DefaultAudioDestinationNode> dest =
+			std::make_shared<lab::DefaultAudioDestinationNode>(
+				ctx.get(),
+				lab::Channels::Stereo,
+				LABSOUND_DEFAULT_SAMPLERATE
+			);
+		std::cout << "C 222" << std::endl;
+		
+		ctx->setDestinationNode(dest);
+		std::cout << "C 333" << std::endl;
+		
+		ctx->lazyInitialize();
+		// std::cout << "C 444" << std::endl;
+		
+		// std::unique_ptr<lab::AudioContext> unique =
+		// 	lab::Sound::MakeRealtimeAudioContext(lab::Channels::Stereo);
+		// std::cout << "UNIQUE" << std::endl;
+		// std::shared_ptr<lab::AudioContext> shared = std::move(unique);
+		std::cout << "AFTER" << std::endl;
+		
+		
+		reset(ctx);
+		
 	}
 	
 	Napi::Value argv[] = {

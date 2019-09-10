@@ -13,11 +13,11 @@ inherits(BaseAudioContext, Emitter);
 
 
 function JsBaseAudioContext(ctx) {
-	
+	console.log('JsBaseAudioContext() 1');
 	BaseAudioContext.call(this, ctx);
-	
+	console.log('JsBaseAudioContext() 2');
 	this._initListener(JsAudioDestinationNode, JsAudioListener);
-	
+	console.log('JsBaseAudioContext() 3');
 	this._updateTimerId = setInterval(
 		() => this.update(),
 		JsBaseAudioContext.UPDATE_INTERVAL

@@ -13,8 +13,6 @@ function JsAudioContext(opts = {}) {
 	if (opts.sampleRate) {
 		AudioContext.call(this, opts.sampleRate);
 	} else {
-		console.log('AudioContext this', this, JsAudioContext.prototype, AudioContext.prototype);
-
 		AudioContext.call(this);
 	}
 }
