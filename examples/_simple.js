@@ -6,44 +6,44 @@ const read = require('./utils/read');
 
 
 (async () => { try {
+	console.log('START');
+	// const context = new AudioContext();
 	
-	const context = new AudioContext();
+	// const clip = await read(`${__dirname}/samples/trainrolling.wav`);
 	
-	const clip = await read(`${__dirname}/samples/trainrolling.wav`);
+	// const musicClip = await new Promise(res => context.decodeAudioData(clip, b => res(b)));
 	
-	const musicClip = await new Promise(res => context.decodeAudioData(clip, b => res(b)));
+	// const oscillator = context.createOscillator();
 	
-	const oscillator = context.createOscillator();
+	// const gain = context.createGain();
+	// gain.gain.value = 0.0625;
 	
-	const gain = context.createGain();
-	gain.gain.value = 0.0625;
+	// const musicClipNode = context.createBufferSource();
 	
-	const musicClipNode = context.createBufferSource();
+	// musicClipNode.on('ended', () => { console.log('.on("ended"): Track "trainrolling.wav" ended.'); });
+	// musicClipNode.onended = () => { console.log('.onended: Track "trainrolling.wav" ended.'); };
 	
-	musicClipNode.on('ended', () => { console.log('.on("ended"): Track "trainrolling.wav" ended.'); });
-	musicClipNode.onended = () => { console.log('.onended: Track "trainrolling.wav" ended.'); };
+	// musicClipNode.on('ended', () => { setTimeout(() => musicClipNode.start(0), 100); });
 	
-	musicClipNode.on('ended', () => { setTimeout(() => musicClipNode.start(0), 100); });
+	// musicClipNode.buffer = musicClip;
 	
-	musicClipNode.buffer = musicClip;
+	// musicClipNode.connect(gain);
 	
-	musicClipNode.connect(gain);
+	// musicClipNode.start(0);
 	
-	musicClipNode.start(0);
+	// // osc -> gain -> destination
+	// oscillator.connect(gain);
 	
-	// osc -> gain -> destination
-	oscillator.connect(gain);
+	// gain.connect(context.destination);
 	
-	gain.connect(context.destination);
-	
-	oscillator.frequency.value = 440;
+	// oscillator.frequency.value = 440;
 	
 	
-	oscillator.type = 'sine';
+	// oscillator.type = 'sine';
 	
-	oscillator.start(0);
+	// oscillator.start(0);
 	
-	// 60 sec
+	// // 60 sec
 	await new Promise(res => setTimeout(res, 6000));
 	
 	console.log('DONE');

@@ -31,7 +31,52 @@
 // #include "wave-shaper-node.hpp"
 
 
+template <typename Duration>
+void Wait(Duration duration) {
+	std::mutex wait;
+	std::unique_lock<std::mutex> lock(wait);
+	std::condition_variable cv;
+	cv.wait_for(lock, duration);
+}
+
 Napi::Object initModule(Napi::Env env, Napi::Object exports) {
+	
+	auto context = lab::Sound::MakeRealtimeAudioContext(lab::Channels::Stereo);
+	std::shared_ptr<lab::AudioBus> musicClip = lab::MakeBusFromFile(
+		"C:/_projects/node-3d/webaudio-raub/examples/samples/trainrolling.wav",
+		false
+	);
+	if ( ! musicClip ) {
+		std::cerr << "Could not open " << "C:/_projects/node-3d/webaudio-raub/examples/samples/trainrolling.wav" << std::endl;
+	}
+
+	std::shared_ptr<lab::OscillatorNode> oscillator;
+	std::shared_ptr<lab::SampledAudioNode> musicClipNode;
+	std::shared_ptr<lab::GainNode> gain;
+
+	oscillator = std::make_shared<lab::OscillatorNode>(context->sampleRate());
+	gain = std::make_shared<lab::GainNode>();
+	gain->gain()->setValue(0.0625f);
+
+	musicClipNode = std::make_shared<lab::SampledAudioNode>();
+	{
+		lab::ContextRenderLock r(context.get(), "Simple");
+		musicClipNode->setBus(r, musicClip);
+	}
+	context->connect(gain, musicClipNode, 0, 0);
+	musicClipNode->start(0.0f);
+
+	// osc -> gain -> destination
+	context->connect(gain, oscillator, 0, 0);
+	context->connect(context->destination(), gain, 0, 0);
+
+	oscillator->frequency()->setValue(440.f);
+	oscillator->setType(lab::OscillatorType::SINE);
+	oscillator->start(0.0f);
+	std::cout << "before 111" << std::endl;
+	Wait(std::chrono::seconds(6));
+	std::cout << "after 111" << std::endl;
+	
 	
 	BaseAudioContext::init(env, exports);
 	AudioContext::init(env, exports);
@@ -70,7 +115,7 @@ Napi::Object initModule(Napi::Env env, Napi::Object exports) {
 	// // // ScriptProcessorNode::init(env, exports);
 	// // // StereoPannerNode::init(env, exports);
 	// // // WaveShaperNode::init(env, exports);
-	
+	std::cout << "ret 111" << std::endl;
 	return exports;
 	
 }
