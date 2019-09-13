@@ -26,11 +26,11 @@ CommonCtx(info.This(), "AudioContext") { NAPI_ENV;
 			lab::Sound::MakeRealtimeAudioContext(lab::Channels::Stereo, sampleRate)
 		));
 	} else {
-		std::cout << "BEFORE" << std::endl;
+		std::cout << "BEFORE " << env.IsExceptionPending() << std::endl;
 		
 		std::shared_ptr<lab::AudioContext> ctx
 			= std::make_shared<lab::AudioContext>(false);
-		std::cout << "C 111" << std::endl;
+		std::cout << "C 111 " << env.IsExceptionPending() << std::endl;
 		
 		std::shared_ptr<lab::DefaultAudioDestinationNode> dest =
 			std::make_shared<lab::DefaultAudioDestinationNode>(
@@ -38,10 +38,10 @@ CommonCtx(info.This(), "AudioContext") { NAPI_ENV;
 				lab::Channels::Stereo,
 				LABSOUND_DEFAULT_SAMPLERATE
 			);
-		std::cout << "C 222" << std::endl;
+		std::cout << "C 222 " << env.IsExceptionPending() << std::endl;
 		
 		ctx->setDestinationNode(dest);
-		std::cout << "C 333" << std::endl;
+		std::cout << "C 333 " << env.IsExceptionPending() << std::endl;
 		
 		ctx->lazyInitialize();
 		// std::cout << "C 444" << std::endl;
@@ -50,18 +50,17 @@ CommonCtx(info.This(), "AudioContext") { NAPI_ENV;
 		// 	lab::Sound::MakeRealtimeAudioContext(lab::Channels::Stereo);
 		// std::cout << "UNIQUE" << std::endl;
 		// std::shared_ptr<lab::AudioContext> shared = std::move(unique);
-		std::cout << "AFTER" << std::endl;
+		std::cout << "AFTER " << env.IsExceptionPending() << std::endl;
 		
 		
 		reset(ctx);
-		
+		std::cout << "AFTER 22 " << env.IsExceptionPending() << std::endl;
 	}
 	
-	Napi::Value argv[] = {
-		static_cast<Napi::Value>(JS_EXT(&_impl))
-	};
+	napi_value argv[] = { JS_EXT(&_impl) };
+	std::cout << "AFTER 33 " << env.IsExceptionPending() << std::endl;
 	super(info, 1, argv);
-	
+	std::cout << "AFTER 44 " << env.IsExceptionPending() << std::endl;
 }
 
 

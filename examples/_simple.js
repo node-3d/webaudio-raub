@@ -6,8 +6,8 @@ const read = require('./utils/read');
 
 
 (async () => { try {
-	console.log('START');
-	// const context = new AudioContext();
+	
+	const context = new AudioContext();
 	
 	// const clip = await read(`${__dirname}/samples/trainrolling.wav`);
 	
@@ -20,10 +20,15 @@ const read = require('./utils/read');
 	
 	// const musicClipNode = context.createBufferSource();
 	
-	// musicClipNode.on('ended', () => { console.log('.on("ended"): Track "trainrolling.wav" ended.'); });
-	// musicClipNode.onended = () => { console.log('.onended: Track "trainrolling.wav" ended.'); };
+	// musicClipNode.on(
+	// 	'ended',
+	// 	() => { console.log('.on("ended"): Track "trainrolling.wav" ended.'); }
+	// );
+	// musicClipNode.onended = () => {
+	// 	console.log('.onended: Track "trainrolling.wav" ended.');
+	// };
 	
-	// musicClipNode.on('ended', () => { setTimeout(() => musicClipNode.start(0), 100); });
+	// // musicClipNode.on('ended', () => { setTimeout(() => musicClipNode.start(0), 100); });
 	
 	// musicClipNode.buffer = musicClip;
 	
