@@ -10,7 +10,6 @@ inherits(AudioScheduledSourceNode, JsAudioNode);
 
 
 function JsAudioScheduledSourceNode(ctx, node) {
-	console.log('call JsAudioScheduledSourceNode()', ctx, node);
 	AudioScheduledSourceNode.call(this, ctx, node);
 }
 

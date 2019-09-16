@@ -9,9 +9,7 @@ inherits(AudioBuffer, Emitter);
 
 
 function JsAudioBuffer(ctx, bus) {
-	console.log('call JsAudioBuffer()', ctx, bus);
 	AudioBuffer.call(this, ctx, bus);
-	
 }
 
 JsAudioBuffer.prototype = {

@@ -10,9 +10,7 @@ inherits(AudioListener, Emitter);
 
 
 function JsAudioListener(ctx, listener) {
-	console.log('call JsAudioListener()', ctx, listener, JsAudioParam);
 	AudioListener.call(this, ctx, listener, JsAudioParam);
-	
 }
 
 JsAudioListener.prototype = {

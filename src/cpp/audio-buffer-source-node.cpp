@@ -83,7 +83,7 @@ void AudioBufferSourceNode::_destroy() { DES_CHECK;
 
 
 JS_IMPLEMENT_METHOD(AudioBufferSourceNode, start) { THIS_CHECK;
-	std::cout << "AudioBufferSourceNode::start()" << std::endl;
+	
 	LET_DOUBLE_ARG(0, when);
 	LET_DOUBLE_ARG(1, grainOffset);
 	LET_DOUBLE_ARG(2, grainDuration);

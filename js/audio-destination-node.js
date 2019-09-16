@@ -10,7 +10,6 @@ inherits(AudioDestinationNode, JsAudioNode);
 
 
 function JsAudioDestinationNode(ctx, node) {
-	console.log('call JsAudioDestinationNode()', ctx, node);
 	AudioDestinationNode.call(this, ctx, node);
 }
 

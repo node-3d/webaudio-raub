@@ -13,16 +13,16 @@ inherits(BaseAudioContext, Emitter);
 
 
 function JsBaseAudioContext(ctx) {
-	console.log('JsBaseAudioContext() 1', this, ctx);
+	
 	BaseAudioContext.call(this, ctx);
-	console.log('JsBaseAudioContext() 2');
-	// this._initListener(JsAudioDestinationNode, JsAudioListener);
-	console.log('JsBaseAudioContext() 3');
-	// this._updateTimerId = setInterval(
-	// 	() => this.update(),
-	// 	JsBaseAudioContext.UPDATE_INTERVAL
-	// );
-	// this._updateTimerId.unref();
+	
+	this._initListener(JsAudioDestinationNode, JsAudioListener);
+	
+	this._updateTimerId = setInterval(
+		() => this.update(),
+		JsBaseAudioContext.UPDATE_INTERVAL
+	);
+	this._updateTimerId.unref();
 	
 }
 
@@ -106,10 +106,7 @@ JsBaseAudioContext.prototype = {
 	},
 	
 	createOscillator(opts) {
-		console.log(typeof nodes.OscillatorNode, nodes.OscillatorNode);
-		const Ctor = nodes.OscillatorNode;
-		console.log(typeof Ctor);
-		return new Ctor(this, opts);
+		return new nodes.OscillatorNode(this, opts);
 	},
 	
 	createPanner(opts) {

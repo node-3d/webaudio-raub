@@ -105,14 +105,14 @@ void AudioNode::_destroy() { DES_CHECK;
 JS_IMPLEMENT_METHOD(AudioNode, connect) { THIS_CHECK;
 	
 	REQ_OBJ_ARG(0, destination);
-	std::cout << "AudioNode::connect() 0" << std::endl;
+	
 	Napi::Object context = _context.Value();
 	AudioContext *audioContext = AudioContext::unwrap(context);
 	
 	lab::AudioContext *ctx = audioContext->getCtx().get();
 	
 	if (isAudioNode(destination)) {
-		std::cout << "AudioNode::connect() 1" << std::endl;
+		
 		LET_INT32_ARG(1, output);
 		LET_INT32_ARG(2, input);
 		
@@ -121,7 +121,7 @@ JS_IMPLEMENT_METHOD(AudioNode, connect) { THIS_CHECK;
 		ctx->connect(destNode->_impl, _impl, input, output);
 		
 	} else if (AudioParam::isAudioParam(destination)) {
-		std::cout << "AudioNode::connect() 2" << std::endl;
+		
 		LET_INT32_ARG(1, output);
 		
 		AudioParam *destParam = AudioParam::unwrap(destination);
