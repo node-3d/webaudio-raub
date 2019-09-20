@@ -53,9 +53,9 @@ JS_IMPLEMENT_METHOD(AnalyserNode, getFloatFrequencyData) { THIS_CHECK;
 		_impl.get()
 	);
 	std::vector<float> cppArray;
-	node->getFloatFrequencyData(&cppArray);
+	node->getFloatFrequencyData(cppArray);
 	
-	for (int i = 0; i < cppArray.length(); i++) {
+	for (int i = 0; i < cppArray.size(); i++) {
 		array.Set(i, cppArray[i]);
 	}
 	
