@@ -47,9 +47,18 @@ void AnalyserNode::_destroy() { DES_CHECK;
 
 JS_IMPLEMENT_METHOD(AnalyserNode, getFloatFrequencyData) { THIS_CHECK;
 	
-	REQ_OBJ_ARG(0, array);
+	REQ_TYPED_ARRAY_ARG(0, array);
 	
-	// TODO: do something?
+	lab::AnalyserNode *node = static_cast<lab::AnalyserNode*>(
+		_impl.get()
+	);
+	std::vector<float> cppArray;
+	node->getFloatFrequencyData(&cppArray);
+	
+	for (int i = 0; i < cppArray.length(); i++) {
+		array.Set(i, cppArray[i]);
+	}
+	
 	RET_UNDEFINED;
 	
 }
@@ -57,9 +66,6 @@ JS_IMPLEMENT_METHOD(AnalyserNode, getFloatFrequencyData) { THIS_CHECK;
 
 JS_IMPLEMENT_METHOD(AnalyserNode, getByteFrequencyData) { THIS_CHECK;
 	
-	REQ_OBJ_ARG(0, array);
-	
-	// TODO: do something?
 	RET_UNDEFINED;
 	
 }
