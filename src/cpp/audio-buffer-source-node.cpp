@@ -38,10 +38,16 @@ CommonNode(info.This(), "AudioBufferSourceNode") { NAPI_ENV;
 	napi_value argv[2];
 	argv[0] = context;
 	
-	argv[1] = JS_EXT(&node->playbackRate());
+	std::shared_ptr<AudioParam> playbackRateParam = node->playbackRate();
+	argv[1] = JS_EXT(&playbackRateParam);
 	_playbackRate.Reset(paramCtor.New(2, argv), 1);
 	
-	argv[1] = JS_EXT(&node->detune());
+	std::shared_ptr<AudioParam> detuneParam = node->detune();
+	argv[1] = JS_EXT(&detuneParam);
+	_detune.Reset(paramCtor.New(2, argv), 1);
+	
+	std::shared_ptr<AudioParam> gainParam = node->gain();
+	argv[1] = JS_EXT(&gainParam);
 	_detune.Reset(paramCtor.New(2, argv), 1);
 	
 	argv[1] = JS_EXT(&_impl);

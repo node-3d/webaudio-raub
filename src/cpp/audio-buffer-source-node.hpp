@@ -23,6 +23,7 @@ private:
 	Napi::ObjectReference _buffer;
 	Napi::ObjectReference _playbackRate;
 	Napi::ObjectReference _detune;
+	Napi::ObjectReference _gain;
 	
 	JS_DECLARE_METHOD(AudioBufferSourceNode, destroy);
 	
@@ -32,8 +33,8 @@ private:
 	JS_DECLARE_SETTER(AudioBufferSourceNode, buffer);
 	
 	JS_DECLARE_GETTER(AudioBufferSourceNode, playbackRate);
-	
 	JS_DECLARE_GETTER(AudioBufferSourceNode, detune);
+	JS_DECLARE_GETTER(AudioBufferSourceNode, gain);
 	
 	JS_DECLARE_GETTER(AudioBufferSourceNode, loop);
 	JS_DECLARE_SETTER(AudioBufferSourceNode, loop);
