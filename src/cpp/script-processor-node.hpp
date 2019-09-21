@@ -1,7 +1,6 @@
 #ifndef _SCRIPT_PROCESSOR_NODE_HPP_
 #define _SCRIPT_PROCESSOR_NODE_HPP_
 
-
 #include "common.hpp"
 
 #include "audio-node.hpp"
