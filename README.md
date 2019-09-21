@@ -9,7 +9,7 @@ This is a part of [Node3D](https://github.com/node-3d) project.
 
 > npm i webaudio-raub
 
-**This module is WORK IN PROGRESS.**
+**This module is WORK IN PROGRESS.** Some features are missing for good.
 
 
 ## Synopsis
