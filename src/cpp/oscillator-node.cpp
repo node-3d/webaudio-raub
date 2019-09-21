@@ -67,10 +67,12 @@ CommonNode(info.This(), "OscillatorNode") { NAPI_ENV;
 	napi_value argv[2];
 	argv[0] = context;
 	
-	argv[1] = JS_EXT(&node->frequency());
+	std::shared_ptr<lab::AudioParam> frequencyParam = node->frequency();
+	argv[1] = JS_EXT(&frequencyParam);
 	_frequency.Reset(paramCtor.New(2, argv), 1);
 	
-	argv[1] = JS_EXT(&node->detune());
+	std::shared_ptr<lab::AudioParam> detuneParam = node->detune();
+	argv[1] = JS_EXT(&detuneParam);
 	_detune.Reset(paramCtor.New(2, argv), 1);
 	
 	argv[1] = JS_EXT(&_impl);

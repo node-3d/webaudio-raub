@@ -92,22 +92,28 @@ CommonNode(info.This(), "PannerNode") { NAPI_ENV;
 	napi_value argv[2];
 	argv[0] = context;
 	
-	argv[1] = JS_EXT(&node->positionX());
+	std::shared_ptr<lab::AudioParam> positionXParam = node->positionX();
+	argv[1] = JS_EXT(&positionXParam);
 	_positionX.Reset(paramCtor.New(2, argv), 1);
 	
-	argv[1] = JS_EXT(&node->positionY());
+	std::shared_ptr<lab::AudioParam> positionYParam = node->positionY();
+	argv[1] = JS_EXT(&positionYParam);
 	_positionY.Reset(paramCtor.New(2, argv), 1);
 	
-	argv[1] = JS_EXT(&node->positionZ());
+	std::shared_ptr<lab::AudioParam> positionZParam = node->positionZ();
+	argv[1] = JS_EXT(&positionZParam);
 	_positionZ.Reset(paramCtor.New(2, argv), 1);
 	
-	argv[1] = JS_EXT(&node->orientationX());
+	std::shared_ptr<lab::AudioParam> orientationXParam = node->orientationX();
+	argv[1] = JS_EXT(&orientationXParam);
 	_orientationX.Reset(paramCtor.New(2, argv), 1);
 	
-	argv[1] = JS_EXT(&node->orientationY());
+	std::shared_ptr<lab::AudioParam> orientationYParam = node->orientationY();
+	argv[1] = JS_EXT(&orientationYParam);
 	_orientationY.Reset(paramCtor.New(2, argv), 1);
 	
-	argv[1] = JS_EXT(&node->orientationZ());
+	std::shared_ptr<lab::AudioParam> orientationZParam = node->orientationZ();
+	argv[1] = JS_EXT(&orientationZParam);
 	_orientationZ.Reset(paramCtor.New(2, argv), 1);
 	
 	argv[1] = JS_EXT(&_impl);

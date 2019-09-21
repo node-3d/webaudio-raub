@@ -28,10 +28,7 @@ CommonNode(info.This(), "ConvolverNode") { NAPI_ENV;
 		_impl.get()
 	);
 	
-	Napi::Value argv[] = {
-		static_cast<Napi::Value>(context),
-		static_cast<Napi::Value>(JS_NUM(reinterpret_cast<size_t>(node)))
-	};
+	Napi::Value argv[] = { context, JS_EXT(&_impl) };
 	super(info, 2, argv);
 	
 }
