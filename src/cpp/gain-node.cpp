@@ -31,7 +31,7 @@ CommonNode(info.This(), "GainNode") { NAPI_ENV;
 	napi_value argv[2];
 	argv[0] = context;
 	
-	std::shared_ptr<lab::AudioParam> gainParam = node->gain();
+	ParamPtr gainParam = node->gain();
 	argv[1] = JS_EXT(&gainParam);
 	_gain.Reset(paramCtor.New(2, argv), 1);
 	

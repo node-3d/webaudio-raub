@@ -43,39 +43,39 @@ CommonListener(info.This(), "AudioListener") { NAPI_ENV;
 	napi_value argv[2];
 	argv[0] = context;
 	
-	std::shared_ptr<lab::AudioParam> positionXParam = _impl->positionX();
+	ParamPtr positionXParam = _impl->positionX();
 	argv[1] = JS_EXT(&positionXParam);
 	_positionX.Reset(paramCtor.New(2, argv), 1);
 	
-	std::shared_ptr<lab::AudioParam> positionYParam = _impl->positionY();
+	ParamPtr positionYParam = _impl->positionY();
 	argv[1] = JS_EXT(&positionYParam);
 	_positionY.Reset(paramCtor.New(2, argv), 1);
 	
-	std::shared_ptr<lab::AudioParam> positionZParam = _impl->positionZ();
+	ParamPtr positionZParam = _impl->positionZ();
 	argv[1] = JS_EXT(&positionZParam);
 	_positionZ.Reset(paramCtor.New(2, argv), 1);
 	
-	std::shared_ptr<lab::AudioParam> forwardXParam = _impl->forwardX();
+	ParamPtr forwardXParam = _impl->forwardX();
 	argv[1] = JS_EXT(&forwardXParam);
 	_forwardX.Reset(paramCtor.New(2, argv), 1);
 	
-	std::shared_ptr<lab::AudioParam> forwardYParam = _impl->forwardY();
+	ParamPtr forwardYParam = _impl->forwardY();
 	argv[1] = JS_EXT(&forwardYParam);
 	_forwardY.Reset(paramCtor.New(2, argv), 1);
 	
-	std::shared_ptr<lab::AudioParam> forwardZParam = _impl->forwardZ();
+	ParamPtr forwardZParam = _impl->forwardZ();
 	argv[1] = JS_EXT(&forwardZParam);
 	_forwardZ.Reset(paramCtor.New(2, argv), 1);
 	
-	std::shared_ptr<lab::AudioParam> upXParam = _impl->upX();
+	ParamPtr upXParam = _impl->upX();
 	argv[1] = JS_EXT(&upXParam);
 	_upX.Reset(paramCtor.New(2, argv), 1);
 	
-	std::shared_ptr<lab::AudioParam> upYParam = _impl->upY();
+	ParamPtr upYParam = _impl->upY();
 	argv[1] = JS_EXT(&upYParam);
 	_upY.Reset(paramCtor.New(2, argv), 1);
 	
-	std::shared_ptr<lab::AudioParam> upZParam = _impl->upZ();
+	ParamPtr upZParam = _impl->upZ();
 	argv[1] = JS_EXT(&upZParam);
 	_upZ.Reset(paramCtor.New(2, argv), 1);
 	
