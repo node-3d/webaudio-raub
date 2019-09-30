@@ -14,7 +14,7 @@ const read = require('./utils/read');
 	// const musicClip = await new Promise(res => context.decodeAudioData(clip, b => res(b)));
 	
 	const gain = context.createGain();
-	// gain.gain.value = 0.0625;
+	gain.gain.value = 0.0625;
 	// gain.connect(context.destination);
 	
 	
@@ -29,7 +29,7 @@ const read = require('./utils/read');
 		
 		try {
 			const clip = await read(`${__dirname}/samples/hit.wav`);
-			// const musicClip = await new Promise(res => context.decodeAudioData(clip, b => res(b)));
+			await new Promise(res => context.decodeAudioData(clip, b => res(b)));
 		} catch (e) { console.error(e); }
 		// if (isActive) {
 		// 	// console.log('STILL ACTIVE!');
@@ -37,7 +37,7 @@ const read = require('./utils/read');
 		// isActive = true;
 		// console.log('_destruction.js', '2');
 		const musicClipNode = context.createBufferSource();
-		musicClipNode.on("desu", () => console.log('_destruction.js', 'DESU'))
+		musicClipNode.on('desu', () => console.log('_destruction.js', 'DESU'));
 		// console.log('_destruction.js', '3');
 		// musicClipNode.buffer = musicClip;
 		// musicClipNode.connect(gain);
@@ -56,4 +56,3 @@ const read = require('./utils/read');
 	console.log('DONE');
 	
 } catch (e) { console.error(e); } })();
-
