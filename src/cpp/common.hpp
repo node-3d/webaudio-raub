@@ -81,8 +81,8 @@ struct Common {
 		
 		_tsEmit = Napi::ThreadSafeFunction(tsfn);
 		
-	};
-	~Common() { _destroy(); };
+	}
+	~Common() { _destroy(); }
 	
 	
 	void emit(
@@ -129,7 +129,7 @@ struct Common {
 		_isDestroyed = true;
 		_context.Reset();
 		_that.Reset();
-	};
+	}
 	
 	bool _isDestroyed;
 	
@@ -145,9 +145,9 @@ struct CommonNode: public Common {
 	
 	CommonNode(Napi::Value that, const char *name):
 	Common(that, name) {
-	};
+	}
 	
-	~CommonNode() { _destroy(); };
+	~CommonNode() { _destroy(); }
 	
 	void _destroy() { DES_CHECK;
 		
@@ -157,14 +157,14 @@ struct CommonNode: public Common {
 		
 		Common::_destroy();
 		
-	};
+	}
 	
-	NodePtr getNode() const { return _impl; };
+	NodePtr getNode() const { return _impl; }
 	
 	void reset(Napi::Object context, NodePtr node) {
 		_context.Reset(context);
 		_impl = node;
-	};
+	}
 	
 	NodePtr _impl;
 	
@@ -175,9 +175,9 @@ struct CommonParam: public Common {
 	
 	CommonParam(Napi::Value that, const char *name):
 	Common(that, name) {
-	};
+	}
 	
-	~CommonParam() { _destroy(); };
+	~CommonParam() { _destroy(); }
 		
 	void _destroy() { DES_CHECK;
 		
@@ -187,14 +187,14 @@ struct CommonParam: public Common {
 		
 		Common::_destroy();
 		
-	};
+	}
 	
 	ParamPtr getParam() const { return _impl; };
 	
 	void reset(Napi::Object context, ParamPtr param) {
 		_context.Reset(context);
 		_impl = param;
-	};
+	}
 	
 	ParamPtr _impl;
 	
@@ -215,13 +215,13 @@ struct CommonCtx: public Common {
 		
 		Common::_destroy();
 		
-	};
+	}
 	
 	CtxPtr getCtx() const { return _impl; };
 	
 	void reset(CtxPtr ctx) {
 		_impl = ctx;
-	};
+	}
 	
 	CtxPtr _impl;
 	
@@ -232,7 +232,7 @@ struct CommonBus: public Common {
 	
 	CommonBus(Napi::Value that, const char *name):
 	Common(that, name) {
-	};
+	}
 	
 	~CommonBus() { _destroy(); };
 		
@@ -242,14 +242,14 @@ struct CommonBus: public Common {
 		
 		Common::_destroy();
 		
-	};
+	}
 	
-	BusPtr getBus() const { return _impl; };
+	BusPtr getBus() const { return _impl; }
 	
 	void reset(Napi::Object context, BusPtr bus) {
 		_context.Reset(context);
 		_impl = bus;
-	};
+	}
 	
 	BusPtr _impl;
 	
@@ -260,7 +260,7 @@ struct CommonListener: public Common {
 	
 	CommonListener(Napi::Value that, const char *name):
 	Common(that, name) {
-	};
+	}
 	
 	~CommonListener() { _destroy(); };
 		
@@ -270,14 +270,14 @@ struct CommonListener: public Common {
 		
 		Common::_destroy();
 		
-	};
+	}
 	
-	ListenerPtr getListener() const { return _impl; };
+	ListenerPtr getListener() const { return _impl; }
 	
 	void reset(Napi::Object context, ListenerPtr listener) {
 		_context.Reset(context);
 		_impl = listener;
-	};
+	}
 	
 	ListenerPtr _impl;
 	
