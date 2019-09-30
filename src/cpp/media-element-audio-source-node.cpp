@@ -62,7 +62,8 @@ Napi::Object MediaElementAudioSourceNode::getNew() {
 }
 
 
-MediaElementAudioSourceNode::MediaElementAudioSourceNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<MediaElementAudioSourceNode>(info) {
+MediaElementAudioSourceNode::MediaElementAudioSourceNode(const Napi::CallbackInfo &info):
+Napi::ObjectWrap<MediaElementAudioSourceNode>(info) {
 	
 	MediaElementAudioSourceNode *mediaElementAudioSourceNode =
 		new MediaElementAudioSourceNode();

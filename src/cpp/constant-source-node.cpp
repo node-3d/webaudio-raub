@@ -68,7 +68,8 @@ Napi::Object ConstantSourceNode::getNew() {
 }
 
 
-ConstantSourceNode::ConstantSourceNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<ConstantSourceNode>(info) {
+ConstantSourceNode::ConstantSourceNode(const Napi::CallbackInfo &info):
+Napi::ObjectWrap<ConstantSourceNode>(info) {
 	
 	ConstantSourceNode *constantSourceNode = new ConstantSourceNode();
 	

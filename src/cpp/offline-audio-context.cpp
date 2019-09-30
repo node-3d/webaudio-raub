@@ -108,7 +108,8 @@ Napi::Object OfflineAudioContext::getNew() {
 }
 
 
-OfflineAudioContext::OfflineAudioContext(const Napi::CallbackInfo &info): Napi::ObjectWrap<OfflineAudioContext>(info) {
+OfflineAudioContext::OfflineAudioContext(const Napi::CallbackInfo &info):
+Napi::ObjectWrap<OfflineAudioContext>(info) {
 	
 	OfflineAudioContext *offlineAudioContext = new OfflineAudioContext();
 	

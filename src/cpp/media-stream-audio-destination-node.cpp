@@ -68,7 +68,8 @@ Napi::Object MediaStreamAudioDestinationNode::getNew() {
 }
 
 
-MediaStreamAudioDestinationNode::MediaStreamAudioDestinationNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<MediaStreamAudioDestinationNode>(info) {
+MediaStreamAudioDestinationNode::MediaStreamAudioDestinationNode(const Napi::CallbackInfo &info):
+Napi::ObjectWrap<MediaStreamAudioDestinationNode>(info) {
 	
 	MediaStreamAudioDestinationNode *mediaStreamAudioDestinationNode =
 		new MediaStreamAudioDestinationNode();

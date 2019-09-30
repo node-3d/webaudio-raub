@@ -104,7 +104,8 @@ Napi::Object DynamicsCompressorNode::getNew() {
 }
 
 
-DynamicsCompressorNode::DynamicsCompressorNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<DynamicsCompressorNode>(info) {
+DynamicsCompressorNode::DynamicsCompressorNode(const Napi::CallbackInfo &info):
+Napi::ObjectWrap<DynamicsCompressorNode>(info) {
 	
 	DynamicsCompressorNode *dynamicsCompressorNode = new DynamicsCompressorNode();
 	

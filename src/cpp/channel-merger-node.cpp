@@ -61,7 +61,8 @@ Napi::Object ChannelMergerNode::getNew() {
 }
 
 
-ChannelMergerNode::ChannelMergerNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<ChannelMergerNode>(info) {
+ChannelMergerNode::ChannelMergerNode(const Napi::CallbackInfo &info):
+Napi::ObjectWrap<ChannelMergerNode>(info) {
 	
 	ChannelMergerNode *channelMergerNode = new ChannelMergerNode();
 	

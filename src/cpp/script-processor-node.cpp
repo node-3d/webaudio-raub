@@ -93,7 +93,8 @@ Napi::Object ScriptProcessorNode::getNew() {
 }
 
 
-ScriptProcessorNode::ScriptProcessorNode(const Napi::CallbackInfo &info): Napi::ObjectWrap<ScriptProcessorNode>(info) {
+ScriptProcessorNode::ScriptProcessorNode(const Napi::CallbackInfo &info):
+Napi::ObjectWrap<ScriptProcessorNode>(info) {
 	
 	ScriptProcessorNode *scriptProcessorNode = new ScriptProcessorNode();
 	

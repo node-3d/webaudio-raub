@@ -206,7 +206,7 @@ struct CommonCtx: public Common {
 	
 	CommonCtx(Napi::Value that, const char *name):
 	Common(that, name) {
-	};
+	}
 	
 	~CommonCtx() { _destroy(); }
 	
