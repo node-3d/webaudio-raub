@@ -82,6 +82,7 @@ struct Common {
 		_tsEmit = Napi::ThreadSafeFunction(tsfn);
 		
 	}
+	
 	~Common() { _destroy(); }
 	
 	
@@ -189,7 +190,7 @@ struct CommonParam: public Common {
 		
 	}
 	
-	ParamPtr getParam() const { return _impl; };
+	ParamPtr getParam() const { return _impl; }
 	
 	void reset(Napi::Object context, ParamPtr param) {
 		_context.Reset(context);
@@ -207,7 +208,7 @@ struct CommonCtx: public Common {
 	Common(that, name) {
 	};
 	
-	~CommonCtx() { _destroy(); };
+	~CommonCtx() { _destroy(); }
 	
 	void _destroy() { DES_CHECK;
 		
@@ -217,7 +218,7 @@ struct CommonCtx: public Common {
 		
 	}
 	
-	CtxPtr getCtx() const { return _impl; };
+	CtxPtr getCtx() const { return _impl; }
 	
 	void reset(CtxPtr ctx) {
 		_impl = ctx;
@@ -234,9 +235,9 @@ struct CommonBus: public Common {
 	Common(that, name) {
 	}
 	
-	~CommonBus() { _destroy(); };
+	~CommonBus() { _destroy(); }
 		
-		void _destroy() { DES_CHECK;
+	void _destroy() { DES_CHECK;
 		
 		_impl.reset();
 		
@@ -262,9 +263,9 @@ struct CommonListener: public Common {
 	Common(that, name) {
 	}
 	
-	~CommonListener() { _destroy(); };
+	~CommonListener() { _destroy(); }
 		
-		void _destroy() { DES_CHECK;
+	void _destroy() { DES_CHECK;
 		
 		_impl = nullptr;
 		
