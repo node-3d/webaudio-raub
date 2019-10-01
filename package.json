@@ -17,6 +17,7 @@
 		"gyp"
 	],
 	"files": [
+		"js",
 		"core.js",
 		"index.js",
 		"install.js",
