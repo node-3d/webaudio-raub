@@ -50,7 +50,6 @@
 			'cflags_cc!': ['-fno-exceptions'],
 			'library_dirs': [ '<(ls_bin)' ],
 			'libraries': [ '-llabsound' ],
-			'defines': ['NAPI_DISABLE_CPP_EXCEPTIONS'],
 			'conditions': [
 				
 				[
@@ -89,14 +88,11 @@
 						'msvs_settings' : {
 							'VCCLCompilerTool' : {
 								'AdditionalOptions' : [
-									'/O2','/Oy','/GL','/GF','/Gm-',
-									'/EHsc','/MT','/GS','/Gy','/GR-','/Gd',
-									# '/O2','/GL','/Gm-', '/Fm-','/EHsc'
+									'/GL', '/GF', '/EHsc', '/GS', '/Gy', '/GR-',
 								]
 							},
 							'VCLinkerTool' : {
-								'AdditionalOptions' : ['/OPT:REF','/OPT:ICF','/LTCG'],
-								# 'AdditionalOptions' : ['/RELEASE','/OPT:REF','/OPT:ICF','/LTCG'],
+								'AdditionalOptions' : ['/RELEASE','/OPT:REF','/OPT:ICF','/LTCG'],
 							},
 						},
 					},
