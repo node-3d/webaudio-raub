@@ -6,7 +6,7 @@
 		"build": "node-gyp rebuild && node -e \"require('addon-tools-raub/cpbin')('webaudio')\""
 	},
 	"dependencies": {
-		"addon-tools-raub": "https://github.com/node-3d/addon-tools-raub",
-		"deps-labsound-raub": "https://github.com/node-3d/deps-labsound-raub"
+		"addon-tools-raub": "5.0.0",
+		"deps-labsound-raub": "1.0.0"
 	}
 }
