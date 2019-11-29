@@ -38,7 +38,7 @@ CommonListener(info.This(), "AudioListener") { NAPI_ENV;
 	
 	reset(context, listener);
 	
-	Napi::Function paramCtor = info[0].As<Napi::Function>();
+	Napi::Function paramCtor = info[2].As<Napi::Function>();
 	
 	napi_value argv[2];
 	argv[0] = context;
