@@ -6,8 +6,10 @@
 #include <addon-tools.hpp>
 
 
+class AudioContext;
+
 #define PARAM_GETTER(CLASS, NAME)                                             \
-JS_IMPLEMENT_GETTER(CLASS, NAME) { THIS_CHECK;                      \
+JS_IMPLEMENT_GETTER(CLASS, NAME) { THIS_CHECK;                                \
 	RET_VALUE(_ ## NAME.Value());                                             \
 }
 
@@ -17,8 +19,8 @@ typedef std::shared_ptr<lab::AudioContext> CtxPtr;
 typedef std::shared_ptr<lab::AudioBus> BusPtr;
 typedef lab::AudioListener* ListenerPtr;
 
-void _disconnectNode(Napi::Object context, NodePtr node);
-void _disconnectParam(Napi::Object context, ParamPtr node);
+void _disconnectNode(AudioContext *context, NodePtr node);
+void _disconnectParam(AudioContext *context, ParamPtr node);
 
 
 struct Common {
@@ -134,8 +136,11 @@ struct Common {
 	
 	bool _isDestroyed;
 	
+	void reset(Napi::Object context);
+	
 	Napi::ObjectReference _that;
 	Napi::ObjectReference _context;
+	AudioContext *_contextVal;
 	Napi::AsyncContext _asyncCtx;
 	Napi::ThreadSafeFunction _tsEmit;
 	
@@ -152,7 +157,7 @@ struct CommonNode: public Common {
 	
 	void _destroy() { DES_CHECK;
 		
-		_disconnectNode(_context.Value(), _impl);
+		_disconnectNode(_contextVal, _impl);
 		
 		_impl.reset();
 		
@@ -163,7 +168,7 @@ struct CommonNode: public Common {
 	NodePtr getNode() const { return _impl; }
 	
 	void reset(Napi::Object context, NodePtr node) {
-		_context.Reset(context);
+		Common::reset(context);
 		_impl = node;
 	}
 	
@@ -182,7 +187,7 @@ struct CommonParam: public Common {
 		
 	void _destroy() { DES_CHECK;
 		
-		_disconnectParam(_context.Value(), _impl);
+		_disconnectParam(_contextVal, _impl);
 		
 		_impl.reset();
 		
@@ -193,7 +198,7 @@ struct CommonParam: public Common {
 	ParamPtr getParam() const { return _impl; }
 	
 	void reset(Napi::Object context, ParamPtr param) {
-		_context.Reset(context);
+		Common::reset(context);
 		_impl = param;
 	}
 	
@@ -248,7 +253,7 @@ struct CommonBus: public Common {
 	BusPtr getBus() const { return _impl; }
 	
 	void reset(Napi::Object context, BusPtr bus) {
-		_context.Reset(context);
+		Common::reset(context);
 		_impl = bus;
 	}
 	
@@ -276,7 +281,7 @@ struct CommonListener: public Common {
 	ListenerPtr getListener() const { return _impl; }
 	
 	void reset(Napi::Object context, ListenerPtr listener) {
-		_context.Reset(context);
+		Common::reset(context);
 		_impl = listener;
 	}
 	

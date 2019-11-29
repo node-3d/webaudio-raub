@@ -52,12 +52,12 @@ JS_IMPLEMENT_GETTER(ConvolverNode, buffer) { THIS_CHECK;
 	
 }
 
+
 JS_IMPLEMENT_SETTER(ConvolverNode, buffer) { THIS_CHECK; SETTER_OBJ_ARG;
 	
-	if (_buffer.Value() == v) {
+	if ( ! v && v == _buffer.Value()) {
 		RET_UNDEFINED;
 	}
-	
 	_buffer.Reset(v, 1);
 	
 	Napi::Object context = _context.Value();

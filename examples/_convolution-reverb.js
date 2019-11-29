@@ -12,8 +12,12 @@ const read = require('./utils/read');
 	const cardiod = await read(`${__dirname}/samples/cardiod.wav`);
 	const voice = await read(`${__dirname}/samples/voice.ogg`);
 	
-	const impulseResponseClip = await new Promise(res => context.decodeAudioData(cardiod, b => res(b)));
-	const voiceClip = await new Promise(res => context.decodeAudioData(voice, b => res(b)));
+	const impulseResponseClip = await new Promise(
+		res => context.decodeAudioData(cardiod, b => res(b))
+	);
+	const voiceClip = await new Promise(
+		res => context.decodeAudioData(voice, b => res(b))
+	);
 	
 	const outputGain = context.createGain();
 	
@@ -45,4 +49,3 @@ const read = require('./utils/read');
 	console.log('DONE');
 	
 } catch (e) { console.error(e); } })();
-

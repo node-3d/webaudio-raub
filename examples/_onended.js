@@ -49,4 +49,3 @@ const read = require('./utils/read');
 	console.log('DONE');
 	
 } catch (e) { console.error(e); } })();
-
