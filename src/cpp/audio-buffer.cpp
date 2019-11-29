@@ -26,11 +26,11 @@ CommonBus(info.This(), "AudioBuffer") { NAPI_ENV;
 	
 	super(info);
 	
-	REQ_OBJ_ARG(0, context);
+	Napi::Object context = info[0].As<Napi::Object>();
 	
 	if (info.Length() > 1) {
 		
-		REQ_EXT_ARG(1, extBus);
+		Napi::External<void> extBus = info[1].As< Napi::External<void> >();
 		
 		BusPtr *busPtr = reinterpret_cast<BusPtr *>(extBus.Data());
 		reset(context, *busPtr);

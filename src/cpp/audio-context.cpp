@@ -21,7 +21,7 @@ AudioContext::AudioContext(const Napi::CallbackInfo &info):
 CommonCtx(info.This(), "AudioContext") { NAPI_ENV;
 	
 	if (info.Length() > 0) {
-		LET_FLOAT_ARG(0, sampleRate);
+		float sampleRate = info[0].ToNumber().FloatValue();
 		reset(std::move(
 			lab::Sound::MakeRealtimeAudioContext(lab::Channels::Stereo, sampleRate)
 		));

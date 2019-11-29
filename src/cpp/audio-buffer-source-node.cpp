@@ -26,8 +26,8 @@ void AudioBufferSourceNode::init(Napi::Env env, Napi::Object exports) {
 AudioBufferSourceNode::AudioBufferSourceNode(const Napi::CallbackInfo &info):
 CommonNode(info.This(), "AudioBufferSourceNode") { NAPI_ENV;
 	
-	REQ_OBJ_ARG(0, context);
-	REQ_FUN_ARG(1, paramCtor);
+	Napi::Object context = info[0].As<Napi::Object>();
+	Napi::Function paramCtor = info[1].As<Napi::Function>();
 	
 	reset(context, std::make_shared<lab::SampledAudioNode>());
 	
@@ -115,7 +115,7 @@ JS_IMPLEMENT_GETTER(AudioBufferSourceNode, buffer) { THIS_CHECK;
 }
 
 
-JS_IMPLEMENT_SETTER(AudioBufferSourceNode, buffer) { THIS_SETTER_CHECK; SETTER_OBJ_ARG;
+JS_IMPLEMENT_SETTER(AudioBufferSourceNode, buffer) { THIS_CHECK; SETTER_OBJ_ARG;
 	
 	_buffer.Reset(v, 1);
 	
@@ -135,6 +135,7 @@ JS_IMPLEMENT_SETTER(AudioBufferSourceNode, buffer) { THIS_SETTER_CHECK; SETTER_O
 	node->setBus(r, bus);
 	
 	emit("buffer", 1, &value);
+	RET_UNDEFINED;
 	
 }
 
@@ -163,7 +164,7 @@ JS_IMPLEMENT_GETTER(AudioBufferSourceNode, loop) { THIS_CHECK;
 	
 }
 
-JS_IMPLEMENT_SETTER(AudioBufferSourceNode, loop) { THIS_SETTER_CHECK; SETTER_BOOL_ARG;
+JS_IMPLEMENT_SETTER(AudioBufferSourceNode, loop) { THIS_CHECK; SETTER_BOOL_ARG;
 	
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
 		_impl.get()
@@ -172,6 +173,7 @@ JS_IMPLEMENT_SETTER(AudioBufferSourceNode, loop) { THIS_SETTER_CHECK; SETTER_BOO
 	node->setLoop(v);
 	
 	emit("loop", 1, &value);
+	RET_UNDEFINED;
 	
 }
 
@@ -186,7 +188,7 @@ JS_IMPLEMENT_GETTER(AudioBufferSourceNode, loopStart) { THIS_CHECK;
 	
 }
 
-JS_IMPLEMENT_SETTER(AudioBufferSourceNode, loopStart) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
+JS_IMPLEMENT_SETTER(AudioBufferSourceNode, loopStart) { THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
 		_impl.get()
@@ -195,6 +197,7 @@ JS_IMPLEMENT_SETTER(AudioBufferSourceNode, loopStart) { THIS_SETTER_CHECK; SETTE
 	node->setLoopStart(v);
 	
 	emit("loopStart", 1, &value);
+	RET_UNDEFINED;
 	
 }
 
@@ -209,7 +212,7 @@ JS_IMPLEMENT_GETTER(AudioBufferSourceNode, loopEnd) { THIS_CHECK;
 	
 }
 
-JS_IMPLEMENT_SETTER(AudioBufferSourceNode, loopEnd) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
+JS_IMPLEMENT_SETTER(AudioBufferSourceNode, loopEnd) { THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
 		_impl.get()
@@ -218,6 +221,7 @@ JS_IMPLEMENT_SETTER(AudioBufferSourceNode, loopEnd) { THIS_SETTER_CHECK; SETTER_
 	node->setLoopEnd(v);
 	
 	emit("loopEnd", 1, &value);
+	RET_UNDEFINED;
 	
 }
 

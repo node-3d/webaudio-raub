@@ -31,14 +31,14 @@ CommonListener(info.This(), "AudioListener") { NAPI_ENV;
 	
 	super(info);
 	
-	REQ_OBJ_ARG(0, context);
-	REQ_EXT_ARG(1, extListener);
+	Napi::Object context = info[0].As<Napi::Object>();
+	Napi::External<void> extListener = info[1].As< Napi::External<void> >();
 	
 	ListenerPtr listener = reinterpret_cast<ListenerPtr>(extListener.Data());
 	
 	reset(context, listener);
 	
-	REQ_FUN_ARG(2, paramCtor);
+	Napi::Function paramCtor = info[0].As<Napi::Function>();
 	
 	napi_value argv[2];
 	argv[0] = context;

@@ -52,8 +52,8 @@ inline lab::OscillatorType toOscillatorType(const std::string &mode) {
 OscillatorNode::OscillatorNode(const Napi::CallbackInfo &info):
 CommonNode(info.This(), "OscillatorNode") { NAPI_ENV;
 	
-	REQ_OBJ_ARG(0, context);
-	REQ_FUN_ARG(1, paramCtor);
+	Napi::Object context = info[0].As<Napi::Object>();
+	Napi::Function paramCtor = info[1].As<Napi::Function>();
 	
 	AudioContext *audioContext = AudioContext::unwrap(context);
 	float sampleRate = audioContext->getCtx()->sampleRate();
@@ -121,7 +121,7 @@ JS_IMPLEMENT_GETTER(OscillatorNode, type) { THIS_CHECK;
 }
 
 
-JS_IMPLEMENT_SETTER(OscillatorNode, type) { THIS_SETTER_CHECK;
+JS_IMPLEMENT_SETTER(OscillatorNode, type) { THIS_CHECK;
 	
 	// REQ_STR_ARG(0, v);
 	SETTER_STR_ARG;
@@ -133,6 +133,7 @@ JS_IMPLEMENT_SETTER(OscillatorNode, type) { THIS_SETTER_CHECK;
 	node->setType(toOscillatorType(v.c_str()));
 	
 	emit("type", 1, &value);
+	RET_UNDEFINED;
 	
 }
 

@@ -19,8 +19,8 @@ void GainNode::init(Napi::Env env, Napi::Object exports) {
 GainNode::GainNode(const Napi::CallbackInfo &info):
 CommonNode(info.This(), "GainNode") { NAPI_ENV;
 	
-	REQ_OBJ_ARG(0, context);
-	REQ_FUN_ARG(1, paramCtor);
+	Napi::Object context = info[0].As<Napi::Object>();
+	Napi::Function paramCtor = info[1].As<Napi::Function>();
 	
 	reset(context, std::make_shared<lab::GainNode>());
 	

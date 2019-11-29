@@ -23,8 +23,8 @@ void BiquadFilterNode::init(Napi::Env env, Napi::Object exports) {
 BiquadFilterNode::BiquadFilterNode(const Napi::CallbackInfo &info):
 CommonNode(info.This(), "BiquadFilterNode") { NAPI_ENV;
 	
-	REQ_OBJ_ARG(0, context);
-	REQ_FUN_ARG(1, paramCtor);
+	Napi::Object context = info[0].As<Napi::Object>();
+	Napi::Function paramCtor = info[1].As<Napi::Function>();
 	
 	reset(context, std::make_shared<lab::BiquadFilterNode>());
 	
@@ -95,13 +95,14 @@ JS_IMPLEMENT_GETTER(BiquadFilterNode, type) { THIS_CHECK;
 	
 }
 
-JS_IMPLEMENT_SETTER(BiquadFilterNode, type) { THIS_SETTER_CHECK; SETTER_STR_ARG;
+JS_IMPLEMENT_SETTER(BiquadFilterNode, type) { THIS_CHECK; SETTER_STR_ARG;
 	
 	CACHE_CAS(_type, v);
 	
 	// TODO: may be additional actions on change?
 	
 	emit("type", 1, &value);
+	RET_UNDEFINED;
 	
 }
 

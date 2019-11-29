@@ -25,7 +25,7 @@ void AnalyserNode::init(Napi::Env env, Napi::Object exports) {
 AnalyserNode::AnalyserNode(const Napi::CallbackInfo &info):
 CommonNode(info.This(), "AnalyserNode") { NAPI_ENV;
 	
-	REQ_OBJ_ARG(0, context);
+	Napi::Object context = info[0].As<Napi::Object>();
 	
 	reset(context, std::make_shared<lab::AnalyserNode>());
 	
@@ -104,13 +104,14 @@ JS_IMPLEMENT_GETTER(AnalyserNode, fftSize) { THIS_CHECK;
 	
 }
 
-JS_IMPLEMENT_SETTER(AnalyserNode, fftSize) { THIS_SETTER_CHECK; SETTER_UINT32_ARG;
+JS_IMPLEMENT_SETTER(AnalyserNode, fftSize) { THIS_CHECK; SETTER_UINT32_ARG;
 	
 	CACHE_CAS(_fftSize, v);
 	
 	// TODO: may be additional actions on change?
 	
 	emit("fftSize", 1, &value);
+	RET_UNDEFINED;
 	
 }
 
@@ -121,13 +122,14 @@ JS_IMPLEMENT_GETTER(AnalyserNode, minDecibels) { THIS_CHECK;
 	
 }
 
-JS_IMPLEMENT_SETTER(AnalyserNode, minDecibels) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
+JS_IMPLEMENT_SETTER(AnalyserNode, minDecibels) { THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	CACHE_CAS(_minDecibels, v);
 	
 	// TODO: may be additional actions on change?
 	
 	emit("minDecibels", 1, &value);
+	RET_UNDEFINED;
 	
 }
 
@@ -138,13 +140,14 @@ JS_IMPLEMENT_GETTER(AnalyserNode, maxDecibels) { THIS_CHECK;
 	
 }
 
-JS_IMPLEMENT_SETTER(AnalyserNode, maxDecibels) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
+JS_IMPLEMENT_SETTER(AnalyserNode, maxDecibels) { THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	CACHE_CAS(_maxDecibels, v);
 	
 	// TODO: may be additional actions on change?
 	
 	emit("maxDecibels", 1, &value);
+	RET_UNDEFINED;
 	
 }
 
@@ -156,13 +159,14 @@ JS_IMPLEMENT_GETTER(AnalyserNode, smoothingTimeConstant) { THIS_CHECK;
 }
 
 
-JS_IMPLEMENT_SETTER(AnalyserNode, smoothingTimeConstant) { THIS_SETTER_CHECK; SETTER_DOUBLE_ARG;
+JS_IMPLEMENT_SETTER(AnalyserNode, smoothingTimeConstant) { THIS_CHECK; SETTER_DOUBLE_ARG;
 	
 	CACHE_CAS(_smoothingTimeConstant, v);
 	
 	// TODO: may be additional actions on change?
 	
 	emit("smoothingTimeConstant", 1, &value);
+	RET_UNDEFINED;
 	
 }
 

@@ -17,8 +17,8 @@ void AudioDestinationNode::init(Napi::Env env, Napi::Object exports) {
 AudioDestinationNode::AudioDestinationNode(const Napi::CallbackInfo &info):
 CommonNode(info.This(), "AudioDestinationNode") { NAPI_ENV;
 	
-	REQ_OBJ_ARG(0, context);
-	REQ_EXT_ARG(1, extNode);
+	Napi::Object context = info[0].As<Napi::Object>();
+	Napi::External<void> extNode = info[1].As< Napi::External<void> >();
 	
 	NodePtr *node = reinterpret_cast<NodePtr *>(extNode.Data());
 	

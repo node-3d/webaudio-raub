@@ -73,8 +73,8 @@ CommonNode(info.This(), "AudioNode") { NAPI_ENV;
 	
 	super(info);
 	
-	REQ_OBJ_ARG(0, context);
-	REQ_EXT_ARG(1, extNode);
+	Napi::Object context = info[0].As<Napi::Object>();
+	Napi::External<void> extNode = info[1].As< Napi::External<void> >();
 	
 	NodePtr *ext = reinterpret_cast<NodePtr *>(extNode.Data());
 	
@@ -238,7 +238,7 @@ JS_IMPLEMENT_GETTER(AudioNode, channelCount) { THIS_CHECK;
 }
 
 
-JS_IMPLEMENT_SETTER(AudioNode, channelCount) { THIS_SETTER_CHECK; SETTER_UINT32_ARG;
+JS_IMPLEMENT_SETTER(AudioNode, channelCount) { THIS_CHECK; SETTER_UINT32_ARG;
 	
 	CACHE_CAS(_channelCount, v);
 	
@@ -249,6 +249,7 @@ JS_IMPLEMENT_SETTER(AudioNode, channelCount) { THIS_SETTER_CHECK; SETTER_UINT32_
 	_impl->setChannelCount(graphLock, _channelCount);
 	
 	emit("channelCount", 1, &value);
+	RET_UNDEFINED;
 	
 }
 
@@ -259,16 +260,14 @@ JS_IMPLEMENT_GETTER(AudioNode, channelCountMode) { THIS_CHECK;
 	
 }
 
-JS_IMPLEMENT_SETTER(AudioNode, channelCountMode) { THIS_SETTER_CHECK; SETTER_STR_ARG;
+JS_IMPLEMENT_SETTER(AudioNode, channelCountMode) { THIS_CHECK; SETTER_STR_ARG;
 	
-	if (_channelCountMode == v) {
-		return;
-	}
-	_channelCountMode = v;
+	CACHE_CAS(_channelCountMode, v);
 	
 	// TODO: may be additional actions on change?
 	
 	emit("channelCountMode", 1, &value);
+	RET_UNDEFINED;
 	
 }
 
@@ -279,16 +278,14 @@ JS_IMPLEMENT_GETTER(AudioNode, channelInterpretation) { THIS_CHECK;
 	
 }
 
-JS_IMPLEMENT_SETTER(AudioNode, channelInterpretation) { THIS_SETTER_CHECK; SETTER_STR_ARG;
+JS_IMPLEMENT_SETTER(AudioNode, channelInterpretation) { THIS_CHECK; SETTER_STR_ARG;
 	
-	if (_channelInterpretation == v) {
-		return;
-	}
-	_channelInterpretation = v;
+	CACHE_CAS(_channelInterpretation, v);
 	
 	// TODO: may be additional actions on change?
 	
 	emit("channelInterpretation", 1, &value);
+	RET_UNDEFINED;
 	
 }
 

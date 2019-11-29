@@ -62,7 +62,7 @@ CommonCtx(info.This(), "BaseAudioContext") { NAPI_ENV;
 	
 	super(info);
 	
-	REQ_EXT_ARG(0, extCtx);
+	Napi::External<void> extCtx = info[0].As< Napi::External<void> >();
 	
 	CtxPtr *ctx = reinterpret_cast<CtxPtr*>(extCtx.Data());
 	

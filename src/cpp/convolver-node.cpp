@@ -20,7 +20,7 @@ void ConvolverNode::init(Napi::Env env, Napi::Object exports) {
 ConvolverNode::ConvolverNode(const Napi::CallbackInfo &info):
 CommonNode(info.This(), "ConvolverNode") { NAPI_ENV;
 	
-	REQ_OBJ_ARG(0, context);
+	Napi::Object context = info[0].As<Napi::Object>();
 	
 	reset(context, std::make_shared<lab::ConvolverNode>());
 	
@@ -52,10 +52,10 @@ JS_IMPLEMENT_GETTER(ConvolverNode, buffer) { THIS_CHECK;
 	
 }
 
-JS_IMPLEMENT_SETTER(ConvolverNode, buffer) { THIS_SETTER_CHECK; SETTER_OBJ_ARG;
+JS_IMPLEMENT_SETTER(ConvolverNode, buffer) { THIS_CHECK; SETTER_OBJ_ARG;
 	
 	if (_buffer.Value() == v) {
-		return;
+		RET_UNDEFINED;
 	}
 	
 	_buffer.Reset(v, 1);
@@ -75,6 +75,8 @@ JS_IMPLEMENT_SETTER(ConvolverNode, buffer) { THIS_SETTER_CHECK; SETTER_OBJ_ARG;
 	
 	emit("buffer", 1, &value);
 	
+	RET_UNDEFINED;
+	
 }
 
 
@@ -88,7 +90,7 @@ JS_IMPLEMENT_GETTER(ConvolverNode, normalize) { THIS_CHECK;
 	
 }
 
-JS_IMPLEMENT_SETTER(ConvolverNode, normalize) { THIS_SETTER_CHECK; SETTER_BOOL_ARG;
+JS_IMPLEMENT_SETTER(ConvolverNode, normalize) { THIS_CHECK; SETTER_BOOL_ARG;
 	
 	lab::ConvolverNode *node = static_cast<lab::ConvolverNode*>(
 		_impl.get()
@@ -97,6 +99,7 @@ JS_IMPLEMENT_SETTER(ConvolverNode, normalize) { THIS_SETTER_CHECK; SETTER_BOOL_A
 	node->setNormalize(v);
 	
 	emit("normalize", 1, &value);
+	RET_UNDEFINED;
 	
 }
 

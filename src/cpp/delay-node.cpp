@@ -19,9 +19,9 @@ void DelayNode::init(Napi::Env env, Napi::Object exports) {
 DelayNode::DelayNode(const Napi::CallbackInfo &info): 
 CommonNode(info.This(), "DelayNode") { NAPI_ENV;
 	
-	REQ_OBJ_ARG(0, context);
-	REQ_DOUBLE_ARG(1, delay);
-	REQ_FUN_ARG(2, paramCtor);
+	Napi::Object context = info[0].As<Napi::Object>();
+	double delay = info[1].ToNumber().DoubleValue();
+	Napi::Function paramCtor = info[2].As<Napi::Function>();
 	
 	AudioContext *audioContext = AudioContext::unwrap(context);
 	float sampleRate = audioContext->getCtx()->sampleRate();

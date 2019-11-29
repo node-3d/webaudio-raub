@@ -35,8 +35,8 @@ CommonParam(info.This(), "AudioParam") { NAPI_ENV;
 	
 	super(info);
 	
-	REQ_OBJ_ARG(0, context);
-	REQ_EXT_ARG(1, extParam);
+	Napi::Object context = info[0].As<Napi::Object>();
+	Napi::External<void> extParam = info[1].As< Napi::External<void> >();
 	
 	ParamPtr *param = reinterpret_cast<ParamPtr *>(extParam.Data());
 	
@@ -147,10 +147,9 @@ JS_IMPLEMENT_GETTER(AudioParam, value) { THIS_CHECK;
 	
 }
 
-JS_IMPLEMENT_SETTER(AudioParam, value) { THIS_SETTER_CHECK; SETTER_FLOAT_ARG;
-	
+JS_IMPLEMENT_SETTER(AudioParam, value) { THIS_CHECK; SETTER_FLOAT_ARG;
 	_impl->setValue(v);
-	
+	RET_UNDEFINED;
 }
 
 
