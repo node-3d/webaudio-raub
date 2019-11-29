@@ -6,9 +6,9 @@ const read = require('./utils/read');
 
 
 (async () => { try {
-	console.log('1');
+	
 	const context = new AudioContext();
-	console.log('2');
+	
 	const clip = await read(`${__dirname}/samples/trainrolling.wav`);
 	
 	const musicClip = await new Promise(res => context.decodeAudioData(clip, b => res(b)));
