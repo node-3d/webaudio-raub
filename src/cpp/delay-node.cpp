@@ -16,12 +16,12 @@ void DelayNode::init(Napi::Env env, Napi::Object exports) {
 }
 
 
-DelayNode::DelayNode(const Napi::CallbackInfo &info): 
+DelayNode::DelayNode(const Napi::CallbackInfo &info):
 CommonNode(info.This(), "DelayNode") { NAPI_ENV;
 	
 	Napi::Object context = info[0].As<Napi::Object>();
-	double delay = info[1].ToNumber().DoubleValue();
-	Napi::Function paramCtor = info[2].As<Napi::Function>();
+	Napi::Function paramCtor = info[1].As<Napi::Function>();
+	double delay = info[2].ToNumber().DoubleValue();
 	
 	AudioContext *audioContext = AudioContext::unwrap(context);
 	float sampleRate = audioContext->getCtx()->sampleRate();
@@ -60,9 +60,10 @@ void DelayNode::_destroy() { DES_CHECK;
 
 
 JS_IMPLEMENT_GETTER(DelayNode, delayTime) { THIS_CHECK;
-	
+	if (_delayTime.IsEmpty()) {
+		RET_UNDEFINED;
+	}
 	RET_VALUE(_delayTime.Value());
-	
 }
 
 

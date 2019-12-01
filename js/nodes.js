@@ -11,44 +11,59 @@ const JsAudioScheduledSourceNode = require('./audio-scheduled-source-node');
 
 
 const baseDescs = [
-	{ name: 'AnalyserNode', optset: [] },
-	{ name: 'BiquadFilterNode', optset: [] },
-	// { name: 'ChannelMergerNode', optset: [] },
-	// { name: 'ChannelSplitterNode', optset: [] },
-	{ name: 'ConvolverNode', optset: [] },
-	{ name: 'DelayNode', optset: [] },
-	// { name: 'DynamicsCompressorNode', optset: [] },
-	{ name: 'GainNode', optset: [] },
-	// { name: 'IIRFilterNode', optset: [] },
-	{ name: 'PannerNode', optset: [] },
-	// { name: 'PeriodicWaveNode', optset: [] },
-	// { name: 'ScriptProcessorNode', optset: [] },
-	// { name: 'StereoPannerNode', optset: [] },
-	// { name: 'WaveShaperNode', optset: [] },
+	{ name: 'AnalyserNode', paramList: [] },
+	{ name: 'BiquadFilterNode', paramList: [] },
+	// { name: 'ChannelMergerNode', paramList: [] },
+	// { name: 'ChannelSplitterNode', paramList: [] },
+	{ name: 'ConvolverNode', paramList: [] },
+	{
+		name: 'DelayNode',
+		paramList: ['delayTime'],
+		construct: (that, ctx, opts) => core.DelayNode.call(
+			that,
+			ctx,
+			JsAudioParam,
+			opts.maxDelayTime || 1
+		),
+	},
+	// { name: 'DynamicsCompressorNode', paramList: [] },
+	{ name: 'GainNode', paramList: [] },
+	// { name: 'IIRFilterNode', paramList: [] },
+	{ name: 'PannerNode', paramList: [] },
+	// { name: 'PeriodicWaveNode', paramList: [] },
+	// { name: 'ScriptProcessorNode', paramList: [] },
+	// { name: 'StereoPannerNode', paramList: [] },
+	// { name: 'WaveShaperNode', paramList: [] },
 ];
 
 const scheduledDescs = [
-	{ name: 'AudioBufferSourceNode', optset: [] },
-	// { name: 'ConstantSourceNode', optset: [] },
-	{ name: 'OscillatorNode', optset: [] },
+	{ name: 'AudioBufferSourceNode', paramList: [] },
+	// { name: 'ConstantSourceNode', paramList: [] },
+	{ name: 'OscillatorNode', paramList: [] },
 ];
 
 core.PannerNode.hrtf = hrtf;
 
-const subclassBase = (name, optset, SuperNode) => {
+const subclassBase = ({ name, paramList, construct }, SuperNode,) => {
 	
 	const SuperClass = core[name];
 	
 	inherits(SuperClass, SuperNode);
 	
 	function JsNode(ctx, opts = {}) {
-		console.log(SuperClass, this, ctx, JsAudioParam);
-		SuperClass.call(this, ctx, JsAudioParam);
-		optset.forEach(opt => {
+		
+		if (construct) {
+			construct(this, ctx, opts);
+		} else {
+			SuperClass.call(this, ctx, JsAudioParam);
+		}
+		
+		paramList.forEach(opt => {
 			if (opts[opt] !== undefined) {
-				this[opt] = opts[opt];
+				this[opt].value = opts[opt];
 			}
 		});
+		
 	}
 	
 	JsNode.prototype = {
@@ -57,8 +72,8 @@ const subclassBase = (name, optset, SuperNode) => {
 		
 		toString() {
 			return `${name} {${
-				optset.length
-					? ` ${optset.map(opt => `${opt}: ${this[opt]}`).join(', ')} `
+				paramList.length
+					? ` ${paramList.map(opt => `${opt}: ${this[opt]}`).join(', ')} `
 					: ''
 			}}`;
 		},
@@ -74,8 +89,8 @@ const subclassBase = (name, optset, SuperNode) => {
 
 const baseNodes = {
 	...baseDescs.reduce(
-		(e, { name, optset }) => {
-			e[name] = subclassBase(name, optset, JsAudioNode);
+		(e, desc) => {
+			e[desc.name] = subclassBase(desc, JsAudioNode);
 			return e;
 		},
 		{}
@@ -84,8 +99,8 @@ const baseNodes = {
 };
 
 const scheduledNodes = scheduledDescs.reduce(
-	(e, { name, optset }) => {
-		e[name] = subclassBase(name, optset, baseNodes.AudioScheduledSourceNode);
+	(e, desc) => {
+		e[desc.name] = subclassBase(desc, baseNodes.AudioScheduledSourceNode);
 		return e;
 	},
 	{}

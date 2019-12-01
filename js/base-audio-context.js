@@ -89,8 +89,8 @@ JsBaseAudioContext.prototype = {
 		return new nodes.ConvolverNode(this, opts);
 	},
 	
-	createDelay(opts) {
-		return new nodes.DelayNode(this, opts);
+	createDelay(maxDelayTime = 1) {
+		return new nodes.DelayNode(this, { maxDelayTime });
 	},
 	
 	createDynamicsCompressor(opts) {
