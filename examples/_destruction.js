@@ -9,17 +9,17 @@ const read = require('./utils/read');
 	
 	const context = new AudioContext();
 	
-	// const clip = await read(`${__dirname}/samples/hit.wav`);
+	const clip = await read(`${__dirname}/samples/hit.wav`);
 	
-	// const musicClip = await new Promise(res => context.decodeAudioData(clip, b => res(b)));
+	const musicClip = await new Promise(res => context.decodeAudioData(clip, b => res(b)));
 	
 	const gain = context.createGain();
 	gain.gain.value = 0.0625;
-	// gain.connect(context.destination);
+	gain.connect(context.destination);
 	
 	
-	// let isActive;
-	// let i = 1;
+	let isActive;
+	let i = 1;
 	
 	// Let it settle down
 	await new Promise(res => setTimeout(res, 1000));

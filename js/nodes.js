@@ -2,6 +2,8 @@
 
 const { inspect, inherits } = require('util');
 
+const { hrtf } = require('deps-labsound-raub');
+
 const core = require('../core');
 const JsAudioNode = require('./audio-node');
 const JsAudioParam = require('./audio-param');
@@ -31,6 +33,8 @@ const scheduledDescs = [
 	{ name: 'OscillatorNode', optset: [] },
 ];
 
+core.PannerNode.hrtf = hrtf;
+
 const subclassBase = (name, optset, SuperNode) => {
 	
 	const SuperClass = core[name];
@@ -38,6 +42,7 @@ const subclassBase = (name, optset, SuperNode) => {
 	inherits(SuperClass, SuperNode);
 	
 	function JsNode(ctx, opts = {}) {
+		console.log(SuperClass, this, ctx, JsAudioParam);
 		SuperClass.call(this, ctx, JsAudioParam);
 		optset.forEach(opt => {
 			if (opts[opt] !== undefined) {

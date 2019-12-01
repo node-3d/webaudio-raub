@@ -67,10 +67,7 @@ void AudioBufferSourceNode::_destroy() { DES_CHECK;
 		_impl.get()
 	);
 	
-	Napi::Object context = _context.Value();
-	AudioContext *audioContext = AudioContext::unwrap(context);
-	
-	lab::AudioContext *ctx = audioContext->getCtx().get();
+	lab::AudioContext *ctx = _contextVal->getCtx().get();
 	
 	{
 		lab::ContextRenderLock r(ctx, "AudioBufferSourceNode::_destroy");

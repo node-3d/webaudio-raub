@@ -23,7 +23,7 @@ JsAudioParam.prototype = {
 	[inspect.custom]() { return this.toString(); },
 	
 	toString() {
-		return 'AudioParam {}';
+		return `AudioParam { ${this.value} }`;
 	},
 	
 };

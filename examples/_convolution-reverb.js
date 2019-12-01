@@ -34,7 +34,7 @@ const read = require('./utils/read');
 	dryGain.connect(outputGain);
 	dryGain.connect(convolve);
 	
-	outputGain.gain.value = 0.5;
+	outputGain.gain.value = 0.05;
 	
 	const voiceNode = context.createBufferSource();
 	voiceNode.buffer = voiceClip;

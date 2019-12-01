@@ -1,13 +1,10 @@
 'use strict';
 
-// const SegfaultHandler = require('segfault-handler');
-// SegfaultHandler.registerHandler('crash.log');
-
 const { AudioContext } = require('..');
 
 const read = require('./utils/read');
 
-
+let total = 0;
 let num = 0;
 (async () => { try {
 	
@@ -40,12 +37,13 @@ let num = 0;
 			
 			var source = context.createBufferSource();
 			
-			console.log(Date.now(), '+ABSN:', ++num);
+			total++;
+			console.log(total, Date.now(), '+ABSN:', ++num);
 			
 			source.buffer = buffer;
 			source.onended = () => {
 				audio.isPlaying = false;
-				console.log(Date.now(), '-ABSN:', --num);
+				console.log(total, Date.now(), '-ABSN:', --num);
 			};
 			source.playbackRate.setValueAtTime(audio.playbackRate, audio.startTime);
 			audio.startTime = context.currentTime;
