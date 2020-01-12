@@ -31,3 +31,5 @@ Simply require any class you like from the module and then follow the
 ```
 const { AudioContext } = require('webaudio-raub'); // usually this is enough
 ```
+
+In examples directory, currently working examples are prepended with `_`.
