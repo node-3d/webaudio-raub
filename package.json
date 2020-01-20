@@ -1,7 +1,7 @@
 {
 	"author": "Luis Blanco <luisblanco1337@gmail.com>",
 	"name": "webaudio-raub",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Web Audio Api implementation for Node.js",
 	"license": "MIT",
 	"main": "index.js",

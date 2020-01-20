@@ -64,7 +64,7 @@ void AudioScheduledSourceNode::_destroy() { DES_CHECK;
 
 JS_IMPLEMENT_METHOD(AudioScheduledSourceNode, start) { THIS_CHECK;
 	
-	REQ_DOUBLE_ARG(0, when);
+	LET_DOUBLE_ARG(0, when);
 	
 	lab::AudioScheduledSourceNode *node = static_cast<lab::AudioScheduledSourceNode*>(
 		_impl.get()
@@ -78,7 +78,7 @@ JS_IMPLEMENT_METHOD(AudioScheduledSourceNode, start) { THIS_CHECK;
 
 JS_IMPLEMENT_METHOD(AudioScheduledSourceNode, stop) { THIS_CHECK;
 	
-	REQ_DOUBLE_ARG(0, when);
+	LET_DOUBLE_ARG(0, when);
 	
 	lab::AudioScheduledSourceNode *node = static_cast<lab::AudioScheduledSourceNode*>(
 		_impl.get()

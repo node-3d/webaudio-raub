@@ -31,10 +31,22 @@ JsBaseAudioContext.UPDATE_INTERVAL = 20;
 JsBaseAudioContext.prototype = {
 	
 	get onerror() { return this.listeners('error'); },
-	set onerror(cb) { this.on('error', cb); },
+	set onerror(cb) {
+		if (cb) {
+			this.on('error', cb);
+		} else {
+			this.removeAllListeners('error');
+		}
+	},
 	
 	get onstatechange() { return this.listeners('statechange'); },
-	set onstatechange(cb) { this.on('statechange', cb); },
+	set onstatechange(cb) {
+		if (cb) {
+			this.on('statechange', cb);
+		} else {
+			this.removeAllListeners('statechange');
+		}
+	},
 	
 	[inspect.custom]() { return this.toString(); },
 	

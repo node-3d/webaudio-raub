@@ -15,10 +15,22 @@ function JsAudioParam(ctx, param) {
 JsAudioParam.prototype = {
 	
 	get onerror() { return this.listeners('error'); },
-	set onerror(cb) { this.on('error', cb); },
+	set onerror(cb) {
+		if (cb) {
+			this.on('error', cb);
+		} else {
+			this.removeAllListeners('error');
+		}
+	},
 	
 	get onended() { return this.listeners('ended'); },
-	set onended(cb) { this.on('ended', cb); },
+	set onended(cb) {
+		if (cb) {
+			this.on('ended', cb);
+		} else {
+			this.removeAllListeners('ended');
+		}
+	},
 	
 	[inspect.custom]() { return this.toString(); },
 	
