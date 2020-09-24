@@ -1,6 +1,43 @@
 #include "audio-context.hpp"
 
 
+// Returns input, output
+inline std::pair<
+	lab::AudioStreamConfig,
+	lab::AudioStreamConfig
+> GetDefaultAudioDeviceConfiguration(const float sampleRate) {
+	lab::AudioStreamConfig inputConfig;
+	lab::AudioStreamConfig outputConfig;
+	
+	const std::vector<lab::AudioDeviceInfo> audioDevices = lab::MakeAudioDeviceList();
+	const uint32_t default_output_device = lab::GetDefaultOutputAudioDeviceIndex();
+	const uint32_t default_input_device = lab::GetDefaultInputAudioDeviceIndex();
+	
+	lab::AudioDeviceInfo defaultOutputInfo;
+	lab::AudioDeviceInfo defaultInputInfo;
+	for (auto &info : audioDevices) {
+		if (info.index == default_output_device) {
+			defaultOutputInfo = info;
+		} else if (info.index == default_input_device) {
+			defaultInputInfo = info;
+		}
+	}
+	
+	if (defaultOutputInfo.index != -1) {
+		outputConfig.device_index = defaultOutputInfo.index;
+		outputConfig.desired_channels = std::min(
+			uint32_t(2),
+			defaultOutputInfo.num_output_channels
+		);
+		outputConfig.desired_samplerate = sampleRate < 0
+			? defaultOutputInfo.nominal_samplerate
+			: sampleRate;
+	}
+	
+	return { inputConfig, outputConfig };
+}
+
+
 IMPLEMENT_ES5_CLASS(AudioContext);
 
 void AudioContext::init(Napi::Env env, Napi::Object exports) {
@@ -19,21 +56,15 @@ void AudioContext::init(Napi::Env env, Napi::Object exports) {
 
 AudioContext::AudioContext(const Napi::CallbackInfo &info):
 CommonCtx(info.This(), "AudioContext") { NAPI_ENV;
+	float sampleRate = IS_ARG_EMPTY(0) ? (-1) : info[0].ToNumber().FloatValue();
+	const auto config = GetDefaultAudioDeviceConfiguration(sampleRate);
 	
-	if (info.Length() > 0) {
-		float sampleRate = info[0].ToNumber().FloatValue();
-		reset(std::move(
-			lab::Sound::MakeRealtimeAudioContext(lab::Channels::Stereo, sampleRate)
-		));
-	} else {
-		reset(std::move(
-			lab::Sound::MakeRealtimeAudioContext(lab::Channels::Stereo)
-		));
-	}
+	reset(std::move(
+		lab::MakeRealtimeAudioContext(config.second, config.first)
+	));
 	
 	napi_value argv[] = { JS_EXT(&_impl) };
 	super(info, 1, argv);
-	
 }
 
 

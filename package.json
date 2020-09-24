@@ -40,8 +40,8 @@
 		"url": "https://github.com/node-3d/webaudio-raub.git"
 	},
 	"dependencies": {
-		"addon-tools-raub": "5.0.0",
-		"deps-labsound-raub": "1.0.0",
-		"segfault-raub": "1.1.0"
+		"addon-tools-raub": "5.2.x",
+		"deps-labsound-raub": "2.0.x",
+		"segfault-raub": "1.1.x"
 	}
 }

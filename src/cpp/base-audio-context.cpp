@@ -101,12 +101,12 @@ JS_IMPLEMENT_METHOD(BaseAudioContext, _initListener) { THIS_CHECK;
 	napi_value argv[2];
 	argv[0] = context;
 	
-	NodePtr destinationNode = _impl->destination();
+	NodePtr destinationNode = _impl->device();
 	argv[1] = JS_EXT(&destinationNode);
 	_destination.Reset(destinationCtor.New(2, argv), 1);
 	
-	ListenerPtr listener = &_impl->listener();
-	argv[1] = JS_EXT(listener);
+	ListenerPtr listener = _impl->listener();
+	argv[1] = JS_EXT(&listener);
 	_listener.Reset(listenerCtor.New(2, argv), 1);
 	
 	

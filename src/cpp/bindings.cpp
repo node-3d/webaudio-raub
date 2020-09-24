@@ -6,6 +6,7 @@
 #include "audio-listener.hpp"
 #include "audio-node.hpp"
 #include "audio-param.hpp"
+#include "audio-setting.hpp"
 #include "audio-scheduled-source-node.hpp"
 #include "base-audio-context.hpp"
 #include "biquad-filter-node.hpp"
@@ -39,6 +40,7 @@ Napi::Object initModule(Napi::Env env, Napi::Object exports) {
 	AudioListener::init(env, exports);
 	
 	AudioParam::init(env, exports);
+	AudioSetting::init(env, exports);
 	
 	// // // PeriodicWave::init(env, exports);
 	// // // OfflineAudioCompletionEvent::init(env, exports);

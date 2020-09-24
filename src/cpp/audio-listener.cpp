@@ -34,9 +34,9 @@ CommonListener(info.This(), "AudioListener") { NAPI_ENV;
 	Napi::Object context = info[0].As<Napi::Object>();
 	Napi::External<void> extListener = info[1].As< Napi::External<void> >();
 	
-	ListenerPtr listener = reinterpret_cast<ListenerPtr>(extListener.Data());
+	ListenerPtr *listener = reinterpret_cast<ListenerPtr *>(extListener.Data());
 	
-	reset(context, listener);
+	reset(context, *listener);
 	
 	Napi::Function paramCtor = info[2].As<Napi::Function>();
 	

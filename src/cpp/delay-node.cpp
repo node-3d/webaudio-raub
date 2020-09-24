@@ -35,7 +35,7 @@ CommonNode(info.This(), "DelayNode") { NAPI_ENV;
 	napi_value argv[2];
 	argv[0] = context;
 	
-	ParamPtr delayTimeParam = node->delayTime();
+	SettingPtr delayTimeParam = node->delayTime();
 	argv[1] = JS_EXT(&delayTimeParam);
 	_delayTime.Reset(paramCtor.New(2, argv), 1);
 	

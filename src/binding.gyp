@@ -18,6 +18,7 @@
 				'cpp/audio-listener.cpp',
 				'cpp/audio-node.cpp',
 				'cpp/audio-param.cpp',
+				'cpp/audio-setting.cpp',
 				## 'cpp/audio-processing-event.cpp',
 				'cpp/audio-scheduled-source-node.cpp',
 				'cpp/base-audio-context.cpp',
@@ -49,7 +50,6 @@
 			'cflags!': ['-fno-exceptions'],
 			'cflags_cc!': ['-fno-exceptions'],
 			'library_dirs': [ '<(ls_bin)' ],
-			'libraries': [ '-llabsound' ],
 			'conditions': [
 				
 				[
@@ -61,6 +61,7 @@
 							"-Wl,-rpath,'$$ORIGIN/../../deps-labsound-raub/<(bin)'",
 						],
 						'defines': ['__linux__'],
+						'libraries': [ '-llabsound' ],
 					}
 				],
 				
@@ -73,13 +74,17 @@
 							'-Wl,-rpath,@loader_path/../../deps-labsound-raub/<(bin)',
 						],
 						'defines': ['__APPLE__'],
+						'libraries': [ '-llabsound' ],
 					}
 				],
 				
 				[
 					'OS=="win"',
 					{
-						'libraries' : [ '-lwinmm', '-lole32', '-luser32', '-lgdi32' ],
+						'libraries' : [
+							'-lwinmm', '-lole32', '-luser32', '-lgdi32',
+							'LabSound', 'libnyquist', 'libopus', 'libwavpack',
+						],
 						'defines' : [
 							'WIN32_LEAN_AND_MEAN',
 							'VC_EXTRALEAN',
@@ -88,11 +93,14 @@
 						'msvs_settings' : {
 							'VCCLCompilerTool' : {
 								'AdditionalOptions' : [
-									'/GL', '/GF', '/EHsc', '/GS', '/Gy', '/GR-',
+									'/O2','/Oy','/GL','/GF','/Gm-',
+									'/EHsc','/MD','/GS','/Gy','/GR-','/Gd',
 								]
 							},
 							'VCLinkerTool' : {
-								'AdditionalOptions' : ['/RELEASE','/OPT:REF','/OPT:ICF','/LTCG'],
+								'AdditionalOptions' : [
+									'/OPT:REF','/OPT:ICF','/LTCG',
+								]
 							},
 						},
 					},

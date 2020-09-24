@@ -15,9 +15,10 @@ JS_IMPLEMENT_GETTER(CLASS, NAME) { THIS_CHECK;                                \
 
 typedef std::shared_ptr<lab::AudioNode> NodePtr;
 typedef std::shared_ptr<lab::AudioParam> ParamPtr;
+typedef std::shared_ptr<lab::AudioSetting> SettingPtr;
 typedef std::shared_ptr<lab::AudioContext> CtxPtr;
 typedef std::shared_ptr<lab::AudioBus> BusPtr;
-typedef lab::AudioListener* ListenerPtr;
+typedef std::shared_ptr<lab::AudioListener> ListenerPtr;
 
 void _disconnectNode(AudioContext *context, NodePtr node);
 void _disconnectParam(AudioContext *context, ParamPtr node);
@@ -203,6 +204,31 @@ struct CommonParam: public Common {
 	}
 	
 	ParamPtr _impl;
+	
+};
+
+
+struct CommonSetting: public Common {
+	
+	CommonSetting(Napi::Value that, const char *name):
+	Common(that, name) {
+	}
+	
+	~CommonSetting() { _destroy(); }
+		
+	void _destroy() { DES_CHECK;
+		_impl.reset();
+		Common::_destroy();
+	}
+	
+	SettingPtr getSetting() const { return _impl; }
+	
+	void reset(Napi::Object context, SettingPtr setting) {
+		Common::reset(context);
+		_impl = setting;
+	}
+	
+	SettingPtr _impl;
 	
 };
 

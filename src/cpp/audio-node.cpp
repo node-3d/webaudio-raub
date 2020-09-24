@@ -80,7 +80,7 @@ CommonNode(info.This(), "AudioNode") { NAPI_ENV;
 	
 	reset(context, *ext);
 	
-	_channelCount = _impl->channelCount();
+	_channelCount = 0; // _impl->channelCount();
 	_channelCountMode = fromChannelCountMode(_impl->channelCountMode());
 	_channelInterpretation = fromChannelInterpretation(_impl->channelInterpretation());
 	
