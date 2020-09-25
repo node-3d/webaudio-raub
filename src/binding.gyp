@@ -50,16 +50,18 @@
 			'cflags!': ['-fno-exceptions'],
 			'cflags_cc!': ['-fno-exceptions'],
 			'library_dirs': [ '<(ls_bin)' ],
-			'libraries': ['-lLabSound', '-llibnyquist', '-llibopus', '-llibwavpack'],
 			'conditions': [
 				
 				[
 					'OS=="linux"',
 					{
+						'cflags': ['-fPIC'],
+						'cflags_cc': ['-fPIC'],
 						'libraries': [
 							"-Wl,-rpath,'$$ORIGIN'",
 							"-Wl,-rpath,'$$ORIGIN/../node_modules/deps-labsound-raub/<(bin)'",
 							"-Wl,-rpath,'$$ORIGIN/../../deps-labsound-raub/<(bin)'",
+							'-lLabSound', '-llibnyquist', '-llibopus', '-llibwavpack',
 						],
 						'defines': ['__linux__'],
 					}
@@ -72,6 +74,7 @@
 							'-Wl,-rpath,@loader_path',
 							'-Wl,-rpath,@loader_path/../node_modules/deps-labsound-raub/<(bin)',
 							'-Wl,-rpath,@loader_path/../../deps-labsound-raub/<(bin)',
+							'LabSound.a', 'liblibnyquist.a', 'liblibopus.a', 'liblibwavpack.a',
 						],
 						'defines': ['__APPLE__'],
 					}
@@ -82,6 +85,7 @@
 					{
 						'libraries' : [
 							'-lwinmm', '-lole32', '-luser32', '-lgdi32',
+							'-lLabSound', '-llibnyquist', '-llibopus', '-llibwavpack',
 						],
 						'defines' : [
 							'WIN32_LEAN_AND_MEAN',
