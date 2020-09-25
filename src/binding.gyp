@@ -50,6 +50,7 @@
 			'cflags!': ['-fno-exceptions'],
 			'cflags_cc!': ['-fno-exceptions'],
 			'library_dirs': [ '<(ls_bin)' ],
+			'libraries': ['LabSound', 'libnyquist', 'libopus', 'libwavpack'],
 			'conditions': [
 				
 				[
@@ -61,7 +62,6 @@
 							"-Wl,-rpath,'$$ORIGIN/../../deps-labsound-raub/<(bin)'",
 						],
 						'defines': ['__linux__'],
-						'libraries': [ '-llabsound' ],
 					}
 				],
 				
@@ -74,7 +74,6 @@
 							'-Wl,-rpath,@loader_path/../../deps-labsound-raub/<(bin)',
 						],
 						'defines': ['__APPLE__'],
-						'libraries': [ '-llabsound' ],
 					}
 				],
 				
@@ -83,7 +82,6 @@
 					{
 						'libraries' : [
 							'-lwinmm', '-lole32', '-luser32', '-lgdi32',
-							'LabSound', 'libnyquist', 'libopus', 'libwavpack',
 						],
 						'defines' : [
 							'WIN32_LEAN_AND_MEAN',
