@@ -50,7 +50,7 @@
 			'cflags!': ['-fno-exceptions'],
 			'cflags_cc!': ['-fno-exceptions'],
 			'library_dirs': [ '<(ls_bin)' ],
-			'libraries': ['LabSound', 'libnyquist', 'libopus', 'libwavpack'],
+			'libraries': ['-lLabSound', '-llibnyquist', '-llibopus', '-llibwavpack'],
 			'conditions': [
 				
 				[
