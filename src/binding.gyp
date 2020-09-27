@@ -55,13 +55,11 @@
 				[
 					'OS=="linux"',
 					{
-						'cflags': ['-fPIC'],
-						'cflags_cc': ['-fPIC'],
 						'libraries': [
 							"-Wl,-rpath,'$$ORIGIN'",
 							"-Wl,-rpath,'$$ORIGIN/../node_modules/deps-labsound-raub/<(bin)'",
 							"-Wl,-rpath,'$$ORIGIN/../../deps-labsound-raub/<(bin)'",
-							'-lLabSound', '-llibnyquist', '-llibopus', '-llibwavpack',
+							'-lLabSound', '-llibnyquist', '-llibopus', '-llibwavpack', '-lasound',
 						],
 						'defines': ['__linux__'],
 					}

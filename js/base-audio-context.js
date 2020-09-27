@@ -13,20 +13,9 @@ inherits(BaseAudioContext, Emitter);
 
 
 function JsBaseAudioContext(ctx) {
-	
 	BaseAudioContext.call(this, ctx);
-	
 	this._initListener(JsAudioDestinationNode, JsAudioListener);
-	
-	this._updateTimerId = setInterval(
-		() => this.update(),
-		JsBaseAudioContext.UPDATE_INTERVAL
-	);
-	this._updateTimerId.unref();
-	
 }
-
-JsBaseAudioContext.UPDATE_INTERVAL = 20;
 
 JsBaseAudioContext.prototype = {
 	
@@ -52,12 +41,6 @@ JsBaseAudioContext.prototype = {
 	
 	toString() {
 		return 'BaseAudioContext {}';
-	},
-	
-	stopUpdater() {
-		console.log('\n\nSTOP UPDATER\n\n');
-		clearInterval(this._updateTimerId);
-		this._updateTimerId = null;
 	},
 	
 	decodeAudioData(audioData, successCallback) {
