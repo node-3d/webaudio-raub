@@ -72,7 +72,7 @@
 							'-Wl,-rpath,@loader_path',
 							'-Wl,-rpath,@loader_path/../node_modules/deps-labsound-raub/<(bin)',
 							'-Wl,-rpath,@loader_path/../../deps-labsound-raub/<(bin)',
-							'LabSound.a', 'liblibnyquist.a', 'liblibopus.a', 'liblibwavpack.a',
+							'-lLabSound', '-llibnyquist', '-llibopus', '-llibwavpack',
 						],
 						'defines': ['__APPLE__'],
 					}
