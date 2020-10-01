@@ -55,6 +55,7 @@
 				[
 					'OS=="linux"',
 					{
+						'cflags_cc': ['-w'],
 						'libraries': [
 							"-Wl,-rpath,'$$ORIGIN'",
 							"-Wl,-rpath,'$$ORIGIN/../node_modules/deps-labsound-raub/<(bin)'",
@@ -68,8 +69,8 @@
 				[
 					'OS=="mac"',
 					{
+						'cflags_cc': ['-w'],
 						'ldflags': [
-							'--verbose',
 							'-L<(ls_bin)',
 							'-Wl,-rpath,@loader_path',
 							'-Wl,-rpath,@loader_path/../node_modules/deps-labsound-raub/<(bin)',
