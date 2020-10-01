@@ -54,5 +54,6 @@ deploy:
   skip_cleanup: true
   overwrite: true
   draft: true
-  file:
+  prerelease: false
+  tag_name: "$SYSNAME"
     - "build/Release/webaudio.node"
