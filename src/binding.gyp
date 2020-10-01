@@ -68,7 +68,9 @@
 				[
 					'OS=="mac"',
 					{
-						'libraries': [
+						'ldflags': [
+							'--verbose',
+							'-L<(ls_bin)',
 							'-Wl,-rpath,@loader_path',
 							'-Wl,-rpath,@loader_path/../node_modules/deps-labsound-raub/<(bin)',
 							'-Wl,-rpath,@loader_path/../../deps-labsound-raub/<(bin)',
