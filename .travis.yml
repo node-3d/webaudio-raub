@@ -51,7 +51,7 @@ deploy:
   name: "Binary for $SYSNAME"
   release_notes: $TRAVIS_COMMIT_MESSAGE
   token: $GITHUB_TOKEN
-  cleanup: false
+  skip_cleanup: true
   overwrite: true
   draft: true
   prerelease: false
