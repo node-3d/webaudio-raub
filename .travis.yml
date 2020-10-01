@@ -1,4 +1,6 @@
 language: node_js
+os: linux
+dist: xenial
 node_js:
   - "12.13.0"
 
@@ -7,13 +9,12 @@ install:
   - npm ci
 
 
-matrix:
+jobs:
   include:
     - name: "Linux Test"
       os: linux
       if: NOT commit_message =~ /^:hammer:/
       dist: xenial
-      sudo: false
     - name: "OSX Test"
       os: osx
       if: NOT commit_message =~ /^:hammer:/
@@ -22,7 +23,6 @@ matrix:
     - name: "Linux Build"
       os: linux
       dist: xenial
-      sudo: false
       if: commit_message =~ /^:hammer:/
       env:
         - ISBUILD=true
@@ -49,9 +49,9 @@ deploy:
     condition: $ISBUILD = true
   provider: releases
   name: "Binary for $SYSNAME"
-  body: $TRAVIS_COMMIT_MESSAGE
-  api_key: $GITHUB_TOKEN
-  skip_cleanup: true
+  release_notes: $TRAVIS_COMMIT_MESSAGE
+  token: $GITHUB_TOKEN
+  cleanup: true
   overwrite: true
   draft: true
   prerelease: false
