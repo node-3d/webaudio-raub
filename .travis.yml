@@ -56,4 +56,5 @@ deploy:
   draft: true
   prerelease: false
   tag_name: "$SYSNAME"
+  file:
     - "build/Release/webaudio.node"
