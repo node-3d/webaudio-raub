@@ -60,7 +60,7 @@
 							"-Wl,-rpath,'$$ORIGIN'",
 							"-Wl,-rpath,'$$ORIGIN/../node_modules/deps-labsound-raub/<(bin)'",
 							"-Wl,-rpath,'$$ORIGIN/../../deps-labsound-raub/<(bin)'",
-							'-lLabSound', '-llibnyquist', '-llibopus', '-llibwavpack', '-lasound',
+							'-lLabSound', '-llibnyquist', '-llibwavpack', '-lasound',
 						],
 						'defines': ['__linux__'],
 					}
@@ -75,7 +75,7 @@
 							'-Wl,-rpath,@loader_path',
 							'-Wl,-rpath,@loader_path/../node_modules/deps-labsound-raub/<(bin)',
 							'-Wl,-rpath,@loader_path/../../deps-labsound-raub/<(bin)',
-							'-lLabSound', '-llibnyquist', '-llibopus', '-llibwavpack',
+							'-lLabSound', '-llibnyquist', '-llibwavpack',
 							'-framework AudioUnit',
 							'-framework CoreAudio',
 							'-framework AudioToolbox',
@@ -89,7 +89,7 @@
 					{
 						'libraries' : [
 							'-lwinmm', '-lole32', '-luser32', '-lgdi32',
-							'-lLabSound', '-llibnyquist', '-llibopus', '-llibwavpack',
+							'-lLabSound', '-llibnyquist', '-llibwavpack',
 						],
 						'defines' : [
 							'WIN32_LEAN_AND_MEAN',
