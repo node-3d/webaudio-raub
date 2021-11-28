@@ -81,6 +81,9 @@
 							'-framework AudioToolbox',
 						],
 						'defines': ['__APPLE__'],
+						'xcode_settings': {
+							'DYLIB_INSTALL_NAME_BASE': '@rpath',
+						},
 					}
 				],
 				
@@ -99,19 +102,24 @@
 						'msvs_settings' : {
 							'VCCLCompilerTool' : {
 								'AdditionalOptions' : [
-									'/O2','/Oy','/GL','/GF','/Gm-',
-									'/EHsc','/MD','/GS','/Gy','/GR-','/Gd',
+									'/O2', '/Oy',
+									'/GL', '/GF',
+									'/Gm-',
+									'/EHsc', '/GS', '/Gy',
+									'/GR-', '/Gd',
+									'/MD',
 								]
 							},
 							'VCLinkerTool' : {
 								'AdditionalOptions' : [
-									'/OPT:REF','/OPT:ICF','/LTCG',
-								]
+									'/OPT:REF',
+									'/OPT:ICF',
+									'/LTCG',
+								],
 							},
 						},
 					},
 				],
-				
 			],
 		},
 	]

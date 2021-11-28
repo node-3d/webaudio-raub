@@ -158,7 +158,7 @@ struct CommonNode: public Common {
 	
 	void _destroy() { DES_CHECK;
 		
-		_disconnectNode(_contextVal, _impl);
+		// _disconnectNode(_contextVal, _impl);
 		
 		_impl.reset();
 		
@@ -188,7 +188,7 @@ struct CommonParam: public Common {
 		
 	void _destroy() { DES_CHECK;
 		
-		_disconnectParam(_contextVal, _impl);
+		// _disconnectParam(_contextVal, _impl);
 		
 		_impl.reset();
 		

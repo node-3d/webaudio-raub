@@ -143,7 +143,7 @@ JS_IMPLEMENT_GETTER(AudioParam, value) { THIS_CHECK;
 	
 	lab::ContextRenderLock renderLock(audioContext->getCtx().get(), "AudioParam::valueGetter");
 	
-	RET_NUM(_impl->value(renderLock));
+	RET_NUM(_impl->value());
 	
 }
 

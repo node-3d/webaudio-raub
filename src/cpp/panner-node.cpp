@@ -78,12 +78,12 @@ CommonNode(info.This(), "PannerNode") { NAPI_ENV;
 	Napi::Object context = info[0].As<Napi::Object>();
 	Napi::Function paramCtor = info[1].As<Napi::Function>();
 	
-	AudioContext *audioContext = AudioContext::unwrap(context);
-	float sampleRate = audioContext->getCtx()->sampleRate();
 	Napi::Function ctor = _ctorEs5.Value().As<Napi::Function>();
 	Napi::String hrtf = ctor.Get("hrtf").As<Napi::String>();
 	
-	reset(context, std::make_shared<lab::PannerNode>(sampleRate, hrtf.Utf8Value()));
+	AudioContext *contextUnwrap = AudioContext::unwrap(context);
+	lab::AudioContext *contextLab = contextUnwrap->getCtx().get();
+	reset(context, std::make_shared<lab::PannerNode>(*contextLab, hrtf.Utf8Value()));
 	
 	lab::PannerNode *node = static_cast<lab::PannerNode*>(
 		_impl.get()

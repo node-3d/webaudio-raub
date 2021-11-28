@@ -1,4 +1,5 @@
 #include "analyser-node.hpp"
+#include "audio-context.hpp"
 
 
 IMPLEMENT_ES5_CLASS(AnalyserNode);
@@ -27,7 +28,9 @@ CommonNode(info.This(), "AnalyserNode") { NAPI_ENV;
 	
 	Napi::Object context = info[0].As<Napi::Object>();
 	
-	reset(context, std::make_shared<lab::AnalyserNode>());
+	AudioContext *contextUnwrap = AudioContext::unwrap(context);
+	lab::AudioContext *contextLab = contextUnwrap->getCtx().get();
+	reset(context, std::make_shared<lab::AnalyserNode>(*contextLab));
 	
 	Napi::Value argv[] = { context, JS_EXT(&_impl) };
 	super(info, 2, argv);

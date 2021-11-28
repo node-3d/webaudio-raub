@@ -22,7 +22,9 @@ CommonNode(info.This(), "ConvolverNode") { NAPI_ENV;
 	
 	Napi::Object context = info[0].As<Napi::Object>();
 	
-	reset(context, std::make_shared<lab::ConvolverNode>());
+	AudioContext *contextUnwrap = AudioContext::unwrap(context);
+	lab::AudioContext *contextLab = contextUnwrap->getCtx().get();
+	reset(context, std::make_shared<lab::ConvolverNode>(*contextLab));
 	
 	lab::ConvolverNode *node = static_cast<lab::ConvolverNode*>(
 		_impl.get()

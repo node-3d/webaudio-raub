@@ -22,7 +22,9 @@ CommonNode(info.This(), "GainNode") { NAPI_ENV;
 	Napi::Object context = info[0].As<Napi::Object>();
 	Napi::Function paramCtor = info[1].As<Napi::Function>();
 	
-	reset(context, std::make_shared<lab::GainNode>());
+	AudioContext *contextUnwrap = AudioContext::unwrap(context);
+	lab::AudioContext *contextLab = contextUnwrap->getCtx().get();
+	reset(context, std::make_shared<lab::GainNode>(*contextLab));
 	
 	lab::GainNode *node = static_cast<lab::GainNode*>(
 		_impl.get()

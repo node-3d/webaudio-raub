@@ -1,5 +1,6 @@
 #include "biquad-filter-node.hpp"
 #include "audio-param.hpp"
+#include "audio-context.hpp"
 
 
 IMPLEMENT_ES5_CLASS(BiquadFilterNode);
@@ -26,7 +27,9 @@ CommonNode(info.This(), "BiquadFilterNode") { NAPI_ENV;
 	Napi::Object context = info[0].As<Napi::Object>();
 	Napi::Function paramCtor = info[1].As<Napi::Function>();
 	
-	reset(context, std::make_shared<lab::BiquadFilterNode>());
+	AudioContext *contextUnwrap = AudioContext::unwrap(context);
+	lab::AudioContext *contextLab = contextUnwrap->getCtx().get();
+	reset(context, std::make_shared<lab::BiquadFilterNode>(*contextLab));
 	
 	lab::BiquadFilterNode *node = static_cast<lab::BiquadFilterNode*>(
 		_impl.get()

@@ -29,7 +29,9 @@ CommonNode(info.This(), "AudioBufferSourceNode") { NAPI_ENV;
 	Napi::Object context = info[0].As<Napi::Object>();
 	Napi::Function paramCtor = info[1].As<Napi::Function>();
 	
-	reset(context, std::make_shared<lab::SampledAudioNode>());
+	AudioContext *contextUnwrap = AudioContext::unwrap(context);
+	lab::AudioContext *contextLab = contextUnwrap->getCtx().get();
+	reset(context, std::make_shared<lab::SampledAudioNode>(*contextLab));
 	
 	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
 		_impl.get()
@@ -63,17 +65,6 @@ AudioBufferSourceNode::~AudioBufferSourceNode() {
 
 void AudioBufferSourceNode::_destroy() { DES_CHECK;
 	
-	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
-		_impl.get()
-	);
-	
-	lab::AudioContext *ctx = _contextVal->getCtx().get();
-	
-	{
-		lab::ContextRenderLock r(ctx, "AudioBufferSourceNode::_destroy");
-		node->setBus(r, nullptr);
-	}
-	
 	_buffer.Reset();
 	_playbackRate.Reset();
 	_detune.Reset();
@@ -96,9 +87,10 @@ JS_IMPLEMENT_METHOD(AudioBufferSourceNode, start) { THIS_CHECK;
 	);
 	
 	if (grainDuration > 0) {
-		node->startGrain(when, grainOffset, grainDuration);
+		// node->startGrain(when, grainOffset, grainDuration);
+		node->schedule(when, grainOffset, grainDuration);
 	} else {
-		node->startGrain(when, grainOffset);
+		node->schedule(when, grainOffset);
 	}
 	RET_UNDEFINED;
 	
@@ -157,7 +149,7 @@ JS_IMPLEMENT_GETTER(AudioBufferSourceNode, loop) { THIS_CHECK;
 		_impl.get()
 	);
 	
-	RET_BOOL(node->loop());
+	RET_BOOL((node->isLooping())->valueBool());
 	
 }
 
@@ -167,7 +159,7 @@ JS_IMPLEMENT_SETTER(AudioBufferSourceNode, loop) { THIS_CHECK; SETTER_BOOL_ARG;
 		_impl.get()
 	);
 	
-	node->setLoop(v);
+	(node->isLooping())->setBool(v);
 	
 	emit("loop", 1, &value);
 	RET_UNDEFINED;
@@ -181,7 +173,7 @@ JS_IMPLEMENT_GETTER(AudioBufferSourceNode, loopStart) { THIS_CHECK;
 		_impl.get()
 	);
 	
-	RET_NUM(node->loopStart());
+	RET_NUM((node->loopStart())->valueFloat());
 	
 }
 
@@ -191,7 +183,7 @@ JS_IMPLEMENT_SETTER(AudioBufferSourceNode, loopStart) { THIS_CHECK; SETTER_DOUBL
 		_impl.get()
 	);
 	
-	node->setLoopStart(v);
+	(node->loopStart())->setFloat(v);
 	
 	emit("loopStart", 1, &value);
 	RET_UNDEFINED;
@@ -205,7 +197,7 @@ JS_IMPLEMENT_GETTER(AudioBufferSourceNode, loopEnd) { THIS_CHECK;
 		_impl.get()
 	);
 	
-	RET_NUM(node->loopEnd());
+	RET_NUM((node->loopEnd())->valueFloat());
 	
 }
 
@@ -215,7 +207,7 @@ JS_IMPLEMENT_SETTER(AudioBufferSourceNode, loopEnd) { THIS_CHECK; SETTER_DOUBLE_
 		_impl.get()
 	);
 	
-	node->setLoopEnd(v);
+	(node->loopEnd())->setFloat(v);
 	
 	emit("loopEnd", 1, &value);
 	RET_UNDEFINED;

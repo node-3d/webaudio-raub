@@ -10,8 +10,8 @@ inline std::pair<
 	lab::AudioStreamConfig outputConfig;
 	
 	const std::vector<lab::AudioDeviceInfo> audioDevices = lab::MakeAudioDeviceList();
-	const uint32_t default_output_device = lab::GetDefaultOutputAudioDeviceIndex();
-	const uint32_t default_input_device = lab::GetDefaultInputAudioDeviceIndex();
+	const uint32_t default_output_device = (lab::GetDefaultOutputAudioDeviceIndex()).index;
+	const uint32_t default_input_device = (lab::GetDefaultInputAudioDeviceIndex()).index;
 	
 	lab::AudioDeviceInfo defaultOutputInfo;
 	lab::AudioDeviceInfo defaultInputInfo;

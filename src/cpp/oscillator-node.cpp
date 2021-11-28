@@ -55,10 +55,9 @@ CommonNode(info.This(), "OscillatorNode") { NAPI_ENV;
 	Napi::Object context = info[0].As<Napi::Object>();
 	Napi::Function paramCtor = info[1].As<Napi::Function>();
 	
-	AudioContext *audioContext = AudioContext::unwrap(context);
-	float sampleRate = audioContext->getCtx()->sampleRate();
-	
-	reset(context, std::make_shared<lab::OscillatorNode>(sampleRate));
+	AudioContext *contextUnwrap = AudioContext::unwrap(context);
+	lab::AudioContext *contextLab = contextUnwrap->getCtx().get();
+	reset(context, std::make_shared<lab::OscillatorNode>(*contextLab));
 	
 	lab::OscillatorNode *node = static_cast<lab::OscillatorNode*>(
 		_impl.get()

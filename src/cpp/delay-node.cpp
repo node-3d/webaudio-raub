@@ -23,10 +23,9 @@ CommonNode(info.This(), "DelayNode") { NAPI_ENV;
 	Napi::Function paramCtor = info[1].As<Napi::Function>();
 	double delay = info[2].ToNumber().DoubleValue();
 	
-	AudioContext *audioContext = AudioContext::unwrap(context);
-	float sampleRate = audioContext->getCtx()->sampleRate();
-	
-	reset(context, std::make_shared<lab::DelayNode>(sampleRate, delay));
+	AudioContext *contextUnwrap = AudioContext::unwrap(context);
+	lab::AudioContext *contextLab = contextUnwrap->getCtx().get();
+	reset(context, std::make_shared<lab::DelayNode>(*contextLab, delay));
 	
 	lab::DelayNode *node = static_cast<lab::DelayNode*>(
 		_impl.get()
