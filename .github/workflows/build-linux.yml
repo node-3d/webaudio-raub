@@ -6,7 +6,7 @@ on:
 jobs:
   Build:
     if: contains('["raub"]', github.actor)
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-18.04
 
     steps:
 

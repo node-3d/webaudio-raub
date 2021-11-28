@@ -6,7 +6,7 @@ on:
 jobs:
   Build:
     if: contains('["raub"]', github.actor)
-    runs-on: windows-latest
+    runs-on: windows-2019
 
     steps:
 
