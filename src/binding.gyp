@@ -60,8 +60,7 @@
 							"-Wl,-rpath,'$$ORIGIN'",
 							"-Wl,-rpath,'$$ORIGIN/../node_modules/deps-labsound-raub/<(bin)'",
 							"-Wl,-rpath,'$$ORIGIN/../../deps-labsound-raub/<(bin)'",
-							'<(ls_bin)/libasound.so',
-							'-lLabSound', '-llibnyquist', '-llibwavpack',
+							'-lLabSound', '-llibnyquist', '-llibwavpack', '-lasound',
 						],
 						'defines': ['__linux__'],
 					}
