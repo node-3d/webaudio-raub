@@ -1,26 +1,19 @@
 'use strict';
 
-const { AudioContext } = require('..');
+const WebAudio = require('..');
+const { AudioContext } = WebAudio;
 
 
 describe('WebAudio', () => {
-	
-	let WebAudio = null;
-	let context = null;
-	
-	it('is imported correctly', () => {
-		WebAudio = require('..');
-		expect(typeof WebAudio).toBe('object');
-	});
+	const context = new AudioContext();
 	
 	it('creates an AudioContext instance', () => {
-		context = new AudioContext();
-		expect(typeof context).toBe('object');
+		assert.ok(context instanceof AudioContext);
 	});
 	
 	it('creates an OscillatorNode instance', () => {
 		const oscillator = context.createOscillator();
-		expect(typeof oscillator).toBe('object');
+		assert.strictEqual(typeof oscillator, 'object');
 	});
 	
 });

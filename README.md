@@ -2,18 +2,18 @@
 
 This is a part of [Node3D](https://github.com/node-3d) project.
 
-[![NPM](https://nodei.co/npm/webaudio-raub.png?compact=true)](https://www.npmjs.com/package/webaudio-raub)
-[![CodeFactor](https://www.codefactor.io/repository/github/node-3d/webaudio-raub/badge)](https://www.codefactor.io/repository/github/node-3d/webaudio-raub)
+[![NPM](https://badge.fury.io/js/webaudio-raub.svg)](https://badge.fury.io/js/webaudio-raub)
+[![ESLint](https://github.com/node-3d/webaudio-raub/actions/workflows/eslint.yml/badge.svg)](https://github.com/node-3d/webaudio-raub/actions/workflows/eslint.yml)
+[![Test](https://github.com/node-3d/webaudio-raub/actions/workflows/test.yml/badge.svg)](https://github.com/node-3d/webaudio-raub/actions/workflows/test.yml)
+[![Cpplint](https://github.com/node-3d/webaudio-raub/actions/workflows/cpplint.yml/badge.svg)](https://github.com/node-3d/webaudio-raub/actions/workflows/cpplint.yml)
 
-```
-npm i webaudio-raub
+```console
+npm i -s webaudio-raub
 ```
 
 **This module is WORK IN PROGRESS.**
 Some features are missing for good.
 
-
-## Synopsis
 
 **Node.js** addon implementing the
 [Web Audio Api](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API).
@@ -23,12 +23,10 @@ Node.js versions. Addon binaries are precompiled and **there is no compilation**
 step during the `npm i` command.
 
 
-## Usage
-
 Simply require any class you like from the module and then follow the
 [doc](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API):
 
-```
+```js
 const { AudioContext } = require('webaudio-raub'); // usually this is enough
 ```
 

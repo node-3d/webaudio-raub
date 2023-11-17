@@ -1,0 +1,47 @@
+name: Test
+defaults:
+  run:
+    shell: bash
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  unit-tests:
+    name: Unit Tests
+    strategy:
+        matrix:
+          os: [ubuntu-20.04, windows-2022, macos-11, [self-hosted, linux, ARM64]]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+
+      - name: Fetch Repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.16.0
+          cache: 'npm'
+
+      - name: Install Modules
+        run: npm ci
+
+      - name: Fix Python
+        if: matrix.os == 'macos-11'
+        run: pip install setuptools
+
+      - name: Build Current Binary
+        run: npm run build
+
+      - name: Run Unit Tests
+        run: npm run test

@@ -1,0 +1,2 @@
+src/binding.gyp linguist-vendored
+src/include/** linguist-vendored
