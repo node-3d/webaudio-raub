@@ -30,11 +30,11 @@ const { AudioContext } = require('..');
 	for (let i = 0; i < 10; i++) {
 		oscillator1.disconnect();
 		oscillator2.connect(gain);
-		await new Promise(res => setTimeout(res, 200));
+		await new Promise((res) => setTimeout(res, 200));
 		
 		oscillator2.disconnect();
 		oscillator1.connect(gain);
-		await new Promise(res => setTimeout(res, 200));
+		await new Promise((res) => setTimeout(res, 200));
 	}
 	
 	oscillator1.disconnect();
