@@ -7,15 +7,23 @@ const { AudioNode } = require('../core');
 
 inherits(AudioNode, Emitter);
 
+let nextId = 1;
+const genId = () => nextId++;
+const nonGcDict = {};
+
 
 function JsAudioNode(ctx, node) {
-	
 	AudioNode.call(this, ctx, node);
 	
+	// Prevent garbage collection until node is intentionally destroyed
+	this.__nonGcId = genId();
+	nonGcDict[this.__nonGcId] = this;
+	this.on('destroy', () => {
+		delete nonGcDict[this.__nonGcId];
+	});
 }
 
 JsAudioNode.prototype = {
-	
 	get onerror() { return this.listeners('error'); },
 	set onerror(cb) {
 		if (cb) {
@@ -39,7 +47,6 @@ JsAudioNode.prototype = {
 	toString() {
 		return 'AudioNode {}';
 	},
-	
 };
 
 inherits(JsAudioNode, AudioNode);

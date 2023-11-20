@@ -11,7 +11,6 @@ bool compareMagic(const uint8_t *data, const int16_t *magic) {
 }
 
 std::string getExtension(const uint8_t *data) {
-	
 	static const int16_t wv[] = { 'w', 'v', 'p', 'k', -2 };
 	static const int16_t wav[] = { 0x52, 0x49, 0x46, 0x46, -1, -1, -1, -1, 0x57, 0x41, 0x56, 0x45, -2 };
 	static const int16_t flac[] = { 0x66, 0x4C, 0x61, 0x43, -2 };
@@ -24,22 +23,18 @@ std::string getExtension(const uint8_t *data) {
 	static const char* extensions[] = { "wv", "wav", "flac", "pat", "mid", "opus", "ogg" };
 	
 	for (int i = 0; numbers[i] != nullptr; i++) {
-		
 		if (compareMagic(data, numbers[i])) {
 			return extensions[i];
 		}
-		
 	}
 	
 	return "";
-	
 }
 
 
 IMPLEMENT_ES5_CLASS(BaseAudioContext);
 
 void BaseAudioContext::init(Napi::Env env, Napi::Object exports) {
-	
 	Napi::Function ctor = wrap(env);
 	JS_ASSIGN_METHOD(_initListener);
 	JS_ASSIGN_METHOD(resume);
@@ -53,23 +48,23 @@ void BaseAudioContext::init(Napi::Env env, Napi::Object exports) {
 	JS_ASSIGN_METHOD(destroy);
 	
 	exports.Set("BaseAudioContext", ctor);
-	
 }
 
 
 BaseAudioContext::BaseAudioContext(const Napi::CallbackInfo &info):
 CommonCtx(info.This(), "BaseAudioContext") { NAPI_ENV;
-	
 	super(info);
 	
 	Napi::External<void> extCtx = info[0].As< Napi::External<void> >();
 	
 	CtxPtr *ctx = reinterpret_cast<CtxPtr*>(extCtx.Data());
-	
 	reset(*ctx);
 	
-	_state = "running";
+	Napi::Function ctor = _ctorEs5.Value().As<Napi::Function>();
+	Napi::String hrtf = ctor.Get("hrtf").As<Napi::String>();
+	// ctx->get()->loadHrtfDatabase(hrtf);
 	
+	_state = "running";
 }
 
 
@@ -79,21 +74,15 @@ BaseAudioContext::~BaseAudioContext() {
 
 
 void BaseAudioContext::_destroy() { DES_CHECK;
-	
-	Napi::Function startUpdater = _that.Get("stopUpdater").As<Napi::Function>();
-	startUpdater.Call(_that.Value(), 0, nullptr);
-	
 	if (_state != "closed") {
 		_state = "closed";
 	}
 	
 	CommonCtx::_destroy();
-	
 }
 
 
 JS_IMPLEMENT_METHOD(BaseAudioContext, _initListener) { THIS_CHECK;
-	
 	REQ_FUN_ARG(0, destinationCtor);
 	REQ_FUN_ARG(1, listenerCtor);
 	Napi::Object context = info.This().As<Napi::Object>();
@@ -111,12 +100,10 @@ JS_IMPLEMENT_METHOD(BaseAudioContext, _initListener) { THIS_CHECK;
 	
 	
 	RET_UNDEFINED;
-	
 }
 
 
 JS_IMPLEMENT_METHOD(BaseAudioContext, decodeAudioData) { THIS_CHECK;
-	
 	REQ_OBJ_ARG(0, audioData);
 	REQ_FUN_ARG(1, successCallback);
 	REQ_FUN_ARG(2, bufferCtor);
@@ -132,81 +119,61 @@ JS_IMPLEMENT_METHOD(BaseAudioContext, decodeAudioData) { THIS_CHECK;
 	
 	BusPtr bus = lab::MakeBusFromMemory(dataVec, ext, false);
 	
-	
 	napi_value argv[2];
 	argv[0] = context;
 	
 	argv[1] = JS_EXT(&bus);
 	Napi::Object buffer = bufferCtor.New(2, argv);
 	
-	
 	argv[0] = buffer;
 	successCallback.Call(1, argv);
 	
-	
 	RET_UNDEFINED;
-	
 }
 
 
 JS_IMPLEMENT_METHOD(BaseAudioContext, update) { THIS_CHECK;
-	
-	_impl->dispatchEvents();
-	
+	if (!_isDestroyed) {
+		_impl->dispatchEvents();
+	}
 	RET_UNDEFINED;
-	
 }
 
 
 JS_IMPLEMENT_METHOD(BaseAudioContext, resume) { THIS_CHECK;
-	
 	// TODO: do something?
 	RET_UNDEFINED;
-	
 }
 
 
 JS_IMPLEMENT_GETTER(BaseAudioContext, destination) { THIS_CHECK;
-	
-	
 	RET_VALUE(_destination.Value());
-	
 }
 
 
 JS_IMPLEMENT_GETTER(BaseAudioContext, currentTime) { THIS_CHECK;
-	
 	RET_NUM(_impl->currentTime());
-	
 }
 
 
 JS_IMPLEMENT_GETTER(BaseAudioContext, sampleRate) { THIS_CHECK;
-	
 	RET_NUM(_impl->sampleRate());
-	
 }
 
 
 JS_IMPLEMENT_GETTER(BaseAudioContext, listener) { THIS_CHECK;
-	
 	RET_VALUE(_listener.Value());
-	
 }
 
 
 JS_IMPLEMENT_GETTER(BaseAudioContext, state) { THIS_CHECK;
-	
 	RET_STR(_state);
-	
 }
 
 
 JS_IMPLEMENT_METHOD(BaseAudioContext, destroy) { THIS_CHECK;
-	
 	emit("destroy");
 	
 	_destroy();
 	RET_UNDEFINED;
-	
 }

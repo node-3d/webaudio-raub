@@ -2,16 +2,16 @@
 
 const { AudioContext } = require('..');
 
-const read = require('./utils/read');
+const { readAsBuffer } = require('./utils/read-as-buffer');
 
 
 (async () => { try {
 	
 	const context = new AudioContext();
 	
-	const cello = await read(`${__dirname}/samples/voice.ogg`);
+	const cello = await readAsBuffer(`${__dirname}/samples/voice.ogg`);
 	
-	const audioClip = await new Promise(res => context.decodeAudioData(cello, b => res(b)));
+	const audioClip = await new Promise((res) => context.decodeAudioData(cello, (b) => res(b)));
 	const audioClipNode = context.createBufferSource();
 	audioClipNode.buffer = audioClip;
 	
@@ -24,7 +24,7 @@ const read = require('./utils/read');
 	audioClipNode.start(0);
 	
 	// 20 sec
-	await new Promise(res => setTimeout(res, 20000));
+	await new Promise((res) => setTimeout(res, 20000));
 	
 	console.log('DONE');
 	

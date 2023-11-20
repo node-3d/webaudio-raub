@@ -6,26 +6,23 @@
 IMPLEMENT_ES5_CLASS(DelayNode);
 
 void DelayNode::init(Napi::Env env, Napi::Object exports) {
-	
 	Napi::Function ctor = wrap(env);
 	JS_ASSIGN_GETTER(delayTime);
 	JS_ASSIGN_METHOD(destroy);
 	
 	exports.Set("DelayNode", ctor);
-	
 }
 
 
 DelayNode::DelayNode(const Napi::CallbackInfo &info):
 CommonNode(info.This(), "DelayNode") { NAPI_ENV;
-	
 	Napi::Object context = info[0].As<Napi::Object>();
 	Napi::Function paramCtor = info[1].As<Napi::Function>();
 	double delay = info[2].ToNumber().DoubleValue();
 	
 	AudioContext *contextUnwrap = AudioContext::unwrap(context);
 	lab::AudioContext *contextLab = contextUnwrap->getCtx().get();
-	reset(context, std::make_shared<lab::DelayNode>(*contextLab, delay));
+	reset(context, std::make_shared<lab::DelayNode>(*contextLab));
 	
 	lab::DelayNode *node = static_cast<lab::DelayNode*>(
 		_impl.get()
@@ -35,12 +32,13 @@ CommonNode(info.This(), "DelayNode") { NAPI_ENV;
 	argv[0] = context;
 	
 	SettingPtr delayTimeParam = node->delayTime();
+	delayTimeParam->setFloat(delay);
+	
 	argv[1] = JS_EXT(&delayTimeParam);
 	_delayTime.Reset(paramCtor.New(2, argv), 1);
 	
 	argv[1] = JS_EXT(&_impl);
 	super(info, 2, argv);
-	
 }
 
 
@@ -50,11 +48,8 @@ DelayNode::~DelayNode() {
 
 
 void DelayNode::_destroy() { DES_CHECK;
-	
 	_isDestroyed = true;
-	
 	CommonNode::_destroy();
-	
 }
 
 
@@ -67,10 +62,7 @@ JS_IMPLEMENT_GETTER(DelayNode, delayTime) { THIS_CHECK;
 
 
 JS_IMPLEMENT_METHOD(DelayNode, destroy) { THIS_CHECK;
-	
 	emit("destroy");
-	
 	_destroy();
 	RET_UNDEFINED;
-	
 }

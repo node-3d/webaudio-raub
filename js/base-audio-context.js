@@ -1,7 +1,8 @@
 'use strict';
 
-const { inspect, inherits } = require('util');
-const Emitter = require('events');
+const { inspect, inherits } = require('node:util');
+const Emitter = require('node:events');
+const { hrtf } = require('deps-labsound-raub');
 
 const { BaseAudioContext } = require('../core');
 const JsAudioDestinationNode = require('./audio-destination-node');
@@ -10,6 +11,7 @@ const JsAudioListener = require('./audio-listener');
 const nodes = require('./nodes');
 
 inherits(BaseAudioContext, Emitter);
+BaseAudioContext.hrtf = hrtf;
 
 
 function JsBaseAudioContext(ctx) {
@@ -18,7 +20,6 @@ function JsBaseAudioContext(ctx) {
 }
 
 JsBaseAudioContext.prototype = {
-	
 	get onerror() { return this.listeners('error'); },
 	set onerror(cb) {
 		if (cb) {
@@ -123,8 +124,6 @@ JsBaseAudioContext.prototype = {
 	createWaveShaper(opts) {
 		return new nodes.WaveShaperNode(this, opts);
 	},
-	
-	
 };
 
 inherits(JsBaseAudioContext, BaseAudioContext);

@@ -2,16 +2,16 @@
 
 const { AudioContext } = require('..');
 
-const read = require('./utils/read');
+const { readAsBuffer } = require('./utils/read-as-buffer');
 
 
 (async () => { try {
 	
 	const context = new AudioContext();
 	
-	const voice = await read(`${__dirname}/samples/voice.ogg`);
+	const voice = await readAsBuffer(`${__dirname}/samples/voice.ogg`);
 	
-	const audioClip = await new Promise(res => context.decodeAudioData(voice, b => res(b)));
+	const audioClip = await new Promise((res) => context.decodeAudioData(voice, (b) => res(b)));
 	const audioClipNode = context.createBufferSource();
 	audioClipNode.buffer = audioClip;
 	
@@ -38,7 +38,7 @@ const read = require('./utils/read');
 		panner.positionZ.value = s;
 		
 		// Wait
-		await new Promise(res => setTimeout(res, 15));
+		await new Promise((res) => setTimeout(res, 15));
 		
 	}
 	

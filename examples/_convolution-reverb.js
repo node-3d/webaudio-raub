@@ -2,21 +2,21 @@
 
 const { AudioContext } = require('..');
 
-const read = require('./utils/read');
+const { readAsBuffer } = require('./utils/read-as-buffer');
 
 
 (async () => { try {
 	
 	const context = new AudioContext();
 	
-	const cardiod = await read(`${__dirname}/samples/cardiod.wav`);
-	const voice = await read(`${__dirname}/samples/voice.ogg`);
+	const cardiod = await readAsBuffer(`${__dirname}/samples/cardiod.wav`);
+	const voice = await readAsBuffer(`${__dirname}/samples/voice.ogg`);
 	
 	const impulseResponseClip = await new Promise(
-		res => context.decodeAudioData(cardiod, b => res(b))
+		(res) => context.decodeAudioData(cardiod, (b) => res(b))
 	);
 	const voiceClip = await new Promise(
-		res => context.decodeAudioData(voice, b => res(b))
+		(res) => context.decodeAudioData(voice, (b) => res(b))
 	);
 	
 	const outputGain = context.createGain();
@@ -44,7 +44,7 @@ const read = require('./utils/read');
 	outputGain.connect(context.destination);
 	
 	// 30 sec
-	await new Promise(res => setTimeout(res, 30000));
+	await new Promise((res) => setTimeout(res, 30000));
 	
 	console.log('DONE');
 	

@@ -2,13 +2,11 @@
 #define _ANALYSER_NODE_HPP_
 
 #include "common.hpp"
-
 #include "audio-node.hpp"
 
 
 class AnalyserNode : public CommonNode {
 DECLARE_ES5_CLASS(AnalyserNode, AnalyserNode);
-	
 public:
 	static void init(Napi::Env env, Napi::Object exports);
 	
@@ -18,7 +16,6 @@ public:
 	void _destroy();
 	
 private:
-	uint32_t _frequencyBinCount;
 	uint32_t _fftSize;
 	double _minDecibels;
 	double _maxDecibels;
@@ -44,7 +41,6 @@ private:
 	
 	JS_DECLARE_GETTER(AnalyserNode, smoothingTimeConstant);
 	JS_DECLARE_SETTER(AnalyserNode, smoothingTimeConstant);
-	
 };
 
 

@@ -2,17 +2,16 @@
 
 const { AudioContext } = require('..');
 
-const read = require('./utils/read');
+const { readAsBuffer } = require('./utils/read-as-buffer');
 
 
 (async () => { try {
 	
 	const context = new AudioContext();
 	
-	const clip = await read(`${__dirname}/samples/trainrolling.wav`);
+	const clip = await readAsBuffer(`${__dirname}/samples/trainrolling.wav`);
 	
-	console.log('111');
-	const musicClip = await new Promise(res => context.decodeAudioData(clip, b => res(b)));
+	const musicClip = await new Promise((res) => context.decodeAudioData(clip, (b) => res(b)));
 	
 	const oscillator = context.createOscillator();
 	
@@ -50,7 +49,7 @@ const read = require('./utils/read');
 	oscillator.start(0);
 	
 	// 6 sec
-	await new Promise(res => setTimeout(res, 6000));
+	await new Promise((res) => setTimeout(res, 6000));
 	
 	console.log('DONE');
 	

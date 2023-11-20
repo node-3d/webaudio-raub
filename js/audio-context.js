@@ -1,32 +1,27 @@
 'use strict';
 
-const { inspect, inherits } = require('util');
+const { inspect, inherits } = require('node:util');
 
 const { AudioContext } = require('../core');
 const JsBaseAudioContext = require('./base-audio-context');
 
-
 inherits(AudioContext, JsBaseAudioContext);
 
 
-function JsAudioContext(opts = {}) {
-	if (opts.sampleRate) {
-		AudioContext.call(this, opts.sampleRate);
-	} else {
-		AudioContext.call(this);
+class JsAudioContext extends AudioContext {
+	constructor(opts = {}) {
+		if (opts.sampleRate) {
+			super(opts.sampleRate);
+		} else {
+			super();
+		}
 	}
-}
-
-JsAudioContext.prototype = {
 	
-	[inspect.custom]() { return this.toString(); },
+	[inspect.custom]() { return this.toString(); }
 	
 	toString() {
 		return 'AudioContext {}';
-	},
-	
-};
-
-inherits(JsAudioContext, AudioContext);
+	}
+}
 
 module.exports = JsAudioContext;

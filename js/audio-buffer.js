@@ -1,27 +1,23 @@
 'use strict';
 
-const { inspect, inherits } = require('util');
-const Emitter = require('events');
+const { inspect, inherits } = require('node:util');
+const Emitter = require('node:events');
 
 const { AudioBuffer } = require('../core');
 
 inherits(AudioBuffer, Emitter);
 
 
-function JsAudioBuffer(ctx, bus) {
-	AudioBuffer.call(this, ctx, bus);
-}
-
-JsAudioBuffer.prototype = {
+class JsAudioBuffer extends AudioBuffer {
+	constructor(ctx, bus) {
+		super(ctx, bus);
+	}
 	
-	[inspect.custom]() { return this.toString(); },
+	[inspect.custom]() { return this.toString(); }
 	
 	toString() {
 		return 'AudioBuffer {}';
-	},
-	
-};
-
-inherits(JsAudioBuffer, AudioBuffer);
+	}
+}
 
 module.exports = JsAudioBuffer;

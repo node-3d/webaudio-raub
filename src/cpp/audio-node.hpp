@@ -6,9 +6,7 @@
 
 class AudioNode : public CommonNode {
 DECLARE_ES5_CLASS(AudioNode, AudioNode);
-	
 public:
-	
 	static void init(Napi::Env env, Napi::Object exports);
 	static bool isAudioNode(Napi::Object obj);
 	
@@ -18,8 +16,6 @@ public:
 	void _destroy();
 	
 private:
-	
-	uint32_t _channelCount;
 	std::string _channelCountMode;
 	std::string _channelInterpretation;
 	
@@ -42,7 +38,6 @@ private:
 	
 	JS_DECLARE_GETTER(AudioNode, channelInterpretation);
 	JS_DECLARE_SETTER(AudioNode, channelInterpretation);
-	
 };
 
 

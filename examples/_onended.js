@@ -2,16 +2,16 @@
 
 const { AudioContext } = require('..');
 
-const read = require('./utils/read');
+const { readAsBuffer } = require('./utils/read-as-buffer');
 
 
 (async () => { try {
 	
 	const context = new AudioContext();
 	
-	const clip = await read(`${__dirname}/samples/hit.wav`);
+	const clip = await readAsBuffer(`${__dirname}/samples/hit.wav`);
 	
-	const musicClip = await new Promise(res => context.decodeAudioData(clip, b => res(b)));
+	const musicClip = await new Promise((res) => context.decodeAudioData(clip, (b) => res(b)));
 	
 	const gain = context.createGain();
 	gain.gain.value = 0.0625;
@@ -32,7 +32,7 @@ const read = require('./utils/read');
 	musicClipNode.on('ended', () => console.log('Played:', i++));
 	
 	// Let it settle down
-	await new Promise(res => setTimeout(res, 1000));
+	await new Promise((res) => setTimeout(res, 1000));
 	
 	setInterval(() => {
 		if (isActive) {
@@ -44,7 +44,7 @@ const read = require('./utils/read');
 	
 	
 	// 60 sec
-	await new Promise(res => setTimeout(res, 600000));
+	await new Promise((res) => setTimeout(res, 60000));
 	
 	console.log('DONE');
 	

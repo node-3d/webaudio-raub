@@ -31,6 +31,7 @@
 
 
 Napi::Object initModule(Napi::Env env, Napi::Object exports) {
+	log_set_level(LOGLEVEL_WARN);
 	
 	BaseAudioContext::init(env, exports);
 	AudioContext::init(env, exports);

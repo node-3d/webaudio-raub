@@ -25,7 +25,6 @@ void _disconnectParam(AudioContext *context, ParamPtr node);
 
 
 struct Common {
-	
 	typedef std::function<void(Napi::Env, Napi::Function)> CallbackWrapper;
 	
 	static inline void CallJS(
@@ -48,7 +47,6 @@ struct Common {
 	
 	Common(Napi::Value that, const char *name):
 	_asyncCtx(that.Env(), name) {
-		
 		_that.Reset(that.As<Napi::Object>());
 		_isDestroyed = false;
 		
@@ -83,11 +81,9 @@ struct Common {
 		}
 		
 		_tsEmit = Napi::ThreadSafeFunction(tsfn);
-		
 	}
 	
 	~Common() { _destroy(); }
-	
 	
 	void emit(
 		const char* name,
@@ -97,21 +93,16 @@ struct Common {
 		eventEmit(_that.Value(), name, argc, argv);
 	}
 	
-	
 	void emitAsync(
 		const char* name,
 		int argc = 0,
 		const Napi::Value *argv = nullptr
 	) {
-		
 		_tsEmit.Acquire();
 		
 		Common *that = this;
 		napi_status status = _tsEmit.NonBlockingCall(
-			[that, name, argc, argv](
-				Napi::Env env,
-				Napi::Function emit
-			) {
+			[that, name, argc, argv](Napi::Env env, Napi::Function emit) {
 				std::vector<napi_value> args;
 				args.push_back(JS_STR(name));
 				for (int i = 0; i < argc; i++) {
@@ -121,12 +112,11 @@ struct Common {
 			}
 		);
 		
-		if ( status != napi_ok ) {
+		if (status != napi_ok) {
 			std::cerr << "Error: could not call the threadsafe function." << std::endl;
 		}
 		
 		_tsEmit.Release();
-		
 	}
 	
 	void _destroy() { DES_CHECK;
@@ -144,12 +134,10 @@ struct Common {
 	AudioContext *_contextVal;
 	Napi::AsyncContext _asyncCtx;
 	Napi::ThreadSafeFunction _tsEmit;
-	
 };
 
 
 struct CommonNode: public Common {
-	
 	CommonNode(Napi::Value that, const char *name):
 	Common(that, name) {
 	}
@@ -157,13 +145,9 @@ struct CommonNode: public Common {
 	~CommonNode() { _destroy(); }
 	
 	void _destroy() { DES_CHECK;
-		
 		// _disconnectNode(_contextVal, _impl);
-		
 		_impl.reset();
-		
 		Common::_destroy();
-		
 	}
 	
 	NodePtr getNode() const { return _impl; }
@@ -174,12 +158,10 @@ struct CommonNode: public Common {
 	}
 	
 	NodePtr _impl;
-	
 };
 
 
 struct CommonParam: public Common {
-	
 	CommonParam(Napi::Value that, const char *name):
 	Common(that, name) {
 	}
@@ -187,13 +169,9 @@ struct CommonParam: public Common {
 	~CommonParam() { _destroy(); }
 		
 	void _destroy() { DES_CHECK;
-		
 		// _disconnectParam(_contextVal, _impl);
-		
 		_impl.reset();
-		
 		Common::_destroy();
-		
 	}
 	
 	ParamPtr getParam() const { return _impl; }
@@ -204,12 +182,10 @@ struct CommonParam: public Common {
 	}
 	
 	ParamPtr _impl;
-	
 };
 
 
 struct CommonSetting: public Common {
-	
 	CommonSetting(Napi::Value that, const char *name):
 	Common(that, name) {
 	}
@@ -229,12 +205,10 @@ struct CommonSetting: public Common {
 	}
 	
 	SettingPtr _impl;
-	
 };
 
 
 struct CommonCtx: public Common {
-	
 	CommonCtx(Napi::Value that, const char *name):
 	Common(that, name) {
 	}
@@ -242,11 +216,8 @@ struct CommonCtx: public Common {
 	~CommonCtx() { _destroy(); }
 	
 	void _destroy() { DES_CHECK;
-		
 		_impl.reset();
-		
 		Common::_destroy();
-		
 	}
 	
 	CtxPtr getCtx() const { return _impl; }
@@ -256,12 +227,10 @@ struct CommonCtx: public Common {
 	}
 	
 	CtxPtr _impl;
-	
 };
 
 
 struct CommonBus: public Common {
-	
 	CommonBus(Napi::Value that, const char *name):
 	Common(that, name) {
 	}
@@ -284,12 +253,10 @@ struct CommonBus: public Common {
 	}
 	
 	BusPtr _impl;
-	
 };
 
 
 struct CommonListener: public Common {
-	
 	CommonListener(Napi::Value that, const char *name):
 	Common(that, name) {
 	}
@@ -297,11 +264,8 @@ struct CommonListener: public Common {
 	~CommonListener() { _destroy(); }
 		
 	void _destroy() { DES_CHECK;
-		
 		_impl = nullptr;
-		
 		Common::_destroy();
-		
 	}
 	
 	ListenerPtr getListener() const { return _impl; }
@@ -312,7 +276,6 @@ struct CommonListener: public Common {
 	}
 	
 	ListenerPtr _impl;
-	
 };
 
 #endif // _COMMON_HPP_

@@ -33,8 +33,8 @@
 	"scripts": {
 		"postinstall": "node install",
 		"eslint": "eslint .",
-		"build": "cd src && node-gyp rebuild -j max --silent && node -e \"require('addon-tools-raub').cpbin('glfw')\" && cd ..",
-		"build-only": "cd src && node-gyp build -j max --silent && node -e \"require('addon-tools-raub').cpbin('glfw')\" && cd ..",
+		"build": "cd src && node-gyp rebuild -j max --silent && node -e \"require('addon-tools-raub').cpbin('webaudio')\" && cd ..",
+		"build-only": "cd src && node-gyp build -j max --silent && node -e \"require('addon-tools-raub').cpbin('webaudio')\" && cd ..",
 		"test": "node --test"
 	},
 	"repository": {
