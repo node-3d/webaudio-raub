@@ -43,5 +43,29 @@ jobs:
       - name: Build Current Binary
         run: npm run build
 
+      - name: Print Audio Device 1
+        if: matrix.os == 'windows-2022'
+        run: Get-CimInstance Win32_SoundDevice | fl *
+
+      - name: Install Scream
+        if: matrix.os == 'windows-2022'
+        shell: powershell
+        run: |
+          Start-Service audio*
+          Invoke-WebRequest https://github.com/duncanthrax/scream/releases/download/3.6/Scream3.6.zip -OutFile C:\Scream3.6.zip
+          Extract-7Zip -Path C:\Scream3.6.zip -DestinationPath C:\Scream
+          $cert = (Get-AuthenticodeSignature C:\Scream\Install\driver\Scream.sys).SignerCertificate
+          $store = [System.Security.Cryptography.X509Certificates.X509Store]::new("TrustedPublisher", "LocalMachine")
+          $store.Open("ReadWrite")
+          $store.Add($cert)
+          $store.Close()
+          cd C:\Scream\Install\driver
+          C:\Scream\Install\helpers\devcon install Scream.inf *Scream
+
+      - name: Print Audio Device 2
+        if: matrix.os == 'windows-2022'
+        run: Get-CimInstance Win32_SoundDevice | fl *
+
       - name: Run Unit Tests
-        run: npm run test
+        if: matrix.os == 'windows-2022' || matrix.os == 'macos-11'
+        run: npm test
