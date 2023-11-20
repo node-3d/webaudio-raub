@@ -44,7 +44,9 @@ jobs:
         run: npm run build
 
       - name: Provide Audio Device
+        if: matrix.os == 'ubuntu-20.04' || matrix.os == 'windows-2022' || matrix.os == 'macos-11'
         uses: LABSN/sound-ci-helpers@v1
 
       - name: Run Unit Tests
+        if: matrix.os == 'ubuntu-20.04' || matrix.os == 'windows-2022' || matrix.os == 'macos-11'
         run: npm test
