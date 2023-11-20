@@ -43,9 +43,24 @@ jobs:
       - name: Build Current Binary
         run: npm run build
 
-      - name: Provide Audio Device
-        if: matrix.os == 'ubuntu-20.04' || matrix.os == 'windows-2022' || matrix.os == 'macos-11'
+      - name: Audio Device - Unix
+        if: matrix.os == 'ubuntu-20.04' || matrix.os == 'macos-11'
         uses: LABSN/sound-ci-helpers@v1
+
+      - name: Audio Device - Windows
+        if: matrix.os == 'windows-2022'
+        shell: powershell
+        run: |
+          Start-Service audio*
+          Invoke-WebRequest https://github.com/duncanthrax/scream/releases/download/3.6/Scream3.6.zip -OutFile C:\Scream3.6.zip
+          Extract-7Zip -Path C:\Scream3.6.zip -DestinationPath C:\Scream
+          $cert = (Get-AuthenticodeSignature C:\Scream\Install\driver\Scream.sys).SignerCertificate
+          $store = [System.Security.Cryptography.X509Certificates.X509Store]::new("TrustedPublisher", "LocalMachine")
+          $store.Open("ReadWrite")
+          $store.Add($cert)
+          $store.Close()
+          cd C:\Scream\Install\driver
+          C:\Scream\Install\helpers\devcon install Scream.inf *Scream
 
       - name: Run Unit Tests
         if: matrix.os == 'ubuntu-20.04' || matrix.os == 'windows-2022' || matrix.os == 'macos-11'
