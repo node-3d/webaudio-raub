@@ -22,7 +22,6 @@ private:
 	double _smoothingTimeConstant;
 	
 	JS_DECLARE_METHOD(AnalyserNode, destroy);
-	
 	JS_DECLARE_METHOD(AnalyserNode, getFloatFrequencyData);
 	JS_DECLARE_METHOD(AnalyserNode, getByteFrequencyData);
 	JS_DECLARE_METHOD(AnalyserNode, getFloatTimeDomainData);

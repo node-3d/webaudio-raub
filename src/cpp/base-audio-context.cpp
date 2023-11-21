@@ -173,7 +173,6 @@ JS_IMPLEMENT_GETTER(BaseAudioContext, state) { THIS_CHECK;
 
 JS_IMPLEMENT_METHOD(BaseAudioContext, destroy) { THIS_CHECK;
 	emit("destroy");
-	
 	_destroy();
 	RET_UNDEFINED;
 }

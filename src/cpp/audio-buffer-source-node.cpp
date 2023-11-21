@@ -80,6 +80,27 @@ JS_IMPLEMENT_METHOD(AudioBufferSourceNode, start) { THIS_CHECK;
 	
 	if (_isLooping) {
 		if (_loopEnd > _loopStart) {
+			node->start(when, _loopStart, _loopEnd - _loopStart, -1);
+		} else {
+			node->start(when, _loopStart, -1);
+		}
+	} else {
+		node->start(when);
+	}
+	
+	RET_UNDEFINED;
+}
+
+
+JS_IMPLEMENT_METHOD(AudioBufferSourceNode, schedule) { THIS_CHECK;
+	LET_DOUBLE_ARG(0, when);
+	
+	lab::SampledAudioNode *node = static_cast<lab::SampledAudioNode*>(
+		_impl.get()
+	);
+	
+	if (_isLooping) {
+		if (_loopEnd > _loopStart) {
 			node->schedule(when, _loopStart, _loopEnd - _loopStart, -1);
 		} else {
 			node->schedule(when, _loopStart, -1);

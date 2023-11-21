@@ -6,20 +6,17 @@
 IMPLEMENT_ES5_CLASS(ConvolverNode);
 
 void ConvolverNode::init(Napi::Env env, Napi::Object exports) {
-	
 	Napi::Function ctor = wrap(env);
 	JS_ASSIGN_SETTER(normalize);
 	JS_ASSIGN_SETTER(buffer);
 	JS_ASSIGN_METHOD(destroy);
 	
 	exports.Set("ConvolverNode", ctor);
-	
 }
 
 
 ConvolverNode::ConvolverNode(const Napi::CallbackInfo &info):
 CommonNode(info.This(), "ConvolverNode") { NAPI_ENV;
-	
 	Napi::Object context = info[0].As<Napi::Object>();
 	
 	AudioContext *contextUnwrap = AudioContext::unwrap(context);
@@ -32,7 +29,6 @@ CommonNode(info.This(), "ConvolverNode") { NAPI_ENV;
 	
 	Napi::Value argv[] = { context, JS_EXT(&_impl) };
 	super(info, 2, argv);
-	
 }
 
 
@@ -42,21 +38,16 @@ ConvolverNode::~ConvolverNode() {
 
 
 void ConvolverNode::_destroy() { DES_CHECK;
-	
 	CommonNode::_destroy();
-	
 }
 
 
 JS_IMPLEMENT_GETTER(ConvolverNode, buffer) { THIS_CHECK;
-	
 	RET_VALUE(_buffer.Value());
-	
 }
 
 
 JS_IMPLEMENT_SETTER(ConvolverNode, buffer) { THIS_CHECK; SETTER_OBJ_ARG;
-	
 	if ( ! v && v == _buffer.Value()) {
 		RET_UNDEFINED;
 	}
@@ -78,22 +69,18 @@ JS_IMPLEMENT_SETTER(ConvolverNode, buffer) { THIS_CHECK; SETTER_OBJ_ARG;
 	emit("buffer", 1, &value);
 	
 	RET_UNDEFINED;
-	
 }
 
 
 JS_IMPLEMENT_GETTER(ConvolverNode, normalize) { THIS_CHECK;
-	
 	lab::ConvolverNode *node = static_cast<lab::ConvolverNode*>(
 		_impl.get()
 	);
 	
 	RET_BOOL(node->normalize());
-	
 }
 
 JS_IMPLEMENT_SETTER(ConvolverNode, normalize) { THIS_CHECK; SETTER_BOOL_ARG;
-	
 	lab::ConvolverNode *node = static_cast<lab::ConvolverNode*>(
 		_impl.get()
 	);
@@ -102,15 +89,11 @@ JS_IMPLEMENT_SETTER(ConvolverNode, normalize) { THIS_CHECK; SETTER_BOOL_ARG;
 	
 	emit("normalize", 1, &value);
 	RET_UNDEFINED;
-	
 }
 
 
 JS_IMPLEMENT_METHOD(ConvolverNode, destroy) { THIS_CHECK;
-	
 	emit("destroy");
-	
 	_destroy();
 	RET_UNDEFINED;
-	
 }

@@ -6,7 +6,6 @@
 IMPLEMENT_ES5_CLASS(OscillatorNode);
 
 void OscillatorNode::init(Napi::Env env, Napi::Object exports) {
-	
 	Napi::Function ctor = wrap(env);
 	JS_ASSIGN_SETTER(type);
 	JS_ASSIGN_METHOD(setPeriodicWave);
@@ -15,7 +14,6 @@ void OscillatorNode::init(Napi::Env env, Napi::Object exports) {
 	JS_ASSIGN_METHOD(destroy);
 	
 	exports.Set("OscillatorNode", ctor);
-	
 }
 
 
@@ -51,7 +49,6 @@ inline lab::OscillatorType toOscillatorType(const std::string &mode) {
 
 OscillatorNode::OscillatorNode(const Napi::CallbackInfo &info):
 CommonNode(info.This(), "OscillatorNode") { NAPI_ENV;
-	
 	Napi::Object context = info[0].As<Napi::Object>();
 	Napi::Function paramCtor = info[1].As<Napi::Function>();
 	
@@ -76,23 +73,19 @@ CommonNode(info.This(), "OscillatorNode") { NAPI_ENV;
 	
 	argv[1] = JS_EXT(&_impl);
 	super(info, 2, argv);
-	
 }
 
 
 OscillatorNode::~OscillatorNode() {
 	_destroy();
-	
 }
 
 
 void OscillatorNode::_destroy() { DES_CHECK;
-	
 	_frequency.Reset();
 	_detune.Reset();
 	
 	CommonNode::_destroy();
-	
 }
 
 
@@ -100,28 +93,23 @@ void OscillatorNode::_destroy() { DES_CHECK;
 
 
 JS_IMPLEMENT_METHOD(OscillatorNode, setPeriodicWave) { THIS_CHECK;
-	
 	REQ_OBJ_ARG(0, periodicWave);
 	
 	// TODO: do something?
 	RET_UNDEFINED;
-	
 }
 
 
 JS_IMPLEMENT_GETTER(OscillatorNode, type) { THIS_CHECK;
-	
 	lab::OscillatorNode *node = static_cast<lab::OscillatorNode*>(
 		_impl.get()
 	);
 	
 	RET_STR(fromOscillatorType(node->type()));
-	
 }
 
 
 JS_IMPLEMENT_SETTER(OscillatorNode, type) { THIS_CHECK;
-	
 	// REQ_STR_ARG(0, v);
 	SETTER_STR_ARG;
 	
@@ -133,29 +121,21 @@ JS_IMPLEMENT_SETTER(OscillatorNode, type) { THIS_CHECK;
 	
 	emit("type", 1, &value);
 	RET_UNDEFINED;
-	
 }
 
 
 JS_IMPLEMENT_GETTER(OscillatorNode, frequency) { THIS_CHECK;
-	
 	RET_VALUE(_frequency.Value());
-	
 }
 
 
 JS_IMPLEMENT_GETTER(OscillatorNode, detune) { THIS_CHECK;
-	
 	RET_VALUE(_detune.Value());
-	
 }
 
 
 JS_IMPLEMENT_METHOD(OscillatorNode, destroy) { THIS_CHECK;
-	
 	emit("destroy");
-	
 	_destroy();
 	RET_UNDEFINED;
-	
 }

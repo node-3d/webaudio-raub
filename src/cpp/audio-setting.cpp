@@ -133,7 +133,6 @@ JS_IMPLEMENT_GETTER(AudioSetting, maxValue) { THIS_CHECK;
 
 JS_IMPLEMENT_METHOD(AudioSetting, destroy) { THIS_CHECK;
 	emit("destroy");
-	
 	_destroy();
 	RET_UNDEFINED;
 }

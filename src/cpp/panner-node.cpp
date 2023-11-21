@@ -346,7 +346,6 @@ JS_IMPLEMENT_SETTER(PannerNode, coneOuterGain) { THIS_CHECK; SETTER_DOUBLE_ARG;
 
 JS_IMPLEMENT_METHOD(PannerNode, destroy) { THIS_CHECK;
 	emit("destroy");
-	
 	_destroy();
 	RET_UNDEFINED;
 }

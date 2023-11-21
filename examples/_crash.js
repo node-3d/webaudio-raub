@@ -56,6 +56,7 @@ const context = new AudioContext();
 			source.buffer = buffer;
 			source.playbackRate.setValueAtTime(audio.playbackRate, audio.startTime);
 			audio.startTime = context.currentTime;
+			console.log(context.currentTime);
 			source.start(audio.startTime, 0);
 		};
 		
@@ -72,7 +73,7 @@ const context = new AudioContext();
 			const previousHeight = ball.y;
 			const al = i * offset + ( time * speed );
 			
-			ball.y = Math.abs(Math.sin(al) * height);
+			ball.y = Math.abs(Math.sin(0.5 * al) * height);
 			
 			if (ball.y === previousHeight) {
 				continue;

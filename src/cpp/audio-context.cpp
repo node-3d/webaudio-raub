@@ -101,7 +101,6 @@ JS_IMPLEMENT_GETTER(AudioContext, baseLatency) { THIS_CHECK;
 
 JS_IMPLEMENT_METHOD(AudioContext, destroy) { THIS_CHECK;
 	emit("destroy");
-	
 	_destroy();
 	RET_UNDEFINED;
 }

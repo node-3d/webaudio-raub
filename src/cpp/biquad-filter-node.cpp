@@ -121,7 +121,6 @@ JS_IMPLEMENT_GETTER(BiquadFilterNode, gain) { THIS_CHECK;
 
 JS_IMPLEMENT_METHOD(BiquadFilterNode, destroy) { THIS_CHECK;
 	emit("destroy");
-	
 	_destroy();
 	RET_UNDEFINED;
 }

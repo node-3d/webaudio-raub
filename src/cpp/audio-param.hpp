@@ -6,9 +6,7 @@
 
 class AudioParam : public CommonParam {
 DECLARE_ES5_CLASS(AudioParam, AudioParam);
-	
 public:
-	
 	static void init(Napi::Env env, Napi::Object exports);
 	static bool isAudioParam(Napi::Object obj);
 	
@@ -18,7 +16,6 @@ public:
 	void _destroy();
 	
 private:
-	
 	JS_DECLARE_METHOD(AudioParam, destroy);
 	
 	// JS_METHOD(connect);
@@ -36,13 +33,9 @@ private:
 	
 	JS_DECLARE_GETTER(AudioParam, value);
 	JS_DECLARE_SETTER(AudioParam, value);
-	
 	JS_DECLARE_GETTER(AudioParam, defaultValue);
-	
 	JS_DECLARE_GETTER(AudioParam, minValue);
-	
 	JS_DECLARE_GETTER(AudioParam, maxValue);
-	
 };
 
 

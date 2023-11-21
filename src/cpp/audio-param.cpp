@@ -5,7 +5,6 @@
 IMPLEMENT_ES5_CLASS(AudioParam);
 
 void AudioParam::init(Napi::Env env, Napi::Object exports) {
-	
 	Napi::Function ctor = wrap(env);
 	JS_ASSIGN_SETTER(value);
 	JS_ASSIGN_METHOD(cancelAndHoldAtTime);
@@ -21,7 +20,6 @@ void AudioParam::init(Napi::Env env, Napi::Object exports) {
 	JS_ASSIGN_METHOD(destroy);
 	
 	exports.Set("AudioParam", ctor);
-	
 }
 
 
@@ -32,7 +30,6 @@ bool AudioParam::isAudioParam(Napi::Object obj) {
 
 AudioParam::AudioParam(const Napi::CallbackInfo &info):
 CommonParam(info.This(), "AudioParam") { NAPI_ENV;
-	
 	super(info);
 	
 	Napi::Object context = info[0].As<Napi::Object>();
@@ -41,7 +38,6 @@ CommonParam(info.This(), "AudioParam") { NAPI_ENV;
 	ParamPtr *param = reinterpret_cast<ParamPtr *>(extParam.Data());
 	
 	reset(context, *param);
-	
 }
 
 
@@ -56,52 +52,43 @@ void AudioParam::_destroy() { DES_CHECK;
 
 
 JS_IMPLEMENT_METHOD(AudioParam, setValueAtTime) { THIS_CHECK;
-	
 	REQ_FLOAT_ARG(0, value);
 	REQ_FLOAT_ARG(1, time);
 	
 	_impl->setValueAtTime(value, time);
 	RET_UNDEFINED;
-	
 }
 
 
 JS_IMPLEMENT_METHOD(AudioParam, linearRampToValueAtTime) { THIS_CHECK;
-	
 	REQ_FLOAT_ARG(0, value);
 	REQ_FLOAT_ARG(1, time);
 	
 	_impl->linearRampToValueAtTime(value, time);
 	RET_UNDEFINED;
-	
 }
 
 
 JS_IMPLEMENT_METHOD(AudioParam, exponentialRampToValueAtTime) { THIS_CHECK;
-	
 	REQ_FLOAT_ARG(0, value);
 	REQ_FLOAT_ARG(1, time);
 	
 	_impl->exponentialRampToValueAtTime(value, time);
 	RET_UNDEFINED;
-	
 }
 
 
 JS_IMPLEMENT_METHOD(AudioParam, setTargetAtTime) { THIS_CHECK;
-	
 	REQ_FLOAT_ARG(0, target);
 	REQ_FLOAT_ARG(1, time);
 	REQ_FLOAT_ARG(2, timeConstant);
 	
 	_impl->setTargetAtTime(target, time, timeConstant);
 	RET_UNDEFINED;
-	
 }
 
 
 JS_IMPLEMENT_METHOD(AudioParam, setValueCurveAtTime) { THIS_CHECK;
-	
 	REQ_OBJ_ARG(0, values);
 	REQ_FLOAT_ARG(1, time);
 	REQ_FLOAT_ARG(2, duration);
@@ -111,40 +98,33 @@ JS_IMPLEMENT_METHOD(AudioParam, setValueCurveAtTime) { THIS_CHECK;
 	
 	_impl->setValueCurveAtTime(curve, time, duration);
 	RET_UNDEFINED;
-	
 }
 
 
 JS_IMPLEMENT_METHOD(AudioParam, cancelScheduledValues) { THIS_CHECK;
-	
 	REQ_FLOAT_ARG(0, startTime);
 	
 	_impl->cancelScheduledValues(startTime);
 	RET_UNDEFINED;
-	
 }
 
 
 JS_IMPLEMENT_METHOD(AudioParam, cancelAndHoldAtTime) { THIS_CHECK;
-	
 	REQ_FLOAT_ARG(0, startTime);
 	
 	// TODO: implement
 	// _impl->cancelAndHoldAtTime(startTime);
 	RET_UNDEFINED;
-	
 }
 
 
 JS_IMPLEMENT_GETTER(AudioParam, value) { THIS_CHECK;
-	
 	Napi::Object context = _context.Value();
 	AudioContext *audioContext = AudioContext::unwrap(context);
 	
 	lab::ContextRenderLock renderLock(audioContext->getCtx().get(), "AudioParam::valueGetter");
 	
 	RET_NUM(_impl->value());
-	
 }
 
 JS_IMPLEMENT_SETTER(AudioParam, value) { THIS_CHECK; SETTER_FLOAT_ARG;
@@ -154,31 +134,22 @@ JS_IMPLEMENT_SETTER(AudioParam, value) { THIS_CHECK; SETTER_FLOAT_ARG;
 
 
 JS_IMPLEMENT_GETTER(AudioParam, defaultValue) { THIS_CHECK;
-	
 	RET_NUM(_impl->defaultValue());
-	
 }
 
 
 JS_IMPLEMENT_GETTER(AudioParam, minValue) { THIS_CHECK;
-	
 	RET_NUM(_impl->minValue());
-	
 }
 
 
 JS_IMPLEMENT_GETTER(AudioParam, maxValue) { THIS_CHECK;
-	
 	RET_NUM(_impl->maxValue());
-	
 }
 
 
 JS_IMPLEMENT_METHOD(AudioParam, destroy) { THIS_CHECK;
-	
 	emit("destroy");
-	
 	_destroy();
 	RET_UNDEFINED;
-	
 }

@@ -2,7 +2,6 @@
 #define _AUDIO_BUFFER_SOURCE_NODE_HPP_
 
 #include "common.hpp"
-
 #include "audio-scheduled-source-node.hpp"
 
 
@@ -28,6 +27,7 @@ private:
 	JS_DECLARE_METHOD(AudioBufferSourceNode, destroy);
 	
 	JS_DECLARE_METHOD(AudioBufferSourceNode, start);
+	JS_DECLARE_METHOD(AudioBufferSourceNode, schedule);
 	
 	JS_DECLARE_GETTER(AudioBufferSourceNode, buffer);
 	JS_DECLARE_SETTER(AudioBufferSourceNode, buffer);

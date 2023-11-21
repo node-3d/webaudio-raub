@@ -6,7 +6,6 @@
 IMPLEMENT_ES5_CLASS(AudioListener);
 
 void AudioListener::init(Napi::Env env, Napi::Object exports) {
-	
 	Napi::Function ctor = wrap(env);
 	JS_ASSIGN_METHOD(setOrientation);
 	JS_ASSIGN_METHOD(setPosition);
@@ -22,13 +21,11 @@ void AudioListener::init(Napi::Env env, Napi::Object exports) {
 	JS_ASSIGN_METHOD(destroy);
 	
 	exports.Set("AudioListener", ctor);
-	
 }
 
 
 AudioListener::AudioListener(const Napi::CallbackInfo &info):
 CommonListener(info.This(), "AudioListener") { NAPI_ENV;
-	
 	super(info);
 	
 	Napi::Object context = info[0].As<Napi::Object>();
@@ -78,7 +75,6 @@ CommonListener(info.This(), "AudioListener") { NAPI_ENV;
 	ParamPtr upZParam = _impl->upZ();
 	argv[1] = JS_EXT(&upZParam);
 	_upZ.Reset(paramCtor.New(2, argv), 1);
-	
 }
 
 
@@ -113,19 +109,16 @@ PARAM_GETTER(AudioListener, upZ);
 
 
 JS_IMPLEMENT_METHOD(AudioListener, setPosition) { THIS_CHECK;
-	
 	REQ_FLOAT_ARG(0, x);
 	REQ_FLOAT_ARG(1, y);
 	REQ_FLOAT_ARG(2, z);
 	
 	_impl->setPosition(x, y, z);
 	RET_UNDEFINED;
-	
 }
 
 
 JS_IMPLEMENT_METHOD(AudioListener, setOrientation) { THIS_CHECK;
-	
 	REQ_FLOAT_ARG(0, x);
 	REQ_FLOAT_ARG(1, y);
 	REQ_FLOAT_ARG(2, z);
@@ -135,14 +128,10 @@ JS_IMPLEMENT_METHOD(AudioListener, setOrientation) { THIS_CHECK;
 	
 	_impl->setOrientation(x, y, z, xUp, yUp, zUp);
 	RET_UNDEFINED;
-	
 }
 
 JS_IMPLEMENT_METHOD(AudioListener, destroy) { THIS_CHECK;
-	
 	emit("destroy");
-	
 	_destroy();
 	RET_UNDEFINED;
-	
 }

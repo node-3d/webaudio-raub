@@ -6,9 +6,7 @@
 
 class AudioSetting : public CommonSetting {
 DECLARE_ES5_CLASS(AudioSetting, AudioSetting);
-	
 public:
-	
 	static void init(Napi::Env env, Napi::Object exports);
 	static bool isAudioSetting(Napi::Object obj);
 	
@@ -36,13 +34,9 @@ private:
 	
 	JS_DECLARE_GETTER(AudioSetting, value);
 	JS_DECLARE_SETTER(AudioSetting, value);
-	
 	JS_DECLARE_GETTER(AudioSetting, defaultValue);
-	
 	JS_DECLARE_GETTER(AudioSetting, minValue);
-	
 	JS_DECLARE_GETTER(AudioSetting, maxValue);
-	
 };
 
 
