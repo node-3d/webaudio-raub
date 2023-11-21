@@ -62,7 +62,7 @@ CommonCtx(info.This(), "BaseAudioContext") { NAPI_ENV;
 	
 	Napi::Function ctor = _ctorEs5.Value().As<Napi::Function>();
 	Napi::String hrtf = ctor.Get("hrtf").As<Napi::String>();
-	// ctx->get()->loadHrtfDatabase(hrtf);
+	ctx->get()->loadHrtfDatabase(hrtf);
 	
 	_state = "running";
 }
