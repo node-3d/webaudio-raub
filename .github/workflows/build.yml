@@ -34,20 +34,18 @@ jobs:
 
       - name: Create Draft Release
         id: create_release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          draft: true
           tag_name: ${{ steps.package-version.outputs.version }}
           name: Release ${{ steps.package-version.outputs.version }}
-          body: Binaries at ${{ github.sha }}
 
   build:
     name: Build
     strategy:
         matrix:
-          os: [ubuntu-20.04, windows-2022, macos-11, [self-hosted, linux, ARM64]]
+          os: [ubuntu-22.04, ubuntu-22.04-arm, windows-2022, macos-14]
 
     runs-on: ${{ matrix.os }}
 
@@ -67,10 +65,6 @@ jobs:
       - name: Install Modules
         run: npm ci
 
-      - name: Fix Python
-        if: matrix.os == 'macos-11'
-        run: pip install setuptools
-
       - name: Build Current Binary
         run: npm run build
 
@@ -83,11 +77,10 @@ jobs:
         run: node -e "require('addon-tools-raub').actionPack()" >> $GITHUB_OUTPUT
 
       - name: Store Binaries
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          draft: true
           tag_name: ${{ steps.package-version.outputs.version }}
           name: Release ${{ steps.package-version.outputs.version }}
           files: ${{ steps.pack-files.outputs.pack }}

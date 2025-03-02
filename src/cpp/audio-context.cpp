@@ -26,7 +26,7 @@ inline std::pair<
 	if (defaultOutputInfo.index != -1) {
 		outputConfig.device_index = defaultOutputInfo.index;
 		outputConfig.desired_channels = std::min(
-			uint32_t(2),
+			2U,
 			defaultOutputInfo.num_output_channels
 		);
 		outputConfig.desired_samplerate = sampleRate < 0

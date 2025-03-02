@@ -16,7 +16,7 @@ jobs:
     name: Unit Tests
     strategy:
         matrix:
-          os: [ubuntu-20.04, windows-2022, macos-11, [self-hosted, linux, ARM64]]
+          os: [ubuntu-22.04, ubuntu-22.04-arm, windows-2022, macos-14]
 
     runs-on: ${{ matrix.os }}
 
@@ -36,15 +36,11 @@ jobs:
       - name: Install Modules
         run: npm ci
 
-      - name: Fix Python
-        if: matrix.os == 'macos-11'
-        run: pip install setuptools
-
       - name: Build Current Binary
         run: npm run build
 
       - name: Audio Device - Unix
-        if: matrix.os == 'ubuntu-20.04' || matrix.os == 'macos-11'
+        if: matrix.os != 'windows-2022'
         uses: LABSN/sound-ci-helpers@v1
 
       - name: Audio Device - Windows
@@ -63,5 +59,4 @@ jobs:
           C:\Scream\Install\helpers\devcon install Scream.inf *Scream
 
       - name: Run Unit Tests
-        if: matrix.os == 'ubuntu-20.04' || matrix.os == 'windows-2022' || matrix.os == 'macos-11'
         run: npm test
