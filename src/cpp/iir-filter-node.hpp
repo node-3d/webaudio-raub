@@ -1,5 +1,4 @@
-#ifndef _IIR_FILTER_NODE_HPP_
-#define _IIR_FILTER_NODE_HPP_
+#pragma once
 
 #include "common.hpp"
 
@@ -36,6 +35,3 @@ private:
 	JS_DECLARE_METHOD(IIRFilterNode, getFrequencyResponse);
 	
 };
-
-
-#endif // _IIR_FILTER_NODE_HPP_

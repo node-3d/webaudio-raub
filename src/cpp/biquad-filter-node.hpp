@@ -1,5 +1,4 @@
-#ifndef _BIQUAD_FILTER_NODE_HPP_
-#define _BIQUAD_FILTER_NODE_HPP_
+#pragma once
 
 #include "common.hpp"
 
@@ -32,6 +31,3 @@ private:
 	JS_DECLARE_GETTER(BiquadFilterNode, Q);
 	JS_DECLARE_GETTER(BiquadFilterNode, gain);
 };
-
-
-#endif // _BIQUAD_FILTER_NODE_HPP_

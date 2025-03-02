@@ -1,7 +1,7 @@
 {
 	"author": "Luis Blanco <luisblanco1337@gmail.com>",
 	"name": "webaudio-raub",
-	"version": "4.0.0",
+	"version": "5.0.0",
 	"description": "Web Audio for Node.js",
 	"license": "MIT",
 	"main": "index.js",
@@ -27,14 +27,14 @@
 		"README.md"
 	],
 	"engines": {
-		"node": ">=18.16.0",
-		"npm": ">=9.5.1"
+		"node": ">=22.14.0",
+		"npm": ">=10.9.2"
 	},
 	"scripts": {
 		"postinstall": "node install",
 		"eslint": "eslint .",
-		"build": "cd src && node-gyp rebuild -j max --silent && node -e \"require('addon-tools-raub').cpbin('webaudio')\" && cd ..",
-		"build-only": "cd src && node-gyp build -j max --silent && node -e \"require('addon-tools-raub').cpbin('webaudio')\" && cd ..",
+		"build": "cd src && node-gyp rebuild -j max --silent && node -e \"require('addon-tools-raub').cpbin('webaudio')\"",
+		"build-only": "cd src && node-gyp build -j max --silent && node -e \"require('addon-tools-raub').cpbin('webaudio')\"",
 		"test": "node --test"
 	},
 	"repository": {
@@ -42,15 +42,15 @@
 		"url": "https://github.com/node-3d/webaudio-raub.git"
 	},
 	"dependencies": {
-		"addon-tools-raub": "^7.4.0",
-		"deps-labsound-raub": "^4.0.0",
-		"segfault-raub": "^2.1.2"
+		"addon-tools-raub": "^9.3.0",
+		"segfault-raub": "^3.2.0"
 	},
 	"devDependencies": {
-		"@types/node": "^20.8.3",
-		"eslint": "^8.51.0",
-		"eslint-plugin-node": "^11.1.0",
-		"node-addon-api": "^7.0.0",
-		"typescript": "^5.2.2"
+		"@types/node": "^22.13.4",
+		"@eslint/js": "^9.20.0",
+		"deps-labsound-raub": "^5.0.0",
+		"eslint": "^9.20.1",
+		"node-addon-api": "^8.3.0",
+		"typescript": "^5.7.3"
 	}
 }

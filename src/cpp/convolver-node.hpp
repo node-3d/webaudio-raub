@@ -1,8 +1,6 @@
-#ifndef _CONVOLVER_NODE_HPP_
-#define _CONVOLVER_NODE_HPP_
+#pragma once
 
 #include "common.hpp"
-
 #include "audio-node.hpp"
 
 
@@ -27,6 +25,3 @@ private:
 	JS_DECLARE_GETTER(ConvolverNode, normalize);
 	JS_DECLARE_SETTER(ConvolverNode, normalize);
 };
-
-
-#endif // _CONVOLVER_NODE_HPP_

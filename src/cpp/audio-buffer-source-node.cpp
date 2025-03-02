@@ -1,3 +1,4 @@
+#include "audio-scheduled-source-node.hpp"
 #include "audio-buffer-source-node.hpp"
 #include "audio-context.hpp"
 #include "audio-param.hpp"

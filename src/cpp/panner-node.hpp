@@ -1,5 +1,4 @@
-#ifndef _PANNER_NODE_HPP_
-#define _PANNER_NODE_HPP_
+#pragma once
 
 #include "common.hpp"
 
@@ -50,6 +49,3 @@ private:
 	JS_DECLARE_GETTER(PannerNode, coneOuterGain);
 	JS_DECLARE_SETTER(PannerNode, coneOuterGain);
 };
-
-
-#endif // _PANNER_NODE_HPP_

@@ -1,9 +1,6 @@
-#ifndef _WAVE_SHAPER_NODE_HPP_
-#define _WAVE_SHAPER_NODE_HPP_
-
+#pragma once
 
 #include "common.hpp"
-
 #include "audio-node.hpp"
 
 
@@ -35,6 +32,3 @@ private:
 	JS_DECLARE_SETTER(WaveShaperNode, oversample);
 	
 };
-
-
-#endif // _WAVE_SHAPER_NODE_HPP_

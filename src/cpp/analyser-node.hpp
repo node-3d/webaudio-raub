@@ -1,5 +1,4 @@
-#ifndef _ANALYSER_NODE_HPP_
-#define _ANALYSER_NODE_HPP_
+#pragma once
 
 #include "common.hpp"
 #include "audio-node.hpp"
@@ -41,6 +40,3 @@ private:
 	JS_DECLARE_GETTER(AnalyserNode, smoothingTimeConstant);
 	JS_DECLARE_SETTER(AnalyserNode, smoothingTimeConstant);
 };
-
-
-#endif // _ANALYSER_NODE_HPP_

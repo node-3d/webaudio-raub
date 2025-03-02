@@ -25,7 +25,7 @@ inline lab::PannerNode::DistanceModel toDistanceModel(const std::string &mode) {
 }
 
 
-inline std::string fromPanningModel(lab::PanningModel mode) {
+inline const char *fromPanningModel(lab::PanningModel mode) {
 	if (mode == lab::PanningModel::EQUALPOWER) {
 		return "equalpower";
 	} else {

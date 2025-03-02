@@ -1,8 +1,6 @@
-#ifndef _CHANNEL_SPLITTER_NODE_HPP_
-#define _CHANNEL_SPLITTER_NODE_HPP_
+#pragma once
 
 #include "common.hpp"
-
 #include "audio-node.hpp"
 
 
@@ -22,6 +20,3 @@ private:
 	JS_DECLARE_METHOD(ChannelSplitterNode, destroy);
 	
 };
-
-
-#endif // _CHANNEL_SPLITTER_NODE_HPP_

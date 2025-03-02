@@ -1,5 +1,4 @@
-#ifndef _AUDIO_LISTENER_HPP_
-#define _AUDIO_LISTENER_HPP_
+#pragma once
 
 #include "common.hpp"
 
@@ -39,5 +38,3 @@ private:
 	JS_DECLARE_GETTER(AudioListener, upY);
 	JS_DECLARE_GETTER(AudioListener, upZ);
 };
-
-#endif // _AUDIO_LISTENER_HPP_

@@ -1,5 +1,4 @@
-#ifndef _AUDIO_CONTEXT_HPP_
-#define _AUDIO_CONTEXT_HPP_
+#pragma once
 
 #include "common.hpp"
 
@@ -23,6 +22,3 @@ private:
 	JS_DECLARE_METHOD(AudioContext, getOutputTimestamp);
 	JS_DECLARE_GETTER(AudioContext, baseLatency);
 };
-
-
-#endif // _AUDIO_CONTEXT_HPP_

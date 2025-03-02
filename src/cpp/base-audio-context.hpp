@@ -1,5 +1,4 @@
-#ifndef _BASE_AUDIO_CONTEXT_HPP_
-#define _BASE_AUDIO_CONTEXT_HPP_
+#pragma once
 
 #include "common.hpp"
 
@@ -31,6 +30,3 @@ private:
 	JS_DECLARE_GETTER(BaseAudioContext, listener);
 	JS_DECLARE_GETTER(BaseAudioContext, state);
 };
-
-
-#endif // _BASE_AUDIO_CONTEXT_HPP_

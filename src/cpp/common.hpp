@@ -1,5 +1,4 @@
-#ifndef _COMMON_HPP_
-#define _COMMON_HPP_
+#pragma once
 
 #include <memory>
 #include <LabSound/LabSound.h>
@@ -277,5 +276,3 @@ struct CommonListener: public Common {
 	
 	ListenerPtr _impl;
 };
-
-#endif // _COMMON_HPP_

@@ -1,5 +1,4 @@
-#ifndef _MEDIA_ELEMENT_AUDIO_SOURCE_NODE_HPP_
-#define _MEDIA_ELEMENT_AUDIO_SOURCE_NODE_HPP_
+#pragma once
 
 #include "common.hpp"
 
@@ -41,6 +40,3 @@ private:
 	JS_DECLARE_GETTER(MediaElementAudioSourceNode, mediaElement);
 	
 };
-
-
-#endif // _MEDIA_ELEMENT_AUDIO_SOURCE_NODE_HPP_

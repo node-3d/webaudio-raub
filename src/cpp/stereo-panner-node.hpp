@@ -1,9 +1,6 @@
-#ifndef _STEREO_PANNER_NODE_HPP_
-#define _STEREO_PANNER_NODE_HPP_
-
+#pragma once
 
 #include "common.hpp"
-
 #include "audio-node.hpp"
 
 
@@ -44,6 +41,3 @@ private:
 	JS_DECLARE_GETTER(StereoPannerNode, pan);
 	
 };
-
-
-#endif // _STEREO_PANNER_NODE_HPP_

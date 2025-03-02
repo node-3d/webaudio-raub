@@ -1,5 +1,4 @@
-#ifndef _OFFLINE_AUDIO_CONTEXT_HPP_
-#define _OFFLINE_AUDIO_CONTEXT_HPP_
+#pragma once
 
 #include "common.hpp"
 
@@ -45,6 +44,3 @@ private:
 	JS_DECLARE_GETTER(OfflineAudioContext, length);
 	
 };
-
-
-#endif // _OFFLINE_AUDIO_CONTEXT_HPP_

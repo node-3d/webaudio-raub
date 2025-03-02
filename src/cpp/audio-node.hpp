@@ -1,5 +1,4 @@
-#ifndef _AUDIO_NODE_HPP_
-#define _AUDIO_NODE_HPP_
+#pragma once
 
 #include "common.hpp"
 
@@ -39,6 +38,3 @@ private:
 	JS_DECLARE_GETTER(AudioNode, channelInterpretation);
 	JS_DECLARE_SETTER(AudioNode, channelInterpretation);
 };
-
-
-#endif // _AUDIO_NODE_HPP_

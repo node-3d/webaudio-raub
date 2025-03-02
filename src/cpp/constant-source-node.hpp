@@ -1,7 +1,7 @@
-#ifndef _CONSTANT_SOURCE_NODE_HPP_
-#define _CONSTANT_SOURCE_NODE_HPP_
+#pragma once
 
 #include "common.hpp"
+#include "audio-scheduled-source-node.hpp"
 
 
 class ConstantSourceNode : public AudioScheduledSourceNode {
@@ -34,5 +34,3 @@ private:
 	
 };
 
-
-#endif // _CONSTANT_SOURCE_NODE_HPP_

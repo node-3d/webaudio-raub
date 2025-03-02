@@ -1,5 +1,4 @@
-#ifndef _SCRIPT_PROCESSOR_NODE_HPP_
-#define _SCRIPT_PROCESSOR_NODE_HPP_
+#pragma once
 
 #include "common.hpp"
 
@@ -47,6 +46,3 @@ private:
 	JS_DECLARE_GETTER(ScriptProcessorNode, bufferSize);
 	
 };
-
-
-#endif // _SCRIPT_PROCESSOR_NODE_HPP_

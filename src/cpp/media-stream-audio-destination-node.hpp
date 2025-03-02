@@ -1,5 +1,4 @@
-#ifndef _MEDIA_STREAM_AUDIO_DESTINATION_NODE_HPP_
-#define _MEDIA_STREAM_AUDIO_DESTINATION_NODE_HPP_
+#pragma once
 
 #include "common.hpp"
 
@@ -41,6 +40,3 @@ private:
 	JS_DECLARE_GETTER(MediaStreamAudioDestinationNode, stream);
 	
 };
-
-
-#endif // _MEDIA_STREAM_AUDIO_DESTINATION_NODE_HPP_

@@ -1,5 +1,4 @@
-#ifndef _AUDIO_PARAM_HPP_
-#define _AUDIO_PARAM_HPP_
+#pragma once
 
 #include "common.hpp"
 
@@ -37,6 +36,3 @@ private:
 	JS_DECLARE_GETTER(AudioParam, minValue);
 	JS_DECLARE_GETTER(AudioParam, maxValue);
 };
-
-
-#endif // _AUDIO_PARAM_HPP_

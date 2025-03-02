@@ -11,17 +11,11 @@ This is a part of [Node3D](https://github.com/node-3d) project.
 npm i -s webaudio-raub
 ```
 
-**This module is WORK IN PROGRESS.**
-Some features are missing for good.
+> This addon is ABI-compatible across Node.js versions. **There is no compilation** during `npm i`.
 
 
 **Node.js** addon implementing the
 [Web Audio Api](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API).
-
-> Note: this **addon uses N-API**, and therefore is ABI-compatible across different
-Node.js versions. Addon binaries are precompiled and **there is no compilation**
-step during the `npm i` command.
-
 
 Simply require any class you like from the module and then follow the
 [doc](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API):
@@ -30,7 +24,11 @@ Simply require any class you like from the module and then follow the
 const { AudioContext } = require('webaudio-raub'); // usually this is enough
 ```
 
+**This module is WORK IN PROGRESS.**
+Some features are missing for good.
+
 Currently exported classes:
+
 * `AudioBuffer`
 * `AudioContext`
 * `AudioParam`

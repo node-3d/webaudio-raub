@@ -1,5 +1,4 @@
-#ifndef _AUDIO_SCHEDULED_SOURCE_NODE_HPP_
-#define _AUDIO_SCHEDULED_SOURCE_NODE_HPP_
+#pragma once
 
 #include "common.hpp"
 
@@ -21,6 +20,3 @@ private:
 	JS_DECLARE_METHOD(AudioScheduledSourceNode, start);
 	JS_DECLARE_METHOD(AudioScheduledSourceNode, stop);
 };
-
-
-#endif // _AUDIO_SCHEDULED_SOURCE_NODE_HPP_

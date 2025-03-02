@@ -1,8 +1,6 @@
-#ifndef _AUDIO_BUFFER_SOURCE_NODE_HPP_
-#define _AUDIO_BUFFER_SOURCE_NODE_HPP_
+#pragma once
 
 #include "common.hpp"
-#include "audio-scheduled-source-node.hpp"
 
 
 class AudioBufferSourceNode : public CommonNode {
@@ -44,6 +42,3 @@ private:
 	JS_DECLARE_GETTER(AudioBufferSourceNode, loopEnd);
 	JS_DECLARE_SETTER(AudioBufferSourceNode, loopEnd);
 };
-
-
-#endif // _AUDIO_BUFFER_SOURCE_NODE_HPP_

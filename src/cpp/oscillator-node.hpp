@@ -1,5 +1,4 @@
-#ifndef _OSCILLATOR_NODE_HPP_
-#define _OSCILLATOR_NODE_HPP_
+#pragma once
 
 #include "common.hpp"
 
@@ -33,6 +32,3 @@ private:
 	JS_DECLARE_GETTER(OscillatorNode, detune);
 	
 };
-
-
-#endif // _OSCILLATOR_NODE_HPP_

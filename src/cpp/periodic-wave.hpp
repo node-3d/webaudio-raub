@@ -1,6 +1,4 @@
-#ifndef _PERIODIC_WAVE_HPP_
-#define _PERIODIC_WAVE_HPP_
-
+#pragma once
 
 #include "common.hpp"
 
@@ -40,6 +38,3 @@ private:
 	
 	
 };
-
-
-#endif // _PERIODIC_WAVE_HPP_

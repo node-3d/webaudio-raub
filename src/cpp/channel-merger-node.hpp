@@ -1,9 +1,6 @@
-#ifndef _CHANNEL_MERGER_NODE_HPP_
-#define _CHANNEL_MERGER_NODE_HPP_
-
+#pragma once
 
 #include "common.hpp"
-
 #include "audio-node.hpp"
 
 
@@ -18,6 +15,3 @@ public:
 	static void init(Napi::Env env, Napi::Object exports);
 	
 };
-
-
-#endif // _CHANNEL_MERGER_NODE_HPP_

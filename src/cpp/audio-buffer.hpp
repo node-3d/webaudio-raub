@@ -1,5 +1,4 @@
-#ifndef _AUDIO_BUFFER_HPP_
-#define _AUDIO_BUFFER_HPP_
+#pragma once
 
 #include "common.hpp"
 
@@ -30,6 +29,3 @@ private:
 	JS_DECLARE_GETTER(AudioBuffer, sampleRate);
 	JS_DECLARE_GETTER(AudioBuffer, numberOfChannels);
 };
-
-
-#endif // _AUDIO_BUFFER_HPP_

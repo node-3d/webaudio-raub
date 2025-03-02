@@ -1,6 +1,4 @@
-#ifndef _DYNAMICS_COMPRESSOR_NODE_HPP_
-#define _DYNAMICS_COMPRESSOR_NODE_HPP_
-
+#pragma once
 
 #include "common.hpp"
 
@@ -57,6 +55,3 @@ private:
 	JS_DECLARE_GETTER(DynamicsCompressorNode, release);
 	
 };
-
-
-#endif // _DYNAMICS_COMPRESSOR_NODE_HPP_

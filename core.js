@@ -3,7 +3,7 @@
 require('segfault-raub');
 
 // Add deps dll dirs
-require('deps-labsound-raub');
+// require('deps-labsound-raub');
 const { getBin } = require('addon-tools-raub');
 
 const core = require(`./${getBin()}/webaudio`);

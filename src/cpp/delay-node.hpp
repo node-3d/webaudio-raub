@@ -1,5 +1,4 @@
-#ifndef _DELAY_NODE_HPP_
-#define _DELAY_NODE_HPP_
+#pragma once
 
 #include "common.hpp"
 
@@ -21,6 +20,3 @@ private:
 	
 	JS_DECLARE_GETTER(DelayNode, delayTime);
 };
-
-
-#endif // _DELAY_NODE_HPP_

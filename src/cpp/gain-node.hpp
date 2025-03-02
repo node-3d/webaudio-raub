@@ -1,5 +1,4 @@
-#ifndef _GAIN_NODE_HPP_
-#define _GAIN_NODE_HPP_
+#pragma once
 
 #include "common.hpp"
 
@@ -22,6 +21,3 @@ private:
 	
 	JS_DECLARE_GETTER(GainNode, gain);
 };
-
-
-#endif // _GAIN_NODE_HPP_
