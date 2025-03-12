@@ -40,13 +40,15 @@
 				'xcode_settings': {
 					'DYLIB_INSTALL_NAME_BASE': '@rpath',
 					'GCC_ENABLE_CPP_RTTI': 'YES',
+					'GCC_ENABLE_CPP_EXCEPTIONS': 'YES',
 					'OTHER_LDFLAGS': [
 						'-framework AudioUnit',
 						'-framework CoreAudio',
 						'-framework AudioToolbox',
 					],
+					'OTHER_CPLUSPLUSFLAGS!': ['-fno-rtti', '-fno-exceptions']
+					'OTHER_CPLUSPLUSFLAGS': ['-w', '-frtti', '-fexceptions']
 				},
-				'OTHER_CFLAGS!': ['-fno-exceptions'],
 			}],
 			['OS=="win"', {
 				'libraries': [
