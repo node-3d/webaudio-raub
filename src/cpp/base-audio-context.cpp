@@ -2,6 +2,7 @@
 
 #include "base-audio-context.hpp"
 
+
 static inline float useSampleRate(float sampleRate, const lab::AudioDeviceInfo &info) {
 	if (sampleRate <= 0.f) {
 		return info.nominal_samplerate;
@@ -12,16 +13,17 @@ static inline float useSampleRate(float sampleRate, const lab::AudioDeviceInfo &
 	return isFound ? sampleRate : info.nominal_samplerate;
 }
 
-// Returns input, output
+// Returns { input, output }
 static inline std::pair<lab::AudioStreamConfig, lab::AudioStreamConfig>
 getAudioConfig(bool hasInput, float sampleRate) {
 	const std::vector<lab::AudioDeviceInfo> audioDevices = lab::AudioDevice_RtAudio::MakeAudioDeviceList();
 	lab::AudioDeviceInfo defaultOutputInfo, defaultInputInfo;
-	for (auto & info : audioDevices) {
-		if (info.is_default_output)
+	for (auto &info : audioDevices) {
+		if (info.is_default_output) {
 			defaultOutputInfo = info;
-		if (info.is_default_input)
+		} else if (info.is_default_input) {
 			defaultInputInfo = info;
+		}
 	}
 	
 	lab::AudioStreamConfig outputConfig;
@@ -37,21 +39,20 @@ getAudioConfig(bool hasInput, float sampleRate) {
 			inputConfig.device_index = defaultInputInfo.index;
 			inputConfig.desired_channels = std::min(1U, defaultInputInfo.num_input_channels);
 			inputConfig.desired_samplerate = useSampleRate(sampleRate, defaultInputInfo);
-		}
-		else {
+		} else {
 			throw std::invalid_argument("the default audio input device was requested but none were found");
 		}
 	}
 	
-	// RtAudio doesn't support mismatched input and output rates.
-	// this may be a pecularity of RtAudio, but for now, force an RtAudio
-	// compatible configuration
+	// RtAudio needs matching sample rates on input and output.
+	// The optional user-defined rate has already been accounted for.
 	if (hasInput && inputConfig.desired_samplerate != outputConfig.desired_samplerate) {
 		float min_rate = std::min(inputConfig.desired_samplerate, outputConfig.desired_samplerate);
 		inputConfig.desired_samplerate = min_rate;
 		outputConfig.desired_samplerate = min_rate;
 	}
-	return {inputConfig, outputConfig};
+	
+	return { inputConfig, outputConfig };
 }
 
 

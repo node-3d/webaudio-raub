@@ -17,8 +17,9 @@
 		'library_dirs': ['<(ls_bin)'],
 		'conditions': [
 			['OS=="linux"', {
-				'cflags_cc': ['-w'],
+				'cflags_cc': ['-w', '-fexceptions'],
 				'cflags_cc!': ['-fno-rtti'],
+				'cflags_cc+': ['-frtti'],
 				'libraries': [
 					"-Wl,-rpath,'$$ORIGIN'",
 					"-Wl,-rpath,'$$ORIGIN/../node_modules/deps-labsound-raub/<(bin)'",
@@ -27,7 +28,7 @@
 				],
 			}],
 			['OS=="mac"', {
-				'cflags_cc': ['-w'],
+				'cflags_cc': ['-w', '-fexceptions'],
 				'cflags_cc!': ['-fno-rtti'],
 				'cflags_cc+': ['-frtti'],
 				'libraries': [
