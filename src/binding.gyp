@@ -46,8 +46,8 @@
 						'-framework CoreAudio',
 						'-framework AudioToolbox',
 					],
-					'OTHER_CPLUSPLUSFLAGS!': ['-fno-rtti', '-fno-exceptions']
-					'OTHER_CPLUSPLUSFLAGS': ['-w', '-frtti', '-fexceptions']
+					'OTHER_CPLUSPLUSFLAGS!': ['-fno-rtti', '-fno-exceptions'],
+					'OTHER_CPLUSPLUSFLAGS': ['-w', '-frtti', '-fexceptions'],
 				},
 			}],
 			['OS=="win"', {
