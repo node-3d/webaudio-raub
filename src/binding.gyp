@@ -17,9 +17,8 @@
 		'library_dirs': ['<(ls_bin)'],
 		'conditions': [
 			['OS=="linux"', {
-				'cflags_cc': ['-w', '-fexceptions'],
-				'cflags_cc!': ['-fno-rtti'],
-				'cflags_cc+': ['-frtti'],
+				'cflags_cc!': ['-fno-rtti', '-fno-exceptions'],
+				'cflags_cc': ['-w', '-frtti', '-fexceptions'],
 				'libraries': [
 					"-Wl,-rpath,'$$ORIGIN'",
 					"-Wl,-rpath,'$$ORIGIN/../node_modules/deps-labsound-raub/<(bin)'",
@@ -28,9 +27,8 @@
 				],
 			}],
 			['OS=="mac"', {
-				'cflags_cc': ['-w', '-fexceptions'],
-				'cflags_cc!': ['-fno-rtti'],
-				'cflags_cc+': ['-frtti'],
+				'cflags_cc!': ['-fno-rtti', '-fno-exceptions'],
+				'cflags_cc': ['-w', '-frtti', '-fexceptions'],
 				'libraries': [
 					'-Wl,-rpath,@loader_path',
 					'-Wl,-rpath,@loader_path/../node_modules/deps-labsound-raub/<(bin)',
@@ -48,11 +46,13 @@
 						'-framework AudioToolbox',
 					],
 				},
+				'OTHER_CFLAGS!': ['-fno-exceptions'],
 			}],
 			['OS=="win"', {
 				'libraries': [
 					'-lwinmm', '-luser32', '-lLabSound', '-llibnyquist',
 				],
+				'defines!': ['_HAS_EXCEPTIONS=0'],
 				'msvs_settings': {
 					'VCCLCompilerTool': {
 						'ExceptionHandling': '1',
