@@ -88,8 +88,8 @@ const { AudioContext } = require('..');
 	// filterSum -. destination
 	filterSum.connect(context.destination);
 	
-	// 30 sec
-	await new Promise((res) => setTimeout(res, 30000));
+	// 6 sec
+	await new Promise((res) => setTimeout(res, 6000));
 	
 	console.log('DONE');
 	

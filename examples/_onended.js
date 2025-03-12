@@ -31,20 +31,17 @@ const { readAsBuffer } = require('./utils/read-as-buffer');
 	musicClipNode.on('ended', () => isActive = false);
 	musicClipNode.on('ended', () => console.log('Played:', i++));
 	
-	// Let it settle down
-	await new Promise((res) => setTimeout(res, 1000));
-	
 	setInterval(() => {
 		if (isActive) {
 			console.log('STILL ACTIVE!');
 		}
 		isActive = true;
 		musicClipNode.start(0);
-	}, 100).unref();
+	}, 200).unref();
 	
 	
-	// 60 sec
-	await new Promise((res) => setTimeout(res, 60000));
+	// 10 sec
+	await new Promise((res) => setTimeout(res, 5000));
 	
 	console.log('DONE');
 	

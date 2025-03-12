@@ -13,9 +13,9 @@ const { AudioContext } = require('..');
 	const gain = context.createGain();
 	gain.gain.value = 0.5;
 	
-	// osc . gain . destination
+	// osc -> gain -> destination
+	console.log('Connect: osc1 -> gain');
 	oscillator1.connect(gain);
-	oscillator2.connect(gain);
 	gain.connect(context.destination);
 	
 	oscillator1.type = 'sine';
@@ -27,18 +27,17 @@ const { AudioContext } = require('..');
 	oscillator2.start(0);
 	
 	
-	for (let i = 0; i < 10; i++) {
-		oscillator1.disconnect();
+	for (let i = 0; i < 8; i++) {
+		await new Promise((res) => setTimeout(res, 500));
+		console.log('Connect: osc2 -> gain');
 		oscillator2.connect(gain);
-		await new Promise((res) => setTimeout(res, 200));
+		oscillator1.disconnect();
 		
-		oscillator2.disconnect();
+		await new Promise((res) => setTimeout(res, 500));
+		console.log('Connect: osc1 -> gain');
 		oscillator1.connect(gain);
-		await new Promise((res) => setTimeout(res, 200));
+		oscillator2.disconnect();
 	}
-	
-	oscillator1.disconnect();
-	oscillator2.disconnect();
 	
 	console.log('DONE');
 	

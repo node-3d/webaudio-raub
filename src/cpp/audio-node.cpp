@@ -16,6 +16,7 @@ void AudioNode::init(Napi::Env env, Napi::Object exports) {
 	JS_ASSIGN_GETTER(numberOfInputs);
 	JS_ASSIGN_GETTER(context);
 	JS_ASSIGN_METHOD(destroy);
+	JS_ASSIGN_METHOD(diagnose);
 	
 	exports.Set("AudioNode", ctor);
 }
@@ -112,6 +113,9 @@ JS_IMPLEMENT_METHOD(AudioNode, connect) { THIS_CHECK;
 		AudioNode *destNode = AudioNode::unwrap(destination);
 		
 		ctx->connect(destNode->_impl, _impl, input, output);
+		if (destNode->_impl.get() == static_cast<lab::AudioNode*>(ctx->destinationNode().get())) {
+			ctx->synchronizeConnections();
+		}
 	} else if (AudioParam::isAudioParam(destination)) {
 		LET_INT32_ARG(1, output);
 		
@@ -125,9 +129,12 @@ JS_IMPLEMENT_METHOD(AudioNode, connect) { THIS_CHECK;
 
 
 // undefined node1.disconnect();
-// undefined node1.disconnect(node2);
-// undefined node1.disconnect(node2, output);
-// undefined node1.disconnect(node2, output, input);
+// undefined node1.disconnect(dest);
+// undefined node1.disconnect(dest, output);
+// undefined node1.disconnect(dest, output, input);
+// MAP TO --->
+// ctx->disconnect(NodePtr destination, NodePtr source, int input, int output)
+// ctx->disconnect(NodePtr source, int output)
 JS_IMPLEMENT_METHOD(AudioNode, disconnect) { THIS_CHECK;
 	int output = 0;
 	int input = 0;
@@ -140,6 +147,7 @@ JS_IMPLEMENT_METHOD(AudioNode, disconnect) { THIS_CHECK;
 	if (info.Length() == 1) {
 		if (info[0].IsObject()) {
 			REQ_OBJ_ARG(0, destArg);
+			destination = destArg;
 		} else if (info[0].IsNumber()) {
 			REQ_INT_ARG(0, outputArg);
 			output = outputArg;
@@ -160,21 +168,17 @@ JS_IMPLEMENT_METHOD(AudioNode, disconnect) { THIS_CHECK;
 		input = inputArg;
 	} else {
 		// Disconnect self
-		ctx->disconnect(_impl, NodePtr(), input, output);
+		ctx->disconnect(_impl, output);
 		RET_UNDEFINED;
 	}
 	
-	if (isAudioNode(destination)) {
+	if (AudioNode::isAudioNode(destination)) {
 		AudioNode *destNode = AudioNode::unwrap(destination);
-		ctx->disconnect(_impl, _impl, input, output);
+		ctx->disconnect(destNode->_impl, _impl, input, output);
 	} else if (AudioParam::isAudioParam(destination)) {
 		AudioParam *destParam = AudioParam::unwrap(destination);
-		
 		ParamPtr param = destParam->getParam();
-		
-		lab::ContextGraphLock graphLock(ctx, "AudioNode::disconnect");
-		// TODO:
-		// param->disconnect(graphLock, param, _impl);
+		ctx->disconnectParam(param, _impl, output);
 	}
 	
 	RET_UNDEFINED;
@@ -244,5 +248,14 @@ JS_IMPLEMENT_SETTER(AudioNode, channelInterpretation) { THIS_CHECK; SETTER_STR_A
 JS_IMPLEMENT_METHOD(AudioNode, destroy) { THIS_CHECK;
 	emit("destroy");
 	_destroy();
+	RET_UNDEFINED;
+}
+
+JS_IMPLEMENT_METHOD(AudioNode, diagnose) { THIS_CHECK;
+	Napi::Object context = _context.Value();
+	AudioContext *audioContext = AudioContext::unwrap(context);
+	
+	lab::AudioContext *ctx = audioContext->getCtx().get();
+	ctx->diagnose(_impl);
 	RET_UNDEFINED;
 }

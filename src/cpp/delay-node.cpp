@@ -18,7 +18,10 @@ DelayNode::DelayNode(const Napi::CallbackInfo &info):
 CommonNode(info.This(), "DelayNode") { NAPI_ENV;
 	Napi::Object context = info[0].As<Napi::Object>();
 	Napi::Function paramCtor = info[1].As<Napi::Function>();
-	double delay = info[2].ToNumber().DoubleValue();
+	Napi::Object opts = info[2].As<Napi::Object>();
+	double maxDelayTime = opts.Has("maxDelayTime")
+		? opts.Get("maxDelayTime").ToNumber().DoubleValue()
+		: 1.0;
 	
 	AudioContext *contextUnwrap = AudioContext::unwrap(context);
 	lab::AudioContext *contextLab = contextUnwrap->getCtx().get();
@@ -32,7 +35,7 @@ CommonNode(info.This(), "DelayNode") { NAPI_ENV;
 	argv[0] = context;
 	
 	SettingPtr delayTimeParam = node->delayTime();
-	delayTimeParam->setFloat(delay);
+	delayTimeParam->setFloat(0.f);
 	
 	argv[1] = JS_EXT(&delayTimeParam);
 	_delayTime.Reset(paramCtor.New(2, argv), 1);
@@ -57,6 +60,7 @@ JS_IMPLEMENT_GETTER(DelayNode, delayTime) { THIS_CHECK;
 	if (_delayTime.IsEmpty()) {
 		RET_UNDEFINED;
 	}
+	
 	RET_VALUE(_delayTime.Value());
 }
 

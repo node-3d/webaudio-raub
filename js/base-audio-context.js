@@ -14,9 +14,9 @@ inherits(BaseAudioContext, Emitter);
 BaseAudioContext.hrtf = hrtf;
 
 
-function JsBaseAudioContext(ctx) {
-	BaseAudioContext.call(this, ctx);
-	this._initListener(JsAudioDestinationNode, JsAudioListener);
+function JsBaseAudioContext(ctx, sampleRate = -1) {
+	BaseAudioContext.call(this, ctx, sampleRate);
+	this._initListener(JsAudioDestinationNode, JsAudioListener, sampleRate);
 }
 
 JsBaseAudioContext.prototype = {

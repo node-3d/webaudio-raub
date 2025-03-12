@@ -1,4 +1,58 @@
+#include <LabSound/backends/AudioDevice_RtAudio.h>
+
 #include "base-audio-context.hpp"
+
+static inline float useSampleRate(float sampleRate, const lab::AudioDeviceInfo &info) {
+	if (sampleRate <= 0.f) {
+		return info.nominal_samplerate;
+	}
+	
+	const auto &supported = info.supported_samplerates;
+	bool isFound = std::find(supported.begin(), supported.end(), sampleRate) != supported.end();
+	return isFound ? sampleRate : info.nominal_samplerate;
+}
+
+// Returns input, output
+static inline std::pair<lab::AudioStreamConfig, lab::AudioStreamConfig>
+getAudioConfig(bool hasInput, float sampleRate) {
+	const std::vector<lab::AudioDeviceInfo> audioDevices = lab::AudioDevice_RtAudio::MakeAudioDeviceList();
+	lab::AudioDeviceInfo defaultOutputInfo, defaultInputInfo;
+	for (auto & info : audioDevices) {
+		if (info.is_default_output)
+			defaultOutputInfo = info;
+		if (info.is_default_input)
+			defaultInputInfo = info;
+	}
+	
+	lab::AudioStreamConfig outputConfig;
+	if (defaultOutputInfo.index != -1) {
+		outputConfig.device_index = defaultOutputInfo.index;
+		outputConfig.desired_channels = std::min(2U, defaultOutputInfo.num_output_channels);
+		outputConfig.desired_samplerate = useSampleRate(sampleRate, defaultOutputInfo);
+	}
+	
+	lab::AudioStreamConfig inputConfig;
+	if (hasInput) {
+		if (defaultInputInfo.index != -1) {
+			inputConfig.device_index = defaultInputInfo.index;
+			inputConfig.desired_channels = std::min(1U, defaultInputInfo.num_input_channels);
+			inputConfig.desired_samplerate = useSampleRate(sampleRate, defaultInputInfo);
+		}
+		else {
+			throw std::invalid_argument("the default audio input device was requested but none were found");
+		}
+	}
+	
+	// RtAudio doesn't support mismatched input and output rates.
+	// this may be a pecularity of RtAudio, but for now, force an RtAudio
+	// compatible configuration
+	if (hasInput && inputConfig.desired_samplerate != outputConfig.desired_samplerate) {
+		float min_rate = std::min(inputConfig.desired_samplerate, outputConfig.desired_samplerate);
+		inputConfig.desired_samplerate = min_rate;
+		outputConfig.desired_samplerate = min_rate;
+	}
+	return {inputConfig, outputConfig};
+}
 
 
 bool compareMagic(const uint8_t *data, const int16_t *magic) {
@@ -60,10 +114,6 @@ CommonCtx(info.This(), "BaseAudioContext") { NAPI_ENV;
 	CtxPtr *ctx = reinterpret_cast<CtxPtr*>(extCtx.Data());
 	reset(*ctx);
 	
-	Napi::Function ctor = _ctorEs5.Value().As<Napi::Function>();
-	Napi::String hrtf = ctor.Get("hrtf").As<Napi::String>();
-	ctx->get()->loadHrtfDatabase(hrtf);
-	
 	_state = "running";
 }
 
@@ -85,12 +135,16 @@ void BaseAudioContext::_destroy() { DES_CHECK;
 JS_IMPLEMENT_METHOD(BaseAudioContext, _initListener) { THIS_CHECK;
 	REQ_FUN_ARG(0, destinationCtor);
 	REQ_FUN_ARG(1, listenerCtor);
+	LET_FLOAT_ARG(2, sampleRate);
 	Napi::Object context = info.This().As<Napi::Object>();
 	
 	napi_value argv[2];
 	argv[0] = context;
 	
-	NodePtr destinationNode = _impl->device();
+	const auto config = getAudioConfig(false, sampleRate);
+	auto device = std::make_shared<lab::AudioDevice_RtAudio>(config.first, config.second);
+	
+	auto destinationNode = std::make_shared<lab::AudioDestinationNode>(*_impl.get(), device);
 	argv[1] = JS_EXT(&destinationNode);
 	_destination.Reset(destinationCtor.New(2, argv), 1);
 	
@@ -98,6 +152,12 @@ JS_IMPLEMENT_METHOD(BaseAudioContext, _initListener) { THIS_CHECK;
 	argv[1] = JS_EXT(&listener);
 	_listener.Reset(listenerCtor.New(2, argv), 1);
 	
+	device->setDestinationNode(destinationNode);
+	_impl->setDestinationNode(destinationNode);
+	
+	Napi::Function ctor = _ctorEs5.Value().As<Napi::Function>();
+	Napi::String hrtf = ctor.Get("hrtf").As<Napi::String>();
+	_impl->loadHrtfDatabase(hrtf);
 	
 	RET_UNDEFINED;
 }

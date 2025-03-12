@@ -18,25 +18,29 @@
 		'conditions': [
 			['OS=="linux"', {
 				'cflags_cc': ['-w'],
+				'cflags_cc!': ['-fno-rtti'],
 				'libraries': [
 					"-Wl,-rpath,'$$ORIGIN'",
 					"-Wl,-rpath,'$$ORIGIN/../node_modules/deps-labsound-raub/<(bin)'",
 					"-Wl,-rpath,'$$ORIGIN/../../deps-labsound-raub/<(bin)'",
-					'-lLabSound', '-llibnyquist', '-lsamplerate', '-lasound',
+					'-lLabSound', '-llibnyquist', '-lasound',
 				],
 			}],
 			['OS=="mac"', {
 				'cflags_cc': ['-w'],
+				'cflags_cc!': ['-fno-rtti'],
+				'cflags_cc+': ['-frtti'],
 				'libraries': [
 					'-Wl,-rpath,@loader_path',
 					'-Wl,-rpath,@loader_path/../node_modules/deps-labsound-raub/<(bin)',
 					'-Wl,-rpath,@loader_path/../../deps-labsound-raub/<(bin)',
-					'-llibnyquist', '-lsamplerate',
+					'-llibnyquist',
 					'-L<(ls_bin)',
 					'<(ls_bin)/LabSound',
 				],
 				'xcode_settings': {
 					'DYLIB_INSTALL_NAME_BASE': '@rpath',
+					'GCC_ENABLE_CPP_RTTI': 'YES',
 					'OTHER_LDFLAGS': [
 						'-framework AudioUnit',
 						'-framework CoreAudio',
@@ -46,9 +50,15 @@
 			}],
 			['OS=="win"', {
 				'libraries': [
-					'-lwinmm', '-luser32',
-					'-lLabSound', '-llibnyquist', '-lsamplerate'
+					'-lwinmm', '-luser32', '-lLabSound', '-llibnyquist',
 				],
+				'msvs_settings': {
+					'VCCLCompilerTool': {
+						'ExceptionHandling': '1',
+						'AdditionalOptions!': ['/EHa-s-c-', '/GR-'],
+						'AdditionalOptions': ['/EHsc', '/GR'],
+					},
+				},
 			}],
 		],
 	}]

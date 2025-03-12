@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "*.scope": "javascript",
+        "qmldir": "qml",
+        "*.gyp": "javascript",
+        "*.gypi": "javascript",
+        "xutility": "cpp"
+    }
+}

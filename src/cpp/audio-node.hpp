@@ -19,6 +19,7 @@ private:
 	std::string _channelInterpretation;
 	
 	JS_DECLARE_METHOD(AudioNode, destroy);
+	JS_DECLARE_METHOD(AudioNode, diagnose);
 	
 	JS_DECLARE_METHOD(AudioNode, connect);
 	JS_DECLARE_METHOD(AudioNode, disconnect);
