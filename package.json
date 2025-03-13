@@ -1,7 +1,7 @@
 {
 	"author": "Luis Blanco <luisblanco1337@gmail.com>",
 	"name": "webaudio-raub",
-	"version": "5.1.0",
+	"version": "5.1.1",
 	"description": "Web Audio for Node.js",
 	"license": "MIT",
 	"main": "index.js",
@@ -43,12 +43,12 @@
 	},
 	"dependencies": {
 		"addon-tools-raub": "^9.3.0",
+		"deps-labsound-raub": "^6.0.0",
 		"segfault-raub": "^3.2.0"
 	},
 	"devDependencies": {
 		"@types/node": "^22.13.4",
 		"@eslint/js": "^9.20.0",
-		"deps-labsound-raub": "^6.0.0",
 		"eslint": "^9.20.1",
 		"node-addon-api": "^8.3.0",
 		"typescript": "^5.7.3"
